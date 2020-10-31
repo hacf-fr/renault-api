@@ -1,0 +1,10 @@
+{
+  "_template": "gh:cjolowicz/cookiecutter-hypermodern-python",
+  "author": "epenet",
+  "email": "mail@tbd.com",
+  "friendly_name": "Renault API",
+  "github_user": "hacf-fr",
+  "package_name": "renault_api",
+  "project_name": "renault-api",
+  "version": "0.0.0"
+}
