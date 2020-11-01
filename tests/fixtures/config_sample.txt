@@ -1,0 +1,283 @@
+{
+  "instabug": {
+      "enabled": false
+  },
+  "visibility": {
+      "sections": {
+          "smart_route_planner": true,
+          "pairing_ivi": true,
+          "pairing_ze": true,
+          "ots": true
+      },
+      "subsections": {},
+      "views": {
+          "profile_menu_alertes": true,
+          "car_maintenance_tab_title": true,
+          "car_offers_tab_title": true,
+          "car_menu_status_pressure": false,
+          "car_status_quotation": true,
+          "help_menu_contact": true,
+          "help_FAQ_tab_title": true,
+          "help_ADVICES_tab_title": true,
+          "help_notice_title": true,
+          "profile_menu_infos": true,
+          "profile_menu_infos_modify_email": false,
+          "profile_menu_settings": true,
+          "profile_menu_settings_delete_cta": true,
+          "profile_menu_edition_region_layout": false,
+          "carpage_tab_title_status": true,
+          "navigation_myr_off": true,
+          "navigation_myr": true,
+          "navigation_menu_map_parking_btn": true,
+          "navigation_menu_map_more_btn": true,
+          "navigation_menu_poi_bottom_ctas": true,
+          "navigation_menu_poi_details_sendto_cta": true,
+          "help_myr": true,
+          "profile_myr": true,
+          "signup_firstname": true,
+          "add_car_type_layout": false,
+          "input_layout_add_car_reg": false,
+          "profile": {
+              "input_layout_civility": true,
+              "input_layout_firstname": true,
+              "input_layout_lastname": true,
+              "input_layout_birthday": false,
+              "input_layout_national_id": false,
+              "input_layout_mobile_phone": true,
+              "input_layout_landline_phone": false,
+              "input_layout_address": true,
+              "input_layout_postal_code": true,
+              "input_layout_city": true,
+              "profile_menu_infos_region_layout": false,
+              "input_layout_marital_status": false,
+              "input_layout_children_number": false
+          }
+      }
+  },
+  "pages": {
+      "car": {
+          "cotation": "https://cote.renault.fr/",
+          "general_advise": [
+              {
+                  "picture": "",
+                  "maxAdviseNb": 2
+              }
+          ],
+          "acceleration_advise": [
+              {
+                  "picture": "",
+                  "maxAdviseNb": 2
+              }
+          ],
+          "switch_advise": [
+              {
+                  "picture": "",
+                  "maxAdviseNb": 2
+              }
+          ],
+          "anticipation_advise": [
+              {
+                  "picture": "",
+                  "maxAdviseNb": 2
+              }
+          ],
+          "eco_advice_elec_conduct": [
+              {
+                  "picture": "",
+                  "maxAdviseNb": 3
+              }
+          ],
+          "eco_advice_elec_tyre": [
+              {
+                  "picture": "",
+                  "maxAdviseNb": 1
+              }
+          ],
+          "eco_advice_elec_conso": [
+              {
+                  "picture": "",
+                  "maxAdviseNb": 4
+              }
+          ]
+      },
+      "offers": {
+          "user": true,
+          "car": true
+      },
+      "rating_application": {
+          "mail": "contact.client@renault.com",
+          "url": ""
+      },
+      "faq": {
+          "maxSectionNb": 3,
+          "maxQuestionNb": 3,
+          "picture": "",
+          "response": [
+              {
+                  "idSection": "1",
+                  "idQuestion": "1",
+                  "urlType": "video",
+                  "url": "Eni138mjSpw"
+              },
+              {
+                  "idSection": "1",
+                  "idQuestion": "2",
+                  "urlType": "video",
+                  "url": "KRkqPA0_5rk"
+              }
+          ],
+          "contact": {
+              "display": true,
+              "urlType": "mail",
+              "url": "contact.client@renault.com"
+          }
+      },
+      "advices": {
+          "maxSectionNb": 3,
+          "maxQuestionNb": 3,
+          "picture": "",
+          "response": [
+              {
+                  "idSection": "1",
+                  "idQuestion": "1",
+                  "urlType": "video",
+                  "url": "Eni138mjSpw"
+              },
+              {
+                  "idSection": "1",
+                  "idQuestion": "2",
+                  "urlType": "video",
+                  "url": "KRkqPA0_5rk"
+              },
+              {
+                  "idSection": "1",
+                  "idQuestion": "3",
+                  "urlType": "video",
+                  "url": "ReUP5ErzceA"
+              },
+              {
+                  "idSection": "2",
+                  "idQuestion": "1",
+                  "urlType": "video",
+                  "url": "Ur-JvJd8M90"
+              },
+              {
+                  "idSection": "2",
+                  "idQuestion": "2",
+                  "urlType": "video",
+                  "url": "aK9j5urvogw"
+              },
+              {
+                  "idSection": "2",
+                  "idQuestion": "3",
+                  "urlType": "video",
+                  "url": "-YSbVnkdaEI"
+              }
+          ],
+          "contact": {
+              "display": true,
+              "urlType": "mail",
+              "url": "contact.client@renault.com"
+          }
+      }
+  },
+  "regex": {
+      "name": "^[\\p{L}\\s\\’'-]{2,255}$",
+      "email": "^[[:alnum:]]([-_.]?[[:alnum:]])*@[[:alnum:]]([-.]?[[:alnum:]])*\\.([a-z]{2,4})$",
+      "password": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?!.*\\s)[A-Za-z\\d\\W]{8,}",
+      "phone": "^0[1,2,3,4,5,9](([\\.\\s]?[0-9]{2}){4})\\s?$",
+      "mobile_phone": "^0[6,7](([\\.\\s]?[0-9]{2}){4})\\s?$",
+      "vin": "^[a-zA-Z0-9]{17}$",
+      "registration_number": "",
+      "postal_code": "^((0[1-9])|([1-8][0-9])|(9[0-8])|(2A)|(2B))[0-9]{3}$",
+      "city": "^[a-zA-ZÀ-ÿ\\s-]{1,40}$"
+  },
+  "contact": {
+      "call_center": {
+          "channels": [
+              {
+                  "id": 1,
+                  "type": "mail",
+                  "value": "assistance.multimedia@renault.com"
+              },
+      {
+                  "id": 2,
+                  "type": "url",
+                  "value": "https://easyconnect.renault.fr"
+              }
+          ]
+      },
+      "renault_assistance": {
+          "phone_number": "0800051515"
+      }
+  },
+  "servers": {
+      "kamareon": {
+          "target": "https://alliance-platform-serviceadapter-staging.apps.prod.eu.kamereon.org",
+          "apikey": "Z7P4xyNrTITzNZh52oObSOVfKns9XGLE"
+      },
+      "wired": {
+          "target": "https://api-wired-dev-1-euw1.wrd-aws.com",
+          "apikey": "AHdOWFASWEPUVQVlhJWshsios0FqTG2E"
+      },
+      "wiredValid": {
+          "target": "https://api-wired-valid-1-euw1.wrd-aws.com",
+          "apikey": "AHdOWFASWEPUVQVlhJWshsios0FqTG2E"
+      },
+      "wiredProd": {
+          "target": "https://api-wired-prod-1-euw1.wrd-aws.com",
+          "apikey": "oF09WnKqvBDcrQzcW1rJNpjIuy7KdGaB"
+      },
+      "gigya": {
+          "target": "https://accounts.eu1.gigya.com",
+          "apikey": "3_S0OWIrqeJ6mxOkXFT8i3TTDwW1IGKk2rIypZjGXi4Hh8vce2ohuERio1Ka5DBbUr"
+      },
+      "gigyaValid": {
+          "target": "https://accounts.eu1.gigya.com",
+          "apikey": "3_2YjuX_CyODLN3o4wK70yHKUJFHxKFiePSD65DlCS89AmsZ0Va77k_g7HUmubA4pj"
+      },
+      "gigyaProd": {
+          "target": "https://accounts.eu1.gigya.com",
+          "apikey": "3_4LKbCcMMcvjDm3X89LU4z4mNKYKdl_W0oD9w-Jvih21WqgJKtFZAnb9YdUgWT9_a"
+      }
+  },
+  "booking": {
+      "url": "https://www.renault.fr/contact/rdv-entretien.html"
+  },
+  "settings": {
+      "defaultUnits": {
+          "system": "Metric",
+          "mileage": {
+              "value": "km"
+          },
+          "volume": {
+              "value": "l"
+          },
+          "pressure": {
+              "value": "bar"
+          },
+          "speed": {
+              "value": "km/h"
+          },
+          "consumption": {
+              "value": "l100"
+          },
+          "temperature": {
+              "value": "c"
+          }
+      },
+      "links": {
+          "notice": "https://www.renault.fr/legal.html",
+          "legal_info_url": "https://www.renault.fr/donnees-personnelles.html"
+      }
+  },
+  "additional_legal_page": {
+      "display": false,
+      "picture": "",
+      "url1": "https://www.renault.de/datenschutz-und-rechtliche-hinweise.html",
+      "url2": "https://www.renault.de/cookies.html",
+      "url3": "https://www.renault.de/impressum.html"
+  },
+"globalCommunication": false
+
+}
