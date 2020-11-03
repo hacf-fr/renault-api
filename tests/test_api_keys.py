@@ -11,7 +11,7 @@ from renault_api.const import CONF_GIGYA_APIKEY
 from renault_api.const import CONF_GIGYA_URL
 from renault_api.const import CONF_KAMEREON_APIKEY
 from renault_api.const import CONF_KAMEREON_URL
-from renault_api.exceptions import RenaultError
+from renault_api.exceptions import RenaultException
 
 
 @pytest.fixture
@@ -48,7 +48,7 @@ async def test_missing_aiohttp_session() -> None:
     locale = "invalid"
 
     renault_client = RenaultClient()
-    with pytest.raises(RenaultError) as excinfo:
+    with pytest.raises(RenaultException) as excinfo:
         await renault_client.preload_api_keys(locale)
     assert "aiohttp_session is not set." in str(excinfo)
 
@@ -80,6 +80,6 @@ async def test_preload_invalid_api_keys(renault_client: RenaultClient) -> None:
     with aioresponses() as mock_aioresponses:
         mock_aioresponses.get(fake_url, status=404)
 
-        with pytest.raises(RenaultError) as excinfo:
+        with pytest.raises(RenaultException) as excinfo:
             await renault_client.preload_api_keys(fake_locale)
         assert "Locale not found on Renault server" in str(excinfo)

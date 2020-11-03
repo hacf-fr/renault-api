@@ -1,7 +1,7 @@
 """Exceptions for Renault API."""
 
 
-class RenaultError(Exception):
+class RenaultException(Exception):
     """Base class for Renault API errors."""
 
     pass
