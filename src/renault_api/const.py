@@ -10,6 +10,9 @@ KAMEREON_APIKEY = "oF09WnKqvBDcrQzcW1rJNpjIuy7KdGaB"
 KAMEREON_URL_EU = "https://api-wired-prod-1-euw1.wrd-aws.com"
 KAMEREON_URL_US = "https://api-wired-prod-1-usw2.wrd-aws.com"
 
+LOCALE_BASE_URL = (
+    "https://renault-wrd-prod-1-euw1-myrapp-one.s3-eu-west-1.amazonaws.com"
+)
 
 AVAILABLE_LOCALES = {
     "bg_BG": {

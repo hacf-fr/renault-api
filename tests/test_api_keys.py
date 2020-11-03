@@ -11,6 +11,7 @@ from renault_api.const import CONF_GIGYA_APIKEY
 from renault_api.const import CONF_GIGYA_URL
 from renault_api.const import CONF_KAMEREON_APIKEY
 from renault_api.const import CONF_KAMEREON_URL
+from renault_api.const import LOCALE_BASE_URL
 from renault_api.exceptions import RenaultException
 
 
@@ -59,7 +60,7 @@ async def test_preload_unknown_api_keys(renault_client: RenaultClient) -> None:
     expected_api_keys = AVAILABLE_LOCALES["fr_FR"]
 
     fake_locale = "invalid"
-    fake_url = f"https://renault-wrd-prod-1-euw1-myrapp-one.s3-eu-west-1.amazonaws.com/configuration/android/config_{fake_locale}.json"  # noqa
+    fake_url = f"{LOCALE_BASE_URL}/configuration/android/config_{fake_locale}.json"
     with open("tests/fixtures/config_sample.txt", "r") as f:
         fake_body = f.read()
 

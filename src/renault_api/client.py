@@ -11,6 +11,7 @@ from .const import CONF_GIGYA_APIKEY
 from .const import CONF_GIGYA_URL
 from .const import CONF_KAMEREON_APIKEY
 from .const import CONF_KAMEREON_URL
+from .const import LOCALE_BASE_URL
 from .exceptions import RenaultException
 
 _LOGGER = logging.getLogger(__package__)
@@ -47,7 +48,7 @@ class RenaultClient:
             if self.aiohttp_session is None:
                 raise RenaultException("aiohttp_session is not set.")
 
-            url = f"https://renault-wrd-prod-1-euw1-myrapp-one.s3-eu-west-1.amazonaws.com/configuration/android/config_{locale}.json"  # noqa
+            url = f"{LOCALE_BASE_URL}/configuration/android/config_{locale}.json"
             async with self.aiohttp_session.get(url) as response:
                 try:
                     response.raise_for_status()
