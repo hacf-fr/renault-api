@@ -13,16 +13,22 @@ from renault_api.const import CONF_KAMEREON_APIKEY
 from renault_api.const import CONF_KAMEREON_URL
 from renault_api.const import LOCALE_BASE_URL
 from renault_api.exceptions import RenaultException
+from renault_api.helpers import create_aiohttp_closed_event
 
 
 @pytest.fixture
 async def renault_client() -> AsyncGenerator[RenaultClient, None]:
     """Fixture for testing RenaultClient."""
     async with ClientSession() as aiohttp_session:
+        closed_event = create_aiohttp_closed_event(aiohttp_session)
+
         client = RenaultClient()
         client.aiohttp_session = aiohttp_session
 
         yield client
+
+        await aiohttp_session.close()
+        await closed_event.wait()
 
 
 @pytest.mark.asyncio
@@ -52,6 +58,20 @@ async def test_missing_aiohttp_session() -> None:
     with pytest.raises(RenaultException) as excinfo:
         await renault_client.preload_api_keys(locale)
     assert "aiohttp_session is not set." in str(excinfo)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("locale", AVAILABLE_LOCALES.keys())
+@pytest.mark.skip(reason="Makes real calls to Renault servers")
+async def test_preload_force_api_keys(
+    renault_client: RenaultClient, locale: str
+) -> None:
+    """Ensure is able to parse a known known."""
+    expected_api_keys = AVAILABLE_LOCALES[locale]
+
+    api_keys = await renault_client.preload_api_keys(locale, True)
+
+    assert api_keys == expected_api_keys
 
 
 @pytest.mark.asyncio

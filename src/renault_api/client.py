@@ -24,11 +24,14 @@ class RenaultClient:
         """Initialise Renault Client."""
         self.aiohttp_session: Optional[aiohttp.ClientSession] = None
 
-    async def preload_api_keys(self, locale: str) -> Dict[str, str]:
+    async def preload_api_keys(
+        self, locale: str, force_load: bool = False
+    ) -> Dict[str, str]:
         """Load the credential store with API Keys.
 
         Args:
             locale (str): locale code (preferrably from AVAILABLE_LOCALES.keys()).
+            force_load (bool): bypass internal AVAILABLE_LOCALES
 
         Returns:
             Dict with gigya-api-key, gigya-api-url,
@@ -37,11 +40,12 @@ class RenaultClient:
         Raises:
             RenaultException: an issue occured loading the API keys
         """
-        if locale in AVAILABLE_LOCALES.keys():
+        if locale in AVAILABLE_LOCALES.keys() and not force_load:
             return AVAILABLE_LOCALES[locale]
         else:
             _LOGGER.warning(
-                "Locale %s was not found in AVAILABLE_LOCALES. "
+                "Locale %s was not found in AVAILABLE_LOCALES "
+                "(or force_load used)."
                 "Attempting to load details from Renault servers.",
                 locale,
             )
@@ -56,6 +60,8 @@ class RenaultClient:
                     raise RenaultException(
                         f"Locale not found on Renault server ({exc.status})."
                     ) from exc
+                # Server sometimes returns invalid content-type
+                # eg. application/octet-stream
                 response_body = await response.json(content_type=None)
 
                 _LOGGER.debug(
