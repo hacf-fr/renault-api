@@ -14,19 +14,24 @@ from renault_api.const import CONF_KAMEREON_URL
 from renault_api.const import LOCALE_BASE_URL
 from renault_api.exceptions import RenaultException
 from renault_api.helpers import create_aiohttp_closed_event
+from renault_api.helpers import get_api_keys
 
 
 @pytest.fixture
-async def renault_client() -> AsyncGenerator[RenaultClient, None]:
+def renault_client(aiohttp_session: ClientSession) -> RenaultClient:
     """Fixture for testing RenaultClient."""
+    client = RenaultClient()
+    client.aiohttp_session = aiohttp_session
+    return client
+
+
+@pytest.fixture
+async def aiohttp_session() -> AsyncGenerator[ClientSession, None]:
+    """Fixture for generating ClientSession."""
     async with ClientSession() as aiohttp_session:
+        yield aiohttp_session
+
         closed_event = create_aiohttp_closed_event(aiohttp_session)
-
-        client = RenaultClient()
-        client.aiohttp_session = aiohttp_session
-
-        yield client
-
         await aiohttp_session.close()
         await closed_event.wait()
 
@@ -37,8 +42,7 @@ async def test_available_locales(locale: str) -> None:
     """Ensure all items AVAILABLE_LOCALES have correct data."""
     expected_api_keys = AVAILABLE_LOCALES[locale]
 
-    renault_client = RenaultClient()
-    api_keys = await renault_client.preload_api_keys(locale)
+    api_keys = await get_api_keys(locale)
     assert api_keys == expected_api_keys
     for key in [
         CONF_GIGYA_APIKEY,
@@ -51,12 +55,11 @@ async def test_available_locales(locale: str) -> None:
 
 @pytest.mark.asyncio
 async def test_missing_aiohttp_session() -> None:
-    """Ensure is able to parse a known known."""
+    """Ensure failure to unknown locale if aiohttp_session is not set."""
     locale = "invalid"
 
-    renault_client = RenaultClient()
     with pytest.raises(RenaultException) as excinfo:
-        await renault_client.preload_api_keys(locale)
+        await get_api_keys(locale)
     assert "aiohttp_session is not set." in str(excinfo)
 
 
@@ -64,18 +67,18 @@ async def test_missing_aiohttp_session() -> None:
 @pytest.mark.parametrize("locale", AVAILABLE_LOCALES.keys())
 @pytest.mark.skip(reason="Makes real calls to Renault servers")
 async def test_preload_force_api_keys(
-    renault_client: RenaultClient, locale: str
+    aiohttp_session: ClientSession, locale: str
 ) -> None:
-    """Ensure is able to parse a known known."""
+    """Ensure is able to parse a valid locale from Renault servers."""
     expected_api_keys = AVAILABLE_LOCALES[locale]
 
-    api_keys = await renault_client.preload_api_keys(locale, True)
+    api_keys = await get_api_keys(locale, True, aiohttp_session)
 
     assert api_keys == expected_api_keys
 
 
 @pytest.mark.asyncio
-async def test_preload_unknown_api_keys(renault_client: RenaultClient) -> None:
+async def test_preload_unknown_api_keys(aiohttp_session: ClientSession) -> None:
     """Ensure is able to parse a known known."""
     expected_api_keys = AVAILABLE_LOCALES["fr_FR"]
 
@@ -87,20 +90,20 @@ async def test_preload_unknown_api_keys(renault_client: RenaultClient) -> None:
     with aioresponses() as mock_aioresponses:
         mock_aioresponses.get(fake_url, status=200, body=fake_body)
 
-        api_keys = await renault_client.preload_api_keys(fake_locale)
+        api_keys = await get_api_keys(fake_locale, aiohttp_session=aiohttp_session)
 
         assert api_keys == expected_api_keys
 
 
 @pytest.mark.asyncio
-async def test_preload_invalid_api_keys(renault_client: RenaultClient) -> None:
+async def test_preload_invalid_api_keys(aiohttp_session: ClientSession) -> None:
     """Ensure is able to parse an invalid locale."""
     fake_locale = "fake"
-    fake_url = f"https://renault-wrd-prod-1-euw1-myrapp-one.s3-eu-west-1.amazonaws.com/configuration/android/config_{fake_locale}.json"  # noqa
+    fake_url = f"{LOCALE_BASE_URL}/configuration/android/config_{fake_locale}.json"
 
     with aioresponses() as mock_aioresponses:
         mock_aioresponses.get(fake_url, status=404)
 
         with pytest.raises(RenaultException) as excinfo:
-            await renault_client.preload_api_keys(fake_locale)
+            await get_api_keys(fake_locale, aiohttp_session=aiohttp_session)
         assert "Locale not found on Renault server" in str(excinfo)

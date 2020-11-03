@@ -1,8 +1,75 @@
 """Helpers for Renault API."""
 import asyncio
 import functools
+import logging
+from typing import Dict
 
 from aiohttp import ClientSession
+from aiohttp.client_exceptions import ClientResponseError
+
+from .const import AVAILABLE_LOCALES
+from .const import CONF_GIGYA_APIKEY
+from .const import CONF_GIGYA_URL
+from .const import CONF_KAMEREON_APIKEY
+from .const import CONF_KAMEREON_URL
+from .const import LOCALE_BASE_URL
+from .exceptions import RenaultException
+
+_LOGGER = logging.getLogger(__package__)
+
+
+async def get_api_keys(
+    locale: str, force_load: bool = False, aiohttp_session: ClientSession = None
+) -> Dict[str, str]:
+    """Get the API keys for specified locale.
+
+    Args:
+        locale (str): locale code (preferrably from AVAILABLE_LOCALES.keys())
+        force_load (bool): bypass internal AVAILABLE_LOCALES
+        aiohttp_session (ClientSession): required if locale not in AVAILABLE_LOCALES
+
+    Returns:
+        Dict with gigya-api-key, gigya-api-url,
+        kamereon-api-key and kamereon-api-url
+
+    Raises:
+        RenaultException: an issue occured loading the API keys
+    """
+    if locale in AVAILABLE_LOCALES.keys() and not force_load:
+        return AVAILABLE_LOCALES[locale]
+    else:
+        _LOGGER.warning(
+            "Locale %s was not found in AVAILABLE_LOCALES "
+            "(or force_load used)."
+            "Attempting to load details from Renault servers.",
+            locale,
+        )
+        if aiohttp_session is None:
+            raise RenaultException("aiohttp_session is not set.")
+
+        url = f"{LOCALE_BASE_URL}/configuration/android/config_{locale}.json"
+        async with aiohttp_session.get(url) as response:
+            try:
+                response.raise_for_status()
+            except ClientResponseError as exc:
+                raise RenaultException(
+                    f"Locale not found on Renault server ({exc.status})."
+                ) from exc
+            # Server sometimes returns invalid content-type
+            # eg. application/octet-stream
+            response_body = await response.json(content_type=None)
+
+            _LOGGER.debug(
+                "Received api keys from myrenault response: %s", response_body
+            )
+
+            servers = response_body["servers"]
+            return {
+                CONF_GIGYA_APIKEY: servers["gigyaProd"]["apikey"],
+                CONF_GIGYA_URL: servers["gigyaProd"]["target"],
+                CONF_KAMEREON_APIKEY: servers["wiredProd"]["apikey"],
+                CONF_KAMEREON_URL: servers["wiredProd"]["target"],
+            }
 
 
 def create_aiohttp_closed_event(
