@@ -6,8 +6,8 @@ Reference
     :backlinks: none
 
 
-renault_api.__main__
+renault_api.cli.__main__
 --------------------
 
-.. automodule:: renault_api.__main__
+.. automodule:: renault_api.cli.__main__
    :members:
