@@ -6,11 +6,9 @@ from typing import Optional
 
 import jwt
 
+from renault_api.const import PERMANENT_KEYS
 from renault_api.model.credential import Credential
 from renault_api.model.credential import JWTCredential
-
-
-PERMANENT_KEYS = ["locale"]
 
 
 class CredentialStore:
@@ -34,6 +32,14 @@ class CredentialStore:
             cred = self._store[name]
             if not cred.has_expired():
                 return cred
+        return None
+
+    def get_value(self, name: str) -> Optional[str]:
+        """Get a credential the credential store."""
+        if name in list(self._store.keys()):
+            cred = self._store[name]
+            if not cred.has_expired():
+                return cred.value
         return None
 
     def __setitem__(self, name: str, value: Credential) -> None:
