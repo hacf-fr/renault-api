@@ -21,7 +21,6 @@ from renault_api.helpers import get_api_keys
 def renault_client(aiohttp_session: ClientSession) -> RenaultClient:
     """Fixture for testing RenaultClient."""
     client = RenaultClient()
-    client.aiohttp_session = aiohttp_session
     return client
 
 
