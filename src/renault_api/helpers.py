@@ -2,7 +2,7 @@
 import asyncio
 import functools
 import logging
-from typing import Dict
+from typing import Dict, Optional
 
 from aiohttp import ClientSession
 from aiohttp.client_exceptions import ClientResponseError
@@ -19,7 +19,9 @@ _LOGGER = logging.getLogger(__package__)
 
 
 async def get_api_keys(
-    locale: str, force_load: bool = False, aiohttp_session: ClientSession = None
+    locale: str,
+    force_load: bool = False,
+    aiohttp_session: Optional[ClientSession] = None,
 ) -> Dict[str, str]:
     """Get the API keys for specified locale.
 
@@ -40,7 +42,7 @@ async def get_api_keys(
     else:
         _LOGGER.warning(
             "Locale %s was not found in AVAILABLE_LOCALES "
-            "(or force_load used)."
+            "(or force_load used). "
             "Attempting to load details from Renault servers.",
             locale,
         )
@@ -53,7 +55,7 @@ async def get_api_keys(
                 response.raise_for_status()
             except ClientResponseError as exc:
                 raise RenaultException(
-                    f"Locale not found on Renault server ({exc.status})."
+                    f"Locale not found on Renault server (HTTPStatus = {exc.status})."
                 ) from exc
             # Server sometimes returns invalid content-type
             # eg. application/octet-stream
