@@ -2,7 +2,8 @@
 import asyncio
 import functools
 import logging
-from typing import Dict, Optional
+from typing import Dict
+from typing import Optional
 
 from aiohttp import ClientSession
 from aiohttp.client_exceptions import ClientResponseError
