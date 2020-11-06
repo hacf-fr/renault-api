@@ -18,7 +18,7 @@ from renault_api.helpers import get_api_keys
 
 
 @pytest.fixture
-def renault_client(aiohttp_session: ClientSession) -> RenaultClient:
+def renault_client() -> RenaultClient:
     """Fixture for testing RenaultClient."""
     client = RenaultClient()
     return client
