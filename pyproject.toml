@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "renault-api"
-version = "0.0.0"
+version = "0.0.1-alpha.0"
 description = "Renault API"
 authors = ["epenet <mail@tbd.com>"]
 license = "MIT"
@@ -9,7 +9,6 @@ homepage = "https://github.com/hacf-fr/renault-api"
 repository = "https://github.com/hacf-fr/renault-api"
 documentation = "https://renault-api.readthedocs.io"
 classifiers = [
-    "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
@@ -21,6 +20,7 @@ Changelog = "https://github.com/hacf-fr/renault-api/releases"
 [tool.poetry.dependencies]
 python = "^3.7.1"
 click = "^7.0"
+aiohttp = "3.7.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.1.2"
@@ -45,6 +45,8 @@ pre-commit-hooks = "^3.3.0"
 sphinx-rtd-theme = "^0.5.0"
 sphinx-click = "^2.5.0"
 Pygments = "^2.7.2"
+pytest-asyncio = "^0.14.0"
+aioresponses = "^0.7.1"
 
 [tool.poetry.scripts]
 renault-api = "renault_api.__main__:main"
