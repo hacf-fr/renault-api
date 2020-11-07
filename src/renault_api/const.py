@@ -1,9 +1,12 @@
 """Constants for Renault API."""
+# Configuration keys
 CONF_GIGYA_APIKEY = "gigya-api-key"
 CONF_GIGYA_URL = "gigya-api-url"
 CONF_KAMEREON_APIKEY = "kamereon-api-key"
 CONF_KAMEREON_URL = "kamereon-api-url"
+CONF_LOCALE = "locale"
 
+# Locale helpers
 GIGYA_URL_EU = "https://accounts.eu1.gigya.com"
 GIGYA_URL_US = "https://accounts.us1.gigya.com"
 KAMEREON_APIKEY = "oF09WnKqvBDcrQzcW1rJNpjIuy7KdGaB"
