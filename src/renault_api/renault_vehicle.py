@@ -1,7 +1,8 @@
 """Client for Renault API."""
-from datetime import datetime
 import logging
-from typing import Any, Optional
+from datetime import datetime
+from typing import Any
+from typing import Optional
 
 from pyze.api import Kamereon  # type: ignore
 from pyze.api.kamereon import Vehicle  # type: ignore
