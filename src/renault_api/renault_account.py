@@ -3,7 +3,7 @@ import copy
 import logging
 from typing import Any
 
-from pyze.api import Kamereon
+from pyze.api import Kamereon  # type: ignore
 
 from renault_api.renault_vehicle import RenaultVehicle
 

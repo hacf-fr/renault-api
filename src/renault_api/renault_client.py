@@ -5,7 +5,7 @@ from typing import Dict
 from typing import Optional
 
 import aiohttp
-from pyze.api import BasicCredentialStore
+from pyze.api import BasicCredentialStore  # type: ignore
 from pyze.api import Gigya
 from pyze.api import Kamereon
 
@@ -65,9 +65,7 @@ class RenaultClient:
         Args:
             force_load (bool): bypass internal AVAILABLE_LOCALES
         """
-        api_keys = await get_api_keys(
-            self._credential_store[CONF_LOCALE], self.aiohttp_session, force_load
-        )
+        api_keys = await get_api_keys(self._credential_store[CONF_LOCALE], force_load)
         self.set_api_keys(api_keys)
 
     def login(self, user: str, password: str) -> Any:
