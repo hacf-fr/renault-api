@@ -16,7 +16,7 @@ from .const import CONF_KAMEREON_URL
 from .const import LOCALE_BASE_URL
 from .exceptions import RenaultException
 
-_LOGGER = logging.getLogger(__package__)
+_LOGGER = logging.getLogger(__name__)
 
 
 async def get_api_keys(

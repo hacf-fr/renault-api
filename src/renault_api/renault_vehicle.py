@@ -14,7 +14,7 @@ from pyze.api.schedule import ChargeSchedules
 if TYPE_CHECKING:
     from .renault_account import RenaultAccount
 
-_LOGGER = logging.getLogger(__package__)
+_LOGGER = logging.getLogger(__name__)
 
 
 class RenaultVehicle:

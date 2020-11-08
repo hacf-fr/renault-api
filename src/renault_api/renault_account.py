@@ -11,7 +11,7 @@ from .renault_vehicle import RenaultVehicle
 if TYPE_CHECKING:
     from .renault_client import RenaultClient
 
-_LOGGER = logging.getLogger(__package__)
+_LOGGER = logging.getLogger(__name__)
 
 
 class RenaultAccount:

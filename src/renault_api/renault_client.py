@@ -17,7 +17,7 @@ from .helpers import get_api_keys
 from .pyze_override import KamereonOverride
 from .renault_account import RenaultAccount
 
-_LOGGER = logging.getLogger(__package__)
+_LOGGER = logging.getLogger(__name__)
 
 
 class RenaultClient:
