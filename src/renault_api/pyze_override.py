@@ -1,7 +1,9 @@
 """Override classes for PyZE."""
 from typing import Optional
 
-from pyze.api.credentials import PERMANENT_KEYS  # type: ignore
+from pyze.api.credentials import BasicCredentialStore  # type: ignore
+from pyze.api.credentials import PERMANENT_KEYS
+from pyze.api.gigya import Gigya  # type: ignore
 from pyze.api.kamereon import Kamereon  # type: ignore
 
 from .const import CONF_GIGYA_URL
@@ -21,9 +23,9 @@ class KamereonOverride(Kamereon):  # type: ignore
 
     def __init__(
         self,
-        credentials,
-        gigya,
-        country,
+        credentials: BasicCredentialStore,
+        gigya: Gigya,
+        country: Optional[str],
     ) -> None:
         """Initialise Kamereon override."""
         super().__init__(
@@ -39,6 +41,6 @@ class KamereonOverride(Kamereon):  # type: ignore
         """Set account id."""
         self._account_id = account_id
 
-    def get_account_id(self) -> str:
+    def get_account_id(self) -> Optional[str]:
         """Get account id."""
         return self._account_id

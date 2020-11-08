@@ -31,7 +31,7 @@ class RenaultClient:
         self._credential_store: BasicCredentialStore = (
             credential_store or BasicCredentialStore()
         )
-        self._country = None
+        self._country: Optional[str] = None
         if CONF_LOCALE in self._credential_store:
             self._country = self._credential_store[CONF_LOCALE][:2]
         self._gigya: Gigya = Gigya(
