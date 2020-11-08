@@ -1,13 +1,18 @@
 """Client for Renault API."""
+from __future__ import annotations
+
 import logging
 from datetime import datetime
 from typing import Any
 from typing import Optional
+from typing import TYPE_CHECKING
 
-from pyze.api import Kamereon  # type: ignore
 from pyze.api.kamereon import Vehicle  # type: ignore
 from pyze.api.schedule import ChargeMode  # type: ignore
 from pyze.api.schedule import ChargeSchedules
+
+if TYPE_CHECKING:
+    from .renault_account import RenaultAccount
 
 _LOGGER = logging.getLogger(__package__)
 
@@ -15,9 +20,10 @@ _LOGGER = logging.getLogger(__package__)
 class RenaultVehicle:
     """Proxy to a Renault vehicle."""
 
-    def __init__(self, kamereon: Kamereon, vin: str) -> None:
+    def __init__(self, renault_account: RenaultAccount, vin: str) -> None:
         """Initialise Renault vehicle."""
-        self._vehicle: Vehicle = Vehicle(vin, kamereon)
+        self._renault_account: RenaultAccount = renault_account
+        self._vehicle: Vehicle = Vehicle(vin, renault_account._kamereon)
 
     def battery_status(self) -> Any:
         """Get vehicle battery status."""

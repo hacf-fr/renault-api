@@ -5,9 +5,8 @@ from typing import Dict
 from typing import Optional
 
 import aiohttp
-from pyze.api import BasicCredentialStore  # type: ignore
-from pyze.api import Gigya
-from pyze.api import Kamereon
+from pyze.api.credentials import BasicCredentialStore  # type: ignore
+from pyze.api.gigya import Gigya  # type: ignore
 
 from .const import CONF_GIGYA_APIKEY
 from .const import CONF_GIGYA_URL
@@ -15,7 +14,8 @@ from .const import CONF_KAMEREON_APIKEY
 from .const import CONF_KAMEREON_URL
 from .const import CONF_LOCALE
 from .helpers import get_api_keys
-from renault_api.renault_account import RenaultAccount
+from .pyze_override import KamereonOverride
+from .renault_account import RenaultAccount
 
 _LOGGER = logging.getLogger(__package__)
 
@@ -31,12 +31,18 @@ class RenaultClient:
         self._credential_store: BasicCredentialStore = (
             credential_store or BasicCredentialStore()
         )
-        country = None
+        self._country = None
         if CONF_LOCALE in self._credential_store:
-            country = self._credential_store[CONF_LOCALE][:2]
-        self._gigya: Gigya = Gigya(credentials=self._credential_store)
-        self._kamereon: Kamereon = Kamereon(
-            credentials=self._credential_store, gigya=self._gigya, country=country
+            self._country = self._credential_store[CONF_LOCALE][:2]
+        self._gigya: Gigya = Gigya(
+            api_key=self._credential_store[CONF_GIGYA_APIKEY],
+            credentials=self._credential_store,
+            root_url=self._credential_store[CONF_GIGYA_URL],
+        )
+        self._kamereon: KamereonOverride = KamereonOverride(
+            credentials=self._credential_store,
+            gigya=self._gigya,
+            country=self._country,
         )
         self.aiohttp_session: Optional[aiohttp.ClientSession] = None
 
@@ -78,6 +84,6 @@ class RenaultClient:
         """Get list of accounts linked to credentials."""
         return self._kamereon.get_accounts()
 
-    def get_account(self, account_id: str) -> Any:
+    def get_account(self, account_id: str) -> RenaultAccount:
         """Get list of accounts linked to credentials."""
-        return RenaultAccount(self._kamereon, account_id)
+        return RenaultAccount(self, account_id)
