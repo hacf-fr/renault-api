@@ -5,14 +5,12 @@ import logging
 from datetime import datetime
 from typing import Any
 from typing import Optional
-from typing import TYPE_CHECKING
 
 from pyze.api.kamereon import Vehicle  # type: ignore
 from pyze.api.schedule import ChargeMode  # type: ignore
 from pyze.api.schedule import ChargeSchedules
 
-if TYPE_CHECKING:
-    from .renault_account import RenaultAccount
+from renault_api import renault_account
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -20,10 +18,12 @@ _LOGGER = logging.getLogger(__name__)
 class RenaultVehicle:
     """Proxy to a Renault vehicle."""
 
-    def __init__(self, renault_account: RenaultAccount, vin: str) -> None:
+    def __init__(
+        self, parent_account: renault_account.RenaultAccount, vin: str
+    ) -> None:
         """Initialise Renault vehicle."""
-        self._renault_account: RenaultAccount = renault_account
-        self._vehicle: Vehicle = Vehicle(vin, renault_account._kamereon)
+        self._parent_account: renault_account.RenaultAccount = parent_account
+        self._vehicle: Vehicle = Vehicle(vin, parent_account._kamereon)
 
     def battery_status(self) -> Any:
         """Get vehicle battery status."""

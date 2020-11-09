@@ -25,7 +25,7 @@ class KamereonOverride(Kamereon):  # type: ignore
         self,
         credentials: BasicCredentialStore,
         gigya: Gigya,
-        country: Optional[str],
+        country: str,
     ) -> None:
         """Initialise Kamereon override."""
         super().__init__(

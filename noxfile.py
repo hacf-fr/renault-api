@@ -119,7 +119,12 @@ def tests(session: Session) -> None:
     """Run the test suite."""
     session.install(".")
     session.install(
-        "coverage[toml]", "pytest", "pygments", "pytest-asyncio", "aioresponses"
+        "coverage[toml]",
+        "pytest",
+        "pygments",
+        "pytest-asyncio",
+        "aioresponses",
+        "responses",
     )
     try:
         session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
@@ -147,7 +152,9 @@ def coverage(session: Session) -> None:
 def typeguard(session: Session) -> None:
     """Runtime type checking using Typeguard."""
     session.install(".")
-    session.install("pytest", "typeguard", "pygments", "pytest-asyncio", "aioresponses")
+    session.install(
+        "pytest", "typeguard", "pygments", "pytest-asyncio", "aioresponses", "responses"
+    )
     session.run("pytest", f"--typeguard-packages={package}", *session.posargs)
 
 

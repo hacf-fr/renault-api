@@ -56,7 +56,7 @@ async def test_missing_aiohttp_session() -> None:
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("locale", AVAILABLE_LOCALES.keys())
-@pytest.mark.skip(reason="Makes real calls to Renault servers")
+@pytest.mark.env("real_client")
 async def test_preload_force_api_keys(
     aiohttp_session: ClientSession, locale: str
 ) -> None:

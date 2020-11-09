@@ -3,13 +3,10 @@ from __future__ import annotations
 
 import logging
 from typing import Any
-from typing import TYPE_CHECKING
 
+from . import renault_client
+from . import renault_vehicle
 from .pyze_override import KamereonOverride
-from .renault_vehicle import RenaultVehicle
-
-if TYPE_CHECKING:
-    from .renault_client import RenaultClient
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -19,15 +16,15 @@ class RenaultAccount:
 
     def __init__(
         self,
-        renault_client: RenaultClient,
+        parent_client: renault_client.RenaultClient,
         account_id: str,
     ) -> None:
         """Initialise Renault account."""
-        self._renault_client: RenaultClient = renault_client
+        self._parent_client: renault_client.RenaultClient = parent_client
         self._kamereon: KamereonOverride = KamereonOverride(
-            credentials=renault_client._credential_store,
-            gigya=renault_client._gigya,
-            country=renault_client._country,
+            credentials=parent_client._credential_store,
+            gigya=parent_client._gigya,
+            country=parent_client._country,
         )
         self._kamereon.set_account_id(account_id)
 
@@ -35,6 +32,6 @@ class RenaultAccount:
         """Get list of vehicles linked to Renault account."""
         return self._kamereon.get_vehicles()
 
-    def get_vehicle(self, vin: str) -> RenaultVehicle:
+    def get_vehicle(self, vin: str) -> renault_vehicle.RenaultVehicle:
         """Get vehicle linked to Renault account."""
-        return RenaultVehicle(self, vin)
+        return renault_vehicle.RenaultVehicle(self, vin)
