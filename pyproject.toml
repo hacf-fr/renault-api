@@ -2,7 +2,7 @@
 name = "renault-api"
 version = "0.0.1-alpha.0"
 description = "Renault API"
-authors = ["epenet <mail@tbd.com>"]
+authors = ["epenet <dev@zeflip.com>"]
 license = "MIT"
 readme = "README.rst"
 homepage = "https://github.com/hacf-fr/renault-api"
