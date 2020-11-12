@@ -5,7 +5,6 @@ import pytest
 from aiohttp import ClientSession
 from aioresponses import aioresponses  # type: ignore
 
-from renault_api.client import RenaultClient
 from renault_api.const import AVAILABLE_LOCALES
 from renault_api.const import CONF_GIGYA_APIKEY
 from renault_api.const import CONF_GIGYA_URL
@@ -15,13 +14,6 @@ from renault_api.const import LOCALE_BASE_URL
 from renault_api.exceptions import RenaultException
 from renault_api.helpers import create_aiohttp_closed_event
 from renault_api.helpers import get_api_keys
-
-
-@pytest.fixture
-def renault_client() -> RenaultClient:
-    """Fixture for testing RenaultClient."""
-    client = RenaultClient()
-    return client
 
 
 @pytest.fixture
@@ -64,7 +56,7 @@ async def test_missing_aiohttp_session() -> None:
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("locale", AVAILABLE_LOCALES.keys())
-@pytest.mark.skip(reason="Makes real calls to Renault servers")
+@pytest.mark.env("real_client")
 async def test_preload_force_api_keys(
     aiohttp_session: ClientSession, locale: str
 ) -> None:
