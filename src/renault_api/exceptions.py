@@ -3,7 +3,7 @@ from typing import Optional
 
 
 class RenaultException(Exception):
-    """Base class for Renault API errors."""
+    """Base exception for Renault API errors."""
 
     pass
 
