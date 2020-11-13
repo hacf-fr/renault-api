@@ -4,7 +4,7 @@ from typing import AsyncGenerator
 
 import pytest
 from aiohttp.client import ClientSession
-from aioresponses import aioresponses
+from aioresponses import aioresponses  # type: ignore
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
 from tests.const import TEST_GIGYA_URL
@@ -17,7 +17,7 @@ from tests.fixtures import gigya_responses
 from tests.fixtures import kamereon_responses
 
 from renault_api import renault_client
-from renault_api.exceptions import RenaultException  # type: ignore
+from renault_api.exceptions import RenaultException
 from renault_api.helpers import create_aiohttp_closed_event
 
 

@@ -128,16 +128,16 @@ class Gigya(object):
         }
         response_json = await self.get_jwt_raw(data)
 
-        current_token: str = response_json.get("id_token")
+        new_token: str = response_json.get("id_token")
 
-        if not current_token:
+        if not new_token:
             raise GigyaException(
                 "Unable to find Gigya JWT token in response: %s", response_json
             )
 
-        decoded = jwt.decode(current_token, options={"verify_signature": False})
-        self._jwt_token = JWTInfo(current_token, decoded["exp"])
-        return current_token
+        decoded = jwt.decode(new_token, options={"verify_signature": False})
+        self._jwt_token = JWTInfo(new_token, decoded["exp"])
+        return new_token
 
 
 def _raise_gigya_errors(response_json: Any) -> None:

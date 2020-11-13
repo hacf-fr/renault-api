@@ -9,7 +9,7 @@ class JWTInfo:
     """JWT with associated expiry time."""
 
     value: str
-    expiry: Optional[int]
+    expiry: Optional[float]
 
     def has_expired(self) -> bool:
         """Check if JWT has expired."""
