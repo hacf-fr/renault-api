@@ -142,8 +142,4 @@ class Gigya(object):
 
 def _raise_gigya_errors(response_json: Any) -> None:
     if response_json.get("errorCode", 0) > 0:
-        raise GigyaResponseException(
-            "Gigya returned error {}: {}".format(
-                response_json["errorCode"], response_json.get("errorDetails")
-            )
-        )
+        raise GigyaResponseException(response_json)

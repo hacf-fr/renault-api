@@ -1,6 +1,5 @@
 """Test cases for the Renault client API keys."""
 import json
-from typing import AsyncGenerator
 
 import pytest
 from aiohttp.client import ClientSession
@@ -18,18 +17,6 @@ from tests.fixtures import kamereon_responses
 
 from renault_api import renault_client
 from renault_api.exceptions import RenaultException
-from renault_api.helpers import create_aiohttp_closed_event
-
-
-@pytest.fixture
-async def websession() -> AsyncGenerator[ClientSession, None]:
-    """Fixture for generating ClientSession."""
-    async with ClientSession() as aiohttp_session:
-        yield aiohttp_session
-
-        closed_event = create_aiohttp_closed_event(aiohttp_session)
-        await aiohttp_session.close()
-        await closed_event.wait()
 
 
 async def get_renault_client(websession: ClientSession) -> renault_client.RenaultClient:
