@@ -1,4 +1,4 @@
-"""Test cases for the Renault client API keys."""
+"""Tests for RenaultClient."""
 from renault_api.renault_client import RenaultClient
 
 
