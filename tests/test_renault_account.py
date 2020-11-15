@@ -1,6 +1,4 @@
 """Test cases for the Renault client API keys."""
-from typing import AsyncGenerator
-
 import pytest
 from aiohttp.client import ClientSession
 from tests.const import TEST_ACCOUNT_ID
@@ -11,11 +9,10 @@ from renault_api import renault_client
 
 
 @pytest.fixture
-async def account() -> AsyncGenerator[renault_account.RenaultAccount, None]:
+async def account(websession: ClientSession) -> renault_account.RenaultAccount:
     """Fixture for testing Gigya."""
-    async with ClientSession() as websession:
-        client = renault_client.RenaultClient(websession=websession)
-        yield await client.get_account(TEST_ACCOUNT_ID)
+    client = renault_client.RenaultClient(websession=websession)
+    return await client.get_account(TEST_ACCOUNT_ID)
 
 
 @pytest.mark.asyncio
