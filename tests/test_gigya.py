@@ -8,7 +8,7 @@ from renault_api.gigya import Gigya
 
 
 @pytest.fixture
-def gigya(websession=ClientSession) -> Gigya:
+def gigya(websession: ClientSession) -> Gigya:
     """Fixture for testing Gigya."""
     return Gigya(websession=websession)
 
