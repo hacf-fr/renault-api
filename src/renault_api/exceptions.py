@@ -3,20 +3,7 @@ from typing import Optional
 
 
 class RenaultException(Exception):
-    """Base exception for Renault API errors."""
-
-    pass
-
-
-# Gigya exceptions
-class GigyaException(RenaultException):
-    """Base exception for Gigya errors."""
-
-    pass
-
-
-class GigyaResponseException(GigyaException):
-    """Gigya returned a parsable errors."""
+    """Base class for Renault API errors."""
 
     pass
 
