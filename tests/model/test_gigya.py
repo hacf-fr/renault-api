@@ -3,8 +3,11 @@ import pytest
 
 from renault_api.exceptions import GigyaResponseException
 from renault_api.model.gigya import GigyaGetAccountInfoResponse
+from renault_api.model.gigya import GigyaGetAccountInfoResponseSchema
 from renault_api.model.gigya import GigyaGetJWTResponse
+from renault_api.model.gigya import GigyaGetJWTResponseSchema
 from renault_api.model.gigya import GigyaLoginResponse
+from renault_api.model.gigya import GigyaLoginResponseSchema
 
 
 def test_login_response() -> None:
@@ -13,9 +16,9 @@ def test_login_response() -> None:
         "errorCode": 0,
         "sessionInfo": {"cookieValue": "sample-cookie-value"},
     }
-    response = GigyaLoginResponse(mock_login_response)
+    response: GigyaLoginResponse = GigyaLoginResponseSchema.load(mock_login_response)
     response.raise_for_error_code()
-    assert response.cookie_value == "sample-cookie-value"
+    assert response.session_info.cookie_value == "sample-cookie-value"
 
 
 def test_login_failed_response() -> None:
@@ -25,7 +28,7 @@ def test_login_failed_response() -> None:
         "errorDetails": "invalid loginID or password",
         "errorMessage": "Invalid LoginID",
     }
-    response = GigyaLoginResponse(mock_login_response)
+    response: GigyaLoginResponse = GigyaLoginResponseSchema.load(mock_login_response)
     with pytest.raises(GigyaResponseException) as excinfo:
         response.raise_for_error_code()
         assert excinfo.value.error_code == 403042
@@ -38,9 +41,11 @@ def test_get_account_info_response() -> None:
         "errorCode": 0,
         "data": {"personId": "person-id-1"},
     }
-    response = GigyaGetAccountInfoResponse(mock_get_account_info_response)
+    response: GigyaGetAccountInfoResponse = GigyaGetAccountInfoResponseSchema.load(
+        mock_get_account_info_response
+    )
     response.raise_for_error_code()
-    assert response.person_id == "person-id-1"
+    assert response.data.person_id == "person-id-1"
 
 
 def test_get_jwt_response() -> None:
@@ -49,6 +54,8 @@ def test_get_jwt_response() -> None:
         "errorCode": 0,
         "id_token": "sample-jwt-token",
     }
-    response = GigyaGetJWTResponse(mock_get_jwt_response)
+    response: GigyaGetJWTResponse = GigyaGetJWTResponseSchema.load(
+        mock_get_jwt_response
+    )
     response.raise_for_error_code()
     assert response.id_token == "sample-jwt-token"
