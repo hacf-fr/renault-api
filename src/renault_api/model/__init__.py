@@ -1,6 +1,4 @@
 """Models for Renault API."""
-
-
 import marshmallow
 
 
