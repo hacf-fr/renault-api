@@ -1,6 +1,4 @@
 """Exceptions for Renault API."""
-
-
 from typing import Optional
 
 
