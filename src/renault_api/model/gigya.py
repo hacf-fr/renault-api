@@ -1,9 +1,9 @@
 """Gigya models."""
+from dataclasses import dataclass
 from dataclasses import field
 from typing import Optional
 
 import marshmallow_dataclass
-from marshmallow_dataclass import dataclass
 
 from . import BaseSchema
 from renault_api.exceptions import GigyaResponseException
