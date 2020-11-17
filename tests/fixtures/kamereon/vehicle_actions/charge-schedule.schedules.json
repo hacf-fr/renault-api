@@ -1,1 +1,7 @@
-{"data":{"type":"ChargeSchedule","id":"guid","attributes":{"schedules":[]}}}
+{
+  "data": {
+    "type": "ChargeSchedule",
+    "id": "guid",
+    "attributes": { "schedules": [] }
+  }
+}

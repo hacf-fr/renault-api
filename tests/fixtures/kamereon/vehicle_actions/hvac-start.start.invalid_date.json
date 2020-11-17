@@ -1,1 +1,16 @@
-{"type":"FUNCTIONAL","messages":[{"code":"err.func.400","message":"{\"errors\":[{\"status\":\"400\",\"code\":\"Future\",\"detail\":\"must be a future date\",\"source\":{\"pointer\":\"/data/attributes/startDateTime\"}}]}"}],"errors":[{"errorCode":"err.func.400","errorMessage":"{\"errors\":[{\"status\":\"400\",\"code\":\"Future\",\"detail\":\"must be a future date\",\"source\":{\"pointer\":\"/data/attributes/startDateTime\"}}]}"}],"error_reference":"FUNCTIONAL"}
+{
+  "type": "FUNCTIONAL",
+  "messages": [
+    {
+      "code": "err.func.400",
+      "message": "{\"errors\":[{\"status\":\"400\",\"code\":\"Future\",\"detail\":\"must be a future date\",\"source\":{\"pointer\":\"/data/attributes/startDateTime\"}}]}"
+    }
+  ],
+  "errors": [
+    {
+      "errorCode": "err.func.400",
+      "errorMessage": "{\"errors\":[{\"status\":\"400\",\"code\":\"Future\",\"detail\":\"must be a future date\",\"source\":{\"pointer\":\"/data/attributes/startDateTime\"}}]}"
+    }
+  ],
+  "error_reference": "FUNCTIONAL"
+}

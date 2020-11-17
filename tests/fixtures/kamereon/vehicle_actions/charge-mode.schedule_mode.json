@@ -1,1 +1,7 @@
-{"data":{"type":"ChargeMode","id":"guid","attributes":{"action":"schedule_mode"}}}
+{
+  "data": {
+    "type": "ChargeMode",
+    "id": "guid",
+    "attributes": { "action": "schedule_mode" }
+  }
+}
