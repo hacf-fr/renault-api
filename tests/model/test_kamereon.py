@@ -1,4 +1,5 @@
 """Tests for RenaultClient."""
+import os
 from typing import Any
 from typing import Type
 
@@ -35,24 +36,24 @@ def test_person_response() -> None:
 
 def test_vehicles_response() -> None:
     """Test login response."""
-    response: KamereonVehiclesResponse = get_response_content(
-        "vehicles.json", KamereonVehiclesResponseSchema
-    )
-    assert response.vehicleLinks[0].vin == "VF1AAAAA555777999"
+    directory = "tests/fixtures/kamereon/vehicles"
+    for file in os.listdir(directory):
+        filename = os.fsdecode(file)
+        response: KamereonVehiclesResponse = get_response_content(
+            f"vehicles/{filename}", KamereonVehiclesResponseSchema
+        )
+        assert response.accountId == "account-id-1"
+        for vehicle_link in response.vehicleLinks:
+            assert vehicle_link.vin == "VF1AAAAA555777999"
 
 
 def test_vehicle_data_response() -> None:
     """Test login response."""
-    for filename in [
-        "battery-status.1",
-        "battery-status.2",
-        "charge-history",
-        "charges",
-        "cockpit",
-        "hvac-status",
-    ]:
+    directory = "tests/fixtures/kamereon/vehicle_data"
+    for file in os.listdir(directory):
+        filename = os.fsdecode(file)
         response: KamereonVehicleDataResponse = get_response_content(
-            f"vehicle/{filename}.json", KamereonVehicleDataResponseSchema
+            f"vehicle_data/{filename}", KamereonVehicleDataResponseSchema
         )
         assert response.data.id == "VF1AAAAA555777999"
 
@@ -60,7 +61,7 @@ def test_vehicle_data_response() -> None:
 def test_vehicle_data_response_attributes() -> None:
     """Test login response."""
     response: KamereonVehicleDataResponse = get_response_content(
-        f"vehicle/battery-status.1.json", KamereonVehicleDataResponseSchema
+        "vehicle_data/battery-status.1.json", KamereonVehicleDataResponseSchema
     )
     assert response.data.attributes == {
         "timestamp": "2020-11-17T09:06:48+01:00",
@@ -71,3 +72,22 @@ def test_vehicle_data_response_attributes() -> None:
         "plugStatus": 0,
         "chargingStatus": -1.0,
     }
+
+
+def test_vehicle_action_response() -> None:
+    """Test login response."""
+    directory = "tests/fixtures/kamereon/vehicle_action"
+    for file in os.listdir(directory):
+        filename = os.fsdecode(file)
+        response: KamereonVehicleDataResponse = get_response_content(
+            f"vehicle_action/{filename}", KamereonVehicleDataResponseSchema
+        )
+        assert response.data.id == "guid"
+
+
+def test_vehicle_action_response_attributes() -> None:
+    """Test login response."""
+    response: KamereonVehicleDataResponse = get_response_content(
+        "vehicle_action/hvac-start.start.json", KamereonVehicleDataResponseSchema
+    )
+    assert response.data.attributes == {"action": "start", "targetTemperature": 21.0}

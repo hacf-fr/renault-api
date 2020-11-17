@@ -11,6 +11,21 @@ from . import BaseSchema
 
 
 @dataclass
+class KamereonResponseError:
+    """Kamereon response."""
+
+    errorCode: Optional[str]  # noqa: N815
+    errorMessage: Optional[str]  # noqa: N815
+
+
+@dataclass
+class KamereonResponse:
+    """Kamereon response."""
+
+    errors: Optional[List[KamereonResponseError]]
+
+
+@dataclass
 class KamereonPersonAccount:
     """Kamereon account data."""
 
@@ -20,7 +35,7 @@ class KamereonPersonAccount:
 
 
 @dataclass
-class KamereonPersonResponse:
+class KamereonPersonResponse(KamereonResponse):
     """Kamereon response to GET on /persons/{gigya_person_id}."""
 
     accounts: List[KamereonPersonAccount]
@@ -34,9 +49,11 @@ class KamereonVehiclesLink:
 
 
 @dataclass
-class KamereonVehiclesResponse:
+class KamereonVehiclesResponse(KamereonResponse):
     """Kamereon response to GET on /accounts/{account_id}/vehicles."""
 
+    accountId: Optional[str]  # noqa: N815
+    country: Optional[str]
     vehicleLinks: List[KamereonVehiclesLink]  # noqa: N815
 
 
@@ -50,8 +67,8 @@ class KamereonVehicleData:
 
 
 @dataclass
-class KamereonVehicleDataResponse:
-    """Kamereon response to GET on .../cars/{vin}/{type}."""
+class KamereonVehicleDataResponse(KamereonResponse):
+    """Kamereon response to GET/POST on .../cars/{vin}/{type}."""
 
     data: KamereonVehicleData
 
