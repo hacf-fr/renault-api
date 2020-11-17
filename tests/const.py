@@ -1,5 +1,0 @@
-"""Constants for the test suite fixtures."""
-TEST_ACCOUNT_ID = "account-id-1"
-TEST_COUNTRY = "FR"
-TEST_PERSON_ID = "person-id-1"
-TEST_VIN = "VF1AAAAA555777999"
