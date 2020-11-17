@@ -70,7 +70,7 @@ class KamereonVehicleData:
 class KamereonVehicleDataResponse(KamereonResponse):
     """Kamereon response to GET/POST on .../cars/{vin}/{type}."""
 
-    data: KamereonVehicleData
+    data: Optional[KamereonVehicleData]
 
 
 KamereonPersonResponseSchema = marshmallow_dataclass.class_schema(
