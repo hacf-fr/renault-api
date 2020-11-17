@@ -1,9 +1,9 @@
 """Tests for RenaultClient."""
 from typing import Any
 from typing import Type
-from marshmallow.schema import Schema
 
 import pytest
+from marshmallow.schema import Schema
 
 from renault_api.exceptions import GigyaResponseException
 from renault_api.model.gigya import GigyaGetAccountInfoResponse

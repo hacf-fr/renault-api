@@ -1,10 +1,10 @@
 {
-  "callId": "callId", 
-  "errorCode": 0, 
-  "apiVersion": 2, 
-  "statusCode": 200, 
-  "statusReason": "OK", 
-  "time": "2020-11-10T08:31:02.872Z", 
-  "ignoredFields": "", 
+  "callId": "callId",
+  "errorCode": 0,
+  "apiVersion": 2,
+  "statusCode": 200,
+  "statusReason": "OK",
+  "time": "2020-11-10T08:31:02.872Z",
+  "ignoredFields": "",
   "id_token": "sample-jwt-token"
 }
