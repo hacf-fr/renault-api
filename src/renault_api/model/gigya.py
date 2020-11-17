@@ -1,6 +1,5 @@
 """Gigya models."""
 from dataclasses import dataclass
-from dataclasses import field
 from typing import Optional
 
 import marshmallow_dataclass
@@ -13,36 +12,34 @@ from renault_api.exceptions import GigyaResponseException
 class GigyaResponse:
     """Gigya response."""
 
-    error_code: int = field(metadata=dict(data_key="errorCode"))
-    error_details: Optional[str] = field(metadata=dict(data_key="errorDetails"))
+    errorCode: int  # noqa: N815
+    errorDetails: Optional[str]  # noqa: N815
 
     def raise_for_error_code(self) -> None:
         """Checks the response information."""
-        if self.error_code > 0:
-            raise GigyaResponseException(self.error_code, self.error_details)
+        if self.errorCode > 0:
+            raise GigyaResponseException(self.errorCode, self.errorDetails)
 
 
 @dataclass
 class GigyaLoginSessionInfo:
     """Gigya Login sessionInfo data."""
 
-    cookie_value: Optional[str] = field(metadata=dict(data_key="cookieValue"))
+    cookieValue: Optional[str]  # noqa: N815
 
 
 @dataclass
 class GigyaLoginResponse(GigyaResponse):
     """Gigya response to POST on /accounts.login."""
 
-    session_info: Optional[GigyaLoginSessionInfo] = field(
-        metadata=dict(data_key="sessionInfo")
-    )
+    sessionInfo: Optional[GigyaLoginSessionInfo]  # noqa: N815
 
 
 @dataclass
 class GigyaGetAccountInfoData:
     """Gigya Login sessionInfo data."""
 
-    person_id: Optional[str] = field(metadata=dict(data_key="personId"))
+    personId: Optional[str]  # noqa: N815
 
 
 @dataclass
