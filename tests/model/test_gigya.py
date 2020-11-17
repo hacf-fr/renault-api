@@ -1,4 +1,9 @@
 """Tests for RenaultClient."""
+import ast
+from typing import Any
+from typing import Type
+from marshmallow.schema import Schema
+
 import pytest
 
 from renault_api.exceptions import GigyaResponseException
@@ -10,25 +15,26 @@ from renault_api.model.gigya import GigyaLoginResponse
 from renault_api.model.gigya import GigyaLoginResponseSchema
 
 
+def get_response_content(path: str, schema: Type[Schema]) -> Any:
+    """Read fixture text file as string."""
+    with open(f"tests/fixtures/gigya/{path}", "r") as file:
+        dict_value = ast.literal_eval(file.read())
+    return schema.load(dict_value)
+
+
 def test_login_response() -> None:
     """Test login response."""
-    mock_login_response = {
-        "errorCode": 0,
-        "sessionInfo": {"cookieValue": "sample-cookie-value"},
-    }
-    response: GigyaLoginResponse = GigyaLoginResponseSchema.load(mock_login_response)
-    response.raise_for_error_code()
-    assert response.session_info.cookie_value == "sample-cookie-value"
+    response: GigyaLoginResponse = get_response_content(
+        "login.txt", GigyaLoginResponseSchema
+    )
+    assert response.sessionInfo.cookieValue == "sample-cookie-value"
 
 
 def test_login_failed_response() -> None:
     """Test login response."""
-    mock_login_response = {
-        "errorCode": 403042,
-        "errorDetails": "invalid loginID or password",
-        "errorMessage": "Invalid LoginID",
-    }
-    response: GigyaLoginResponse = GigyaLoginResponseSchema.load(mock_login_response)
+    response: GigyaLoginResponse = get_response_content(
+        "login_failed.txt", GigyaLoginResponseSchema
+    )
     with pytest.raises(GigyaResponseException) as excinfo:
         response.raise_for_error_code()
         assert excinfo.value.error_code == 403042
@@ -37,25 +43,35 @@ def test_login_failed_response() -> None:
 
 def test_get_account_info_response() -> None:
     """Test login response."""
-    mock_get_account_info_response = {
-        "errorCode": 0,
-        "data": {"personId": "person-id-1"},
-    }
-    response: GigyaGetAccountInfoResponse = GigyaGetAccountInfoResponseSchema.load(
-        mock_get_account_info_response
+    response: GigyaGetAccountInfoResponse = get_response_content(
+        "account_info.txt", GigyaGetAccountInfoResponseSchema
     )
     response.raise_for_error_code()
-    assert response.data.person_id == "person-id-1"
+    assert response.data.personId == "person-id-1"
+
+
+def test_get_account_info_corrupted_response() -> None:
+    """Test login response."""
+    response: GigyaGetAccountInfoResponse = get_response_content(
+        "account_info_corrupted.txt", GigyaGetAccountInfoResponseSchema
+    )
+    response.raise_for_error_code()
+    assert response.data is None
 
 
 def test_get_jwt_response() -> None:
     """Test login response."""
-    mock_get_jwt_response = {
-        "errorCode": 0,
-        "id_token": "sample-jwt-token",
-    }
-    response: GigyaGetJWTResponse = GigyaGetJWTResponseSchema.load(
-        mock_get_jwt_response
+    response: GigyaGetJWTResponse = get_response_content(
+        "get_jwt.txt", GigyaGetJWTResponseSchema
     )
     response.raise_for_error_code()
     assert response.id_token == "sample-jwt-token"
+
+
+def test_get_jwt_corrupted_response() -> None:
+    """Test login response."""
+    response: GigyaGetJWTResponse = get_response_content(
+        "get_jwt_corrupted.txt", GigyaGetJWTResponseSchema
+    )
+    response.raise_for_error_code()
+    assert response.id_token is None
