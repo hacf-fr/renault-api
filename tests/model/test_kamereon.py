@@ -91,3 +91,14 @@ def test_vehicle_action_response_attributes() -> None:
         "vehicle_action/hvac-start.start.json", KamereonVehicleDataResponseSchema
     )
     assert response.data.attributes == {"action": "start", "targetTemperature": 21.0}
+
+
+def test_vehicle_error_response() -> None:
+    """Test login response."""
+    directory = "tests/fixtures/kamereon/vehicle_error"
+    for file in os.listdir(directory):
+        filename = os.fsdecode(file)
+        response: KamereonVehicleDataResponse = get_response_content(
+            f"vehicle_error/{filename}", KamereonVehicleDataResponseSchema
+        )
+        assert response.errors is not None
