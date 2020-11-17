@@ -1,1 +1,1 @@
-{"data":{"type":"ChargeSchedule","id":"2482bc74-2b87-492b-aff6-057cc5594bb9","attributes":{"schedules":[]}}}
+{"data":{"type":"ChargeSchedule","id":"guid","attributes":{"schedules":[]}}}
