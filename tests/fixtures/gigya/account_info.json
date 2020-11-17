@@ -1,0 +1,40 @@
+{
+  "callId": "callId",
+  "errorCode": 0,
+  "apiVersion": 2,
+  "statusCode": 200,
+  "statusReason": "OK",
+  "time": "2020-11-10T08:31:02.748Z",
+  "registeredTimestamp": 1556570377000,
+  "UID": "UID",
+  "UIDSignature": "UIDSignature=",
+  "signatureTimestamp": "1604997062",
+  "created": "2019-04-29T20:39:36.880Z",
+  "createdTimestamp": 1556570376000,
+  "data": {
+    "personId": "person-id-1",
+    "gigyaDataCenter": "gigyaDataCenter"
+  },
+  "preferences": {},
+  "emails": {
+    "verified": ["email@email.com"],
+    "unverified": []
+  },
+  "isActive": true,
+  "isRegistered": true,
+  "isVerified": true,
+  "lastLogin": "2020-11-10T08:31:02.595Z",
+  "lastLoginTimestamp": 1604997062000,
+  "lastUpdated": "2019-04-29T20:40:39.441Z",
+  "lastUpdatedTimestamp": 1556570439441,
+  "loginProvider": "site",
+  "oldestDataUpdated": "2019-04-29T20:39:36.880Z",
+  "oldestDataUpdatedTimestamp": 1556570376880,
+  "profile": {
+    "email": "email@email.com"
+  },
+  "registered": "2019-04-29T20:39:37.022Z",
+  "socialProviders": "site",
+  "verified": "2019-04-29T20:40:39.441Z",
+  "verifiedTimestamp": 1556570439441
+}
