@@ -1,1 +1,16 @@
-{"type":"FUNCTIONAL","messages":[{"code":"err.func.wired.overloaded","message":"You have reached your quota limit"}],"errors":[{"errorCode":"err.func.wired.overloaded","errorMessage":"You have reached your quota limit","errorType":"functional"}]}
+{
+  "type": "FUNCTIONAL",
+  "messages": [
+    {
+      "code": "err.func.wired.overloaded",
+      "message": "You have reached your quota limit"
+    }
+  ],
+  "errors": [
+    {
+      "errorCode": "err.func.wired.overloaded",
+      "errorMessage": "You have reached your quota limit",
+      "errorType": "functional"
+    }
+  ]
+}
