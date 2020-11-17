@@ -1,0 +1,1 @@
+{"data":{"type":"HvacStart","id":"8c354999-fc05-4a5f-a752-94bac7cf2bb7","attributes":{"action":"cancel"}}}
