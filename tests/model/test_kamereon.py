@@ -122,7 +122,7 @@ def test_vehicle_error_response() -> None:
 
 
 def test_vehicle_error_quota_limit() -> None:
-    """Test login response."""
+    """Test vehicle quota_limit response."""
     response: KamereonVehicleDataResponse = get_response_content(
         "vehicle_error/quota_limit.json", KamereonVehicleDataResponseSchema
     )
@@ -133,7 +133,7 @@ def test_vehicle_error_quota_limit() -> None:
 
 
 def test_vehicle_error_invalid_date() -> None:
-    """Test login response."""
+    """Test vehicle invalid_date response."""
     response: KamereonVehicleDataResponse = get_response_content(
         "vehicle_error/invalid_date.json", KamereonVehicleDataResponseSchema
     )
@@ -147,7 +147,7 @@ def test_vehicle_error_invalid_date() -> None:
 
 
 def test_vehicle_error_invalid_upstream() -> None:
-    """Test login response."""
+    """Test vehicle invalid_upstream response."""
     response: KamereonVehicleDataResponse = get_response_content(
         "vehicle_error/invalid_upstream.json", KamereonVehicleDataResponseSchema
     )
@@ -162,7 +162,7 @@ def test_vehicle_error_invalid_upstream() -> None:
 
 
 def test_vehicle_error_not_supported() -> None:
-    """Test login response."""
+    """Test vehicle not_supported response."""
     response: KamereonVehicleDataResponse = get_response_content(
         "vehicle_error/not_supported.json", KamereonVehicleDataResponseSchema
     )
