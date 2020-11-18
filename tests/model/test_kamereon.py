@@ -51,6 +51,9 @@ def test_vehicles_response() -> None:
         for vehicle_link in response.vehicleLinks:
             # Ensure the VIN is hidden
             assert vehicle_link.vin.startswith("VF1AAAAA555777")
+            vehicle_details = vehicle_link.raw_data["vehicleDetails"]
+            assert vehicle_details["vin"].startswith("VF1AAAAA555777")
+            assert vehicle_details["registrationNumber"].startswith("REG-NUMBER")
 
 
 def test_vehicle_data_response() -> None:

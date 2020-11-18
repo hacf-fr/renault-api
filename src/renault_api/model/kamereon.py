@@ -8,12 +8,13 @@ from typing import Optional
 
 import marshmallow_dataclass
 
+from . import BaseModel
 from . import BaseSchema
 from renault_api.exceptions import KamereonResponseException
 
 
 @dataclass
-class KamereonResponseError:
+class KamereonResponseError(BaseModel):
     """Kamereon response error."""
 
     errorCode: Optional[str]  # noqa: N815
@@ -48,7 +49,7 @@ class KamereonResponseError:
 
 
 @dataclass
-class KamereonResponse:
+class KamereonResponse(BaseModel):
     """Kamereon response."""
 
     errors: Optional[List[KamereonResponseError]]
@@ -61,7 +62,7 @@ class KamereonResponse:
 
 
 @dataclass
-class KamereonPersonAccount:
+class KamereonPersonAccount(BaseModel):
     """Kamereon account data."""
 
     accountId: Optional[str]  # noqa: N815
@@ -77,7 +78,7 @@ class KamereonPersonResponse(KamereonResponse):
 
 
 @dataclass
-class KamereonVehiclesLink:
+class KamereonVehiclesLink(BaseModel):
     """Kamereon account data."""
 
     vin: Optional[str]
@@ -93,7 +94,7 @@ class KamereonVehiclesResponse(KamereonResponse):
 
 
 @dataclass
-class KamereonVehicleData:
+class KamereonVehicleData(BaseModel):
     """Kamereon account data."""
 
     type: Optional[str]
