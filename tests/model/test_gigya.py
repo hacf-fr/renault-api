@@ -36,8 +36,8 @@ def test_login_failed_response() -> None:
     )
     with pytest.raises(GigyaResponseException) as excinfo:
         response.raise_for_error_code()
-        assert excinfo.value.error_code == 403042
-        assert excinfo.value.error_details == "invalid loginID or password"
+    assert excinfo.value.error_code == 403042
+    assert excinfo.value.error_details == "invalid loginID or password"
 
 
 def test_get_account_info_response() -> None:
