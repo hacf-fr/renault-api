@@ -23,7 +23,7 @@ def get_response_content(path: str, schema: Type[Schema]) -> Any:
 
 
 def test_person_response() -> None:
-    """Test login response."""
+    """Test person details response."""
     response: KamereonPersonResponse = get_response_content(
         "person.json", KamereonPersonResponseSchema
     )
@@ -38,7 +38,7 @@ def test_person_response() -> None:
 
 
 def test_vehicles_response() -> None:
-    """Test login response."""
+    """Test vehicles list response."""
     directory = "tests/fixtures/kamereon/vehicles"
     for file in os.listdir(directory):
         filename = os.fsdecode(file)
@@ -46,13 +46,15 @@ def test_vehicles_response() -> None:
             f"vehicles/{filename}", KamereonVehiclesResponseSchema
         )
         response.raise_for_error_code()
-        assert response.accountId == "account-id-1"
+        # Ensure the account id is hidden
+        assert response.accountId.startswith("account-id")
         for vehicle_link in response.vehicleLinks:
-            assert vehicle_link.vin == "VF1AAAAA555777999"
+            # Ensure the VIN is hidden
+            assert vehicle_link.vin.startswith("VF1AAAAA555777")
 
 
 def test_vehicle_data_response() -> None:
-    """Test login response."""
+    """Test vehicle data response."""
     directory = "tests/fixtures/kamereon/vehicle_data"
     for file in os.listdir(directory):
         filename = os.fsdecode(file)
@@ -60,11 +62,12 @@ def test_vehicle_data_response() -> None:
             f"vehicle_data/{filename}", KamereonVehicleDataResponseSchema
         )
         response.raise_for_error_code()
-        assert response.data.id == "VF1AAAAA555777999"
+        # Ensure the VIN is hidden
+        assert response.data.id.startswith("VF1AAAAA555777")
 
 
 def test_vehicle_data_response_attributes() -> None:
-    """Test login response."""
+    """Test vehicle data response attributes."""
     response: KamereonVehicleDataResponse = get_response_content(
         "vehicle_data/battery-status.1.json", KamereonVehicleDataResponseSchema
     )
@@ -81,7 +84,7 @@ def test_vehicle_data_response_attributes() -> None:
 
 
 def test_vehicle_action_response() -> None:
-    """Test login response."""
+    """Test vehicle action response."""
     directory = "tests/fixtures/kamereon/vehicle_action"
     for file in os.listdir(directory):
         filename = os.fsdecode(file)
@@ -89,11 +92,12 @@ def test_vehicle_action_response() -> None:
             f"vehicle_action/{filename}", KamereonVehicleDataResponseSchema
         )
         response.raise_for_error_code()
+        # Ensure the guid is hidden
         assert response.data.id == "guid"
 
 
 def test_vehicle_action_response_attributes() -> None:
-    """Test login response."""
+    """Test vehicle action response attributes."""
     response: KamereonVehicleDataResponse = get_response_content(
         "vehicle_action/hvac-start.start.json", KamereonVehicleDataResponseSchema
     )
@@ -102,7 +106,7 @@ def test_vehicle_action_response_attributes() -> None:
 
 
 def test_vehicle_error_response() -> None:
-    """Test login response."""
+    """Test vehicle error response."""
     directory = "tests/fixtures/kamereon/vehicle_error"
     for file in os.listdir(directory):
         filename = os.fsdecode(file)
@@ -111,7 +115,7 @@ def test_vehicle_error_response() -> None:
         )
         with pytest.raises(KamereonResponseException):
             response.raise_for_error_code()
-            assert response.errors is not None
+        assert response.errors is not None
 
 
 def test_vehicle_error_quota_limit() -> None:
@@ -121,5 +125,48 @@ def test_vehicle_error_quota_limit() -> None:
     )
     with pytest.raises(KamereonResponseException) as excinfo:
         response.raise_for_error_code()
-        assert excinfo.value.error_code == "err.func.wired.overloaded"
-        assert excinfo.value.error_details == "You have reached your quota limit"
+    assert excinfo.value.error_code == "err.func.wired.overloaded"
+    assert excinfo.value.error_details == "You have reached your quota limit"
+
+
+def test_vehicle_error_invalid_date() -> None:
+    """Test login response."""
+    response: KamereonVehicleDataResponse = get_response_content(
+        "vehicle_error/invalid_date.json", KamereonVehicleDataResponseSchema
+    )
+    with pytest.raises(KamereonResponseException) as excinfo:
+        response.raise_for_error_code()
+    assert excinfo.value.error_code == "err.func.400"
+    assert (
+        excinfo.value.error_details
+        == "/data/attributes/startDateTime must be a future date"
+    )
+
+
+def test_vehicle_error_invalid_upstream() -> None:
+    """Test login response."""
+    response: KamereonVehicleDataResponse = get_response_content(
+        "vehicle_error/invalid_upstream.json", KamereonVehicleDataResponseSchema
+    )
+    with pytest.raises(KamereonResponseException) as excinfo:
+        response.raise_for_error_code()
+    assert excinfo.value.error_code == "err.tech.500"
+    assert (
+        excinfo.value.error_details
+        == "Invalid response from the upstream server (The request sent to the GDC"
+        " is erroneous) ; 502 Bad Gateway"
+    )
+
+
+def test_vehicle_error_not_supported() -> None:
+    """Test login response."""
+    response: KamereonVehicleDataResponse = get_response_content(
+        "vehicle_error/not_supported.json", KamereonVehicleDataResponseSchema
+    )
+    with pytest.raises(KamereonResponseException) as excinfo:
+        response.raise_for_error_code()
+    assert excinfo.value.error_code == "err.tech.501"
+    assert (
+        excinfo.value.error_details
+        == "This feature is not technically supported by this gateway"
+    )

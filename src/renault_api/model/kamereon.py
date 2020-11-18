@@ -14,35 +14,38 @@ from renault_api.exceptions import KamereonResponseException
 
 @dataclass
 class KamereonResponseError:
-    """Kamereon response."""
+    """Kamereon response error."""
 
     errorCode: Optional[str]  # noqa: N815
     errorMessage: Optional[str]  # noqa: N815
 
-    def raise_for_error_code(self) -> None: 
-        """Checks the response information."""
-        if self.errorCode == "err.func.400":
-            raise KamereonResponseException(self.errorCode, self.errorMessage)
-        if self.errorCode == "err.tech.500":
-            raise KamereonResponseException(self.errorCode, self.errorMessage)
-        if self.errorCode == "err.tech.501":
-            raise KamereonResponseException(self.errorCode, self.errorMessage)
-        if self.errorCode == "err.func.wired.overloaded":
-            raise KamereonResponseException(self.errorCode, self.errorMessage)
-    
-    def get_error_details(error_message: str)-> Optional[str]:
-        if not error_message:
-            return
+    def raise_for_error_code(self) -> None:
+        """Raise exception from response error."""
+        raise KamereonResponseException(self.errorCode, self.get_error_details())
+
+    def get_error_details(self) -> Optional[str]:
+        """Extract the error details sometimes hidden inside nested JSON."""
         try:
-            error_details = json.loads(error_message)
+            error_details = json.loads(self.errorMessage or "{}")
         except json.JSONDecodeError:
-            return error_message
-        
-        for inner_error_details in error_details.get("errors", []):
-            if "detail" in inner_error_details:
-                return inner_error_details["detail"]
-            if "title" in inner_error_details:
-                return inner_error_details["title"]
+            return self.errorMessage
+
+        error_descriptions = []
+        for inner_error in error_details.get("errors", []):
+            error_description = " ".join(
+                filter(
+                    None,
+                    [
+                        inner_error.get("title"),
+                        inner_error.get("source", {}).get("pointer"),
+                        inner_error.get("detail"),
+                    ],
+                )
+            )
+            error_descriptions.append(error_description)
+
+        return ", ".join(error_descriptions) or self.errorMessage
+
 
 @dataclass
 class KamereonResponse:
@@ -51,10 +54,10 @@ class KamereonResponse:
     errors: Optional[List[KamereonResponseError]]
 
     def raise_for_error_code(self) -> None:
-        """Checks the response information."""
-        if self.errors:
-            for error in self.errors:
-                error.raise_for_error_code()
+        """Raise exception if errors found in the response."""
+        for error in self.errors or []:
+            # Until we have a sample for multiple errors, just raise on first one
+            error.raise_for_error_code()
 
 
 @dataclass
