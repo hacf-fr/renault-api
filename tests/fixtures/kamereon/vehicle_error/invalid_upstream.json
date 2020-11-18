@@ -1,0 +1,16 @@
+{
+  "type": "TECHNICAL",
+  "messages": [
+    {
+      "code": "err.tech.500",
+      "message": "{\"errors\":[{\"status\":\"Internal Server Error\",\"code\":\"500\",\"title\":\"Invalid response from the upstream server (The request sent to the GDC is erroneous) ; 502 Bad Gateway\"}]}"
+    }
+  ],
+  "errors": [
+    {
+      "errorCode": "err.tech.500",
+      "errorMessage": "{\"errors\":[{\"status\":\"Internal Server Error\",\"code\":\"500\",\"title\":\"Invalid response from the upstream server (The request sent to the GDC is erroneous) ; 502 Bad Gateway\"}]}"
+    }
+  ],
+  "error_reference": "TECHNICAL"
+}

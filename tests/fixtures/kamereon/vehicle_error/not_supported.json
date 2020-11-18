@@ -1,0 +1,16 @@
+{
+  "type": "TECHNICAL",
+  "messages": [
+    {
+      "code": "err.tech.501",
+      "message": "{\"errors\":[{\"status\":\"501\",\"code\":\"error.internal\",\"detail\":\"This feature is not technically supported by this gateway\"}]}"
+    }
+  ],
+  "errors": [
+    {
+      "errorCode": "err.tech.501",
+      "errorMessage": "{\"errors\":[{\"status\":\"501\",\"code\":\"error.internal\",\"detail\":\"This feature is not technically supported by this gateway\"}]}"
+    }
+  ],
+  "error_reference": "TECHNICAL"
+}

@@ -1,1 +1,0 @@
-{"data":{"type":"Car","id":"VF1AAAAA555777999","attributes":{"charges":[{"chargeStartDate":"2020-11-11T00:31:03Z","chargeEndDate":"2020-11-11T08:30:17Z","chargeDuration":479,"chargeStartBatteryLevel":15,"chargeEndBatteryLevel":74,"chargeBatteryLevelRecovered":59,"chargePower":"slow","chargeStartInstantaneousPower":3100,"chargeEndStatus":"ok"}]}}}

@@ -1,1 +1,0 @@
-{"data":{"type":"Car","id":"VF1AAAAA555777999","attributes":{"chargeSummaries":[{"month":"202011","totalChargesNumber":1,"totalChargesDuration":479,"totalChargesErrors":0}]}}}
