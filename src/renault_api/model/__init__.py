@@ -1,6 +1,8 @@
 """Models for Renault API."""
 from dataclasses import dataclass
-from typing import Any, Dict
+from typing import Any
+from typing import Dict
+
 import marshmallow
 
 
@@ -20,5 +22,6 @@ class BaseSchema(marshmallow.Schema):
         unknown = marshmallow.EXCLUDE
 
     @marshmallow.pre_load
-    def get_raw_data(self, data, **kwargs):
+    def get_raw_data(self, data, **kwargs):  # type: ignore
+        """Ensure raw_data is added to the data set."""
         return {"raw_data": data, **data}
