@@ -110,7 +110,9 @@ def test_vehicle_error_response() -> None:
             f"vehicle_error/{filename}", KamereonVehicleDataResponseSchema
         )
         with pytest.raises(KamereonResponseException):
+            response.raise_for_error_code()
             assert response.errors is not None
+
 
 def test_vehicle_error_quota_limit() -> None:
     """Test login response."""
