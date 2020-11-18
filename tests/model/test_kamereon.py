@@ -75,7 +75,7 @@ def test_vehicle_data_response_attributes() -> None:
         "vehicle_data/battery-status.1.json", KamereonVehicleDataResponseSchema
     )
     response.raise_for_error_code()
-    assert response.data.attributes == {
+    assert response.data.raw_data["attributes"] == {
         "timestamp": "2020-11-17T09:06:48+01:00",
         "batteryLevel": 50,
         "batteryAutonomy": 128,
@@ -105,7 +105,10 @@ def test_vehicle_action_response_attributes() -> None:
         "vehicle_action/hvac-start.start.json", KamereonVehicleDataResponseSchema
     )
     response.raise_for_error_code()
-    assert response.data.attributes == {"action": "start", "targetTemperature": 21.0}
+    assert response.data.raw_data["attributes"] == {
+        "action": "start",
+        "targetTemperature": 21.0,
+    }
 
 
 def test_vehicle_error_response() -> None:

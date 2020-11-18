@@ -1,8 +1,6 @@
 """Kamereon models."""
 import json
 from dataclasses import dataclass
-from typing import Any
-from typing import Dict
 from typing import List
 from typing import Optional
 
@@ -99,7 +97,6 @@ class KamereonVehicleData(BaseModel):
 
     type: Optional[str]
     id: Optional[str]
-    attributes: Optional[Dict[str, Any]]
 
 
 @dataclass
