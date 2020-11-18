@@ -5,6 +5,7 @@ from typing import Optional
 import marshmallow_dataclass
 
 from . import BaseSchema
+from renault_api.exceptions import GigyaException
 from renault_api.exceptions import GigyaResponseException
 
 
@@ -34,6 +35,14 @@ class GigyaLoginResponse(GigyaResponse):
 
     sessionInfo: Optional[GigyaLoginSessionInfo]  # noqa: N815
 
+    def get_session_cookie(self) -> str:
+        """Return cookie value from session information."""
+        if not self.sessionInfo:  # pragma: no cover
+            raise GigyaException("`sessionInfo` is None in Login response.")
+        if not self.sessionInfo.cookieValue:  # pragma: no cover
+            raise GigyaException("`sessionInfo.cookieValue` is None in Login response.")
+        return self.sessionInfo.cookieValue
+
 
 @dataclass
 class GigyaGetAccountInfoData:
@@ -47,6 +56,14 @@ class GigyaGetAccountInfoResponse(GigyaResponse):
     """Gigya response to POST on /accounts.getAccountInfo."""
 
     data: Optional[GigyaGetAccountInfoData]
+
+    def get_person_id(self) -> str:
+        """Return person id."""
+        if not self.data:  # pragma: no cover
+            raise GigyaException("`data` is None in Login response.")
+        if not self.data.personId:  # pragma: no cover
+            raise GigyaException("`data.personId` is None in Login response.")
+        return self.data.personId
 
 
 @dataclass
