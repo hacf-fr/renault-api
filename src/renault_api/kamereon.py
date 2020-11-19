@@ -23,7 +23,7 @@ CREDENTIAL_GIGYA_PERSON_ID = "gigya_person_id"
 _LOGGER = logging.getLogger(__name__)
 
 
-class Kamereon(object):
+class Kamereon:
     """Kamereon client for interaction with Renault servers."""
 
     def __init__(
