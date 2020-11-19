@@ -20,7 +20,10 @@ Changelog = "https://github.com/hacf-fr/renault-api/releases"
 [tool.poetry.dependencies]
 python = "^3.7.1"
 click = "^7.0"
-aiohttp = "3.7.1"
+# Warning: as of 2020-11-19, aiohttp is pinned to 3.7.1 on HA-core
+aiohttp = "^3.7.1"
+# Warning: as of 2020-11-19, pyjwt is pinned to 1.7.1 on HA-core
+pyjwt = "^1.7.1"
 marshmallow-dataclass = "^8.2.0"
 
 [tool.poetry.dev-dependencies]
