@@ -150,14 +150,13 @@ class Kamereon:
         vin: str,
         endpoint: str,
         params: Optional[Dict[str, str]] = None,
-        schema: Optional[Schema] = None,
     ) -> model.KamereonVehicleDataResponse:
         """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
         path_to_car = self._get_path_to_car(account_id, endpoint_version, vin)
         return cast(
             model.KamereonVehicleDataResponse,
             await self._request(
-                schema=schema or model.KamereonVehicleDataResponseSchema,
+                schema=model.KamereonVehicleDataResponseSchema,
                 method="GET",
                 path=f"{path_to_car}/{endpoint}",
                 params=params,
@@ -243,14 +242,13 @@ class Kamereon:
         vin: str,
         endpoint: str,
         data: Dict[str, Any],
-        schema: Optional[Schema] = None,
     ) -> model.KamereonVehicleDataResponse:
         """POST to /v{endpoint_version}/cars/{vin}/actions/{endpoint}."""
         path_to_car = self._get_path_to_car(account_id, endpoint_version, vin)
         return cast(
             model.KamereonVehicleDataResponse,
             await self._request(
-                schema=schema or model.KamereonVehicleDataResponseSchema,
+                schema=model.KamereonVehicleDataResponseSchema,
                 method="POST",
                 path=f"{path_to_car}/actions/{endpoint}",
                 data=data,
