@@ -1,0 +1,13 @@
+{
+  "type": "FUNCTIONAL",
+  "messages": [
+    { "code": "err.func.wired.notFound", "message": "Resource not found" }
+  ],
+  "error_reference": "FUNCTIONAL",
+  "errors": [
+    {
+      "errorCode": "err.func.wired.notFound",
+      "errorMessage": "Resource not found"
+    }
+  ]
+}
