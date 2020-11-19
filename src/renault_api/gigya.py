@@ -14,7 +14,7 @@ from renault_api.model import gigya as model
 _LOGGER = logging.getLogger(__name__)
 
 
-class Gigya(object):
+class Gigya:
     """Gigya client for authentication."""
 
     def __init__(
