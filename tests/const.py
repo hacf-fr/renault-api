@@ -1,4 +1,4 @@
-"""Constants for the test suite fixtures."""
+"""Constants for the test suite."""
 from renault_api.const import AVAILABLE_LOCALES
 from renault_api.const import CONF_GIGYA_URL
 

@@ -1,4 +1,4 @@
-"""Tests for RenaultClient."""
+"""Tests for Gigya models."""
 from typing import Any
 from typing import Type
 

@@ -1,4 +1,4 @@
-"""Tests for RenaultClient."""
+"""Tests for Credential models."""
 import time
 from unittest import mock
 
