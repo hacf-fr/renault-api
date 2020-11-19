@@ -1,10 +1,10 @@
-"""Tests for RenaultClient."""
-import os
+"""Tests for Kamereon models."""
 from typing import Any
 from typing import Type
 
 import pytest
 from marshmallow.schema import Schema
+from tests import get_json_files
 
 from renault_api.exceptions import KamereonResponseException
 from renault_api.model.kamereon import KamereonPersonResponse
@@ -15,9 +15,12 @@ from renault_api.model.kamereon import KamereonVehiclesResponse
 from renault_api.model.kamereon import KamereonVehiclesResponseSchema
 
 
+FIXTURE_PATH = "tests/fixtures/kamereon/"
+
+
 def get_response_content(path: str, schema: Type[Schema]) -> Any:
     """Read fixture text file as string."""
-    with open(f"tests/fixtures/kamereon/{path}", "r") as file:
+    with open(path, "r") as file:
         content = file.read()
     return schema.loads(content)
 
@@ -25,7 +28,7 @@ def get_response_content(path: str, schema: Type[Schema]) -> Any:
 def test_person_response() -> None:
     """Test person details response."""
     response: KamereonPersonResponse = get_response_content(
-        "person.json", KamereonPersonResponseSchema
+        f"{FIXTURE_PATH}/person.json", KamereonPersonResponseSchema
     )
     response.raise_for_error_code()
     assert response.accounts[0].accountId == "account-id-1"
@@ -37,42 +40,39 @@ def test_person_response() -> None:
     assert response.accounts[1].accountStatus == "ACTIVE"
 
 
-def test_vehicles_response() -> None:
+@pytest.mark.parametrize("filename", get_json_files(f"{FIXTURE_PATH}/vehicles"))
+def test_vehicles_response(filename: str) -> None:
     """Test vehicles list response."""
-    directory = "tests/fixtures/kamereon/vehicles"
-    for file in os.listdir(directory):
-        filename = os.fsdecode(file)
-        response: KamereonVehiclesResponse = get_response_content(
-            f"vehicles/{filename}", KamereonVehiclesResponseSchema
-        )
-        response.raise_for_error_code()
-        # Ensure the account id is hidden
-        assert response.accountId.startswith("account-id")
-        for vehicle_link in response.vehicleLinks:
-            # Ensure the VIN is hidden
-            assert vehicle_link.vin.startswith("VF1AAAAA555777")
-            vehicle_details = vehicle_link.raw_data["vehicleDetails"]
-            assert vehicle_details["vin"].startswith("VF1AAAAA555777")
-            assert vehicle_details["registrationNumber"].startswith("REG-NUMBER")
-
-
-def test_vehicle_data_response() -> None:
-    """Test vehicle data response."""
-    directory = "tests/fixtures/kamereon/vehicle_data"
-    for file in os.listdir(directory):
-        filename = os.fsdecode(file)
-        response: KamereonVehicleDataResponse = get_response_content(
-            f"vehicle_data/{filename}", KamereonVehicleDataResponseSchema
-        )
-        response.raise_for_error_code()
+    response: KamereonVehiclesResponse = get_response_content(
+        filename, KamereonVehiclesResponseSchema
+    )
+    response.raise_for_error_code()
+    # Ensure the account id is hidden
+    assert response.accountId.startswith("account-id")
+    for vehicle_link in response.vehicleLinks:
         # Ensure the VIN is hidden
-        assert response.data.id.startswith("VF1AAAAA555777")
+        assert vehicle_link.vin.startswith("VF1AAAAA555777")
+        vehicle_details = vehicle_link.raw_data["vehicleDetails"]
+        assert vehicle_details["vin"].startswith("VF1AAAAA555777")
+        assert vehicle_details["registrationNumber"].startswith("REG-NUMBER")
+
+
+@pytest.mark.parametrize("filename", get_json_files(f"{FIXTURE_PATH}/vehicle_data"))
+def test_vehicle_data_response(filename: str) -> None:
+    """Test vehicle data response."""
+    response: KamereonVehicleDataResponse = get_response_content(
+        filename, KamereonVehicleDataResponseSchema
+    )
+    response.raise_for_error_code()
+    # Ensure the VIN is hidden
+    assert response.data.id.startswith("VF1AAAAA555777")
 
 
 def test_vehicle_data_response_attributes() -> None:
     """Test vehicle data response attributes."""
     response: KamereonVehicleDataResponse = get_response_content(
-        "vehicle_data/battery-status.1.json", KamereonVehicleDataResponseSchema
+        f"{FIXTURE_PATH}vehicle_data/battery-status.1.json",
+        KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
     assert response.data.raw_data["attributes"] == {
@@ -86,23 +86,22 @@ def test_vehicle_data_response_attributes() -> None:
     }
 
 
-def test_vehicle_action_response() -> None:
+@pytest.mark.parametrize("filename", get_json_files(f"{FIXTURE_PATH}/vehicle_action"))
+def test_vehicle_action_response(filename: str) -> None:
     """Test vehicle action response."""
-    directory = "tests/fixtures/kamereon/vehicle_action"
-    for file in os.listdir(directory):
-        filename = os.fsdecode(file)
-        response: KamereonVehicleDataResponse = get_response_content(
-            f"vehicle_action/{filename}", KamereonVehicleDataResponseSchema
-        )
-        response.raise_for_error_code()
-        # Ensure the guid is hidden
-        assert response.data.id == "guid"
+    response: KamereonVehicleDataResponse = get_response_content(
+        filename, KamereonVehicleDataResponseSchema
+    )
+    response.raise_for_error_code()
+    # Ensure the guid is hidden
+    assert response.data.id == "guid"
 
 
 def test_vehicle_action_response_attributes() -> None:
     """Test vehicle action response attributes."""
     response: KamereonVehicleDataResponse = get_response_content(
-        "vehicle_action/hvac-start.start.json", KamereonVehicleDataResponseSchema
+        f"{FIXTURE_PATH}/vehicle_action/hvac-start.start.json",
+        KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
     assert response.data.raw_data["attributes"] == {
@@ -111,23 +110,22 @@ def test_vehicle_action_response_attributes() -> None:
     }
 
 
-def test_vehicle_error_response() -> None:
+@pytest.mark.parametrize("filename", get_json_files(f"{FIXTURE_PATH}/error"))
+def test_vehicle_error_response(filename: str) -> None:
     """Test vehicle error response."""
-    directory = "tests/fixtures/kamereon/vehicle_error"
-    for file in os.listdir(directory):
-        filename = os.fsdecode(file)
-        response: KamereonVehicleDataResponse = get_response_content(
-            f"vehicle_error/{filename}", KamereonVehicleDataResponseSchema
-        )
-        with pytest.raises(KamereonResponseException):
-            response.raise_for_error_code()
-        assert response.errors is not None
+    response: KamereonVehicleDataResponse = get_response_content(
+        filename, KamereonVehicleDataResponseSchema
+    )
+    with pytest.raises(KamereonResponseException):
+        response.raise_for_error_code()
+    assert response.errors is not None
 
 
 def test_vehicle_error_quota_limit() -> None:
     """Test vehicle quota_limit response."""
     response: KamereonVehicleDataResponse = get_response_content(
-        "vehicle_error/quota_limit.json", KamereonVehicleDataResponseSchema
+        f"{FIXTURE_PATH}/error/quota_limit.json",
+        KamereonVehicleDataResponseSchema,
     )
     with pytest.raises(KamereonResponseException) as excinfo:
         response.raise_for_error_code()
@@ -138,7 +136,8 @@ def test_vehicle_error_quota_limit() -> None:
 def test_vehicle_error_invalid_date() -> None:
     """Test vehicle invalid_date response."""
     response: KamereonVehicleDataResponse = get_response_content(
-        "vehicle_error/invalid_date.json", KamereonVehicleDataResponseSchema
+        f"{FIXTURE_PATH}/error/invalid_date.json",
+        KamereonVehicleDataResponseSchema,
     )
     with pytest.raises(KamereonResponseException) as excinfo:
         response.raise_for_error_code()
@@ -152,7 +151,8 @@ def test_vehicle_error_invalid_date() -> None:
 def test_vehicle_error_invalid_upstream() -> None:
     """Test vehicle invalid_upstream response."""
     response: KamereonVehicleDataResponse = get_response_content(
-        "vehicle_error/invalid_upstream.json", KamereonVehicleDataResponseSchema
+        f"{FIXTURE_PATH}/error/invalid_upstream.json",
+        KamereonVehicleDataResponseSchema,
     )
     with pytest.raises(KamereonResponseException) as excinfo:
         response.raise_for_error_code()
@@ -167,7 +167,8 @@ def test_vehicle_error_invalid_upstream() -> None:
 def test_vehicle_error_not_supported() -> None:
     """Test vehicle not_supported response."""
     response: KamereonVehicleDataResponse = get_response_content(
-        "vehicle_error/not_supported.json", KamereonVehicleDataResponseSchema
+        f"{FIXTURE_PATH}/error/not_supported.json",
+        KamereonVehicleDataResponseSchema,
     )
     with pytest.raises(KamereonResponseException) as excinfo:
         response.raise_for_error_code()
@@ -176,3 +177,15 @@ def test_vehicle_error_not_supported() -> None:
         excinfo.value.error_details
         == "This feature is not technically supported by this gateway"
     )
+
+
+def test_vehicle_error_resource_not_found() -> None:
+    """Test vehicle not_supported response."""
+    response: KamereonVehicleDataResponse = get_response_content(
+        f"{FIXTURE_PATH}/error/resource_not_found.json",
+        KamereonVehicleDataResponseSchema,
+    )
+    with pytest.raises(KamereonResponseException) as excinfo:
+        response.raise_for_error_code()
+    assert excinfo.value.error_code == "err.func.wired.notFound"
+    assert excinfo.value.error_details == "Resource not found"
