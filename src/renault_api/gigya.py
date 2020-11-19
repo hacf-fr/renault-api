@@ -83,7 +83,8 @@ class Gigya(object):
                 data={
                     "ApiKey": self._api_key,
                     "login_token": login_token,
-                    "fields": "data.personId",
+                    # gigyaDataCenter may be needed for future jwt validation
+                    "fields": "data.personId,data.gigyaDataCenter",
                     "expiration": 900,
                 },
                 schema=model.GigyaGetJWTResponseSchema,

@@ -1,9 +1,8 @@
 """Tests for RenaultClient."""
-import datetime
 import time
 from unittest import mock
 
-import jwt
+from tests import get_jwt
 
 from renault_api.model.credential import Credential
 from renault_api.model.credential import JWTCredential
@@ -21,12 +20,7 @@ def test_simple_credential() -> None:
 
 def test_jwt() -> None:
     """Test for Credential class."""
-    test_expiry = datetime.datetime.utcnow() + datetime.timedelta(seconds=900)
-    jwt_token = jwt.encode(
-        payload={"exp": test_expiry},
-        key=None,
-        algorithm="none",
-    ).decode("utf-8")
+    jwt_token = get_jwt()
 
     credential = JWTCredential(jwt_token)
 
