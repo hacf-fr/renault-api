@@ -1,7 +1,7 @@
 """Test cases for the Renault client API keys."""
 import pytest
 from aiohttp import ClientSession
-from aioresponses import aioresponses  # type: ignore
+from aioresponses import aioresponses
 
 from renault_api.const import AVAILABLE_LOCALES
 from renault_api.const import CONF_GIGYA_APIKEY
