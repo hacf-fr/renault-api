@@ -1,4 +1,4 @@
-"""Gigya client for authentication."""
+"""Kamereon client for interaction with Renault servers."""
 import logging
 from typing import Any
 from typing import cast
@@ -24,7 +24,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class Kamereon(object):
-    """Kamereon client for authentication."""
+    """Kamereon client for interaction with Renault servers."""
 
     def __init__(
         self,
@@ -64,6 +64,10 @@ class Kamereon(object):
             return credential.value
 
         raise KamereonException(f"Credential `{key}` not found in credential cache.")
+
+    def _get_car_adapter_path(self, account_id: str) -> str:
+        """Get the car-adapter /cars/{vin}/battery-status."""
+        return f"/accounts/{account_id}/kamereon/kca/car-adapter"
 
     async def _request(
         self,
@@ -111,7 +115,7 @@ class Kamereon(object):
             response.get_session_cookie()
         )
 
-    async def get_accounts(self) -> model.KamereonPersonResponse:
+    async def get_person(self) -> model.KamereonPersonResponse:
         """GET to /persons/{person_id}."""
         person_id = await self._get_credential(CREDENTIAL_GIGYA_PERSON_ID)
         return cast(
@@ -124,7 +128,7 @@ class Kamereon(object):
         )
 
     async def get_vehicles(self, account_id: str) -> model.KamereonVehiclesResponse:
-        """GET to /persons/{person_id}."""
+        """GET to /accounts/{account_id}/vehicles."""
         return cast(
             model.KamereonVehiclesResponse,
             await self._request(
@@ -134,10 +138,6 @@ class Kamereon(object):
             ),
         )
 
-    def _get_car_adapter_path(self, account_id: str) -> str:
-        """Get the car-adapter /cars/{vin}/battery-status."""
-        return f"/accounts/{account_id}/kamereon/kca/car-adapter"
-
     async def get_vehicle_data(
         self,
         account_id: str,
@@ -145,13 +145,14 @@ class Kamereon(object):
         vin: str,
         endpoint: str,
         params: Optional[Dict[str, str]] = None,
+        schema: Optional[Schema] = None,
     ) -> model.KamereonVehicleDataResponse:
-        """GET to /cars/{vin}/{endpoint}."""
+        """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
         car_adapter_path = self._get_car_adapter_path(account_id)
         return cast(
             model.KamereonVehicleDataResponse,
             await self._request(
-                schema=model.KamereonVehicleDataResponseSchema,
+                schema=schema or model.KamereonVehicleDataResponseSchema,
                 method="GET",
                 path=f"{car_adapter_path}/v{endpoint_version}/cars/{vin}/{endpoint}",
                 params=params,

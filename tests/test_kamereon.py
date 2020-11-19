@@ -74,7 +74,7 @@ async def kamereon(websession: ClientSession) -> Kamereon:
 
 
 @pytest.mark.asyncio
-async def test_get_account(kamereon: Kamereon) -> None:
+async def test_get_person(kamereon: Kamereon) -> None:
     """Test persons/{person_id} response."""
     with aioresponses() as mocked_responses:
         mocked_responses.get(
@@ -82,7 +82,7 @@ async def test_get_account(kamereon: Kamereon) -> None:
             status=200,
             body=get_response_content(f"{FIXTURE_PATH}/person.json"),
         )
-        response = await kamereon.get_accounts()
+        response = await kamereon.get_person()
     assert response.accounts[0].accountId == "account-id-1"
     assert response.accounts[0].accountType == "MYRENAULT"
     assert response.accounts[0].accountStatus == "ACTIVE"
