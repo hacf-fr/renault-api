@@ -65,9 +65,14 @@ class Kamereon(object):
 
         raise KamereonException(f"Credential `{key}` not found in credential cache.")
 
-    def _get_car_adapter_path(self, account_id: str) -> str:
-        """Get the car-adapter /cars/{vin}/battery-status."""
-        return f"/accounts/{account_id}/kamereon/kca/car-adapter"
+    def _get_path_to_account(self, account_id: str) -> str:
+        """Get the path to the account."""
+        return f"/accounts/{account_id}"
+
+    def _get_path_to_car(self, account_id: str, version: int, vin: str) -> str:
+        """Get the path to the car."""
+        account_path = self._get_path_to_account(account_id)
+        return f"{account_path}/kamereon/kca/car-adapter/v{version}/cars/{vin}"
 
     async def _request(
         self,
@@ -148,13 +153,13 @@ class Kamereon(object):
         schema: Optional[Schema] = None,
     ) -> model.KamereonVehicleDataResponse:
         """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
-        car_adapter_path = self._get_car_adapter_path(account_id)
+        path_to_car = self._get_path_to_car(account_id, endpoint_version, vin)
         return cast(
             model.KamereonVehicleDataResponse,
             await self._request(
                 schema=schema or model.KamereonVehicleDataResponseSchema,
                 method="GET",
-                path=f"{car_adapter_path}/v{endpoint_version}/cars/{vin}/{endpoint}",
+                path=f"{path_to_car}/{endpoint}",
                 params=params,
             ),
         )
@@ -230,3 +235,52 @@ class Kamereon(object):
     ) -> model.KamereonVehicleDataResponse:
         """GET to /cars/{vin}/hvac-history."""
         return await self.get_vehicle_data(account_id, 1, vin, "hvac-history", params)
+
+    async def set_vehicle_data(
+        self,
+        account_id: str,
+        endpoint_version: int,
+        vin: str,
+        endpoint: str,
+        data: Dict[str, Any],
+        schema: Optional[Schema] = None,
+    ) -> model.KamereonVehicleDataResponse:
+        """POST to /v{endpoint_version}/cars/{vin}/actions/{endpoint}."""
+        path_to_car = self._get_path_to_car(account_id, endpoint_version, vin)
+        return cast(
+            model.KamereonVehicleDataResponse,
+            await self._request(
+                schema=schema or model.KamereonVehicleDataResponseSchema,
+                method="POST",
+                path=f"{path_to_car}/actions/{endpoint}",
+                data=data,
+            ),
+        )
+
+    async def set_vehicle_hvac_start(
+        self, account_id: str, vin: str, attributes: Dict[str, Any]
+    ) -> model.KamereonVehicleDataResponse:
+        """POST to /cars/{vin}/actions/hvac-start."""
+        data = {"type": "HvacStart", "attributes": attributes}
+        return await self.set_vehicle_data(account_id, 1, vin, "hvac-start", data)
+
+    async def set_vehicle_charge_schedule(
+        self, account_id: str, vin: str, attributes: Dict[str, Any]
+    ) -> model.KamereonVehicleDataResponse:
+        """POST to /cars/{vin}/actions/charge-schedule."""
+        data = {"type": "ChargeSchedule", "attributes": attributes}
+        return await self.set_vehicle_data(account_id, 2, vin, "charge-schedule", data)
+
+    async def set_vehicle_charge_mode(
+        self, account_id: str, vin: str, attributes: Dict[str, Any]
+    ) -> model.KamereonVehicleDataResponse:
+        """POST to /cars/{vin}/actions/charge-mode."""
+        data = {"type": "ChargeMode", "attributes": attributes}
+        return await self.set_vehicle_data(account_id, 1, vin, "charge-mode", data)
+
+    async def set_vehicle_charging_start(
+        self, account_id: str, vin: str, attributes: Dict[str, Any]
+    ) -> model.KamereonVehicleDataResponse:
+        """POST to /cars/{vin}/actions/charging-start."""
+        data = {"type": "ChargingStart", "attributes": attributes}
+        return await self.set_vehicle_data(account_id, 1, vin, "charging-start", data)
