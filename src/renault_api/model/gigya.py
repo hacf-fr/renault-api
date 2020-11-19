@@ -60,9 +60,9 @@ class GigyaGetAccountInfoResponse(GigyaResponse):
     def get_person_id(self) -> str:
         """Return person id."""
         if not self.data:  # pragma: no cover
-            raise GigyaException("`data` is None in Login response.")
+            raise GigyaException("`data` is None in GetAccountInfo response.")
         if not self.data.personId:  # pragma: no cover
-            raise GigyaException("`data.personId` is None in Login response.")
+            raise GigyaException("`data.personId` is None in GetAccountInfo response.")
         return self.data.personId
 
 
@@ -71,6 +71,12 @@ class GigyaGetJWTResponse(GigyaResponse):
     """Gigya response to POST on /accounts.getJWT."""
 
     id_token: Optional[str]
+
+    def get_jwt_token(self) -> str:
+        """Return jwt token."""
+        if not self.id_token:  # pragma: no cover
+            raise GigyaException("`id_token` is None in GetJWT response.")
+        return self.id_token
 
 
 GigyaLoginResponseSchema = marshmallow_dataclass.class_schema(
