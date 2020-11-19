@@ -1,9 +1,9 @@
 """Tests for RenaultClient."""
 import datetime
 import time
+from unittest import mock
 
 import jwt
-from unittest import mock
 
 from renault_api.model.credential import Credential
 from renault_api.model.credential import JWTCredential
