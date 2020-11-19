@@ -1,4 +1,4 @@
-"""Test cases for the Renault client API keys."""
+"""Test cases for initialisation of the Kamereon client."""
 import pytest
 from aiohttp.client import ClientSession
 from aioresponses import aioresponses
