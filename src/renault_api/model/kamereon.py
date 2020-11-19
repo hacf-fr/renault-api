@@ -8,6 +8,7 @@ import marshmallow_dataclass
 
 from . import BaseModel
 from . import BaseSchema
+from renault_api.exceptions import KamereonException
 from renault_api.exceptions import KamereonResponseException
 
 
@@ -67,6 +68,12 @@ class KamereonPersonAccount(BaseModel):
     accountType: Optional[str]  # noqa: N815
     accountStatus: Optional[str]  # noqa: N815
 
+    def get_account_id(self) -> str:
+        """Return jwt token."""
+        if not self.accountId:  # pragma: no cover
+            raise KamereonException("`accountId` is None in KamereonPersonAccount.")
+        return self.accountId
+
 
 @dataclass
 class KamereonPersonResponse(KamereonResponse):
@@ -80,6 +87,12 @@ class KamereonVehiclesLink(BaseModel):
     """Kamereon account data."""
 
     vin: Optional[str]
+
+    def get_vin(self) -> str:
+        """Return jwt token."""
+        if not self.vin:  # pragma: no cover
+            raise KamereonException("`vin` is None in KamereonVehiclesLink.")
+        return self.vin
 
 
 @dataclass

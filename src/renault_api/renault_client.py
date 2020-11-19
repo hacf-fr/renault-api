@@ -1,32 +1,45 @@
 """Client for Renault API."""
-from __future__ import annotations
-
 import logging
 from typing import List
 
 from aiohttp import ClientSession
 
-from . import renault_account
+from .kamereon import Kamereon
+from .renault_account import RenaultAccount
+from renault_api.const import AVAILABLE_LOCALES
+from renault_api.model.kamereon import KamereonPersonResponse
 
 
 _LOGGER = logging.getLogger(__name__)
 
 
 class RenaultClient:
-    """Proxy to the Renault API."""
+    """Proxy to a Renault profile."""
 
-    def __init__(self, websession: ClientSession) -> None:
-        """Initialise Renault Client."""
-        self._websession = websession
+    def __init__(self, websession: ClientSession, locale: str) -> None:
+        """Initialise Renault client."""
+        self._kamereon = Kamereon(
+            websession=websession,
+            country=locale[-2:],
+            locale_details=AVAILABLE_LOCALES[locale],
+        )
 
-    async def login(self, user: str, password: str) -> None:
+    async def login(self, login_id: str, password: str) -> None:
         """Login."""
-        pass
+        await self._kamereon.login(login_id, password)
 
-    async def get_accounts(self) -> List[renault_account.RenaultAccount]:
-        """Get list of accounts linked to credentials."""
-        return []
+    async def get_person(self) -> KamereonPersonResponse:
+        """Get person details."""
+        return await self._kamereon.get_person()
 
-    async def get_account(self, account_id: str) -> renault_account.RenaultAccount:
-        """Get list of accounts linked to credentials."""
-        return renault_account.RenaultAccount(self, account_id)
+    async def get_api_accounts(self) -> List[RenaultAccount]:
+        """Get list of accounts."""
+        response = await self.get_person()
+        return list(
+            RenaultAccount(self._kamereon, account.get_account_id())
+            for account in response.accounts
+        )
+
+    async def get_api_account(self, account_id: str) -> RenaultAccount:
+        """Get account."""
+        return RenaultAccount(self._kamereon, account_id)

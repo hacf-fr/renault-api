@@ -1,9 +1,7 @@
 """Client for Renault API."""
-from __future__ import annotations
-
 import logging
 
-from . import renault_account
+from .kamereon import Kamereon
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -14,9 +12,11 @@ class RenaultVehicle:
 
     def __init__(
         self,
-        account: renault_account.RenaultAccount,
+        kamereon: Kamereon,
+        account_id: str,
         vin: str,
     ) -> None:
         """Initialise Renault account."""
-        self._account = account
+        self._kamereon = kamereon
+        self._account_id = account_id
         self._vin = vin
