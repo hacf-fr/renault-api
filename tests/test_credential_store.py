@@ -19,11 +19,11 @@ def test_invalid_credential() -> None:
 
     test_key = "test"
     with pytest.raises(TypeError):
-        credential_store[test_key] = test_key
+        credential_store[test_key] = test_key  # type:ignore
 
     test_value = Credential("test_value")
     with pytest.raises(TypeError):
-        credential_store[test_value] = test_value
+        credential_store[test_value] = test_value  # type:ignore
 
 
 def test_simple_credential() -> None:

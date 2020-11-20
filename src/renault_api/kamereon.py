@@ -45,7 +45,7 @@ class Kamereon:
         self._gigya = gigya or Gigya(
             websession=websession, locale_details=locale_details
         )
-        self._credentials = credential_store or CredentialStore()
+        self._credentials: CredentialStore = credential_store or CredentialStore()
 
     async def _get_credential(self, key: str) -> str:
         credential = self._credentials.get(key)

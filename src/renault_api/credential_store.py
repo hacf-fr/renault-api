@@ -4,7 +4,8 @@ import os
 from typing import Dict
 from typing import Optional
 
-from renault_api.model.credential import Credential, JWTCredential
+from renault_api.model.credential import Credential
+from renault_api.model.credential import JWTCredential
 
 
 PERMANENT_KEYS = ["locale"]
@@ -13,7 +14,7 @@ PERMANENT_KEYS = ["locale"]
 class CredentialStore:
     """Credential store."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialise the credential store."""
         self._store: Dict[str, Credential] = {}
 
@@ -33,7 +34,7 @@ class CredentialStore:
                 return cred
         return None
 
-    def __setitem__(self, name: str, value: Credential):
+    def __setitem__(self, name: str, value: Credential) -> None:
         """Add a credential to the credential store."""
         if not isinstance(name, str):  # pragma: no cover
             raise TypeError("`name` must be a string")
@@ -43,7 +44,7 @@ class CredentialStore:
         self._store[name] = value
         self._write()
 
-    def __contains__(self, name) -> bool:
+    def __contains__(self, name: str) -> bool:
         """Check if a credential is in the credential store."""
         if name in self._store:
             cred = self._store[name]
@@ -51,11 +52,11 @@ class CredentialStore:
                 return True
         return False
 
-    def _write(self):
+    def _write(self) -> None:
         """Writes the content to fixed storage."""
         pass
 
-    def clear(self):
+    def clear(self) -> None:
         """Remove all non-permanent keys."""
         for key in list(self._store.keys()):
             if key not in PERMANENT_KEYS:
@@ -64,14 +65,17 @@ class CredentialStore:
 
 
 class CredentialEncoder(json.JSONEncoder):
-    def default(self, obj: Credential):
+    """Custom encoder for Credential class."""
+
+    def default(self, obj: Credential) -> str:
+        """Store the value."""
         return obj.value
 
 
 class FileCredentialStore(CredentialStore):
     """Credential store with items stored in a file."""
 
-    def __init__(self, store_location):
+    def __init__(self, store_location: str) -> None:
         """Initialise the credential store."""
         super().__init__()
         self._store_location = store_location
