@@ -1,0 +1,193 @@
+{
+  "accountId": "account-id-1",
+  "country": "GB",
+  "vehicleLinks": [
+    {
+      "brand": "RENAULT",
+      "vin": "VF1AAAAA555777999",
+      "status": "ACTIVE",
+      "linkType": "OWNER",
+      "garageBrand": "RENAULT",
+      "startDate": "2018-08-24",
+      "createdDate": "2019-05-22T07: 54: 16.354711Z",
+      "lastModifiedDate": "2020-11-15T22: 35: 52.878198Z",
+      "ownershipStartDate": "2018-08-24",
+      "cancellationReason": {},
+      "preferredDealer": {
+        "dealerId": "dealer-id-1",
+        "brand": "RENAULT",
+        "createdDate": "2019-05-22T07: 54: 15.962530Z",
+        "lastModifiedDate": "2019-05-22T07: 54: 15.962530Z"
+      },
+      "connectedDriver": {
+        "role": "MAIN_DRIVER",
+        "createdDate": "2019-06-06T10: 18: 09.801144Z",
+        "lastModifiedDate": "2019-06-06T10: 18: 09.801144Z"
+      },
+      "vehicleDetails": {
+        "vin": "VF1AAAAA555777999",
+        "registrationDate": "2018-03-29",
+        "firstRegistrationDate": "2018-03-29",
+        "engineType": "5AQ",
+        "engineRatio": "601",
+        "modelSCR": "ZOE",
+        "deliveryCountry": {
+          "code": "FR",
+          "label": "FRANCE"
+        },
+        "family": {
+          "code": "X10",
+          "label": "FAMILLE X10",
+          "group": "007"
+        },
+        "tcu": {
+          "code": "TCU0G2",
+          "label": "TCU VER 0 GEN 2",
+          "group": "E70"
+        },
+        "navigationAssistanceLevel": {
+          "code": "SSNAV",
+          "label": "SANS AIDE A LA NAVIGATION",
+          "group": "408"
+        },
+        "battery": {
+          "code": "BT4AR1",
+          "label": "BATTERIE BT4AR1",
+          "group": "968"
+        },
+        "radioType": {
+          "code": "RAD33A",
+          "label": "RADIO 33A",
+          "group": "425"
+        },
+        "registrationCountry": {
+          "code": "FR"
+        },
+        "brand": {
+          "label": "RENAULT"
+        },
+        "model": {
+          "code": "X101VE",
+          "label": "ZOE",
+          "group": "971"
+        },
+        "gearbox": {
+          "code": "BVEL",
+          "label": "BOITE A VARIATEUR ELECTRIQUE",
+          "group": "427"
+        },
+        "version": {
+          "code": "LIF ME 10R"
+        },
+        "energy": {
+          "code": "ELEC",
+          "label": "ELECTRIQUE",
+          "group": "019"
+        },
+        "registrationNumber": "REG-NUMBER",
+        "vcd": "SYTINC/SKTPOU/SAND41/FDIU1/SSESM/SSMAP/SSCALL/SAND88/SAND90/SQKDRO/SDIFPA/FACBA2/SPRSEP/SSRCAR/CABDO2/TCU0G2/SWALBO/EVTEC1/STANDA/X10/B10/EA1/ME/ELEC/DG/TEMP/TR4X2/RV/ABS/CA/LAC/VT001/CPE/RET02/SPROJA/RTOL15/CEAVRH/AIRBA1/SERIE/DRA/DRAP07/HARM01/ATAR/OV369/SFBANA/KM/DPRPN/AVREPL/SSDECA/ASRESP/SRDPRO/SALEVA/CACBL2/SOP01C/CTHAB2/TRNOR/LVAVEL/LVARMA/SASURV/KTGREP/SGSCHA/APL03/ALOUCC/CMAR3P/SSNAV/RAD33A/BVEL/AUTAUG/RNORM/ISOFIX/EQPEUR/HRGM01/SDPCLV/TLFRAN/SPRODI/SAN613/SSAPEX/GENEV1/ELC1/SANCML/PE2012/PHAS1/SAN913/045KWH/BT4AR1/VEC174/X101VE/NBT017/5AQ",
+        "assets": [
+          {
+            "assetType": "PICTURE",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https: //3dv2.renault.com/ImageFromBookmark?configuration=SKTPOU%2FSPRSEP%2FSTANDA%2FB10%2FEA1%2FDG%2FVT001%2FRET02%2FRTOL15%2FDRAP07%2FHARM01%2FOV369%2FSRDPRO%2FSALEVA%2FSOP01C%2FTRNOR%2FLVAVEL%2FLVARMA%2FRAD33A%2FSDPCLV%2FTLFRAN%2FGENEV1%2FSAN913%2FBT4AR1%2FNBT017&databaseId=1d514feb-93a6-4b45-8785-e11d2a6f1864&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_LARGE"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv2.renault.com/ImageFromBookmark?configuration=SKTPOU%2FSPRSEP%2FSTANDA%2FB10%2FEA1%2FDG%2FVT001%2FRET02%2FRTOL15%2FDRAP07%2FHARM01%2FOV369%2FSRDPRO%2FSALEVA%2FSOP01C%2FTRNOR%2FLVAVEL%2FLVARMA%2FRAD33A%2FSDPCLV%2FTLFRAN%2FGENEV1%2FSAN913%2FBT4AR1%2FNBT017&databaseId=1d514feb-93a6-4b45-8785-e11d2a6f1864&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              }
+            ]
+          },
+          {
+            "assetType": "PDF",
+            "assetRole": "GUIDE",
+            "title": "PDF Guide",
+            "description": "",
+            "renditions": [
+              {
+                "url": "https://cdn.group.renault.com/ren/gb/myr/assets/x101ve/manual.pdf.asset.pdf/1558704861735.pdf"
+              }
+            ]
+          },
+          {
+            "assetType": "URL",
+            "assetRole": "GUIDE",
+            "title": "e-guide",
+            "description": "",
+            "renditions": [
+              {
+                "url": "http://gb.e-guide.renault.com/eng/Zoe"
+              }
+            ]
+          },
+          {
+            "assetType": "VIDEO",
+            "assetRole": "CAR",
+            "title": "10 Fundamentals about getting the best out of your electric vehicle",
+            "description": "",
+            "renditions": [
+              {
+                "url": "39r6QEKcOM4"
+              }
+            ]
+          },
+          {
+            "assetType": "VIDEO",
+            "assetRole": "CAR",
+            "title": "Automatic Climate Control",
+            "description": "",
+            "renditions": [
+              {
+                "url": "Va2FnZFo_GE"
+              }
+            ]
+          },
+          {
+            "assetType": "URL",
+            "assetRole": "CAR",
+            "title": "More videos",
+            "description": "",
+            "renditions": [
+              {
+                "url": "https://www.youtube.com/watch?v=wfpCMkK1rKI"
+              }
+            ]
+          },
+          {
+            "assetType": "VIDEO",
+            "assetRole": "CAR",
+            "title": "Charging the battery",
+            "description": "",
+            "renditions": [
+              {
+                "url": "RaEad8DjUJs"
+              }
+            ]
+          },
+          {
+            "assetType": "VIDEO",
+            "assetRole": "CAR",
+            "title": "Charging the battery at a station with a flap",
+            "description": "",
+            "renditions": [
+              {
+                "url": "zJfd7fJWtr0"
+              }
+            ]
+          }
+        ],
+        "yearsOfMaintenance": 12,
+        "connectivityTechnology": "RLINK1",
+        "easyConnectStore": false,
+        "electrical": true,
+        "rlinkStore": false,
+        "deliveryDate": "2018-04-04",
+        "retrievedFromDhs": false,
+        "engineEnergyType": "ELEC",
+        "radioCode": "1234"
+      }
+    }
+  ]
+}

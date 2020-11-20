@@ -1,0 +1,16 @@
+{
+  "type": "FUNCTIONAL",
+  "messages": [
+    {
+      "code": "err.func.403",
+      "message": "{\"errors\":[{\"status\":\"403\",\"code\":\"security.access\",\"detail\":\"Access is denied for this resource\"}]}"
+    }
+  ],
+  "errors": [
+    {
+      "errorCode": "err.func.403",
+      "errorMessage": "{\"errors\":[{\"status\":\"403\",\"code\":\"security.access\",\"detail\":\"Access is denied for this resource\"}]}"
+    }
+  ],
+  "error_reference": "FUNCTIONAL"
+}
