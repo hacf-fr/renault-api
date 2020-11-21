@@ -1,6 +1,7 @@
 """Test cases for the Gigya client."""
 import tempfile
 import time
+from datetime import timedelta
 from shutil import copyfile
 from unittest import mock
 
@@ -108,7 +109,7 @@ def test_clear() -> None:
 
 
 def test_file_store() -> None:
-    """Test clearance of credential store."""
+    """Test file credential store."""
     with tempfile.TemporaryDirectory() as tmpdirname:
         # Prepare initial store
         old_filename = f"{tmpdirname}/.credentials/renault-api.json"
@@ -140,8 +141,38 @@ def test_file_store() -> None:
         assert new_credential_store.get(test_jwt_key) == test_jwt_value
         assert new_credential_store[test_jwt_key] == test_jwt_value
 
-        # Try again with expired
-        expired_time = time.time() + 3600
-        with mock.patch("time.time", mock.MagicMock(return_value=expired_time)):
-            assert test_key in new_credential_store
-            assert test_jwt_key not in new_credential_store
+
+def test_file_store_expired_token() -> None:
+    """Test loading expired token from credential store."""
+    with tempfile.TemporaryDirectory() as tmpdirname:
+        # Prepare initial store
+        expired_token = get_jwt(timedelta(seconds=-900))
+
+        old_filename = f"{tmpdirname}/.credentials/renault-api.json"
+        old_credential_store = FileCredentialStore(old_filename)
+        test_key = "key"
+        test_value = Credential("value")
+        test_jwt_key = "gigya_jwt"
+        test_jwt_value = Credential(expired_token)  # bypass JWTCredential
+        old_credential_store[test_key] = test_value
+        old_credential_store[test_jwt_key] = test_jwt_value
+
+        assert test_key in old_credential_store
+        assert old_credential_store.get(test_key) == test_value
+        assert old_credential_store[test_key] == test_value
+        assert test_jwt_key in old_credential_store
+        assert old_credential_store.get(test_jwt_key) == test_jwt_value
+        assert old_credential_store[test_jwt_key] == test_jwt_value
+
+        # Copy the data into new file
+        new_filename = f"{tmpdirname}/.credentials/renault-api-copy.json"
+        copyfile(old_filename, new_filename)
+        new_credential_store = FileCredentialStore(new_filename)
+
+        # Check that the data is in the new store
+        assert test_key in new_credential_store
+        assert new_credential_store.get(test_key) == test_value
+        assert new_credential_store[test_key] == test_value
+
+        # Except the JWT token which was rejected on load
+        assert test_jwt_key not in new_credential_store

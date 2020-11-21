@@ -2,14 +2,17 @@
 import datetime
 from glob import glob
 from typing import List
+from typing import Optional
 
 import jwt
 
 
-def get_jwt() -> str:
+def get_jwt(timedelta: Optional[datetime.timedelta] = None) -> str:
     """Read fixture text file as string."""
+    if not timedelta:
+        timedelta = datetime.timedelta(seconds=900)
     return jwt.encode(
-        payload={"exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=900)},
+        payload={"exp": datetime.datetime.utcnow() + timedelta},
         key="mock",
         algorithm="HS256",
     ).decode("utf-8")

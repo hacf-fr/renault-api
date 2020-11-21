@@ -4,6 +4,8 @@ import os
 from typing import Dict
 from typing import Optional
 
+import jwt
+
 from renault_api.model.credential import Credential
 from renault_api.model.credential import JWTCredential
 
@@ -89,7 +91,10 @@ class FileCredentialStore(CredentialStore):
             data = json.load(json_file)
             for key, value in data.items():
                 if key == "gigya_jwt":
-                    self[key] = JWTCredential(value)
+                    try:
+                        self[key] = JWTCredential(value)
+                    except jwt.ExpiredSignatureError:
+                        pass
                 else:
                     self[key] = Credential(value)
 
