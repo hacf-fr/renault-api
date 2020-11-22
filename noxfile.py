@@ -31,6 +31,9 @@ def activate_virtualenv_in_precommit_hooks(session: Session) -> None:
 
     Args:
         session: The Session object.
+
+    Returns:
+        None
     """
     if session.bin is None:
         return
