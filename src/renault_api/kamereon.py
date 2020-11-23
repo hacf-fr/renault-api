@@ -12,6 +12,7 @@ from .const import CONF_KAMEREON_APIKEY
 from .const import CONF_KAMEREON_URL
 from .exceptions import KamereonException
 from .gigya import Gigya
+from renault_api.credential_store import CredentialStore
 from renault_api.model import kamereon as model
 from renault_api.model.credential import Credential
 from renault_api.model.credential import JWTCredential
@@ -32,6 +33,7 @@ class Kamereon:
         country: str,
         locale_details: Dict[str, str],
         gigya: Optional[Gigya] = None,
+        credential_store: Optional[CredentialStore] = None,
     ) -> None:
         """Initialise Kamereon."""
         self._websession = websession
@@ -43,11 +45,11 @@ class Kamereon:
         self._gigya = gigya or Gigya(
             websession=websession, locale_details=locale_details
         )
-        self._credentials: Dict[str, Credential] = {}
+        self._credentials: CredentialStore = credential_store or CredentialStore()
 
     async def _get_credential(self, key: str) -> str:
         credential = self._credentials.get(key)
-        if credential and not credential.has_expired():
+        if credential:
             return credential.value
 
         if key == CREDENTIAL_GIGYA_JWT:
