@@ -1,6 +1,8 @@
 """Kamereon models."""
 import json
 from dataclasses import dataclass
+from typing import Any
+from typing import Dict
 from typing import List
 from typing import Optional
 
@@ -8,6 +10,7 @@ import marshmallow_dataclass
 
 from . import BaseModel
 from . import BaseSchema
+from renault_api.exceptions import KamereonException
 from renault_api.exceptions import KamereonResponseException
 
 
@@ -67,6 +70,12 @@ class KamereonPersonAccount(BaseModel):
     accountType: Optional[str]  # noqa: N815
     accountStatus: Optional[str]  # noqa: N815
 
+    def get_account_id(self) -> str:
+        """Return jwt token."""
+        if not self.accountId:  # pragma: no cover
+            raise KamereonException("`accountId` is None in KamereonPersonAccount.")
+        return self.accountId
+
 
 @dataclass
 class KamereonPersonResponse(KamereonResponse):
@@ -75,11 +84,22 @@ class KamereonPersonResponse(KamereonResponse):
     accounts: List[KamereonPersonAccount]
 
 
+KamereonPersonResponseSchema = marshmallow_dataclass.class_schema(
+    KamereonPersonResponse, base_schema=BaseSchema
+)()
+
+
 @dataclass
 class KamereonVehiclesLink(BaseModel):
     """Kamereon account data."""
 
     vin: Optional[str]
+
+    def get_vin(self) -> str:
+        """Return jwt token."""
+        if not self.vin:  # pragma: no cover
+            raise KamereonException("`vin` is None in KamereonVehiclesLink.")
+        return self.vin
 
 
 @dataclass
@@ -91,12 +111,18 @@ class KamereonVehiclesResponse(KamereonResponse):
     vehicleLinks: List[KamereonVehiclesLink]  # noqa: N815
 
 
+KamereonVehiclesResponseSchema = marshmallow_dataclass.class_schema(
+    KamereonVehiclesResponse, base_schema=BaseSchema
+)()
+
+
 @dataclass
 class KamereonVehicleData(BaseModel):
-    """Kamereon account data."""
+    """Kamereon vehicle data."""
 
     type: Optional[str]
     id: Optional[str]
+    attributes: Optional[Dict[str, Any]]
 
 
 @dataclass
@@ -106,12 +132,6 @@ class KamereonVehicleDataResponse(KamereonResponse):
     data: Optional[KamereonVehicleData]
 
 
-KamereonPersonResponseSchema = marshmallow_dataclass.class_schema(
-    KamereonPersonResponse, base_schema=BaseSchema
-)()
-KamereonVehiclesResponseSchema = marshmallow_dataclass.class_schema(
-    KamereonVehiclesResponse, base_schema=BaseSchema
-)()
 KamereonVehicleDataResponseSchema = marshmallow_dataclass.class_schema(
     KamereonVehicleDataResponse, base_schema=BaseSchema
 )()
