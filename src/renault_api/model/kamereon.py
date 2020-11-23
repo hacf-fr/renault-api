@@ -1,6 +1,8 @@
 """Kamereon models."""
 import json
 from dataclasses import dataclass
+from typing import Any
+from typing import Dict
 from typing import List
 from typing import Optional
 
@@ -82,6 +84,11 @@ class KamereonPersonResponse(KamereonResponse):
     accounts: List[KamereonPersonAccount]
 
 
+KamereonPersonResponseSchema = marshmallow_dataclass.class_schema(
+    KamereonPersonResponse, base_schema=BaseSchema
+)()
+
+
 @dataclass
 class KamereonVehiclesLink(BaseModel):
     """Kamereon account data."""
@@ -104,12 +111,18 @@ class KamereonVehiclesResponse(KamereonResponse):
     vehicleLinks: List[KamereonVehiclesLink]  # noqa: N815
 
 
+KamereonVehiclesResponseSchema = marshmallow_dataclass.class_schema(
+    KamereonVehiclesResponse, base_schema=BaseSchema
+)()
+
+
 @dataclass
 class KamereonVehicleData(BaseModel):
-    """Kamereon account data."""
+    """Kamereon vehicle data."""
 
     type: Optional[str]
     id: Optional[str]
+    attributes: Optional[Dict[str, Any]]
 
 
 @dataclass
@@ -119,12 +132,6 @@ class KamereonVehicleDataResponse(KamereonResponse):
     data: Optional[KamereonVehicleData]
 
 
-KamereonPersonResponseSchema = marshmallow_dataclass.class_schema(
-    KamereonPersonResponse, base_schema=BaseSchema
-)()
-KamereonVehiclesResponseSchema = marshmallow_dataclass.class_schema(
-    KamereonVehiclesResponse, base_schema=BaseSchema
-)()
 KamereonVehicleDataResponseSchema = marshmallow_dataclass.class_schema(
     KamereonVehicleDataResponse, base_schema=BaseSchema
 )()
