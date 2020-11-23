@@ -1,5 +1,6 @@
 """Client for Renault API."""
 import logging
+from typing import cast
 
 from .kamereon import Kamereon
 from .model.kamereon import KamereonVehicleBatteryStatusData
@@ -30,11 +31,17 @@ class RenaultVehicle:
         response = await self._kamereon.get_vehicle_battery_status(
             self._account_id, self._vin
         )
-        return response.get_attributes(KamereonVehicleBatteryStatusDataSchema)
+        return cast(
+            KamereonVehicleBatteryStatusData,
+            response.get_attributes(KamereonVehicleBatteryStatusDataSchema),
+        )
 
     async def get_hvac_status(self) -> KamereonVehicleHvacStatusData:
         """Get vehicles."""
         response = await self._kamereon.get_vehicle_hvac_status(
             self._account_id, self._vin
         )
-        return response.get_attributes(KamereonVehicleHvacStatusDataSchema)
+        return cast(
+            KamereonVehicleHvacStatusData,
+            response.get_attributes(KamereonVehicleHvacStatusDataSchema),
+        )

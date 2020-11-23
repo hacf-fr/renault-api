@@ -3,6 +3,7 @@ import json
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any
+from typing import cast
 from typing import Dict
 from typing import List
 from typing import Optional
@@ -144,7 +145,7 @@ class KamereonVehicleDataResponse(KamereonResponse):
             raise KamereonException("`data` is None in KamereonVehicleData.")
         if not self.data.attributes:  # pragma: no cover
             raise KamereonException("`data.attributes` is None in KamereonVehicleData.")
-        return schema.load(self.data.attributes)
+        return cast(KamereonVehicleDataAttributes, schema.load(self.data.attributes))
 
 
 KamereonVehicleDataResponseSchema = marshmallow_dataclass.class_schema(
@@ -196,7 +197,7 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
         except ValueError:  # pragma: no cover
             # should we return PlugState.NOT_AVAILABLE?
             raise KamereonException(
-                f"Unable to convert plugStatus `{self.plugStatus}` to PlugState."
+                f"Unable to convert `{self.plugStatus}` to PlugState."
             )
 
     def get_charging_status(self) -> Optional[ChargeState]:
@@ -208,7 +209,7 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
         except ValueError:  # pragma: no cover
             # should we return ChargeState.NOT_AVAILABLE?
             raise KamereonException(
-                f"Unable to convert chargingStatus `{self.chargingStatus}` to ChargeState."
+                f"Unable to convert `{self.chargingStatus}` to ChargeState."
             )
 
 
