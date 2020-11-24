@@ -1,4 +1,6 @@
 """Test cases for the Renault client API keys."""
+from datetime import datetime
+
 import pytest
 from aiohttp.client import ClientSession
 from aioresponses import aioresponses
@@ -16,8 +18,6 @@ from renault_api.kamereon import CREDENTIAL_GIGYA_LOGIN_TOKEN
 from renault_api.kamereon import CREDENTIAL_GIGYA_PERSON_ID
 from renault_api.model.credential import Credential
 from renault_api.model.credential import JWTCredential
-from renault_api.model.kamereon import ChargeState
-from renault_api.model.kamereon import PlugState
 from renault_api.renault_client import RenaultClient
 from renault_api.renault_vehicle import RenaultVehicle
 
@@ -57,17 +57,19 @@ async def test_get_battery_status(vehicle: RenaultVehicle) -> None:
             status=200,
             body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/battery-status.1.json"),
         )
-        battery_status_data = await vehicle.get_battery_status()
+        assert await vehicle.get_battery_status()
 
-        assert battery_status_data.timestamp == "2020-11-17T09:06:48+01:00"
-        assert battery_status_data.batteryLevel == 50
-        assert battery_status_data.batteryAutonomy == 128
-        assert battery_status_data.batteryCapacity == 0
-        assert battery_status_data.batteryAvailableEnergy == 0
-        assert battery_status_data.plugStatus == 0
-        assert battery_status_data.chargingStatus == -1.0
-        assert battery_status_data.get_plug_status() == PlugState.UNPLUGGED
-        assert battery_status_data.get_charging_status() == ChargeState.CHARGE_ERROR
+
+@pytest.mark.asyncio
+async def test_get_location(vehicle: RenaultVehicle) -> None:
+    """Test get_location."""
+    with aioresponses() as mocked_responses:
+        mocked_responses.get(
+            f"{TEST_KAMEREON_VEHICLE_URL1}/location?{QUERY_STRING}",
+            status=200,
+            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/location.json"),
+        )
+        assert await vehicle.get_location()
 
 
 @pytest.mark.asyncio
@@ -79,7 +81,132 @@ async def test_get_hvac_status(vehicle: RenaultVehicle) -> None:
             status=200,
             body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/hvac-status.json"),
         )
-        battery_status_data = await vehicle.get_hvac_status()
+        assert await vehicle.get_hvac_status()
 
-        assert battery_status_data.externalTemperature == 8.0
-        assert battery_status_data.hvacStatus == "off"
+
+@pytest.mark.asyncio
+async def test_get_charge_mode(vehicle: RenaultVehicle) -> None:
+    """Test get_charge_mode."""
+    with aioresponses() as mocked_responses:
+        mocked_responses.get(
+            f"{TEST_KAMEREON_VEHICLE_URL1}/charge-mode?{QUERY_STRING}",
+            status=200,
+            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/charge-mode.json"),
+        )
+        assert await vehicle.get_charge_mode()
+
+
+@pytest.mark.asyncio
+async def test_get_cockpit(vehicle: RenaultVehicle) -> None:
+    """Test get_cockpit."""
+    with aioresponses() as mocked_responses:
+        mocked_responses.get(
+            f"{TEST_KAMEREON_VEHICLE_URL2}/cockpit?{QUERY_STRING}",
+            status=200,
+            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/cockpit.zoe.json"),
+        )
+        assert await vehicle.get_cockpit()
+
+
+@pytest.mark.asyncio
+async def test_get_lock_status(vehicle: RenaultVehicle) -> None:
+    """Test get_lock_status."""
+    with aioresponses() as mocked_responses:
+        mocked_responses.get(
+            f"{TEST_KAMEREON_VEHICLE_URL1}/lock-status?{QUERY_STRING}",
+            status=200,
+            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/lock-status.json"),
+        )
+        assert await vehicle.get_lock_status()
+
+
+@pytest.mark.asyncio
+async def test_get_charging_settings(vehicle: RenaultVehicle) -> None:
+    """Test get_charging_settings."""
+    with aioresponses() as mocked_responses:
+        mocked_responses.get(
+            f"{TEST_KAMEREON_VEHICLE_URL1}/charging-settings?{QUERY_STRING}",
+            status=200,
+            body=get_file_content(
+                f"{FIXTURE_PATH}/vehicle_data/charging-settings.json"
+            ),
+        )
+        assert await vehicle.get_charging_settings()
+
+
+@pytest.mark.asyncio
+async def test_get_notification_settings(vehicle: RenaultVehicle) -> None:
+    """Test get_notification_settings."""
+    with aioresponses() as mocked_responses:
+        mocked_responses.get(
+            f"{TEST_KAMEREON_VEHICLE_URL1}/notification-settings?{QUERY_STRING}",
+            status=200,
+            body=get_file_content(
+                f"{FIXTURE_PATH}/vehicle_data/notification-settings.json"
+            ),
+        )
+        assert await vehicle.get_notification_settings()
+
+
+@pytest.mark.asyncio
+async def test_get_charge_history(vehicle: RenaultVehicle) -> None:
+    """Test get_charge_history."""
+    query_string = f"{QUERY_STRING}&end=202011&start=202010&type=month"
+    with aioresponses() as mocked_responses:
+        mocked_responses.get(
+            f"{TEST_KAMEREON_VEHICLE_URL1}/charge-history?{query_string}",
+            status=200,
+            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/charge-history.json"),
+        )
+        assert await vehicle.get_charge_history(
+            start=datetime(2020, 10, 1),
+            end=datetime(2020, 11, 15),
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_charges(vehicle: RenaultVehicle) -> None:
+    """Test get_charges."""
+    query_string = f"{QUERY_STRING}&end=20201115&start=20201001"
+    with aioresponses() as mocked_responses:
+        mocked_responses.get(
+            f"{TEST_KAMEREON_VEHICLE_URL1}/charges?{query_string}",
+            status=200,
+            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/charges.json"),
+        )
+        assert await vehicle.get_charges(
+            start=datetime(2020, 10, 1),
+            end=datetime(2020, 11, 15),
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_hvac_history(vehicle: RenaultVehicle) -> None:
+    """Test get_hvac_history."""
+    query_string = f"{QUERY_STRING}&end=202011&start=202010&type=month"
+    with aioresponses() as mocked_responses:
+        mocked_responses.get(
+            f"{TEST_KAMEREON_VEHICLE_URL1}/hvac-history?{query_string}",
+            status=200,
+            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/hvac-history.json"),
+        )
+        assert await vehicle.get_hvac_history(
+            start=datetime(2020, 10, 1),
+            end=datetime(2020, 11, 15),
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_hvac_sessions(vehicle: RenaultVehicle) -> None:
+    """Test get_hvac_sessions."""
+    query_string = f"{QUERY_STRING}&end=20201115&start=20201001"
+    with aioresponses() as mocked_responses:
+        mocked_responses.get(
+            f"{TEST_KAMEREON_VEHICLE_URL1}/hvac-sessions?{query_string}",
+            status=200,
+            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/hvac-sessions.json"),
+        )
+        assert await vehicle.get_hvac_sessions(
+            start=datetime(2020, 10, 1),
+            end=datetime(2020, 11, 15),
+        )
