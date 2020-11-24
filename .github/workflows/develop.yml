@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - ci-develop
 
 jobs:
   release:
@@ -65,7 +66,7 @@ jobs:
       - name: Publish the release notes
         uses: release-drafter/release-drafter@v5.12.1
         with:
-          publish: ${{ steps.check-version.outputs.tag != '' }}
+          publish: False
           tag: ${{ steps.check-version.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
