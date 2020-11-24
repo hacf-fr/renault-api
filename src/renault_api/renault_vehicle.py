@@ -1,7 +1,12 @@
 """Client for Renault API."""
 import logging
+from dataclasses import asdict
 from datetime import datetime
 from typing import cast
+from typing import List
+from typing import Optional
+
+from dateutil import tz
 
 from .kamereon import Kamereon
 from .model import kamereon as model
@@ -11,6 +16,7 @@ _LOGGER = logging.getLogger(__name__)
 
 PERIOD_DAY_FORMAT = "%Y%m%d"
 PERIOD_MONTH_FORMAT = "%Y%m"
+PERIOD_TZ_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 PERIOD_FORMATS = {"day": PERIOD_DAY_FORMAT, "month": PERIOD_MONTH_FORMAT}
 
 
@@ -238,4 +244,106 @@ class RenaultVehicle:
         return cast(
             model.KamereonVehicleHvacSessionsData,
             response.get_attributes(model.KamereonVehicleHvacSessionsDataSchema),
+        )
+
+    async def set_ac_start(
+        self, temperature: float, when: Optional[datetime] = None
+    ) -> model.KamereonVehicleHvacStartActionData:
+        """Start vehicle hvac."""
+        attributes = {
+            "action": "start",
+            "targetTemperature": temperature,
+        }
+
+        if when:
+            if not isinstance(when, datetime):  # pragma: no cover
+                raise TypeError(
+                    "`when` should be an instance of datetime.datetime, not {}".format(
+                        when.__class__
+                    )
+                )
+            start_date_time = when.astimezone(tz.tzutc()).strftime(PERIOD_TZ_FORMAT)
+            attributes["startDateTime"] = start_date_time
+
+        response = await self._kamereon.set_vehicle_hvac_start(
+            self._account_id,
+            self._vin,
+            attributes=attributes,
+        )
+        return cast(
+            model.KamereonVehicleHvacStartActionData,
+            response.get_attributes(model.KamereonVehicleHvacStartActionDataSchema),
+        )
+
+    async def set_ac_stop(self) -> model.KamereonVehicleHvacStartActionData:
+        """Stop vehicle hvac."""
+        attributes = {"action": "cancel"}
+
+        response = await self._kamereon.set_vehicle_hvac_start(
+            self._account_id,
+            self._vin,
+            attributes=attributes,
+        )
+        return cast(
+            model.KamereonVehicleHvacStartActionData,
+            response.get_attributes(model.KamereonVehicleHvacStartActionDataSchema),
+        )
+
+    async def set_charge_schedules(
+        self, schedules: List[model.ChargeSchedule]
+    ) -> model.KamereonVehicleChargeModeActionData:
+        """Set vehicle charge mode."""
+        for schedule in schedules:
+            if not isinstance(schedule, model.ChargeSchedule):  # pragma: no cover
+                raise TypeError(
+                    "`schedules` should be a list of ChargeSchedule, not {}".format(
+                        schedules.__class__
+                    )
+                )
+        attributes = {"schedules": asdict(schedules)}
+
+        response = await self._kamereon.set_vehicle_charge_mode(
+            self._account_id,
+            self._vin,
+            attributes=attributes,
+        )
+        return cast(
+            model.KamereonVehicleChargeModeActionData,
+            response.get_attributes(model.KamereonVehicleChargeModeActionDataSchema),
+        )
+
+    async def set_charge_mode(
+        self, charge_mode: model.ChargeMode
+    ) -> model.KamereonVehicleChargeModeActionData:
+        """Set vehicle charge mode."""
+        if not isinstance(charge_mode, model.ChargeMode):  # pragma: no cover
+            raise TypeError(
+                "`charge_mode` should be an instance of ChargeMode, not {}".format(
+                    charge_mode.__class__
+                )
+            )
+        attributes = {"action": charge_mode.name}
+
+        response = await self._kamereon.set_vehicle_charge_mode(
+            self._account_id,
+            self._vin,
+            attributes=attributes,
+        )
+        return cast(
+            model.KamereonVehicleChargeModeActionData,
+            response.get_attributes(model.KamereonVehicleChargeModeActionDataSchema),
+        )
+
+    async def set_charge_start(self) -> model.KamereonVehicleChargingStartActionData:
+        """Start vehicle charge."""
+        attributes = {"action": "start"}
+
+        response = await self._kamereon.set_vehicle_charging_start(
+            self._account_id,
+            self._vin,
+            attributes=attributes,
+        )
+        return cast(
+            model.KamereonVehicleChargingStartActionData,
+            response.get_attributes(model.KamereonVehicleChargingStartActionDataSchema),
         )

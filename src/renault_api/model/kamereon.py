@@ -242,6 +242,14 @@ KamereonVehicleHvacStatusDataSchema = marshmallow_dataclass.class_schema(
 )()
 
 
+class ChargeMode(Enum):
+    """Enum for charge-mode."""
+
+    ALWAYS = "Always"
+    ALWAYS_CHARGING = "Always charge"
+    SCHEDULE_MODE = "Scheduled charge"
+
+
 @dataclass
 class KamereonVehicleChargeModeData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data charge-mode attributes."""
@@ -277,8 +285,34 @@ KamereonVehicleLockStatusDataSchema = marshmallow_dataclass.class_schema(
 
 
 @dataclass
+class ChargeDaySchedule(BaseModel):
+    """Kamereon vehicle charge schedule for day."""
+
+    startTime: Optional[str]  # noqa: N815
+    duration: Optional[int]
+
+
+@dataclass
+class ChargeSchedule(BaseModel):
+    """Kamereon vehicle charge schedule for week."""
+
+    id: Optional[int]
+    activated: Optional[bool]
+    monday: Optional[ChargeDaySchedule]
+    tuesday: Optional[ChargeDaySchedule]
+    wednesday: Optional[ChargeDaySchedule]
+    thursday: Optional[ChargeDaySchedule]
+    friday: Optional[ChargeDaySchedule]
+    saturday: Optional[ChargeDaySchedule]
+    sunday: Optional[ChargeDaySchedule]
+
+
+@dataclass
 class KamereonVehicleChargingSettingsData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data charging-settings attributes."""
+
+    mode: Optional[str]
+    schedules: Optional[List[ChargeSchedule]]
 
 
 KamereonVehicleChargingSettingsDataSchema = marshmallow_dataclass.class_schema(
@@ -333,4 +367,44 @@ class KamereonVehicleHvacSessionsData(KamereonVehicleDataAttributes):
 
 KamereonVehicleHvacSessionsDataSchema = marshmallow_dataclass.class_schema(
     KamereonVehicleHvacSessionsData, base_schema=BaseSchema
+)()
+
+
+@dataclass
+class KamereonVehicleHvacStartActionData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle action data hvac-start attributes."""
+
+
+KamereonVehicleHvacStartActionDataSchema = marshmallow_dataclass.class_schema(
+    KamereonVehicleHvacStartActionData, base_schema=BaseSchema
+)()
+
+
+@dataclass
+class KamereonVehicleChargeScheduleActionData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle action data charge-schedule attributes."""
+
+
+KamereonVehicleChargeScheduleActionDataSchema = marshmallow_dataclass.class_schema(
+    KamereonVehicleChargeScheduleActionData, base_schema=BaseSchema
+)()
+
+
+@dataclass
+class KamereonVehicleChargeModeActionData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle action data charge-mode attributes."""
+
+
+KamereonVehicleChargeModeActionDataSchema = marshmallow_dataclass.class_schema(
+    KamereonVehicleChargeModeActionData, base_schema=BaseSchema
+)()
+
+
+@dataclass
+class KamereonVehicleChargingStartActionData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle action data charging-start attributes."""
+
+
+KamereonVehicleChargingStartActionDataSchema = marshmallow_dataclass.class_schema(
+    KamereonVehicleChargingStartActionData, base_schema=BaseSchema
 )()
