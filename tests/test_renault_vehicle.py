@@ -1,5 +1,6 @@
 """Test cases for the Renault client API keys."""
 from datetime import datetime
+from typing import List
 
 import pytest
 from aiohttp.client import ClientSession
@@ -18,6 +19,8 @@ from renault_api.kamereon import CREDENTIAL_GIGYA_LOGIN_TOKEN
 from renault_api.kamereon import CREDENTIAL_GIGYA_PERSON_ID
 from renault_api.model.credential import Credential
 from renault_api.model.credential import JWTCredential
+from renault_api.model.kamereon import ChargeMode
+from renault_api.model.kamereon import ChargeSchedule
 from renault_api.renault_client import RenaultClient
 from renault_api.renault_vehicle import RenaultVehicle
 
@@ -210,3 +213,74 @@ async def test_get_hvac_sessions(vehicle: RenaultVehicle) -> None:
             start=datetime(2020, 10, 1),
             end=datetime(2020, 11, 15),
         )
+
+
+@pytest.mark.asyncio
+async def test_set_ac_start(vehicle: RenaultVehicle) -> None:
+    """Test set_ac_start."""
+    with aioresponses() as mocked_responses:
+        mocked_responses.post(
+            f"{TEST_KAMEREON_VEHICLE_URL1}/actions/hvac-start?{QUERY_STRING}",
+            status=200,
+            body=get_file_content(
+                f"{FIXTURE_PATH}/vehicle_action/hvac-start.start.json"
+            ),
+        )
+        assert await vehicle.set_ac_start(21, datetime(2020, 11, 24))
+
+
+@pytest.mark.asyncio
+async def test_set_ac_stop(vehicle: RenaultVehicle) -> None:
+    """Test set_ac_stop."""
+    with aioresponses() as mocked_responses:
+        mocked_responses.post(
+            f"{TEST_KAMEREON_VEHICLE_URL1}/actions/hvac-start?{QUERY_STRING}",
+            status=200,
+            body=get_file_content(
+                f"{FIXTURE_PATH}/vehicle_action/hvac-start.cancel.json"
+            ),
+        )
+        assert await vehicle.set_ac_stop()
+
+
+@pytest.mark.asyncio
+async def test_set_charge_mode(vehicle: RenaultVehicle) -> None:
+    """Test set_charge_mode."""
+    with aioresponses() as mocked_responses:
+        mocked_responses.post(
+            f"{TEST_KAMEREON_VEHICLE_URL1}/actions/charge-mode?{QUERY_STRING}",
+            status=200,
+            body=get_file_content(
+                f"{FIXTURE_PATH}/vehicle_action/charge-mode.schedule_mode.json"
+            ),
+        )
+        assert await vehicle.set_charge_mode(ChargeMode.SCHEDULE_MODE)
+
+
+@pytest.mark.asyncio
+async def test_set_charge_schedules(vehicle: RenaultVehicle) -> None:
+    """Test set_charge_schedules."""
+    schedules: List[ChargeSchedule] = []
+    with aioresponses() as mocked_responses:
+        mocked_responses.post(
+            f"{TEST_KAMEREON_VEHICLE_URL2}/actions/charge-schedule?{QUERY_STRING}",
+            status=200,
+            body=get_file_content(
+                f"{FIXTURE_PATH}/vehicle_action/charge-schedule.schedules.json"
+            ),
+        )
+        assert await vehicle.set_charge_schedules(schedules)
+
+
+@pytest.mark.asyncio
+async def test_set_charge_start(vehicle: RenaultVehicle) -> None:
+    """Test set_charge_start."""
+    with aioresponses() as mocked_responses:
+        mocked_responses.post(
+            f"{TEST_KAMEREON_VEHICLE_URL1}/actions/charging-start?{QUERY_STRING}",
+            status=200,
+            body=get_file_content(
+                f"{FIXTURE_PATH}/vehicle_action/charging-start.start.json"
+            ),
+        )
+        assert await vehicle.set_charge_start()

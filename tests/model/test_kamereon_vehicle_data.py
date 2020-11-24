@@ -140,3 +140,57 @@ def test_cockpit_captur_ii() -> None:
     assert vehicle_data.totalMileage == 5566.78
     assert vehicle_data.fuelAutonomy == 35.0
     assert vehicle_data.fuelQuantity == 3.0
+
+
+def test_charging_settings() -> None:
+    """Test vehicle data for charging-settings.json."""
+    response: model.KamereonVehicleDataResponse = get_response_content(
+        f"{FIXTURE_PATH}vehicle_data/charging-settings.json",
+        model.KamereonVehicleDataResponseSchema,
+    )
+    response.raise_for_error_code()
+    assert response.data.raw_data["attributes"] == {
+        "mode": "scheduled",
+        "schedules": [
+            {
+                "id": 1,
+                "activated": True,
+                "monday": {"startTime": "T12:00Z", "duration": 15},
+                "tuesday": {"startTime": "T04:30Z", "duration": 420},
+                "wednesday": {"startTime": "T22:30Z", "duration": 420},
+                "thursday": {"startTime": "T22:00Z", "duration": 420},
+                "friday": {"startTime": "T12:15Z", "duration": 15},
+                "saturday": {"startTime": "T12:30Z", "duration": 30},
+                "sunday": {"startTime": "T12:45Z", "duration": 45},
+            }
+        ],
+    }
+
+    vehicle_data = cast(
+        model.KamereonVehicleChargingSettingsData,
+        response.get_attributes(model.KamereonVehicleChargingSettingsDataSchema),
+    )
+
+    assert vehicle_data.mode == "scheduled"
+    assert len(vehicle_data.schedules) == 1
+
+    schedule_data = vehicle_data.schedules[0]
+    assert schedule_data.id == 1
+    assert schedule_data.activated is True
+    assert schedule_data.monday.startTime == "T12:00Z"
+    assert schedule_data.monday.duration == 15
+    assert schedule_data.tuesday.startTime == "T04:30Z"
+    assert schedule_data.tuesday.duration == 420
+    assert schedule_data.wednesday.startTime == "T22:30Z"
+    assert schedule_data.wednesday.duration == 420
+    assert schedule_data.thursday.startTime == "T22:00Z"
+    assert schedule_data.thursday.duration == 420
+    assert schedule_data.friday.startTime == "T12:15Z"
+    assert schedule_data.friday.duration == 15
+    assert schedule_data.saturday.startTime == "T12:30Z"
+    assert schedule_data.saturday.duration == 30
+    assert schedule_data.sunday.startTime == "T12:45Z"
+    assert schedule_data.sunday.duration == 45
+
+    # Check that for_json returns the same as the original data
+    assert schedule_data.for_json() == schedule_data.raw_data
