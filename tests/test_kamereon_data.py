@@ -164,7 +164,7 @@ async def test_vehicle_cockpit(kamereon: Kamereon) -> None:
         mocked_responses.get(
             f"{TEST_KAMEREON_VEHICLE_URL2}/cockpit?{QUERY_STRING}",
             status=200,
-            body=get_response_content(f"{FIXTURE_PATH}/vehicle_data/cockpit.json"),
+            body=get_response_content(f"{FIXTURE_PATH}/vehicle_data/cockpit.zoe.json"),
         )
         assert await kamereon.get_vehicle_cockpit(TEST_ACCOUNT_ID, TEST_VIN)
 
