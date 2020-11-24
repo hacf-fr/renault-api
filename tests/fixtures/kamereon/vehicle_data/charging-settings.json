@@ -2,6 +2,42 @@
   "data": {
     "type": "Car",
     "id": "VF1AAAAA555777999",
-    "attributes": {}
+    "attributes": {
+      "mode": "scheduled",
+      "schedules": [
+        {
+          "id": 1,
+          "activated": true,
+          "monday": {
+            "startTime": "T12:00Z",
+            "duration": 15
+          },
+          "tuesday": {
+            "startTime": "T04:30Z",
+            "duration": 420
+          },
+          "wednesday": {
+            "startTime": "T22:30Z",
+            "duration": 420
+          },
+          "thursday": {
+            "startTime": "T22:00Z",
+            "duration": 420
+          },
+          "friday": {
+            "startTime": "T12:15Z",
+            "duration": 15
+          },
+          "saturday": {
+            "startTime": "T12:30Z",
+            "duration": 30
+          },
+          "sunday": {
+            "startTime": "T12:45Z",
+            "duration": 45
+          }
+        }
+      ]
+    }
   }
 }
