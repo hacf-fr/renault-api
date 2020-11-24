@@ -75,7 +75,7 @@ class KamereonPersonAccount(BaseModel):
 
     def get_account_id(self) -> str:
         """Return jwt token."""
-        if not self.accountId:  # pragma: no cover
+        if self.accountId is None:  # pragma: no cover
             raise KamereonException("`accountId` is None in KamereonPersonAccount.")
         return self.accountId
 
@@ -100,7 +100,7 @@ class KamereonVehiclesLink(BaseModel):
 
     def get_vin(self) -> str:
         """Return jwt token."""
-        if not self.vin:  # pragma: no cover
+        if self.vin is None:  # pragma: no cover
             raise KamereonException("`vin` is None in KamereonVehiclesLink.")
         return self.vin
 
@@ -141,9 +141,9 @@ class KamereonVehicleDataResponse(KamereonResponse):
 
     def get_attributes(self, schema: Schema) -> KamereonVehicleDataAttributes:
         """Return jwt token."""
-        if not self.data:  # pragma: no cover
+        if self.data is None:  # pragma: no cover
             raise KamereonException("`data` is None in KamereonVehicleData.")
-        if not self.data.attributes:  # pragma: no cover
+        if self.data.attributes is None:  # pragma: no cover
             raise KamereonException("`data.attributes` is None in KamereonVehicleData.")
         return cast(KamereonVehicleDataAttributes, schema.load(self.data.attributes))
 
@@ -182,6 +182,7 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
 
     timestamp: Optional[str]
     batteryLevel: Optional[int]  # noqa: N815
+    batteryTemperature: Optional[int]  # noqa: N815
     batteryAutonomy: Optional[int]  # noqa: N815
     batteryCapacity: Optional[int]  # noqa: N815
     batteryAvailableEnergy: Optional[int]  # noqa: N815
@@ -219,8 +220,18 @@ KamereonVehicleBatteryStatusDataSchema = marshmallow_dataclass.class_schema(
 
 
 @dataclass
+class KamereonVehicleLocationData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle data location attributes."""
+
+
+KamereonVehicleLocationDataSchema = marshmallow_dataclass.class_schema(
+    KamereonVehicleLocationData, base_schema=BaseSchema
+)()
+
+
+@dataclass
 class KamereonVehicleHvacStatusData(KamereonVehicleDataAttributes):
-    """Kamereon vehicle data battery-status attributes."""
+    """Kamereon vehicle data hvac-status attributes."""
 
     externalTemperature: Optional[float]  # noqa: N815
     hvacStatus: Optional[str]  # noqa: N815
@@ -228,4 +239,98 @@ class KamereonVehicleHvacStatusData(KamereonVehicleDataAttributes):
 
 KamereonVehicleHvacStatusDataSchema = marshmallow_dataclass.class_schema(
     KamereonVehicleHvacStatusData, base_schema=BaseSchema
+)()
+
+
+@dataclass
+class KamereonVehicleChargeModeData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle data charge-mode attributes."""
+
+
+KamereonVehicleChargeModeDataSchema = marshmallow_dataclass.class_schema(
+    KamereonVehicleChargeModeData, base_schema=BaseSchema
+)()
+
+
+@dataclass
+class KamereonVehicleCockpitData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle data cockpit attributes."""
+
+    fuelAutonomy: Optional[float]  # noqa: N815
+    fuelQuantity: Optional[float]  # noqa: N815
+    totalMileage: Optional[float]  # noqa: N815
+
+
+KamereonVehicleCockpitDataSchema = marshmallow_dataclass.class_schema(
+    KamereonVehicleCockpitData, base_schema=BaseSchema
+)()
+
+
+@dataclass
+class KamereonVehicleLockStatusData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle data lock-status attributes."""
+
+
+KamereonVehicleLockStatusDataSchema = marshmallow_dataclass.class_schema(
+    KamereonVehicleLockStatusData, base_schema=BaseSchema
+)()
+
+
+@dataclass
+class KamereonVehicleChargingSettingsData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle data charging-settings attributes."""
+
+
+KamereonVehicleChargingSettingsDataSchema = marshmallow_dataclass.class_schema(
+    KamereonVehicleChargingSettingsData, base_schema=BaseSchema
+)()
+
+
+@dataclass
+class KamereonVehicleNotificationSettingsData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle data notification-settings attributes."""
+
+
+KamereonVehicleNotificationSettingsDataSchema = marshmallow_dataclass.class_schema(
+    KamereonVehicleNotificationSettingsData, base_schema=BaseSchema
+)()
+
+
+@dataclass
+class KamereonVehicleChargeHistoryData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle data charge-history attributes."""
+
+
+KamereonVehicleChargeHistoryDataSchema = marshmallow_dataclass.class_schema(
+    KamereonVehicleChargeHistoryData, base_schema=BaseSchema
+)()
+
+
+@dataclass
+class KamereonVehicleChargesData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle data charges attributes."""
+
+
+KamereonVehicleChargesDataSchema = marshmallow_dataclass.class_schema(
+    KamereonVehicleChargesData, base_schema=BaseSchema
+)()
+
+
+@dataclass
+class KamereonVehicleHvacHistoryData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle data hvac-history attributes."""
+
+
+KamereonVehicleHvacHistoryDataSchema = marshmallow_dataclass.class_schema(
+    KamereonVehicleHvacHistoryData, base_schema=BaseSchema
+)()
+
+
+@dataclass
+class KamereonVehicleHvacSessionsData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle data hvac-sessions attributes."""
+
+
+KamereonVehicleHvacSessionsDataSchema = marshmallow_dataclass.class_schema(
+    KamereonVehicleHvacSessionsData, base_schema=BaseSchema
 )()
