@@ -1,6 +1,5 @@
 """Client for Renault API."""
 import logging
-from dataclasses import asdict
 from datetime import datetime
 from typing import cast
 from typing import List
@@ -291,8 +290,8 @@ class RenaultVehicle:
 
     async def set_charge_schedules(
         self, schedules: List[model.ChargeSchedule]
-    ) -> model.KamereonVehicleChargeModeActionData:
-        """Set vehicle charge mode."""
+    ) -> model.KamereonVehicleChargeScheduleActionData:
+        """Set vehicle charge schedules."""
         for schedule in schedules:
             if not isinstance(schedule, model.ChargeSchedule):  # pragma: no cover
                 raise TypeError(
@@ -300,16 +299,18 @@ class RenaultVehicle:
                         schedules.__class__
                     )
                 )
-        attributes = {"schedules": asdict(schedules)}
+        attributes = {"schedules": list(schedule.for_json() for schedule in schedules)}
 
-        response = await self._kamereon.set_vehicle_charge_mode(
+        response = await self._kamereon.set_vehicle_charge_schedule(
             self._account_id,
             self._vin,
             attributes=attributes,
         )
         return cast(
-            model.KamereonVehicleChargeModeActionData,
-            response.get_attributes(model.KamereonVehicleChargeModeActionDataSchema),
+            model.KamereonVehicleChargeScheduleActionData,
+            response.get_attributes(
+                model.KamereonVehicleChargeScheduleActionDataSchema
+            ),
         )
 
     async def set_charge_mode(

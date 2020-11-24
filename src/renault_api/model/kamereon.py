@@ -291,6 +291,13 @@ class ChargeDaySchedule(BaseModel):
     startTime: Optional[str]  # noqa: N815
     duration: Optional[int]
 
+    def for_json(self) -> Dict[str, Any]:
+        """Create dict for json."""
+        return {
+            "startTime": self.startTime,
+            "duration": self.duration,
+        }
+
 
 @dataclass
 class ChargeSchedule(BaseModel):
@@ -305,6 +312,20 @@ class ChargeSchedule(BaseModel):
     friday: Optional[ChargeDaySchedule]
     saturday: Optional[ChargeDaySchedule]
     sunday: Optional[ChargeDaySchedule]
+
+    def for_json(self) -> Dict[str, Any]:
+        """Create dict for json."""
+        return {
+            "id": self.id,
+            "activated": self.activated,
+            "monday": self.monday.for_json() if self.monday else {},
+            "tuesday": self.tuesday.for_json() if self.tuesday else {},
+            "wednesday": self.wednesday.for_json() if self.wednesday else {},
+            "thursday": self.thursday.for_json() if self.thursday else {},
+            "friday": self.friday.for_json() if self.friday else {},
+            "saturday": self.saturday.for_json() if self.saturday else {},
+            "sunday": self.sunday.for_json() if self.sunday else {},
+        }
 
 
 @dataclass
