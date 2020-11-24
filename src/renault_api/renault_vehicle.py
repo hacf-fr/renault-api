@@ -1,11 +1,10 @@
 """Client for Renault API."""
 import logging
 from datetime import datetime
+from datetime import timezone
 from typing import cast
 from typing import List
 from typing import Optional
-
-from dateutil import tz
 
 from .kamereon import Kamereon
 from .model import kamereon as model
@@ -261,7 +260,7 @@ class RenaultVehicle:
                         when.__class__
                     )
                 )
-            start_date_time = when.astimezone(tz.tzutc()).strftime(PERIOD_TZ_FORMAT)
+            start_date_time = when.astimezone(timezone.utc).strftime(PERIOD_TZ_FORMAT)
             attributes["startDateTime"] = start_date_time
 
         response = await self._kamereon.set_vehicle_hvac_start(
