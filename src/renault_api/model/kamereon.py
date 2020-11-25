@@ -225,7 +225,7 @@ KamereonVehicleBatteryStatusDataSchema = marshmallow_dataclass.class_schema(
 class KamereonVehicleLocationData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data location attributes."""
 
-    lastUpdateTime: Optional[str]
+    lastUpdateTime: Optional[str]  # noqa: N815
     gpsLatitude: Optional[float]  # noqa: N815
     gpsLongitude: Optional[float]  # noqa: N815
 

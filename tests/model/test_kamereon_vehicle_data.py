@@ -5,10 +5,10 @@ from typing import Type
 
 import pytest
 from marshmallow.schema import Schema
-from renault_api.model.kamereon import ChargeMode
 from tests import get_json_files
 
 from renault_api.model import kamereon as model
+from renault_api.model.kamereon import ChargeMode
 
 
 FIXTURE_PATH = "tests/fixtures/kamereon/"
