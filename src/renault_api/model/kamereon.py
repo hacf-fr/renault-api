@@ -251,14 +251,27 @@ KamereonVehicleHvacStatusDataSchema = marshmallow_dataclass.class_schema(
 class ChargeMode(Enum):
     """Enum for charge-mode."""
 
-    ALWAYS = "Always"
-    ALWAYS_CHARGING = "Always charge"
-    SCHEDULE_MODE = "Scheduled charge"
+    ALWAYS = "always"
+    ALWAYS_CHARGING = "always_charging"
+    SCHEDULE_MODE = "schedule_mode"
 
 
 @dataclass
 class KamereonVehicleChargeModeData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data charge-mode attributes."""
+
+    chargeMode: Optional[str]  # noqa: N815
+
+    def get_charge_mode(self) -> Optional[ChargeMode]:
+        """Return charge mode."""
+        if "chargeMode" not in self.raw_data:  # pragma: no cover
+            raise KamereonException("`chargeMode` is None in KamereonVehicleData.")
+        try:
+            return ChargeMode(self.chargeMode)
+        except ValueError:  # pragma: no cover
+            raise KamereonException(
+                f"Unable to convert `{self.chargeMode}` to ChargeMode."
+            )
 
 
 KamereonVehicleChargeModeDataSchema = marshmallow_dataclass.class_schema(

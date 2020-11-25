@@ -5,6 +5,7 @@ from typing import Type
 
 import pytest
 from marshmallow.schema import Schema
+from renault_api.model.kamereon import ChargeMode
 from tests import get_json_files
 
 from renault_api.model import kamereon as model
@@ -223,3 +224,21 @@ def test_location() -> None:
     assert vehicle_data.gpsLatitude == 48.1234567
     assert vehicle_data.gpsLongitude == 11.1234567
     assert vehicle_data.lastUpdateTime == "2020-02-18T16:58:38Z"
+
+
+def test_charge_mode() -> None:
+    """Test vehicle data for charge-mode.json."""
+    response: model.KamereonVehicleDataResponse = get_response_content(
+        f"{FIXTURE_PATH}vehicle_data/charge-mode.json",
+        model.KamereonVehicleDataResponseSchema,
+    )
+    response.raise_for_error_code()
+    assert response.data.raw_data["attributes"] == {"chargeMode": "always"}
+
+    vehicle_data = cast(
+        model.KamereonVehicleChargeModeData,
+        response.get_attributes(model.KamereonVehicleChargeModeDataSchema),
+    )
+
+    assert vehicle_data.chargeMode == "always"
+    assert vehicle_data.get_charge_mode() == ChargeMode.ALWAYS
