@@ -200,3 +200,26 @@ def test_charging_settings() -> None:
 
     # Check that for_json returns the same as the original data
     assert schedule_data.for_json() == schedule_data.raw_data
+
+
+def test_location() -> None:
+    """Test vehicle data for location.json."""
+    response: model.KamereonVehicleDataResponse = get_response_content(
+        f"{FIXTURE_PATH}vehicle_data/location.json",
+        model.KamereonVehicleDataResponseSchema,
+    )
+    response.raise_for_error_code()
+    assert response.data.raw_data["attributes"] == {
+        "gpsLatitude": 48.1234567,
+        "gpsLongitude": 11.1234567,
+        "lastUpdateTime": "2020-02-18T16:58:38Z",
+    }
+
+    vehicle_data = cast(
+        model.KamereonVehicleLocationData,
+        response.get_attributes(model.KamereonVehicleLocationDataSchema),
+    )
+
+    assert vehicle_data.gpsLatitude == 48.1234567
+    assert vehicle_data.gpsLongitude == 11.1234567
+    assert vehicle_data.lastUpdateTime == "2020-02-18T16:58:38Z"
