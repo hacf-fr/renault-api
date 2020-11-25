@@ -188,6 +188,8 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
     batteryAvailableEnergy: Optional[int]  # noqa: N815
     plugStatus: Optional[int]  # noqa: N815
     chargingStatus: Optional[float]  # noqa: N815
+    chargingRemainingTime: Optional[int]  # noqa: N815
+    chargingInstantaneousPower: Optional[float]  # noqa: N815
 
     def get_plug_status(self) -> Optional[PlugState]:
         """Return plug status."""
@@ -202,7 +204,7 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
             )
 
     def get_charging_status(self) -> Optional[ChargeState]:
-        """Return plug status."""
+        """Return charging status."""
         if "chargingStatus" not in self.raw_data:  # pragma: no cover
             raise KamereonException("`chargingStatus` is None in KamereonVehicleData.")
         try:

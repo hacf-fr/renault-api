@@ -3,14 +3,16 @@
     "type": "Car",
     "id": "VF1AAAAA555777999",
     "attributes": {
-      "timestamp": "2020-11-09T07:41:49+01:00",
-      "batteryLevel": 34,
-      "batteryTemperature": 10,
-      "batteryAutonomy": 88,
+      "timestamp": "2020-01-12T21:40:16Z",
+      "batteryLevel": 60,
+      "batteryTemperature": 20,
+      "batteryAutonomy": 141,
       "batteryCapacity": 0,
-      "batteryAvailableEnergy": 0,
-      "plugStatus": 0,
-      "chargingStatus": -1.0
+      "batteryAvailableEnergy": 31,
+      "plugStatus": 1,
+      "chargingStatus": 1.0,
+      "chargingRemainingTime": 145,
+      "chargingInstantaneousPower": 27.0
     }
   }
 }
