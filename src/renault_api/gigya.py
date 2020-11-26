@@ -15,17 +15,13 @@ _LOGGER = logging.getLogger(__name__)
 class Gigya:
     """Gigya client for authentication."""
 
-    def __init__(self, websession: ClientSession, api_key: str, root_url: str) -> None:
+    def __init__(self, websession: ClientSession) -> None:
         """Initialise Gigya."""
         self._websession = websession
 
-        self._api_key = api_key
-        self._root_url = root_url
-
     async def _post(
-        self, path: str, data: Dict[str, Any], schema: Schema
+        self, url: str, data: Dict[str, Any], schema: Schema
     ) -> model.GigyaResponse:
-        url = f"{self._root_url}{path}"
         async with self._websession.request("POST", url, data=data) as http_response:
             response_text = await http_response.text()
             _LOGGER.debug(
@@ -42,14 +38,16 @@ class Gigya:
 
             return gigya_response
 
-    async def login(self, login_id: str, password: str) -> model.GigyaLoginResponse:
+    async def login(
+        self, root_url: str, api_key: str, login_id: str, password: str
+    ) -> model.GigyaLoginResponse:
         """POST to /accounts.login."""
         return cast(
             model.GigyaLoginResponse,
             await self._post(
-                "/accounts.login",
+                f"{root_url}/accounts.login",
                 data={
-                    "ApiKey": self._api_key,
+                    "ApiKey": api_key,
                     "loginID": login_id,
                     "password": password,
                 },
@@ -58,26 +56,28 @@ class Gigya:
         )
 
     async def get_account_info(
-        self, login_token: str
+        self, root_url: str, api_key: str, login_token: str
     ) -> model.GigyaGetAccountInfoResponse:
         """POST to /accounts.getAccountInfo."""
         return cast(
             model.GigyaGetAccountInfoResponse,
             await self._post(
-                "/accounts.getAccountInfo",
-                data={"ApiKey": self._api_key, "login_token": login_token},
+                f"{root_url}/accounts.getAccountInfo",
+                data={"ApiKey": api_key, "login_token": login_token},
                 schema=model.GigyaGetAccountInfoResponseSchema,
             ),
         )
 
-    async def get_jwt(self, login_token: str) -> model.GigyaGetJWTResponse:
+    async def get_jwt(
+        self, root_url: str, api_key: str, login_token: str
+    ) -> model.GigyaGetJWTResponse:
         """POST to /accounts.getAccountInfo."""
         return cast(
             model.GigyaGetJWTResponse,
             await self._post(
-                "/accounts.getJWT",
+                f"{root_url}/accounts.getJWT",
                 data={
-                    "ApiKey": self._api_key,
+                    "ApiKey": api_key,
                     "login_token": login_token,
                     # gigyaDataCenter may be needed for future jwt validation
                     "fields": "data.personId,data.gigyaDataCenter",
