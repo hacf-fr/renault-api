@@ -47,6 +47,14 @@ def test_simple_credential() -> None:
     assert credential_store.get(test_key) == test_value
     assert credential_store[test_key] == test_value
 
+    # Delete value
+    del credential_store[test_key]
+
+    # Try to get values from filled store
+    assert test_key not in credential_store
+    assert credential_store.get(test_key) is None
+    assert credential_store.get_value(test_key) is None
+
 
 def test_jwt_credential() -> None:
     """Test get/set with jwt credential."""
@@ -72,6 +80,7 @@ def test_jwt_credential() -> None:
     expired_time = time.time() + 3600
     with mock.patch("time.time", mock.MagicMock(return_value=expired_time)):
         assert test_key not in credential_store
+        assert credential_store.get_value(test_key) is None
         assert not credential_store.get(test_key)
         with pytest.raises(KeyError):
             credential_store[test_key]
