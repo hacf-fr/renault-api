@@ -4,7 +4,6 @@ from glob import glob
 from typing import Any
 from typing import List
 from typing import Optional
-from typing import Type
 
 import jwt
 from marshmallow.schema import Schema
@@ -35,8 +34,8 @@ def get_file_content(filename: str) -> str:
     return content
 
 
-def get_response_content(path: str, schema: Type[Schema]) -> Any:
-    """Read fixture text file as string."""
+def get_response_content(path: str, schema: Schema) -> Any:
+    """Read fixture text file as specified schema."""
     with open(path, "r") as file:
-        content = file.read()
-    return schema.loads(content)
+        json_data = file.read()
+    return schema.loads(json_data)
