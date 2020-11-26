@@ -3,15 +3,15 @@ from typing import Optional
 
 import click
 from aiohttp.client import ClientSession
+from click.core import Context
 from renault_api.cli.vehicles import display_vehicles
 
 from .core import display_keys, set_options
 from .core import set_debug
 from .helpers import coro
 from .helpers import create_aiohttp_closed_event
-from .kamereon import CLIKamereon, display_accounts
+from .kamereon import display_accounts
 from .kamereon import do_login
-from .kamereon import ensure_logged_in
 from renault_api.cli.vehicle_status import display_status
 from renault_api.exceptions import RenaultException
 
@@ -20,10 +20,32 @@ from renault_api.exceptions import RenaultException
 @click.version_option()
 @click.option("--debug", is_flag=True)
 @click.option("--log", is_flag=True)
-def main(debug: bool, log: bool) -> None:
+@click.option("--locale", default=None, help="API locale (eg. fr_FR)")
+@click.option(
+    "--account",
+    default=None,
+    help="Kamereon account ID to use",
+)
+@click.option("--vin", default=None, help="Vehicle VIN to use")
+@click.pass_context
+def main(
+    ctx: Context,
+    debug: bool,
+    log: bool,
+    locale: Optional[str],
+    account: Optional[str],
+    vin: Optional[str],
+) -> None:
     """Renault CLI."""
+    ctx.ensure_object(dict)
     if debug or log:
         set_debug(debug, log)
+    if locale:
+        ctx.obj["locale"] = locale
+    if account:
+        ctx.obj["account"] = account
+    if vin:
+        ctx.obj["vin"] = vin
 
 
 @click.option("--locale", default=None, help="API locale (eg. fr_FR)")
@@ -48,19 +70,19 @@ async def set(
             await closed_event.wait()
 
 
-@click.option(
-    "--account",
-    default=None,
-    help="Kamereon account ID to use",
-)
-@click.option("--vin", default=None, help="Vehicle VIN to use")
 @main.command()
+@click.pass_context
 @coro  # type: ignore
-async def status(account: Optional[str], vin: Optional[str]) -> None:
+async def status(ctx: Context) -> None:
     """Set configuration keys."""
     async with ClientSession() as websession:
         try:
-            await display_status(websession, account, vin)
+            await display_status(
+                websession,
+                locale=ctx.obj.get("locale"),
+                account=ctx.obj.get("account"),
+                vin=ctx.obj.get("vin"),
+            )
         except RenaultException as exc:
             raise click.ClickException(str(exc)) from exc
         finally:

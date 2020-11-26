@@ -21,5 +21,8 @@ def test_main_succeeds(runner: CliRunner) -> None:
 @pytest.mark.parametrize("locale", AVAILABLE_LOCALES.keys())
 def test_get_keys_succeeds(runner: CliRunner, locale: str) -> None:
     """It exits with a status code of zero."""
-    result = runner.invoke(__main__.get_keys, [locale])
+    runner.invoke(__main__.set, ["--locale", locale])
+    result = runner.invoke(__main__.get_keys)
     assert result.exit_code == 0
+    expected_output = f"Current locale: {locale}\nCurrent gigya-api-key: None\nCurrent gigya-api-url: None\nCurrent kamereon-api-key: None\nCurrent kamereon-api-url: None\n"
+    assert result.output == expected_output

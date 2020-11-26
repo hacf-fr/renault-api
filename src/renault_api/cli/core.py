@@ -23,7 +23,8 @@ class CLICredentialStore:
 
     __instance: CredentialStore = None
 
-    def __new__(cls):
+    @classmethod
+    def get_instance(cls) -> CredentialStore:
         """Get singleton Credential Store."""
         if not CLICredentialStore.__instance:
             CLICredentialStore.__instance = FileCredentialStore(
@@ -66,46 +67,43 @@ async def set_options(
     websession, locale: Optional[str], account: Optional[str], vin: Optional[str]
 ) -> None:
     """Set configuration keys."""
-    await set_options(locale, account, vin)
     if locale:
-        await set_locale(websession, locale)
+        # Ensure API keys are available
+        api_keys = await get_api_keys(locale, aiohttp_session=websession)
+
+        credential_store = CLICredentialStore.get_instance()
+        credential_store[CONF_LOCALE] = Credential(locale)
+        for k, v in api_keys.items():
+            credential_store[k] = Credential(v)
+
     if account:
-        credential_store = CLICredentialStore()
+        credential_store = CLICredentialStore.get_instance()
         credential_store[CONF_ACCOUNT_ID] = Credential(account)
     if vin:
-        credential_store = CLICredentialStore()
+        credential_store = CLICredentialStore.get_instance()
         credential_store[CONF_VIN] = Credential(vin)
 
 
-async def ensure_locale(websession) -> None:
+async def get_locale(websession) -> str:
     """Prompt the user for locale."""
-    credential_store = CLICredentialStore()
+    credential_store = CLICredentialStore.get_instance()
     if CONF_LOCALE in credential_store:
-        return
+        return credential_store.get_value(CONF_LOCALE)
 
     default_locale = getdefaultlocale()[0]
     while True:
         locale = click.prompt("Please select a locale", default=default_locale)
         try:
-            await set_locale(websession, locale)
+            await get_api_keys(locale, aiohttp_session=websession)
         except RenaultException as exc:
             click.echo(str(exc), err=True)
         else:
-            return
+            return locale
         click.echo(f"Locale `{locale}` is unknown.", err=True)
 
 
-async def set_locale(websession, locale: str) -> None:
-    """Prompt the user for locale."""
-    await get_api_keys(locale, aiohttp_session=websession)
-
-    credential_store = CLICredentialStore()
-    credential_store[CONF_LOCALE] = Credential(locale)
-
-
-async def display_keys(websession) -> None:
+async def display_keys() -> None:
     """Get the current configuration keys."""
-    await ensure_locale(websession)
-    credential_store = CLICredentialStore()
+    credential_store = CLICredentialStore.get_instance()
     for key in PERMANENT_KEYS:
         click.echo(f"Current {key}: {credential_store.get_value(key)}")
