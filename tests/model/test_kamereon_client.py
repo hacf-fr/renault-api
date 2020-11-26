@@ -1,20 +1,10 @@
 """Tests for Kamereon models."""
-from typing import Any
-from typing import Type
-
-from marshmallow.schema import Schema
+from tests import get_response_content
 
 from renault_api.model import kamereon as model
 
 
-FIXTURE_PATH = "tests/fixtures/kamereon/"
-
-
-def get_response_content(path: str, schema: Type[Schema]) -> Any:
-    """Read fixture text file as string."""
-    with open(path, "r") as file:
-        content = file.read()
-    return schema.loads(content)
+FIXTURE_PATH = "tests/fixtures/kamereon"
 
 
 def test_person_response() -> None:

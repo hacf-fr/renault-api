@@ -1,27 +1,17 @@
 """Tests for Kamereon models."""
-from typing import Any
 from typing import cast
-from typing import Type
 
 import pytest
-from marshmallow.schema import Schema
 from tests import get_json_files
+from tests import get_response_content
 
 from renault_api.model import kamereon as model
-from renault_api.model.kamereon import ChargeMode
 
 
-FIXTURE_PATH = "tests/fixtures/kamereon/"
+FIXTURE_PATH = "tests/fixtures/kamereon/vehicle_data"
 
 
-def get_response_content(path: str, schema: Type[Schema]) -> Any:
-    """Read fixture text file as string."""
-    with open(path, "r") as file:
-        content = file.read()
-    return schema.loads(content)
-
-
-@pytest.mark.parametrize("filename", get_json_files(f"{FIXTURE_PATH}/vehicle_data"))
+@pytest.mark.parametrize("filename", get_json_files(FIXTURE_PATH))
 def test_vehicle_data_response(filename: str) -> None:
     """Test vehicle data response."""
     response: model.KamereonVehicleDataResponse = get_response_content(
@@ -35,7 +25,7 @@ def test_vehicle_data_response(filename: str) -> None:
 def test_battery_status_1() -> None:
     """Test vehicle data for battery-status.1.json."""
     response: model.KamereonVehicleDataResponse = get_response_content(
-        f"{FIXTURE_PATH}vehicle_data/battery-status.1.json",
+        f"{FIXTURE_PATH}/battery-status.1.json",
         model.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
@@ -71,7 +61,7 @@ def test_battery_status_1() -> None:
 def test_battery_status_2() -> None:
     """Test vehicle data for battery-status.2.json."""
     response: model.KamereonVehicleDataResponse = get_response_content(
-        f"{FIXTURE_PATH}vehicle_data/battery-status.2.json",
+        f"{FIXTURE_PATH}/battery-status.2.json",
         model.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
@@ -110,7 +100,7 @@ def test_battery_status_2() -> None:
 def test_cockpit_zoe() -> None:
     """Test vehicle data for cockpit.zoe.json."""
     response: model.KamereonVehicleDataResponse = get_response_content(
-        f"{FIXTURE_PATH}vehicle_data/cockpit.zoe.json",
+        f"{FIXTURE_PATH}/cockpit.zoe.json",
         model.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
@@ -129,7 +119,7 @@ def test_cockpit_zoe() -> None:
 def test_cockpit_captur_ii() -> None:
     """Test vehicle data for cockpit.captur_ii.json."""
     response: model.KamereonVehicleDataResponse = get_response_content(
-        f"{FIXTURE_PATH}vehicle_data/cockpit.captur_ii.json",
+        f"{FIXTURE_PATH}/cockpit.captur_ii.json",
         model.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
@@ -152,7 +142,7 @@ def test_cockpit_captur_ii() -> None:
 def test_charging_settings() -> None:
     """Test vehicle data for charging-settings.json."""
     response: model.KamereonVehicleDataResponse = get_response_content(
-        f"{FIXTURE_PATH}vehicle_data/charging-settings.json",
+        f"{FIXTURE_PATH}/charging-settings.json",
         model.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
@@ -206,7 +196,7 @@ def test_charging_settings() -> None:
 def test_location() -> None:
     """Test vehicle data for location.json."""
     response: model.KamereonVehicleDataResponse = get_response_content(
-        f"{FIXTURE_PATH}vehicle_data/location.json",
+        f"{FIXTURE_PATH}/location.json",
         model.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
@@ -229,7 +219,7 @@ def test_location() -> None:
 def test_charge_mode() -> None:
     """Test vehicle data for charge-mode.json."""
     response: model.KamereonVehicleDataResponse = get_response_content(
-        f"{FIXTURE_PATH}vehicle_data/charge-mode.json",
+        f"{FIXTURE_PATH}/charge-mode.json",
         model.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
@@ -241,4 +231,4 @@ def test_charge_mode() -> None:
     )
 
     assert vehicle_data.chargeMode == "always"
-    assert vehicle_data.get_charge_mode() == ChargeMode.ALWAYS
+    assert vehicle_data.get_charge_mode() == model.ChargeMode.ALWAYS
