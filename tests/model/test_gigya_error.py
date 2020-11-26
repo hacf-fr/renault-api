@@ -23,7 +23,7 @@ def test_vehicle_error_response(filename: str) -> None:
 def test_get_jwt_403005_response() -> None:
     """Test get_jwt.403005 response."""
     response: model.GigyaGetJWTResponse = get_response_content(
-        f"{FIXTURE_PATH}/get_jwt.403005.json", model.GigyaGetJWTResponseSchema
+        f"{FIXTURE_PATH}/403005.json", model.GigyaGetJWTResponseSchema
     )
     with pytest.raises(GigyaResponseException) as excinfo:
         response.raise_for_error_code()
@@ -34,7 +34,7 @@ def test_get_jwt_403005_response() -> None:
 def test_get_jwt_403013_response() -> None:
     """Test get_jwt.403013 response."""
     response: model.GigyaGetJWTResponse = get_response_content(
-        f"{FIXTURE_PATH}/get_jwt.403013.json", model.GigyaGetJWTResponseSchema
+        f"{FIXTURE_PATH}/403013.json", model.GigyaGetJWTResponseSchema
     )
     with pytest.raises(GigyaResponseException) as excinfo:
         response.raise_for_error_code()
@@ -45,7 +45,7 @@ def test_get_jwt_403013_response() -> None:
 def test_login_403042_response() -> None:
     """Test login.403042 response."""
     response: model.GigyaLoginResponse = get_response_content(
-        f"{FIXTURE_PATH}/login.403042.json", model.GigyaLoginResponseSchema
+        f"{FIXTURE_PATH}/403042.json", model.GigyaLoginResponseSchema
     )
     with pytest.raises(GigyaResponseException) as excinfo:
         response.raise_for_error_code()

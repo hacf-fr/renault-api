@@ -10,6 +10,7 @@ from marshmallow.schema import Schema
 
 from renault_api.model import gigya as model
 
+
 _LOGGER = logging.getLogger(__name__)
 
 

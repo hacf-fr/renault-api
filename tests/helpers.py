@@ -1,5 +1,7 @@
 """Helpers for the test suite of the renault_api package."""
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import AsyncMock
+from unittest.mock import MagicMock
+
 from tests import get_jwt
 from tests.const import TEST_PERSON_ID
 

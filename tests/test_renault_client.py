@@ -13,7 +13,6 @@ from tests.const import TEST_PERSON_ID
 from tests.const import TEST_USERNAME
 
 from renault_api import renault_client
-from renault_api.exceptions import GigyaResponseException
 
 TEST_KAMEREON_BASE_URL = f"{TEST_KAMEREON_URL}/commerce/v1"
 FIXTURE_PATH = "tests/fixtures/kamereon/"
@@ -42,22 +41,6 @@ async def test_login(client: renault_client.RenaultClient) -> None:
             headers={"content-type": "text/javascript"},
         )
         await client.login(TEST_USERNAME, TEST_PASSWORD)
-
-
-@pytest.mark.asyncio
-async def test_login_failed(client: renault_client.RenaultClient) -> None:
-    """Test login failed."""
-    with aioresponses() as mocked_responses:
-        mocked_responses.post(
-            f"{TEST_GIGYA_URL}/accounts.login",
-            status=200,
-            body=get_file_content(f"{GIGYA_FIXTURE_PATH}/errors/login.403042.json"),
-            headers={"content-type": "text/javascript"},
-        )
-        with pytest.raises(GigyaResponseException) as excinfo:
-            await client.login(TEST_USERNAME, TEST_PASSWORD)
-        assert excinfo.value.error_code == 403042
-        assert excinfo.value.error_details == "invalid loginID or password"
 
 
 @pytest.mark.asyncio

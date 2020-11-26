@@ -1,8 +1,8 @@
 """Test cases for initialisation of the Kamereon client."""
-from tests import get_file_content
 import aiohttp
 import pytest
 from aioresponses import aioresponses
+from tests import get_file_content
 from tests.const import TEST_COUNTRY
 from tests.const import TEST_GIGYA_URL
 from tests.const import TEST_LOCALE_DETAILS
@@ -10,7 +10,6 @@ from tests.const import TEST_PASSWORD
 from tests.const import TEST_PERSON_ID
 from tests.const import TEST_USERNAME
 
-from renault_api.exceptions import GigyaResponseException
 from renault_api.kamereon import Kamereon
 
 FIXTURE_PATH = "tests/fixtures/gigya/"

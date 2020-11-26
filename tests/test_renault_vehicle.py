@@ -1,6 +1,5 @@
 """Test cases for the Renault client API keys."""
 from datetime import datetime
-from tests.helpers import get_session_provider
 from typing import List
 
 import pytest
@@ -12,6 +11,7 @@ from tests.const import TEST_COUNTRY
 from tests.const import TEST_KAMEREON_URL
 from tests.const import TEST_LOCALE
 from tests.const import TEST_VIN
+from tests.helpers import get_session_provider
 
 from renault_api.model.kamereon import ChargeMode
 from renault_api.model.kamereon import ChargeSchedule

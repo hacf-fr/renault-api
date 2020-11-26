@@ -1,24 +1,17 @@
 """Test cases for the Renault client API keys."""
-from tests.helpers import get_session_provider
 import pytest
 from aiohttp.client import ClientSession
 from aioresponses import aioresponses
 from tests import get_file_content
-from tests import get_jwt
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
 from tests.const import TEST_KAMEREON_URL
 from tests.const import TEST_LOCALE
-from tests.const import TEST_PERSON_ID
 from tests.const import TEST_VIN
+from tests.helpers import get_session_provider
 
-from renault_api.model.credential import Credential
-from renault_api.model.credential import JWTCredential
 from renault_api.renault_account import RenaultAccount
 from renault_api.renault_client import RenaultClient
-from renault_api.session_provider import CREDENTIAL_GIGYA_JWT
-from renault_api.session_provider import CREDENTIAL_GIGYA_REFRESH_TOKEN
-from renault_api.session_provider import CREDENTIAL_GIGYA_PERSON_ID
 
 TEST_KAMEREON_BASE_URL = f"{TEST_KAMEREON_URL}/commerce/v1"
 TEST_KAMEREON_ACCOUNT_URL = f"{TEST_KAMEREON_BASE_URL}/accounts/{TEST_ACCOUNT_ID}"
