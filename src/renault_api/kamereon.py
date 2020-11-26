@@ -10,16 +10,11 @@ from marshmallow.schema import Schema
 
 from .const import CONF_KAMEREON_APIKEY
 from .const import CONF_KAMEREON_URL
-from .exceptions import KamereonException
+from .session_provider import SessionProvider
 from .gigya import Gigya
-from renault_api.credential_store import CredentialStore
-from renault_api.model import kamereon as model
-from renault_api.model.credential import Credential
-from renault_api.model.credential import JWTCredential
+from .credential_store import CredentialStore
+from .model import kamereon as model
 
-CREDENTIAL_GIGYA_JWT = "gigya_jwt"
-CREDENTIAL_GIGYA_LOGIN_TOKEN = "gigya_login_token"
-CREDENTIAL_GIGYA_PERSON_ID = "gigya_person_id"
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -42,30 +37,12 @@ class Kamereon:
         self._api_key = locale_details[CONF_KAMEREON_APIKEY]
         self._root_url = locale_details[CONF_KAMEREON_URL]
 
-        self._gigya = gigya or Gigya(
-            websession=websession, locale_details=locale_details
+        self._session = SessionProvider(
+            websession=websession,
+            locale_details=locale_details,
+            gigya=gigya,
+            credential_store=credential_store,
         )
-        self._credentials: CredentialStore = credential_store or CredentialStore()
-
-    async def _get_credential(self, key: str) -> str:
-        credential = self._credentials.get(key)
-        if credential:
-            return credential.value
-
-        if key == CREDENTIAL_GIGYA_JWT:
-            login_token = await self._get_credential(CREDENTIAL_GIGYA_LOGIN_TOKEN)
-            jwt_response = await self._gigya.get_jwt(login_token)
-            credential = JWTCredential(jwt_response.get_jwt_token())
-            self._credentials[key] = credential
-            return credential.value
-        if key == CREDENTIAL_GIGYA_PERSON_ID:
-            login_token = await self._get_credential(CREDENTIAL_GIGYA_LOGIN_TOKEN)
-            account_response = await self._gigya.get_account_info(login_token)
-            credential = Credential(account_response.get_person_id())
-            self._credentials[key] = credential
-            return credential.value
-
-        raise KamereonException(f"Credential `{key}` not found in credential cache.")
 
     def _get_path_to_account(self, account_id: str) -> str:
         """Get the path to the account."""
@@ -87,7 +64,7 @@ class Kamereon:
         url = f"{self._root_url}/commerce/v1{path}"
         headers = {
             "apikey": self._api_key,
-            "x-gigya-id_token": await self._get_credential(CREDENTIAL_GIGYA_JWT),
+            "x-gigya-id_token": await self._session.get_jwt_token(),
         }
         params = params or {}
         params["country"] = self._country
@@ -115,16 +92,12 @@ class Kamereon:
             return kamereon_response
 
     async def login(self, login_id: str, password: str) -> None:
-        """Forward login to Gigya, and cache the login token."""
-        self._credentials.clear()
-        response = await self._gigya.login(login_id, password)
-        self._credentials[CREDENTIAL_GIGYA_LOGIN_TOKEN] = Credential(
-            response.get_session_cookie()
-        )
+        """Forward login to SessionProvider, and cache the login token."""
+        await self._session.login(login_id, password)
 
     async def get_person(self) -> model.KamereonPersonResponse:
         """GET to /persons/{person_id}."""
-        person_id = await self._get_credential(CREDENTIAL_GIGYA_PERSON_ID)
+        person_id = await self._session.get_person_id()
         return cast(
             model.KamereonPersonResponse,
             await self._request(

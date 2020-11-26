@@ -42,6 +42,11 @@ class CredentialStore:
                 return cred.value
         return None
 
+    def __delitem__(self, name: str) -> None:
+        """Remove a credential from the credential store."""
+        del self._store[name]
+        self._write()
+
     def __setitem__(self, name: str, value: Credential) -> None:
         """Add a credential to the credential store."""
         if not isinstance(name, str):  # pragma: no cover
