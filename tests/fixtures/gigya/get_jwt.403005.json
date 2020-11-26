@@ -1,0 +1,10 @@
+{
+  "callId": "782cef59173646f1840134cdaec798f0",
+  "errorCode": 403005,
+  "errorDetails": "Unauthorized user",
+  "errorMessage": "Unauthorized user",
+  "apiVersion": 2,
+  "statusCode": 403,
+  "statusReason": "Forbidden",
+  "time": "2020-11-26T08:47:46.600Z"
+}

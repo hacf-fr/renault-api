@@ -1,0 +1,10 @@
+{
+  "callId": "0f34ac6540fa4da9adbb67e1a22f3fd4",
+  "errorCode": 403013,
+  "errorDetails": "Unverified user",
+  "errorMessage": "Unverified user",
+  "apiVersion": 2,
+  "statusCode": 403,
+  "statusReason": "Forbidden",
+  "time": "2020-11-26T08:28:56.248Z"
+}

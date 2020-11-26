@@ -32,7 +32,7 @@ def test_login_response() -> None:
 def test_login_failed_response() -> None:
     """Test login response."""
     response: GigyaLoginResponse = get_response_content(
-        "login_failed.json", GigyaLoginResponseSchema
+        "login.403042.json", GigyaLoginResponseSchema
     )
     with pytest.raises(GigyaResponseException) as excinfo:
         response.raise_for_error_code()
