@@ -71,7 +71,7 @@ async def test_login_failed(session_provider: SessionProvider) -> None:
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.login",
             status=200,
-            body=get_response_content("gigya/login.403042.json"),
+            body=get_response_content("gigya/errors/login.403042.json"),
             headers={"content-type": "text/javascript"},
         )
         with pytest.raises(GigyaResponseException) as excinfo:
