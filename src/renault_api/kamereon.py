@@ -8,12 +8,13 @@ from typing import Optional
 from aiohttp import ClientSession
 from marshmallow.schema import Schema
 
+from .const import CONF_GIGYA_APIKEY
+from .const import CONF_GIGYA_URL
 from .const import CONF_KAMEREON_APIKEY
 from .const import CONF_KAMEREON_URL
-from .credential_store import CredentialStore
-from .gigya import Gigya
 from .model import kamereon as model
-from .session_provider import SessionProvider
+from .session_provider import BaseSessionProvider
+from .session_provider import GigyaSessionProvider
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -27,8 +28,7 @@ class Kamereon:
         websession: ClientSession,
         country: str,
         locale_details: Dict[str, str],
-        gigya: Optional[Gigya] = None,
-        credential_store: Optional[CredentialStore] = None,
+        session_provider: Optional[BaseSessionProvider] = None,
     ) -> None:
         """Initialise Kamereon."""
         self._websession = websession
@@ -37,12 +37,13 @@ class Kamereon:
         self._api_key = locale_details[CONF_KAMEREON_APIKEY]
         self._root_url = locale_details[CONF_KAMEREON_URL]
 
-        self._session = SessionProvider(
-            websession=websession,
-            locale_details=locale_details,
-            gigya=gigya,
-            credential_store=credential_store,
-        )
+        if not session_provider:
+            gigya_api_key = locale_details[CONF_GIGYA_APIKEY]
+            gigya_root_url = locale_details[CONF_GIGYA_URL]
+            session_provider = GigyaSessionProvider(
+                websession=websession, api_key=gigya_api_key, root_url=gigya_root_url
+            )
+        self._session: BaseSessionProvider = session_provider
 
     def _get_path_to_account(self, account_id: str) -> str:
         """Get the path to the account."""

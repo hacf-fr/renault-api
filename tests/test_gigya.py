@@ -9,6 +9,8 @@ from tests.const import TEST_PASSWORD
 from tests.const import TEST_PERSON_ID
 from tests.const import TEST_USERNAME
 
+from renault_api.const import CONF_GIGYA_APIKEY
+from renault_api.const import CONF_GIGYA_URL
 from renault_api.exceptions import GigyaResponseException
 from renault_api.gigya import Gigya
 
@@ -25,7 +27,10 @@ def get_response_content(path: str) -> str:
 @pytest.fixture
 def gigya(websession: ClientSession) -> Gigya:
     """Fixture for testing Gigya."""
-    return Gigya(websession=websession, locale_details=TEST_LOCALE_DETAILS)
+    api_key = TEST_LOCALE_DETAILS[CONF_GIGYA_APIKEY]
+    root_url = TEST_LOCALE_DETAILS[CONF_GIGYA_URL]
+
+    return Gigya(websession=websession, api_key=api_key, root_url=root_url)
 
 
 @pytest.mark.asyncio

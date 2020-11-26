@@ -9,10 +9,13 @@ from tests.const import TEST_PERSON_ID
 from tests.const import TEST_USERNAME
 
 from . import get_jwt
+from renault_api.const import CONF_GIGYA_APIKEY
+from renault_api.const import CONF_GIGYA_URL
 from renault_api.exceptions import GigyaResponseException
 from renault_api.exceptions import SessionProviderException
+from renault_api.session_provider import BaseSessionProvider
 from renault_api.session_provider import CREDENTIAL_GIGYA_LOGIN_TOKEN
-from renault_api.session_provider import SessionProvider
+from renault_api.session_provider import GigyaSessionProvider
 
 
 def get_response_content(path: str) -> str:
@@ -25,22 +28,23 @@ def get_response_content(path: str) -> str:
 
 
 @pytest.fixture
-def session_provider(websession: ClientSession) -> SessionProvider:
+def session_provider(websession: ClientSession) -> BaseSessionProvider:
     """Fixture for testing Kamereon."""
-    return SessionProvider(websession=websession, locale_details=TEST_LOCALE_DETAILS)
+    api_key = TEST_LOCALE_DETAILS[CONF_GIGYA_APIKEY]
+    root_url = TEST_LOCALE_DETAILS[CONF_GIGYA_URL]
+    return GigyaSessionProvider(
+        websession=websession, api_key=api_key, root_url=root_url
+    )
 
 
 @pytest.mark.asyncio
 async def test_credential_missing_login_token(
-    session_provider: SessionProvider,
+    session_provider: BaseSessionProvider,
 ) -> None:
     """Test missing login_token exception."""
     expected_message = (
         f"Credential `{CREDENTIAL_GIGYA_LOGIN_TOKEN}` not found in credential cache."
     )
-
-    with pytest.raises(SessionProviderException, match=expected_message):
-        session_provider.get_login_token()
 
     with pytest.raises(SessionProviderException, match=expected_message):
         await session_provider.get_person_id()
@@ -50,7 +54,7 @@ async def test_credential_missing_login_token(
 
 
 @pytest.mark.asyncio
-async def test_login(session_provider: SessionProvider) -> None:
+async def test_login(session_provider: BaseSessionProvider) -> None:
     """Test valid login response."""
     with aioresponses() as mocked_responses:
         mocked_responses.post(
@@ -60,12 +64,10 @@ async def test_login(session_provider: SessionProvider) -> None:
             headers={"content-type": "text/javascript"},
         )
         await session_provider.login(TEST_USERNAME, TEST_PASSWORD)
-        login_token = session_provider.get_login_token()
-        assert login_token == "sample-cookie-value"
 
 
 @pytest.mark.asyncio
-async def test_login_failed(session_provider: SessionProvider) -> None:
+async def test_login_failed(session_provider: BaseSessionProvider) -> None:
     """Test failed login response."""
     with aioresponses() as mocked_responses:
         mocked_responses.post(
@@ -81,7 +83,7 @@ async def test_login_failed(session_provider: SessionProvider) -> None:
 
 
 @pytest.mark.asyncio
-async def test_autoload_person_id(session_provider: SessionProvider) -> None:
+async def test_autoload_person_id(session_provider: BaseSessionProvider) -> None:
     """Test autoload of CREDENTIAL_GIGYA_PERSON_ID."""
     with aioresponses() as mocked_responses:
         mocked_responses.post(
@@ -102,7 +104,7 @@ async def test_autoload_person_id(session_provider: SessionProvider) -> None:
 
 
 @pytest.mark.asyncio
-async def test_autoload_jwt(session_provider: SessionProvider) -> None:
+async def test_autoload_jwt(session_provider: BaseSessionProvider) -> None:
     """Test autoload of CREDENTIAL_GIGYA_JWT."""
     with aioresponses() as mocked_responses:
         mocked_responses.post(

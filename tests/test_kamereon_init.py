@@ -42,8 +42,6 @@ async def test_login(kamereon: Kamereon) -> None:
             headers={"content-type": "text/javascript"},
         )
         await kamereon.login(TEST_USERNAME, TEST_PASSWORD)
-        login_token = kamereon._session.get_login_token()
-        assert login_token == "sample-cookie-value"
 
 
 @pytest.mark.asyncio

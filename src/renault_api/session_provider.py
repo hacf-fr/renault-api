@@ -1,6 +1,5 @@
 """Kamereon client for interaction with Renault servers."""
 import logging
-from typing import Dict
 from typing import Optional
 
 from aiohttp import ClientSession
@@ -19,23 +18,50 @@ CREDENTIAL_GIGYA_PERSON_ID = "gigya_person_id"
 _LOGGER = logging.getLogger(__name__)
 
 
-class SessionProvider:
-    """Session provider."""
+class BaseSessionProvider:  # pragma: no cover
+    """Base session provider."""
+
+    def __init__(
+        self,
+        credential_store: Optional[CredentialStore] = None,
+    ) -> None:
+        """Initialise session provider."""
+        self._credentials: CredentialStore = credential_store or CredentialStore()
+
+    async def login(self, login_id: str, password: str) -> None:
+        """Forward login to Gigya, and cache the login token."""
+        raise NotImplementedError
+
+    async def get_person_id(self) -> str:
+        """Get person id."""
+        raise NotImplementedError
+
+    async def get_jwt_token(self) -> str:
+        """Get JWT token."""
+        raise NotImplementedError
+
+
+class GigyaSessionProvider(BaseSessionProvider):
+    """Gigya session provider."""
 
     def __init__(
         self,
         websession: ClientSession,
-        locale_details: Dict[str, str],
+        api_key: Optional[str],
+        root_url: Optional[str],
         gigya: Optional[Gigya] = None,
         credential_store: Optional[CredentialStore] = None,
     ) -> None:
         """Initialise session provider."""
+        super().__init__(credential_store)
         self._websession = websession
-
-        self._gigya = gigya or Gigya(
-            websession=websession, locale_details=locale_details
-        )
-        self._credentials: CredentialStore = credential_store or CredentialStore()
+        if not gigya:
+            if not api_key:
+                raise ValueError
+            if not root_url:
+                raise ValueError
+            gigya = Gigya(websession=websession, api_key=api_key, root_url=root_url)
+        self._gigya = gigya
 
     async def login(self, login_id: str, password: str) -> None:
         """Forward login to Gigya, and cache the login token."""

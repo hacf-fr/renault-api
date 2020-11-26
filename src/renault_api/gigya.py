@@ -7,8 +7,6 @@ from typing import Dict
 from aiohttp import ClientSession
 from marshmallow.schema import Schema
 
-from .const import CONF_GIGYA_APIKEY
-from .const import CONF_GIGYA_URL
 from renault_api.model import gigya as model
 
 _LOGGER = logging.getLogger(__name__)
@@ -17,14 +15,12 @@ _LOGGER = logging.getLogger(__name__)
 class Gigya:
     """Gigya client for authentication."""
 
-    def __init__(
-        self, websession: ClientSession, locale_details: Dict[str, str]
-    ) -> None:
+    def __init__(self, websession: ClientSession, api_key: str, root_url: str) -> None:
         """Initialise Gigya."""
         self._websession = websession
 
-        self._api_key = locale_details[CONF_GIGYA_APIKEY]
-        self._root_url = locale_details[CONF_GIGYA_URL]
+        self._api_key = api_key
+        self._root_url = root_url
 
     async def _post(
         self, path: str, data: Dict[str, Any], schema: Schema
