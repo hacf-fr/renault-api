@@ -13,8 +13,6 @@ from tests.const import TEST_USERNAME
 from tests.const import TEST_VIN
 
 from . import get_jwt
-from renault_api.kamereon import CREDENTIAL_GIGYA_JWT
-from renault_api.kamereon import CREDENTIAL_GIGYA_PERSON_ID
 from renault_api.kamereon import Kamereon
 
 TEST_KAMEREON_BASE_URL = f"{TEST_KAMEREON_URL}/commerce/v1"
@@ -66,8 +64,8 @@ async def kamereon(websession: ClientSession) -> Kamereon:
             headers={"content-type": "text/javascript"},
         )
         await kamereon.login(TEST_USERNAME, TEST_PASSWORD)
-        await kamereon._get_credential(CREDENTIAL_GIGYA_PERSON_ID)
-        assert await kamereon._get_credential(CREDENTIAL_GIGYA_JWT)
+        await kamereon._session.get_person_id()
+        assert await kamereon._session.get_jwt_token()
     return kamereon
 
 

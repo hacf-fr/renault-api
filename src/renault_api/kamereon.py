@@ -10,10 +10,10 @@ from marshmallow.schema import Schema
 
 from .const import CONF_KAMEREON_APIKEY
 from .const import CONF_KAMEREON_URL
-from .session_provider import SessionProvider
-from .gigya import Gigya
 from .credential_store import CredentialStore
+from .gigya import Gigya
 from .model import kamereon as model
+from .session_provider import SessionProvider
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -92,7 +92,7 @@ class Kamereon:
             return kamereon_response
 
     async def login(self, login_id: str, password: str) -> None:
-        """Forward login to SessionProvider, and cache the login token."""
+        """Forward login to SessionProviderException, and cache the login token."""
         await self._session.login(login_id, password)
 
     async def get_person(self) -> model.KamereonPersonResponse:

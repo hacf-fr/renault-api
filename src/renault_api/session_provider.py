@@ -1,19 +1,14 @@
 """Kamereon client for interaction with Renault servers."""
 import logging
-from typing import Any
-from typing import cast
 from typing import Dict
 from typing import Optional
 
 from aiohttp import ClientSession
-from marshmallow.schema import Schema
 
-from .const import CONF_KAMEREON_APIKEY
-from .const import CONF_KAMEREON_URL
-from .exceptions import GigyaResponseException, KamereonException
+from .exceptions import GigyaResponseException
+from .exceptions import SessionProviderException
 from .gigya import Gigya
 from renault_api.credential_store import CredentialStore
-from renault_api.model import kamereon as model
 from renault_api.model.credential import Credential
 from renault_api.model.credential import JWTCredential
 
@@ -50,41 +45,45 @@ class SessionProvider:
             response.get_session_cookie()
         )
 
+    def get_login_token(self) -> str:
+        """Get login token."""
+        login_token = self._credentials.get_value(CREDENTIAL_GIGYA_LOGIN_TOKEN)
+        if not login_token:
+            raise SessionProviderException(
+                f"Credential `{CREDENTIAL_GIGYA_LOGIN_TOKEN}` "
+                "not found in credential cache."
+            )
+        return login_token
+
     async def get_person_id(self) -> str:
         """Get person id."""
-        token = self._credentials.get_value(CREDENTIAL_GIGYA_PERSON_ID)
-        if not token:
-            login_token = self._credentials.get_value(CREDENTIAL_GIGYA_LOGIN_TOKEN)
-            if not login_token:
-                raise KamereonException("Login required.")
+        person_id = self._credentials.get_value(CREDENTIAL_GIGYA_PERSON_ID)
+        if not person_id:
+            login_token = self.get_login_token()
             try:
                 account_response = await self._gigya.get_account_info(login_token)
             except GigyaResponseException as err:
                 self.process_error(err)
                 raise
-            credential = Credential(account_response.get_person_id())
-            self._credentials[CREDENTIAL_GIGYA_PERSON_ID] = credential
-            return credential.value
-        return token
+            person_id = account_response.get_person_id()
+            self._credentials[CREDENTIAL_GIGYA_PERSON_ID] = Credential(person_id)
+        return person_id
 
     async def get_jwt_token(self) -> str:
         """Get JWT token."""
-        token = self._credentials.get_value(CREDENTIAL_GIGYA_JWT)
-        if not token:
-            login_token = self._credentials.get_value(CREDENTIAL_GIGYA_LOGIN_TOKEN)
-            if not login_token:
-                raise KamereonException("Login required.")
+        jwt_token = self._credentials.get_value(CREDENTIAL_GIGYA_JWT)
+        if not jwt_token:
+            login_token = self.get_login_token()
             try:
                 jwt_response = await self._gigya.get_jwt(login_token)
             except GigyaResponseException as err:
                 self.process_error(err)
                 raise
-            credential = JWTCredential(jwt_response.get_jwt_token())
-            self._credentials[CREDENTIAL_GIGYA_JWT] = credential
-            return credential.value
-        return token
+            jwt_token = jwt_response.get_jwt_token()
+            self._credentials[CREDENTIAL_GIGYA_JWT] = JWTCredential(jwt_token)
+        return jwt_token
 
-    def process_error(self, err: GigyaResponseException):
+    def process_error(self, err: GigyaResponseException) -> None:
         """Process Gigya error."""
         if err.error_code in [403005]:
             del self._credentials[CREDENTIAL_GIGYA_LOGIN_TOKEN]
