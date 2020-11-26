@@ -1,10 +1,12 @@
 """Test suite for the renault_api package."""
 import datetime
 from glob import glob
+from typing import Any
 from typing import List
 from typing import Optional
 
 import jwt
+from marshmallow.schema import Schema
 
 
 def get_jwt(timedelta: Optional[datetime.timedelta] = None) -> str:
@@ -30,3 +32,10 @@ def get_file_content(filename: str) -> str:
     if filename.endswith("get_jwt.json"):
         content = content.replace("sample-jwt-token", get_jwt())
     return content
+
+
+def get_response_content(path: str, schema: Schema) -> Any:
+    """Read fixture text file as specified schema."""
+    with open(path, "r") as file:
+        json_data = file.read()
+    return schema.loads(json_data)

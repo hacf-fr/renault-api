@@ -51,7 +51,7 @@ async def test_login_failed(client: renault_client.RenaultClient) -> None:
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.login",
             status=200,
-            body=get_file_content(f"{GIGYA_FIXTURE_PATH}/login_failed.json"),
+            body=get_file_content(f"{GIGYA_FIXTURE_PATH}/errors/login.403042.json"),
             headers={"content-type": "text/javascript"},
         )
         with pytest.raises(GigyaResponseException) as excinfo:

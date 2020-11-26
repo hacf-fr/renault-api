@@ -22,6 +22,11 @@ class GigyaResponse:
             raise GigyaResponseException(self.errorCode, self.errorDetails)
 
 
+GigyaResponseSchema = marshmallow_dataclass.class_schema(
+    GigyaResponse, base_schema=BaseSchema
+)()
+
+
 @dataclass
 class GigyaLoginSessionInfo:
     """Gigya Login sessionInfo data."""
@@ -42,6 +47,11 @@ class GigyaLoginResponse(GigyaResponse):
         if not self.sessionInfo.cookieValue:  # pragma: no cover
             raise GigyaException("`sessionInfo.cookieValue` is None in Login response.")
         return self.sessionInfo.cookieValue
+
+
+GigyaLoginResponseSchema = marshmallow_dataclass.class_schema(
+    GigyaLoginResponse, base_schema=BaseSchema
+)()
 
 
 @dataclass
@@ -66,6 +76,11 @@ class GigyaGetAccountInfoResponse(GigyaResponse):
         return self.data.personId
 
 
+GigyaGetAccountInfoResponseSchema = marshmallow_dataclass.class_schema(
+    GigyaGetAccountInfoResponse, base_schema=BaseSchema
+)()
+
+
 @dataclass
 class GigyaGetJWTResponse(GigyaResponse):
     """Gigya response to POST on /accounts.getJWT."""
@@ -79,12 +94,6 @@ class GigyaGetJWTResponse(GigyaResponse):
         return self.id_token
 
 
-GigyaLoginResponseSchema = marshmallow_dataclass.class_schema(
-    GigyaLoginResponse, base_schema=BaseSchema
-)()
-GigyaGetAccountInfoResponseSchema = marshmallow_dataclass.class_schema(
-    GigyaGetAccountInfoResponse, base_schema=BaseSchema
-)()
 GigyaGetJWTResponseSchema = marshmallow_dataclass.class_schema(
     GigyaGetJWTResponse, base_schema=BaseSchema
 )()

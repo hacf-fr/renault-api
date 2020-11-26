@@ -92,17 +92,94 @@ KamereonPersonResponseSchema = marshmallow_dataclass.class_schema(
 )()
 
 
+class EnergyCode(Enum):
+    """Enum for vehicleDetails energy code."""
+
+    ESSENCE = "ESS"
+    ELECTRIQUE = "ELEC"
+
+
 @dataclass
-class KamereonVehiclesLink(BaseModel):
+class KamereonVehiclesDetailsGroup(BaseModel):
+    """Kamereon account data."""
+
+    code: Optional[str]
+    label: Optional[str]
+    group: Optional[str]
+
+
+@dataclass
+class KamereonVehiclesDetails(BaseModel):
     """Kamereon account data."""
 
     vin: Optional[str]
+    registrationNumber: Optional[str]  # noqa: N815
+    brand: Optional[KamereonVehiclesDetailsGroup]
+    model: Optional[KamereonVehiclesDetailsGroup]
+    energy: Optional[KamereonVehiclesDetailsGroup]
 
     def get_vin(self) -> str:
-        """Return jwt token."""
+        """Return vehicle vin."""
+        if self.vin is None:  # pragma: no cover
+            raise KamereonException("`vin` is None in KamereonVehiclesDetails.")
+        return self.vin
+
+    def get_registration_number(self) -> str:
+        """Return vehicle vin."""
+        if self.registrationNumber is None:  # pragma: no cover
+            raise KamereonException(
+                "`registrationNumber` is None in KamereonVehiclesDetails."
+            )
+        return self.registrationNumber
+
+    def get_energy_code(self) -> EnergyCode:
+        """Return vehicle energy code."""
+        if self.energy is None:  # pragma: no cover
+            raise KamereonException("`energy` is None in KamereonVehiclesDetails.")
+        if self.energy.code is None:  # pragma: no cover
+            raise KamereonException("`energy.code` is None in KamereonVehiclesDetails.")
+        try:
+            return EnergyCode(self.energy.code)
+        except ValueError:  # pragma: no cover
+            raise KamereonException(
+                f"Unable to convert `{self.energy.code}` to EnergyCode."
+            )
+
+    def get_brand_label(self) -> str:
+        """Return vehicle model label."""
+        if self.brand is None:  # pragma: no cover
+            raise KamereonException("`brand` is None in KamereonVehiclesDetails.")
+        if self.brand.label is None:  # pragma: no cover
+            raise KamereonException("`brand.label` is None in KamereonVehiclesDetails.")
+        return self.brand.label
+
+    def get_model_label(self) -> str:
+        """Return vehicle model label."""
+        if self.model is None:  # pragma: no cover
+            raise KamereonException("`model` is None in KamereonVehiclesDetails.")
+        if self.model.label is None:  # pragma: no cover
+            raise KamereonException("`model.label` is None in KamereonVehiclesDetails.")
+        return self.model.label
+
+
+@dataclass
+class KamereonVehiclesLink(BaseModel):
+    """Kamereon vehicles link data."""
+
+    vin: Optional[str]
+    vehicleDetails: Optional[KamereonVehiclesDetails]  # noqa: N815
+
+    def get_vin(self) -> str:
+        """Return vehicle vin."""
         if self.vin is None:  # pragma: no cover
             raise KamereonException("`vin` is None in KamereonVehiclesLink.")
         return self.vin
+
+    def get_details(self) -> KamereonVehiclesDetails:
+        """Return vehicle details."""
+        if self.vehicleDetails is None:  # pragma: no cover
+            raise KamereonException("`vehicleDetails` is None in KamereonVehiclesLink.")
+        return self.vehicleDetails
 
 
 @dataclass
