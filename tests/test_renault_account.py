@@ -1,4 +1,5 @@
 """Test cases for the Renault client API keys."""
+from tests.helpers import get_session_provider
 import pytest
 from aiohttp.client import ClientSession
 from aioresponses import aioresponses
@@ -16,12 +17,14 @@ from renault_api.model.credential import JWTCredential
 from renault_api.renault_account import RenaultAccount
 from renault_api.renault_client import RenaultClient
 from renault_api.session_provider import CREDENTIAL_GIGYA_JWT
-from renault_api.session_provider import CREDENTIAL_GIGYA_LOGIN_TOKEN
+from renault_api.session_provider import CREDENTIAL_GIGYA_REFRESH_TOKEN
 from renault_api.session_provider import CREDENTIAL_GIGYA_PERSON_ID
 
 TEST_KAMEREON_BASE_URL = f"{TEST_KAMEREON_URL}/commerce/v1"
 TEST_KAMEREON_ACCOUNT_URL = f"{TEST_KAMEREON_BASE_URL}/accounts/{TEST_ACCOUNT_ID}"
+
 FIXTURE_PATH = "tests/fixtures/kamereon/"
+
 QUERY_STRING = f"country={TEST_COUNTRY}"
 
 
@@ -29,15 +32,7 @@ QUERY_STRING = f"country={TEST_COUNTRY}"
 async def account(websession: ClientSession) -> RenaultAccount:
     """Fixture for testing Gigya."""
     client = RenaultClient(websession=websession, locale=TEST_LOCALE)
-    client._kamereon._session._credentials[CREDENTIAL_GIGYA_LOGIN_TOKEN] = Credential(
-        "sample-cookie-value"
-    )
-    client._kamereon._session._credentials[CREDENTIAL_GIGYA_PERSON_ID] = Credential(
-        TEST_PERSON_ID
-    )
-    client._kamereon._session._credentials[CREDENTIAL_GIGYA_JWT] = JWTCredential(
-        get_jwt()
-    )
+    client._kamereon._session = get_session_provider()
     return await client.get_api_account(TEST_ACCOUNT_ID)
 
 

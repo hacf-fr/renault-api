@@ -2,33 +2,28 @@
 import pytest
 from aiohttp.client import ClientSession
 from aioresponses import aioresponses
+from tests import get_file_content
 from tests.const import TEST_GIGYA_URL
 from tests.const import TEST_LOCALE_DETAILS
 from tests.const import TEST_PASSWORD
 from tests.const import TEST_PERSON_ID
 from tests.const import TEST_USERNAME
 
-from . import get_jwt
 from renault_api.const import CONF_GIGYA_APIKEY
 from renault_api.const import CONF_GIGYA_URL
 from renault_api.exceptions import GigyaResponseException
 from renault_api.exceptions import SessionProviderException
-from renault_api.session_provider import BaseSessionProvider
-from renault_api.session_provider import CREDENTIAL_GIGYA_LOGIN_TOKEN
+from renault_api.session_provider import (
+    BaseSessionProvider,
+    CREDENTIAL_GIGYA_REFRESH_TOKEN,
+)
 from renault_api.session_provider import GigyaSessionProvider
 
-
-def get_response_content(path: str) -> str:
-    """Read fixture text file as string."""
-    with open(f"tests/fixtures/{path}", "r") as file:
-        content = file.read()
-    if path == "gigya/get_jwt.json":
-        content = content.replace("sample-jwt-token", get_jwt())
-    return content
+FIXTURE_PATH = "tests/fixtures/gigya"
 
 
 @pytest.fixture
-def session_provider(websession: ClientSession) -> BaseSessionProvider:
+def session_provider(websession: ClientSession) -> GigyaSessionProvider:
     """Fixture for testing Kamereon."""
     api_key = TEST_LOCALE_DETAILS[CONF_GIGYA_APIKEY]
     root_url = TEST_LOCALE_DETAILS[CONF_GIGYA_URL]
@@ -43,7 +38,7 @@ async def test_credential_missing_login_token(
 ) -> None:
     """Test missing login_token exception."""
     expected_message = (
-        f"Credential `{CREDENTIAL_GIGYA_LOGIN_TOKEN}` not found in credential cache."
+        f"Credential `{CREDENTIAL_GIGYA_REFRESH_TOKEN}` not found in credential cache."
     )
 
     with pytest.raises(SessionProviderException, match=expected_message):
@@ -60,7 +55,7 @@ async def test_login(session_provider: BaseSessionProvider) -> None:
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.login",
             status=200,
-            body=get_response_content("gigya/login.json"),
+            body=get_file_content(f"{FIXTURE_PATH}/login.json"),
             headers={"content-type": "text/javascript"},
         )
         await session_provider.login(TEST_USERNAME, TEST_PASSWORD)
@@ -73,7 +68,7 @@ async def test_login_failed(session_provider: BaseSessionProvider) -> None:
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.login",
             status=200,
-            body=get_response_content("gigya/errors/login.403042.json"),
+            body=get_file_content(f"{FIXTURE_PATH}/errors/login.403042.json"),
             headers={"content-type": "text/javascript"},
         )
         with pytest.raises(GigyaResponseException) as excinfo:
@@ -89,13 +84,13 @@ async def test_autoload_person_id(session_provider: BaseSessionProvider) -> None
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.login",
             status=200,
-            body=get_response_content("gigya/login.json"),
+            body=get_file_content(f"{FIXTURE_PATH}/login.json"),
             headers={"content-type": "text/javascript"},
         )
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.getAccountInfo",
             status=200,
-            body=get_response_content("gigya/account_info.json"),
+            body=get_file_content(f"{FIXTURE_PATH}/account_info.json"),
             headers={"content-type": "text/javascript"},
         )
         await session_provider.login(TEST_USERNAME, TEST_PASSWORD)
@@ -110,13 +105,13 @@ async def test_autoload_jwt(session_provider: BaseSessionProvider) -> None:
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.login",
             status=200,
-            body=get_response_content("gigya/login.json"),
+            body=get_file_content(f"{FIXTURE_PATH}/login.json"),
             headers={"content-type": "text/javascript"},
         )
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.getJWT",
             status=200,
-            body=get_response_content("gigya/get_jwt.json"),
+            body=get_file_content(f"{FIXTURE_PATH}/get_jwt.json"),
             headers={"content-type": "text/javascript"},
         )
         await session_provider.login(TEST_USERNAME, TEST_PASSWORD)

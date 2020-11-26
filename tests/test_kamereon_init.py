@@ -1,6 +1,7 @@
 """Test cases for initialisation of the Kamereon client."""
+from tests import get_file_content
+import aiohttp
 import pytest
-from aiohttp.client import ClientSession
 from aioresponses import aioresponses
 from tests.const import TEST_COUNTRY
 from tests.const import TEST_GIGYA_URL
@@ -9,25 +10,20 @@ from tests.const import TEST_PASSWORD
 from tests.const import TEST_PERSON_ID
 from tests.const import TEST_USERNAME
 
-from . import get_jwt
 from renault_api.exceptions import GigyaResponseException
 from renault_api.kamereon import Kamereon
 
-
-def get_response_content(path: str) -> str:
-    """Read fixture text file as string."""
-    with open(f"tests/fixtures/{path}", "r") as file:
-        content = file.read()
-    if path == "gigya/get_jwt.json":
-        content = content.replace("sample-jwt-token", get_jwt())
-    return content
+FIXTURE_PATH = "tests/fixtures/gigya/"
 
 
 @pytest.fixture
-def kamereon(websession: ClientSession) -> Kamereon:
+def kamereon(websession: aiohttp.ClientSession) -> Kamereon:
     """Fixture for testing Kamereon."""
     return Kamereon(
-        websession=websession, country=TEST_COUNTRY, locale_details=TEST_LOCALE_DETAILS
+        websession=websession,
+        country=TEST_COUNTRY,
+        locale_details=TEST_LOCALE_DETAILS,
+        session_provider=None,
     )
 
 
@@ -38,26 +34,10 @@ async def test_login(kamereon: Kamereon) -> None:
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.login",
             status=200,
-            body=get_response_content("gigya/login.json"),
+            body=get_file_content(f"{FIXTURE_PATH}/login.json"),
             headers={"content-type": "text/javascript"},
         )
         await kamereon.login(TEST_USERNAME, TEST_PASSWORD)
-
-
-@pytest.mark.asyncio
-async def test_login_failed(kamereon: Kamereon) -> None:
-    """Test failed login response."""
-    with aioresponses() as mocked_responses:
-        mocked_responses.post(
-            f"{TEST_GIGYA_URL}/accounts.login",
-            status=200,
-            body=get_response_content("gigya/errors/login.403042.json"),
-            headers={"content-type": "text/javascript"},
-        )
-        with pytest.raises(GigyaResponseException) as excinfo:
-            await kamereon.login(TEST_USERNAME, TEST_PASSWORD)
-        assert excinfo.value.error_code == 403042
-        assert excinfo.value.error_details == "invalid loginID or password"
 
 
 @pytest.mark.asyncio
@@ -67,13 +47,13 @@ async def test_autoload_person_id(kamereon: Kamereon) -> None:
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.login",
             status=200,
-            body=get_response_content("gigya/login.json"),
+            body=get_file_content(f"{FIXTURE_PATH}/login.json"),
             headers={"content-type": "text/javascript"},
         )
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.getAccountInfo",
             status=200,
-            body=get_response_content("gigya/account_info.json"),
+            body=get_file_content(f"{FIXTURE_PATH}/account_info.json"),
             headers={"content-type": "text/javascript"},
         )
         await kamereon.login(TEST_USERNAME, TEST_PASSWORD)
@@ -88,13 +68,13 @@ async def test_autoload_jwt(kamereon: Kamereon) -> None:
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.login",
             status=200,
-            body=get_response_content("gigya/login.json"),
+            body=get_file_content(f"{FIXTURE_PATH}/login.json"),
             headers={"content-type": "text/javascript"},
         )
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.getJWT",
             status=200,
-            body=get_response_content("gigya/get_jwt.json"),
+            body=get_file_content(f"{FIXTURE_PATH}/get_jwt.json"),
             headers={"content-type": "text/javascript"},
         )
         await kamereon.login(TEST_USERNAME, TEST_PASSWORD)

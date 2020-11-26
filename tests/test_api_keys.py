@@ -1,6 +1,6 @@
 """Test cases for the Renault client API keys."""
+import aiohttp
 import pytest
-from aiohttp import ClientSession
 from aioresponses import aioresponses
 
 from renault_api.const import AVAILABLE_LOCALES
@@ -43,7 +43,9 @@ async def test_missing_aiohttp_session() -> None:
 @pytest.mark.asyncio
 @pytest.mark.parametrize("locale", AVAILABLE_LOCALES.keys())
 @pytest.mark.skip(reason="Makes real calls to Renault servers")
-async def test_preload_force_api_keys(websession: ClientSession, locale: str) -> None:
+async def test_preload_force_api_keys(
+    locale: str, websession: aiohttp.ClientSession
+) -> None:
     """Ensure is able to parse a valid locale from Renault servers."""
     expected_api_keys = AVAILABLE_LOCALES[locale]
 
@@ -53,7 +55,7 @@ async def test_preload_force_api_keys(websession: ClientSession, locale: str) ->
 
 
 @pytest.mark.asyncio
-async def test_preload_unknown_api_keys(websession: ClientSession) -> None:
+async def test_preload_unknown_api_keys(websession: aiohttp.ClientSession) -> None:
     """Ensure is able to parse a known known."""
     expected_api_keys = AVAILABLE_LOCALES["fr_FR"]
 
@@ -71,7 +73,7 @@ async def test_preload_unknown_api_keys(websession: ClientSession) -> None:
 
 
 @pytest.mark.asyncio
-async def test_preload_invalid_api_keys(websession: ClientSession) -> None:
+async def test_preload_invalid_api_keys(websession: aiohttp.ClientSession) -> None:
     """Ensure is able to parse an invalid locale."""
     fake_locale = "fake"
     fake_url = f"{LOCALE_BASE_URL}/configuration/android/config_{fake_locale}.json"

@@ -12,7 +12,7 @@ from renault_api.model.credential import Credential
 from renault_api.model.credential import JWTCredential
 
 CREDENTIAL_GIGYA_JWT = "gigya_jwt"
-CREDENTIAL_GIGYA_LOGIN_TOKEN = "gigya_login_token"
+CREDENTIAL_GIGYA_REFRESH_TOKEN = "gigya_refresh_token"
 CREDENTIAL_GIGYA_PERSON_ID = "gigya_person_id"
 
 _LOGGER = logging.getLogger(__name__)
@@ -20,13 +20,6 @@ _LOGGER = logging.getLogger(__name__)
 
 class BaseSessionProvider:  # pragma: no cover
     """Base session provider."""
-
-    def __init__(
-        self,
-        credential_store: Optional[CredentialStore] = None,
-    ) -> None:
-        """Initialise session provider."""
-        self._credentials: CredentialStore = credential_store or CredentialStore()
 
     async def login(self, login_id: str, password: str) -> None:
         """Forward login to Gigya, and cache the login token."""
@@ -53,8 +46,8 @@ class GigyaSessionProvider(BaseSessionProvider):
         credential_store: Optional[CredentialStore] = None,
     ) -> None:
         """Initialise session provider."""
-        super().__init__(credential_store)
         self._websession = websession
+        self._credentials: CredentialStore = credential_store or CredentialStore()
         if not gigya:
             if not api_key:
                 raise ValueError
@@ -67,16 +60,16 @@ class GigyaSessionProvider(BaseSessionProvider):
         """Forward login to Gigya, and cache the login token."""
         self._credentials.clear()
         response = await self._gigya.login(login_id, password)
-        self._credentials[CREDENTIAL_GIGYA_LOGIN_TOKEN] = Credential(
+        self._credentials[CREDENTIAL_GIGYA_REFRESH_TOKEN] = Credential(
             response.get_session_cookie()
         )
 
     def get_login_token(self) -> str:
         """Get login token."""
-        login_token = self._credentials.get_value(CREDENTIAL_GIGYA_LOGIN_TOKEN)
+        login_token = self._credentials.get_value(CREDENTIAL_GIGYA_REFRESH_TOKEN)
         if not login_token:
             raise SessionProviderException(
-                f"Credential `{CREDENTIAL_GIGYA_LOGIN_TOKEN}` "
+                f"Credential `{CREDENTIAL_GIGYA_REFRESH_TOKEN}` "
                 "not found in credential cache."
             )
         return login_token
@@ -111,5 +104,10 @@ class GigyaSessionProvider(BaseSessionProvider):
 
     def process_error(self, err: GigyaResponseException) -> None:
         """Process Gigya error."""
-        if err.error_code in [403005]:
-            del self._credentials[CREDENTIAL_GIGYA_LOGIN_TOKEN]
+        if err.error_code in [403005, 433013]:
+            _LOGGER.warning(
+                "Refresh token cleared due to error %s (%s) in Gigya.",
+                err.error_code,
+                err.error_details,
+            )
+            del self._credentials[CREDENTIAL_GIGYA_REFRESH_TOKEN]
