@@ -8,12 +8,16 @@ from typing import Optional
 from aiohttp import ClientSession
 from marshmallow.schema import Schema
 
+from . import gigya
 from .const import CONF_GIGYA_APIKEY
 from .const import CONF_GIGYA_URL
 from .const import CONF_KAMEREON_APIKEY
 from .const import CONF_KAMEREON_URL
-from .gigya import Gigya
+from .credential_store import CredentialStore
+from .gigya.exceptions import GigyaException
 from .model import kamereon as model
+from .model.credential import Credential
+from .model.credential import JWTCredential
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -27,7 +31,7 @@ class Kamereon:
         websession: ClientSession,
         country: str,
         locale_details: Dict[str, str],
-        gigya: Optional[Gigya] = None,
+        credential_store: Optional[CredentialStore] = None,
     ) -> None:
         """Initialise Kamereon."""
         self._websession = websession
@@ -35,14 +39,9 @@ class Kamereon:
         self._country = country
         self._api_key = locale_details[CONF_KAMEREON_APIKEY]
         self._root_url = locale_details[CONF_KAMEREON_URL]
-
-        if not gigya:
-            gigya_api_key = locale_details[CONF_GIGYA_APIKEY]
-            gigya_root_url = locale_details[CONF_GIGYA_URL]
-            gigya = Gigya(
-                websession=websession, api_key=gigya_api_key, root_url=gigya_root_url
-            )
-        self._gigya: Gigya = gigya
+        self._gigya_api_key = locale_details[CONF_GIGYA_APIKEY]
+        self._gigya_root_url = locale_details[CONF_GIGYA_URL]
+        self._credentials: CredentialStore = credential_store or CredentialStore()
 
     def _get_path_to_account(self, account_id: str) -> str:
         """Get the path to the account."""
@@ -64,7 +63,7 @@ class Kamereon:
         url = f"{self._root_url}/commerce/v1{path}"
         headers = {
             "apikey": self._api_key,
-            "x-gigya-id_token": await self._gigya.get_jwt(),
+            "x-gigya-id_token": await self._get_jwt(),
         }
         params = params or {}
         params["country"] = self._country
@@ -93,11 +92,21 @@ class Kamereon:
 
     async def login(self, login_id: str, password: str) -> None:
         """Forward login to Gigya."""
-        await self._gigya.login(login_id, password)
+        self._credentials.clear_keys(gigya.GIGYA_KEYS)
+
+        response = await gigya.login(
+            self._websession,
+            self._gigya_root_url,
+            self._gigya_api_key,
+            login_id,
+            password,
+        )
+        credential = Credential(response.get_session_cookie())
+        self._credentials[gigya.GIGYA_LOGIN_TOKEN] = credential
 
     async def get_person(self) -> model.KamereonPersonResponse:
         """GET to /persons/{person_id}."""
-        person_id = await self._gigya.get_person_id()
+        person_id = await self._get_person_id()
         return cast(
             model.KamereonPersonResponse,
             await self._request(
@@ -257,3 +266,43 @@ class Kamereon:
         """POST to /cars/{vin}/actions/charging-start."""
         data = {"type": "ChargingStart", "attributes": attributes}
         return await self.set_vehicle_data(account_id, 1, vin, "charging-start", data)
+
+    def _get_login_token(self) -> str:
+        login_token = self._credentials.get_value(gigya.GIGYA_LOGIN_TOKEN)
+        if login_token:
+            return login_token
+        raise GigyaException(
+            f"Credential `{gigya.GIGYA_LOGIN_TOKEN}` not found in credential cache."
+        )
+
+    async def _get_person_id(self) -> str:
+        """Get person id."""
+        person_id = self._credentials.get_value(gigya.GIGYA_PERSON_ID)
+        if person_id:
+            return person_id
+        login_token = self._get_login_token()
+        response = await gigya.get_account_info(
+            self._websession,
+            self._gigya_root_url,
+            self._gigya_api_key,
+            login_token,
+        )
+        person_id = response.get_person_id()
+        self._credentials[gigya.GIGYA_PERSON_ID] = Credential(person_id)
+        return person_id
+
+    async def _get_jwt(self) -> str:
+        """Get json web token."""
+        jwt = self._credentials.get_value(gigya.GIGYA_JWT)
+        if jwt:
+            return jwt
+        login_token = self._get_login_token()
+        response = await gigya.get_jwt(
+            self._websession,
+            self._gigya_root_url,
+            self._gigya_api_key,
+            login_token,
+        )
+        jwt = response.get_jwt()
+        self._credentials[gigya.GIGYA_JWT] = JWTCredential(jwt)
+        return jwt

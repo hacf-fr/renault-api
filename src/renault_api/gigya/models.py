@@ -2,15 +2,13 @@
 from dataclasses import dataclass
 from typing import Optional
 
-import marshmallow_dataclass
-
-from . import BaseSchema
-from renault_api.exceptions import GigyaException
-from renault_api.exceptions import GigyaResponseException
+from .exceptions import GigyaException
+from .exceptions import GigyaResponseException
+from renault_api.models import BaseModel
 
 
 @dataclass
-class GigyaResponse:
+class GigyaResponse(BaseModel):
     """Gigya response."""
 
     errorCode: int  # noqa: N815
@@ -22,13 +20,8 @@ class GigyaResponse:
             raise GigyaResponseException(self.errorCode, self.errorDetails)
 
 
-GigyaResponseSchema = marshmallow_dataclass.class_schema(
-    GigyaResponse, base_schema=BaseSchema
-)()
-
-
 @dataclass
-class GigyaLoginSessionInfo:
+class GigyaLoginSessionInfo(BaseModel):
     """Gigya Login sessionInfo data."""
 
     cookieValue: Optional[str]  # noqa: N815
@@ -49,13 +42,8 @@ class GigyaLoginResponse(GigyaResponse):
         return self.sessionInfo.cookieValue
 
 
-GigyaLoginResponseSchema = marshmallow_dataclass.class_schema(
-    GigyaLoginResponse, base_schema=BaseSchema
-)()
-
-
 @dataclass
-class GigyaGetAccountInfoData:
+class GigyaGetAccountInfoData(BaseModel):
     """Gigya Login sessionInfo data."""
 
     personId: Optional[str]  # noqa: N815
@@ -76,11 +64,6 @@ class GigyaGetAccountInfoResponse(GigyaResponse):
         return self.data.personId
 
 
-GigyaGetAccountInfoResponseSchema = marshmallow_dataclass.class_schema(
-    GigyaGetAccountInfoResponse, base_schema=BaseSchema
-)()
-
-
 @dataclass
 class GigyaGetJWTResponse(GigyaResponse):
     """Gigya response to POST on /accounts.getJWT."""
@@ -92,8 +75,3 @@ class GigyaGetJWTResponse(GigyaResponse):
         if not self.id_token:  # pragma: no cover
             raise GigyaException("`id_token` is None in GetJWT response.")
         return self.id_token
-
-
-GigyaGetJWTResponseSchema = marshmallow_dataclass.class_schema(
-    GigyaGetJWTResponse, base_schema=BaseSchema
-)()

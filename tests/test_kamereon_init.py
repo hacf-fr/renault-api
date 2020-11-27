@@ -9,7 +9,7 @@ from tests.const import TEST_LOCALE_DETAILS
 from tests.const import TEST_LOGIN_TOKEN
 from tests.const import TEST_PASSWORD
 from tests.const import TEST_USERNAME
-from tests.test_gigya import get_logged_in_gigya
+from tests.test_credential_store import get_logged_in_credential_store
 
 from renault_api.gigya import GIGYA_LOGIN_TOKEN
 from renault_api.kamereon import Kamereon
@@ -23,7 +23,7 @@ def get_logged_in_kamereon(websession: aiohttp.ClientSession) -> Kamereon:
         websession=websession,
         country=TEST_COUNTRY,
         locale_details=TEST_LOCALE_DETAILS,
-        gigya=get_logged_in_gigya(websession=websession),
+        credential_store=get_logged_in_credential_store(),
     )
 
 
@@ -48,7 +48,4 @@ async def test_login(kamereon: Kamereon) -> None:
             headers={"content-type": "text/javascript"},
         )
         await kamereon.login(TEST_USERNAME, TEST_PASSWORD)
-        assert (
-            kamereon._gigya._credentials.get_value(GIGYA_LOGIN_TOKEN)
-            == TEST_LOGIN_TOKEN
-        )
+        assert kamereon._credentials.get_value(GIGYA_LOGIN_TOKEN) == TEST_LOGIN_TOKEN
