@@ -6,13 +6,25 @@ from tests import get_file_content
 from tests.const import TEST_COUNTRY
 from tests.const import TEST_GIGYA_URL
 from tests.const import TEST_LOCALE_DETAILS
+from tests.const import TEST_LOGIN_TOKEN
 from tests.const import TEST_PASSWORD
-from tests.const import TEST_PERSON_ID
 from tests.const import TEST_USERNAME
+from tests.test_gigya import get_logged_in_gigya
 
+from renault_api.gigya import GIGYA_LOGIN_TOKEN
 from renault_api.kamereon import Kamereon
 
 FIXTURE_PATH = "tests/fixtures/gigya/"
+
+
+def get_logged_in_kamereon(websession: aiohttp.ClientSession) -> Kamereon:
+    """Get logged_in Kamereon."""
+    return Kamereon(
+        websession=websession,
+        country=TEST_COUNTRY,
+        locale_details=TEST_LOCALE_DETAILS,
+        gigya=get_logged_in_gigya(websession=websession),
+    )
 
 
 @pytest.fixture
@@ -22,7 +34,6 @@ def kamereon(websession: aiohttp.ClientSession) -> Kamereon:
         websession=websession,
         country=TEST_COUNTRY,
         locale_details=TEST_LOCALE_DETAILS,
-        session_provider=None,
     )
 
 
@@ -37,44 +48,7 @@ async def test_login(kamereon: Kamereon) -> None:
             headers={"content-type": "text/javascript"},
         )
         await kamereon.login(TEST_USERNAME, TEST_PASSWORD)
-
-
-@pytest.mark.asyncio
-async def test_autoload_person_id(kamereon: Kamereon) -> None:
-    """Test autoload of CREDENTIAL_GIGYA_PERSON_ID."""
-    with aioresponses() as mocked_responses:
-        mocked_responses.post(
-            f"{TEST_GIGYA_URL}/accounts.login",
-            status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/login.json"),
-            headers={"content-type": "text/javascript"},
+        assert (
+            kamereon._gigya._credentials.get_value(GIGYA_LOGIN_TOKEN)
+            == TEST_LOGIN_TOKEN
         )
-        mocked_responses.post(
-            f"{TEST_GIGYA_URL}/accounts.getAccountInfo",
-            status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/account_info.json"),
-            headers={"content-type": "text/javascript"},
-        )
-        await kamereon.login(TEST_USERNAME, TEST_PASSWORD)
-        person_id = await kamereon._session.get_person_id()
-        assert person_id == TEST_PERSON_ID
-
-
-@pytest.mark.asyncio
-async def test_autoload_jwt(kamereon: Kamereon) -> None:
-    """Test autoload of CREDENTIAL_GIGYA_JWT."""
-    with aioresponses() as mocked_responses:
-        mocked_responses.post(
-            f"{TEST_GIGYA_URL}/accounts.login",
-            status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/login.json"),
-            headers={"content-type": "text/javascript"},
-        )
-        mocked_responses.post(
-            f"{TEST_GIGYA_URL}/accounts.getJWT",
-            status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/get_jwt.json"),
-            headers={"content-type": "text/javascript"},
-        )
-        await kamereon.login(TEST_USERNAME, TEST_PASSWORD)
-        assert await kamereon._session.get_jwt_token()

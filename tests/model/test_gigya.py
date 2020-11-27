@@ -29,4 +29,4 @@ def test_get_jwt_response() -> None:
         f"{FIXTURE_PATH}/get_jwt.json", model.GigyaGetJWTResponseSchema
     )
     response.raise_for_error_code()
-    assert response.get_jwt_token() == "sample-jwt-token"
+    assert response.get_jwt() == "sample-jwt-token"

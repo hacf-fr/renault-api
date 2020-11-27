@@ -7,8 +7,8 @@ from renault_api.const import CONF_KAMEREON_URL
 
 
 TEST_ACCOUNT_ID = "accound-id-1"
-TEST_GIGYA_LOGIN_TOKEN = "sample-cookie-value"
 TEST_LOCALE = "fr_FR"
+TEST_LOGIN_TOKEN = "sample-cookie-value"
 TEST_PASSWORD = "test_password"
 TEST_PERSON_ID = "person-id-1"
 TEST_USERNAME = "test@example.com"

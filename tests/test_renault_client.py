@@ -1,6 +1,6 @@
 """Test cases for the Renault client API keys."""
+import aiohttp
 import pytest
-from aiohttp.client import ClientSession
 from aioresponses import aioresponses
 from tests import get_file_content
 from tests.const import TEST_ACCOUNT_ID
@@ -11,8 +11,9 @@ from tests.const import TEST_LOCALE
 from tests.const import TEST_PASSWORD
 from tests.const import TEST_PERSON_ID
 from tests.const import TEST_USERNAME
+from tests.test_kamereon_init import get_logged_in_kamereon
 
-from renault_api import renault_client
+from renault_api.renault_client import RenaultClient
 
 TEST_KAMEREON_BASE_URL = f"{TEST_KAMEREON_URL}/commerce/v1"
 FIXTURE_PATH = "tests/fixtures/kamereon/"
@@ -20,18 +21,22 @@ GIGYA_FIXTURE_PATH = "tests/fixtures/gigya/"
 QUERY_STRING = f"country={TEST_COUNTRY}"
 
 
+def get_logged_in_client(websession: aiohttp.ClientSession) -> RenaultClient:
+    """Get logged_in Kamereon."""
+    return RenaultClient(get_logged_in_kamereon(websession=websession))
+
+
 @pytest.fixture
-def client(websession: ClientSession) -> renault_client.RenaultClient:
+def client(websession: aiohttp.ClientSession) -> RenaultClient:
     """Fixture for testing Renault client."""
-    client = renault_client.RenaultClient(
+    return RenaultClient(
         websession=websession,
         locale=TEST_LOCALE,
     )
-    return client
 
 
 @pytest.mark.asyncio
-async def test_login(client: renault_client.RenaultClient) -> None:
+async def test_login(client: RenaultClient) -> None:
     """Test login."""
     with aioresponses() as mocked_responses:
         mocked_responses.post(
@@ -44,7 +49,7 @@ async def test_login(client: renault_client.RenaultClient) -> None:
 
 
 @pytest.mark.asyncio
-async def test_get_person(client: renault_client.RenaultClient) -> None:
+async def test_get_person(client: RenaultClient) -> None:
     """Test get_accounts."""
     with aioresponses() as mocked_responses:
         mocked_responses.post(
@@ -76,7 +81,7 @@ async def test_get_person(client: renault_client.RenaultClient) -> None:
 
 
 @pytest.mark.asyncio
-async def test_get_api_accounts(client: renault_client.RenaultClient) -> None:
+async def test_get_api_accounts(client: RenaultClient) -> None:
     """Test get_accounts."""
     with aioresponses() as mocked_responses:
         mocked_responses.post(
@@ -108,7 +113,7 @@ async def test_get_api_accounts(client: renault_client.RenaultClient) -> None:
 
 
 @pytest.mark.asyncio
-async def test_get_api_account(client: renault_client.RenaultClient) -> None:
+async def test_get_api_account(client: RenaultClient) -> None:
     """Test get_account."""
     account = await client.get_api_account(TEST_ACCOUNT_ID)
     assert account._account_id == TEST_ACCOUNT_ID

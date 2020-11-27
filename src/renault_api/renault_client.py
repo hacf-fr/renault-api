@@ -1,12 +1,14 @@
 """Client for Renault API."""
 import logging
 from typing import List
+from typing import Optional
 
-from aiohttp import ClientSession
+import aiohttp
 
 from .kamereon import Kamereon
 from .renault_account import RenaultAccount
 from renault_api.const import AVAILABLE_LOCALES
+from renault_api.exceptions import RenaultException
 from renault_api.model.kamereon import KamereonPersonResponse
 
 
@@ -16,13 +18,29 @@ _LOGGER = logging.getLogger(__name__)
 class RenaultClient:
     """Proxy to a Renault profile."""
 
-    def __init__(self, websession: ClientSession, locale: str) -> None:
+    def __init__(
+        self,
+        kamereon: Optional[Kamereon] = None,
+        websession: Optional[aiohttp.ClientSession] = None,
+        locale: Optional[str] = None,
+    ) -> None:
         """Initialise Renault client."""
-        self._kamereon = Kamereon(
-            websession=websession,
-            country=locale[-2:],
-            locale_details=AVAILABLE_LOCALES[locale],
-        )
+        if kamereon:
+            self._kamereon = kamereon
+        else:
+            if websession is None:  # pragma: no cover
+                raise RenaultException(
+                    "`websession` is required if kamereon is not provided."
+                )
+            if locale is None:  # pragma: no cover
+                raise RenaultException(
+                    "`locale` is required if kamereon is not provided."
+                )
+            self._kamereon = Kamereon(
+                websession=websession,
+                country=locale[-2:],
+                locale_details=AVAILABLE_LOCALES[locale],
+            )
 
     async def login(self, login_id: str, password: str) -> None:
         """Login."""

@@ -1,7 +1,7 @@
 """Kamereon client for interaction with Renault servers."""
 import json
 import os
-from typing import Dict
+from typing import Dict, List
 from typing import Optional
 
 import jwt
@@ -73,6 +73,13 @@ class CredentialStore:
         """Remove all non-permanent keys."""
         for key in list(self._store.keys()):
             if key not in PERMANENT_KEYS:
+                del self._store[key]
+        self._write()
+
+    def clear_keys(self, to_delete: List[str]) -> None:
+        """Remove all non-permanent keys."""
+        for key in list(self._store.keys()):
+            if key in to_delete:
                 del self._store[key]
         self._write()
 

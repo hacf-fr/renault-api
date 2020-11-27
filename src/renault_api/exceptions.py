@@ -38,10 +38,3 @@ class KamereonResponseException(KamereonException):
         """Initialise KamereonResponseException."""
         self.error_code = error_code
         self.error_details = error_details
-
-
-# Session provider exceptions
-class SessionProviderException(RenaultException):
-    """Base exception for Session provider errors."""
-
-    pass

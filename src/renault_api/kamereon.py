@@ -12,9 +12,8 @@ from .const import CONF_GIGYA_APIKEY
 from .const import CONF_GIGYA_URL
 from .const import CONF_KAMEREON_APIKEY
 from .const import CONF_KAMEREON_URL
+from .gigya import Gigya
 from .model import kamereon as model
-from .session_provider import BaseSessionProvider
-from .session_provider import GigyaSessionProvider
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -28,7 +27,7 @@ class Kamereon:
         websession: ClientSession,
         country: str,
         locale_details: Dict[str, str],
-        session_provider: Optional[BaseSessionProvider] = None,
+        gigya: Optional[Gigya] = None,
     ) -> None:
         """Initialise Kamereon."""
         self._websession = websession
@@ -37,13 +36,13 @@ class Kamereon:
         self._api_key = locale_details[CONF_KAMEREON_APIKEY]
         self._root_url = locale_details[CONF_KAMEREON_URL]
 
-        if not session_provider:
+        if not gigya:
             gigya_api_key = locale_details[CONF_GIGYA_APIKEY]
             gigya_root_url = locale_details[CONF_GIGYA_URL]
-            session_provider = GigyaSessionProvider(
+            gigya = Gigya(
                 websession=websession, api_key=gigya_api_key, root_url=gigya_root_url
             )
-        self._session: BaseSessionProvider = session_provider
+        self._gigya: Gigya = gigya
 
     def _get_path_to_account(self, account_id: str) -> str:
         """Get the path to the account."""
@@ -65,7 +64,7 @@ class Kamereon:
         url = f"{self._root_url}/commerce/v1{path}"
         headers = {
             "apikey": self._api_key,
-            "x-gigya-id_token": await self._session.get_jwt_token(),
+            "x-gigya-id_token": await self._gigya.get_jwt(),
         }
         params = params or {}
         params["country"] = self._country
@@ -93,12 +92,12 @@ class Kamereon:
             return kamereon_response
 
     async def login(self, login_id: str, password: str) -> None:
-        """Forward login to SessionProviderException, and cache the login token."""
-        await self._session.login(login_id, password)
+        """Forward login to Gigya."""
+        await self._gigya.login(login_id, password)
 
     async def get_person(self) -> model.KamereonPersonResponse:
         """GET to /persons/{person_id}."""
-        person_id = await self._session.get_person_id()
+        person_id = await self._gigya.get_person_id()
         return cast(
             model.KamereonPersonResponse,
             await self._request(

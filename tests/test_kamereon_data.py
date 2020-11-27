@@ -7,10 +7,9 @@ from tests import get_json_files
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
 from tests.const import TEST_KAMEREON_URL
-from tests.const import TEST_LOCALE_DETAILS
 from tests.const import TEST_PERSON_ID
 from tests.const import TEST_VIN
-from tests.helpers import get_session_provider
+from tests.test_kamereon_init import get_logged_in_kamereon
 
 from renault_api.kamereon import Kamereon
 
@@ -27,12 +26,7 @@ QUERY_STRING = f"country={TEST_COUNTRY}"
 @pytest.fixture
 def kamereon(websession: aiohttp.ClientSession) -> Kamereon:
     """Fixture for testing Kamereon."""
-    return Kamereon(
-        websession=websession,
-        country=TEST_COUNTRY,
-        locale_details=TEST_LOCALE_DETAILS,
-        session_provider=get_session_provider(),
-    )
+    return get_logged_in_kamereon(websession=websession)
 
 
 @pytest.mark.asyncio

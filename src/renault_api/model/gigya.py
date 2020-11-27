@@ -87,7 +87,7 @@ class GigyaGetJWTResponse(GigyaResponse):
 
     id_token: Optional[str]
 
-    def get_jwt_token(self) -> str:
+    def get_jwt(self) -> str:
         """Return jwt token."""
         if not self.id_token:  # pragma: no cover
             raise GigyaException("`id_token` is None in GetJWT response.")

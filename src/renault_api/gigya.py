@@ -3,13 +3,21 @@ import logging
 from typing import Any
 from typing import cast
 from typing import Dict
+from typing import Optional
 
 import aiohttp
-from aiohttp import ClientSession
 from marshmallow.schema import Schema
 
-from renault_api.model import gigya as model
+from .credential_store import CredentialStore
+from .exceptions import GigyaException
+from .model import gigya as model
+from .model.credential import Credential
+from .model.credential import JWTCredential
 
+GIGYA_JWT = "gigya_jwt"
+GIGYA_LOGIN_TOKEN = "gigya_login_token"
+GIGYA_PERSON_ID = "gigya_person_id"
+GIGYA_KEYS = [GIGYA_JWT, GIGYA_LOGIN_TOKEN, GIGYA_PERSON_ID]
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -113,38 +121,68 @@ async def gigya_get_jwt(
 class Gigya:
     """Gigya client for authentication."""
 
-    def __init__(self, websession: ClientSession, root_url: str, api_key: str) -> None:
+    def __init__(
+        self,
+        websession: aiohttp.ClientSession,
+        root_url: str,
+        api_key: str,
+        credential_store: Optional[CredentialStore] = None,
+    ) -> None:
         """Initialise Gigya."""
         self._websession = websession
         self._root_url = root_url
         self._api_key = api_key
+        self._credentials: CredentialStore = credential_store or CredentialStore()
 
-    async def login(self, login_id: str, password: str) -> model.GigyaLoginResponse:
-        """POST to /accounts.login."""
-        return await gigya_login(
+    async def login(self, login_id: str, password: str) -> None:
+        """Login and cache the login token."""
+        self._credentials.clear_keys(GIGYA_KEYS)
+
+        response = await gigya_login(
             self._websession,
             self._root_url,
             self._api_key,
             login_id,
             password,
         )
+        self._credentials[GIGYA_LOGIN_TOKEN] = Credential(response.get_session_cookie())
 
-    async def get_account_info(
-        self, login_token: str
-    ) -> model.GigyaGetAccountInfoResponse:
-        """POST to /accounts.getAccountInfo."""
-        return await gigya_get_account_info(
+    def _get_login_token(self) -> str:
+        login_token = self._credentials.get_value(GIGYA_LOGIN_TOKEN)
+        if login_token:
+            return login_token
+        raise GigyaException(
+            f"Credential `{GIGYA_LOGIN_TOKEN}` not found in credential cache."
+        )
+
+    async def get_person_id(self) -> str:
+        """Get person id."""
+        person_id = self._credentials.get_value(GIGYA_PERSON_ID)
+        if person_id:
+            return person_id
+        login_token = self._get_login_token()
+        response = await gigya_get_account_info(
             self._websession,
             self._root_url,
             self._api_key,
             login_token,
         )
+        person_id = response.get_person_id()
+        self._credentials[GIGYA_PERSON_ID] = Credential(person_id)
+        return person_id
 
-    async def get_jwt(self, login_token: str) -> model.GigyaGetJWTResponse:
-        """POST to /accounts.getAccountInfo."""
-        return await gigya_get_jwt(
+    async def get_jwt(self) -> str:
+        """Get json web token."""
+        jwt = self._credentials.get_value(GIGYA_JWT)
+        if jwt:
+            return jwt
+        login_token = self._get_login_token()
+        response = await gigya_get_jwt(
             self._websession,
             self._root_url,
             self._api_key,
             login_token,
         )
+        jwt = response.get_jwt()
+        self._credentials[GIGYA_JWT] = JWTCredential(jwt)
+        return jwt

@@ -2,20 +2,18 @@
 from datetime import datetime
 from typing import List
 
+import aiohttp
 import pytest
-from aiohttp.client import ClientSession
 from aioresponses import aioresponses
 from tests import get_file_content
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
 from tests.const import TEST_KAMEREON_URL
-from tests.const import TEST_LOCALE
 from tests.const import TEST_VIN
-from tests.helpers import get_session_provider
+from tests.test_renault_account import get_logged_in_account
 
 from renault_api.model.kamereon import ChargeMode
 from renault_api.model.kamereon import ChargeSchedule
-from renault_api.renault_client import RenaultClient
 from renault_api.renault_vehicle import RenaultVehicle
 
 
@@ -31,13 +29,16 @@ FIXTURE_PATH = "tests/fixtures/kamereon/"
 QUERY_STRING = f"country={TEST_COUNTRY}"
 
 
-@pytest.fixture
-async def vehicle(websession: ClientSession) -> RenaultVehicle:
-    """Fixture for testing Gigya."""
-    client = RenaultClient(websession=websession, locale=TEST_LOCALE)
-    client._kamereon._session = get_session_provider()
-    account = await client.get_api_account(TEST_ACCOUNT_ID)
+async def get_logged_in_vehicle(websession: aiohttp.ClientSession) -> RenaultVehicle:
+    """Get logged_in Kamereon."""
+    account = await get_logged_in_account(websession)
     return await account.get_api_vehicle(TEST_VIN)
+
+
+@pytest.fixture
+async def vehicle(websession: aiohttp.ClientSession) -> RenaultVehicle:
+    """Fixture for testing Gigya."""
+    return await get_logged_in_vehicle(websession)
 
 
 @pytest.mark.asyncio
