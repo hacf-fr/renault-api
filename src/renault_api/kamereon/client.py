@@ -1,25 +1,22 @@
 """Kamereon client for interaction with Renault servers."""
 import logging
 from typing import Any
-from typing import cast
 from typing import Dict
 from typing import Optional
 
 import aiohttp
-from marshmallow.schema import Schema
 
-from renault_api import kamereon
+from . import models
 from renault_api import gigya
+from renault_api import kamereon
 from renault_api.const import CONF_GIGYA_APIKEY
 from renault_api.const import CONF_GIGYA_URL
 from renault_api.const import CONF_KAMEREON_APIKEY
 from renault_api.const import CONF_KAMEREON_URL
-from renault_api.credential_store import CredentialStore
-from renault_api.gigya.exceptions import GigyaException
-from . import models
-from . import schemas
 from renault_api.credential import Credential
 from renault_api.credential import JWTCredential
+from renault_api.credential_store import CredentialStore
+from renault_api.gigya.exceptions import GigyaException
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -58,28 +55,6 @@ class KamereonClient:
         )
         credential = Credential(response.get_session_cookie())
         self._credentials[gigya.GIGYA_LOGIN_TOKEN] = credential
-
-    async def get_person(self) -> models.KamereonPersonResponse:
-        """GET to /persons/{person_id}."""
-        return await kamereon.get_person(
-            self._websession,
-            self._root_url,
-            self._api_key,
-            await self._get_jwt(),
-            self._country,
-            await self._get_person_id(),
-        )
-
-    async def get_vehicles(self, account_id: str) -> models.KamereonVehiclesResponse:
-        """GET to /accounts/{account_id}/vehicles."""
-        return await kamereon.get_vehicles(
-            self._websession,
-            self._root_url,
-            self._api_key,
-            await self._get_jwt(),
-            self._country,
-            account_id,
-        )
 
     async def get_vehicle_battery_status(
         self, account_id: str, vin: str

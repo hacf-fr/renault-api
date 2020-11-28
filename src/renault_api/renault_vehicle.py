@@ -6,10 +6,11 @@ from typing import cast
 from typing import List
 from typing import Optional
 
+from . import kamereon
 from .kamereon import enums
 from .kamereon import models
 from .kamereon import schemas
-from .kamereon.client import KamereonClient
+from .renault_session import RenaultSession
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -25,19 +26,40 @@ class RenaultVehicle:
 
     def __init__(
         self,
-        kamereon: KamereonClient,
+        session: RenaultSession,
         account_id: str,
         vin: str,
     ) -> None:
         """Initialise Renault account."""
-        self._kamereon = kamereon
+        self._session = session
         self._account_id = account_id
         self._vin = vin
 
+    @property
+    def session(self) -> RenaultSession:
+        """Get session provider."""
+        return self._session
+
+    @property
+    def account_id(self) -> str:
+        """Get account id."""
+        return self._account_id
+
+    @property
+    def vin(self) -> str:
+        """Get vin."""
+        return self._vin
+
     async def get_battery_status(self) -> models.KamereonVehicleBatteryStatusData:
         """Get vehicle battery status."""
-        response = await self._kamereon.get_vehicle_battery_status(
-            self._account_id, self._vin
+        response = await kamereon.get_vehicle_battery_status_v2(
+            self.session.websession,
+            self.session.kamereon_root_url,
+            self.session.kamereon_api_key,
+            await self.session.get_jwt(),
+            self.session.country,
+            self._account_id,
+            self._vin,
         )
         return cast(
             models.KamereonVehicleBatteryStatusData,
@@ -46,8 +68,14 @@ class RenaultVehicle:
 
     async def get_location(self) -> models.KamereonVehicleLocationData:
         """Get vehicle location."""
-        response = await self._kamereon.get_vehicle_location(
-            self._account_id, self._vin
+        response = await kamereon.get_vehicle_location(
+            self.session.websession,
+            self.session.kamereon_root_url,
+            self.session.kamereon_api_key,
+            await self.session.get_jwt(),
+            self.session.country,
+            self._account_id,
+            self._vin,
         )
         return cast(
             models.KamereonVehicleLocationData,
@@ -56,8 +84,14 @@ class RenaultVehicle:
 
     async def get_hvac_status(self) -> models.KamereonVehicleHvacStatusData:
         """Get vehicle hvac status."""
-        response = await self._kamereon.get_vehicle_hvac_status(
-            self._account_id, self._vin
+        response = await kamereon.get_vehicle_hvac_status(
+            self.session.websession,
+            self.session.kamereon_root_url,
+            self.session.kamereon_api_key,
+            await self.session.get_jwt(),
+            self.session.country,
+            self._account_id,
+            self._vin,
         )
         return cast(
             models.KamereonVehicleHvacStatusData,
@@ -66,8 +100,14 @@ class RenaultVehicle:
 
     async def get_charge_mode(self) -> models.KamereonVehicleChargeModeData:
         """Get vehicle charge mode."""
-        response = await self._kamereon.get_vehicle_charge_mode(
-            self._account_id, self._vin
+        response = await kamereon.get_vehicle_charge_mode(
+            self.session.websession,
+            self.session.kamereon_root_url,
+            self.session.kamereon_api_key,
+            await self.session.get_jwt(),
+            self.session.country,
+            self._account_id,
+            self._vin,
         )
         return cast(
             models.KamereonVehicleChargeModeData,
@@ -76,7 +116,15 @@ class RenaultVehicle:
 
     async def get_cockpit(self) -> models.KamereonVehicleCockpitData:
         """Get vehicle cockpit."""
-        response = await self._kamereon.get_vehicle_cockpit(self._account_id, self._vin)
+        response = await kamereon.get_vehicle_cockpit(
+            self.session.websession,
+            self.session.kamereon_root_url,
+            self.session.kamereon_api_key,
+            await self.session.get_jwt(),
+            self.session.country,
+            self._account_id,
+            self._vin,
+        )
         return cast(
             models.KamereonVehicleCockpitData,
             response.get_attributes(schemas.KamereonVehicleCockpitDataSchema),
@@ -84,8 +132,14 @@ class RenaultVehicle:
 
     async def get_lock_status(self) -> models.KamereonVehicleLockStatusData:
         """Get vehicle lock status."""
-        response = await self._kamereon.get_vehicle_lock_status(
-            self._account_id, self._vin
+        response = await kamereon.get_vehicle_lock_status(
+            self.session.websession,
+            self.session.kamereon_root_url,
+            self.session.kamereon_api_key,
+            await self.session.get_jwt(),
+            self.session.country,
+            self._account_id,
+            self._vin,
         )
         return cast(
             models.KamereonVehicleLockStatusData,
@@ -94,8 +148,14 @@ class RenaultVehicle:
 
     async def get_charging_settings(self) -> models.KamereonVehicleChargingSettingsData:
         """Get vehicle charging settings."""
-        response = await self._kamereon.get_vehicle_charging_settings(
-            self._account_id, self._vin
+        response = await kamereon.get_vehicle_charging_settings(
+            self.session.websession,
+            self.session.kamereon_root_url,
+            self.session.kamereon_api_key,
+            await self.session.get_jwt(),
+            self.session.country,
+            self._account_id,
+            self._vin,
         )
         return cast(
             models.KamereonVehicleChargingSettingsData,
@@ -106,8 +166,14 @@ class RenaultVehicle:
         self,
     ) -> models.KamereonVehicleNotificationSettingsData:
         """Get vehicle notification settings."""
-        response = await self._kamereon.get_vehicle_notification_settings(
-            self._account_id, self._vin
+        response = await kamereon.get_vehicle_notification_settings(
+            self.session.websession,
+            self.session.kamereon_root_url,
+            self.session.kamereon_api_key,
+            await self.session.get_jwt(),
+            self.session.country,
+            self._account_id,
+            self._vin,
         )
         return cast(
             models.KamereonVehicleNotificationSettingsData,
@@ -140,7 +206,12 @@ class RenaultVehicle:
             "start": start.strftime(PERIOD_FORMATS[period]),
             "end": end.strftime(PERIOD_FORMATS[period]),
         }
-        response = await self._kamereon.get_vehicle_charge_history(
+        response = await kamereon.get_vehicle_charge_history(
+            self.session.websession,
+            self.session.kamereon_root_url,
+            self.session.kamereon_api_key,
+            await self.session.get_jwt(),
+            self.session.country,
             self._account_id,
             self._vin,
             params=params,
@@ -171,7 +242,12 @@ class RenaultVehicle:
             "start": start.strftime(PERIOD_DAY_FORMAT),
             "end": end.strftime(PERIOD_DAY_FORMAT),
         }
-        response = await self._kamereon.get_vehicle_charges(
+        response = await kamereon.get_vehicle_charges(
+            self.session.websession,
+            self.session.kamereon_root_url,
+            self.session.kamereon_api_key,
+            await self.session.get_jwt(),
+            self.session.country,
             self._account_id,
             self._vin,
             params=params,
@@ -205,7 +281,12 @@ class RenaultVehicle:
             "start": start.strftime(PERIOD_FORMATS[period]),
             "end": end.strftime(PERIOD_FORMATS[period]),
         }
-        response = await self._kamereon.get_vehicle_hvac_history(
+        response = await kamereon.get_vehicle_hvac_history(
+            self.session.websession,
+            self.session.kamereon_root_url,
+            self.session.kamereon_api_key,
+            await self.session.get_jwt(),
+            self.session.country,
             self._account_id,
             self._vin,
             params=params,
@@ -236,7 +317,12 @@ class RenaultVehicle:
             "start": start.strftime(PERIOD_DAY_FORMAT),
             "end": end.strftime(PERIOD_DAY_FORMAT),
         }
-        response = await self._kamereon.get_vehicle_hvac_sessions(
+        response = await kamereon.get_vehicle_hvac_sessions(
+            self.session.websession,
+            self.session.kamereon_root_url,
+            self.session.kamereon_api_key,
+            await self.session.get_jwt(),
+            self.session.country,
             self._account_id,
             self._vin,
             params=params,
@@ -265,7 +351,12 @@ class RenaultVehicle:
             start_date_time = when.astimezone(timezone.utc).strftime(PERIOD_TZ_FORMAT)
             attributes["startDateTime"] = start_date_time
 
-        response = await self._kamereon.set_vehicle_hvac_start(
+        response = await kamereon.set_vehicle_hvac_start(
+            self.session.websession,
+            self.session.kamereon_root_url,
+            self.session.kamereon_api_key,
+            await self.session.get_jwt(),
+            self.session.country,
             self._account_id,
             self._vin,
             attributes=attributes,
@@ -279,7 +370,12 @@ class RenaultVehicle:
         """Stop vehicle hvac."""
         attributes = {"action": "cancel"}
 
-        response = await self._kamereon.set_vehicle_hvac_start(
+        response = await kamereon.set_vehicle_hvac_start(
+            self.session.websession,
+            self.session.kamereon_root_url,
+            self.session.kamereon_api_key,
+            await self.session.get_jwt(),
+            self.session.country,
             self._account_id,
             self._vin,
             attributes=attributes,
@@ -302,7 +398,12 @@ class RenaultVehicle:
                 )
         attributes = {"schedules": list(schedule.for_json() for schedule in schedules)}
 
-        response = await self._kamereon.set_vehicle_charge_schedule(
+        response = await kamereon.set_vehicle_charge_schedule(
+            self.session.websession,
+            self.session.kamereon_root_url,
+            self.session.kamereon_api_key,
+            await self.session.get_jwt(),
+            self.session.country,
             self._account_id,
             self._vin,
             attributes=attributes,
@@ -326,7 +427,12 @@ class RenaultVehicle:
             )
         attributes = {"action": charge_mode.name}
 
-        response = await self._kamereon.set_vehicle_charge_mode(
+        response = await kamereon.set_vehicle_charge_mode(
+            self.session.websession,
+            self.session.kamereon_root_url,
+            self.session.kamereon_api_key,
+            await self.session.get_jwt(),
+            self.session.country,
             self._account_id,
             self._vin,
             attributes=attributes,
@@ -340,7 +446,12 @@ class RenaultVehicle:
         """Start vehicle charge."""
         attributes = {"action": "start"}
 
-        response = await self._kamereon.set_vehicle_charging_start(
+        response = await kamereon.set_vehicle_charging_start(
+            self.session.websession,
+            self.session.kamereon_root_url,
+            self.session.kamereon_api_key,
+            await self.session.get_jwt(),
+            self.session.country,
             self._account_id,
             self._vin,
             attributes=attributes,
