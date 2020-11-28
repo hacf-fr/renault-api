@@ -2,9 +2,9 @@
 import logging
 from typing import List
 
-from .kamereon import Kamereon
+from .kamereon.client import KamereonClient
+from .kamereon.models import KamereonVehiclesResponse
 from .renault_vehicle import RenaultVehicle
-from renault_api.model.kamereon import KamereonVehiclesResponse
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -15,7 +15,7 @@ class RenaultAccount:
 
     def __init__(
         self,
-        kamereon: Kamereon,
+        kamereon: KamereonClient,
         account_id: str,
     ) -> None:
         """Initialise Renault account."""

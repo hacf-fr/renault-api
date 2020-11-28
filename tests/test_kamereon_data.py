@@ -11,7 +11,7 @@ from tests.const import TEST_PERSON_ID
 from tests.const import TEST_VIN
 from tests.test_kamereon_init import get_logged_in_kamereon
 
-from renault_api.kamereon import Kamereon
+from renault_api.kamereon.client import KamereonClient
 
 TEST_BASE_URL = f"{TEST_KAMEREON_URL}/commerce/v1"
 TEST_ACCOUNT_URL = f"{TEST_BASE_URL}/accounts/{TEST_ACCOUNT_ID}"
@@ -24,13 +24,13 @@ QUERY_STRING = f"country={TEST_COUNTRY}"
 
 
 @pytest.fixture
-def kamereon(websession: aiohttp.ClientSession) -> Kamereon:
+def kamereon(websession: aiohttp.ClientSession) -> KamereonClient:
     """Fixture for testing Kamereon."""
     return get_logged_in_kamereon(websession=websession)
 
 
 @pytest.mark.asyncio
-async def test_get_person(kamereon: Kamereon) -> None:
+async def test_get_person(kamereon: KamereonClient) -> None:
     """Test persons/{person_id} response."""
     with aioresponses() as mocked_responses:
         mocked_responses.get(
@@ -50,7 +50,7 @@ async def test_get_person(kamereon: Kamereon) -> None:
 
 @pytest.mark.parametrize("filename", get_json_files(f"{FIXTURE_PATH}/vehicles"))
 @pytest.mark.asyncio
-async def test_vehicles_response(filename: str, kamereon: Kamereon) -> None:
+async def test_vehicles_response(filename: str, kamereon: KamereonClient) -> None:
     """Test accounts/{account_id}/vehicles response."""
     with aioresponses() as mocked_responses:
         mocked_responses.get(
@@ -62,7 +62,7 @@ async def test_vehicles_response(filename: str, kamereon: Kamereon) -> None:
 
 
 @pytest.mark.asyncio
-async def test_vehicle_battery_status(kamereon: Kamereon) -> None:
+async def test_vehicle_battery_status(kamereon: KamereonClient) -> None:
     """Test cars/{vin}/battery-status response."""
     with aioresponses() as mocked_responses:
         mocked_responses.get(
@@ -74,7 +74,7 @@ async def test_vehicle_battery_status(kamereon: Kamereon) -> None:
 
 
 @pytest.mark.asyncio
-async def test_vehicle_location(kamereon: Kamereon) -> None:
+async def test_vehicle_location(kamereon: KamereonClient) -> None:
     """Test cars/{vin}/location response."""
     with aioresponses() as mocked_responses:
         mocked_responses.get(
@@ -86,7 +86,7 @@ async def test_vehicle_location(kamereon: Kamereon) -> None:
 
 
 @pytest.mark.asyncio
-async def test_vehicle_hvac_status(kamereon: Kamereon) -> None:
+async def test_vehicle_hvac_status(kamereon: KamereonClient) -> None:
     """Test cars/{vin}/hvac-status response."""
     with aioresponses() as mocked_responses:
         mocked_responses.get(
@@ -98,7 +98,7 @@ async def test_vehicle_hvac_status(kamereon: Kamereon) -> None:
 
 
 @pytest.mark.asyncio
-async def test_vehicle_charge_mode(kamereon: Kamereon) -> None:
+async def test_vehicle_charge_mode(kamereon: KamereonClient) -> None:
     """Test cars/{vin}/charge-mode response."""
     with aioresponses() as mocked_responses:
         mocked_responses.get(
@@ -110,7 +110,7 @@ async def test_vehicle_charge_mode(kamereon: Kamereon) -> None:
 
 
 @pytest.mark.asyncio
-async def test_vehicle_cockpit(kamereon: Kamereon) -> None:
+async def test_vehicle_cockpit(kamereon: KamereonClient) -> None:
     """Test cars/{vin}/cockpit response."""
     with aioresponses() as mocked_responses:
         mocked_responses.get(
@@ -122,7 +122,7 @@ async def test_vehicle_cockpit(kamereon: Kamereon) -> None:
 
 
 @pytest.mark.asyncio
-async def test_vehicle_lock_status(kamereon: Kamereon) -> None:
+async def test_vehicle_lock_status(kamereon: KamereonClient) -> None:
     """Test cars/{vin}/lock-status response."""
     with aioresponses() as mocked_responses:
         mocked_responses.get(
@@ -134,7 +134,7 @@ async def test_vehicle_lock_status(kamereon: Kamereon) -> None:
 
 
 @pytest.mark.asyncio
-async def test_vehicle_charging_settings(kamereon: Kamereon) -> None:
+async def test_vehicle_charging_settings(kamereon: KamereonClient) -> None:
     """Test cars/{vin}/charging-settings response."""
     with aioresponses() as mocked_responses:
         mocked_responses.get(
@@ -148,7 +148,7 @@ async def test_vehicle_charging_settings(kamereon: Kamereon) -> None:
 
 
 @pytest.mark.asyncio
-async def test_vehicle_notification_settings(kamereon: Kamereon) -> None:
+async def test_vehicle_notification_settings(kamereon: KamereonClient) -> None:
     """Test cars/{vin}/notification-settings response."""
     with aioresponses() as mocked_responses:
         mocked_responses.get(
@@ -164,7 +164,7 @@ async def test_vehicle_notification_settings(kamereon: Kamereon) -> None:
 
 
 @pytest.mark.asyncio
-async def test_vehicle_charges(kamereon: Kamereon) -> None:
+async def test_vehicle_charges(kamereon: KamereonClient) -> None:
     """Test cars/{vin}/vehicle-charges response."""
     params = {"start": "20201001", "end": "20201115"}
     query_string = f"{QUERY_STRING}&end=20201115&start=20201001"
@@ -178,7 +178,7 @@ async def test_vehicle_charges(kamereon: Kamereon) -> None:
 
 
 @pytest.mark.asyncio
-async def test_vehicle_charge_history(kamereon: Kamereon) -> None:
+async def test_vehicle_charge_history(kamereon: KamereonClient) -> None:
     """Test cars/{vin}/charge-history response."""
     params = {"type": "month", "start": "202010", "end": "202011"}
     query_string = f"{QUERY_STRING}&end=202011&start=202010&type=month"
@@ -194,7 +194,7 @@ async def test_vehicle_charge_history(kamereon: Kamereon) -> None:
 
 
 @pytest.mark.asyncio
-async def test_vehicle_hvac_sessions(kamereon: Kamereon) -> None:
+async def test_vehicle_hvac_sessions(kamereon: KamereonClient) -> None:
     """Test cars/{vin}/hvac-sessions response."""
     params = {"start": "20201001", "end": "20201115"}
     query_string = f"{QUERY_STRING}&end=20201115&start=20201001"
@@ -210,7 +210,7 @@ async def test_vehicle_hvac_sessions(kamereon: Kamereon) -> None:
 
 
 @pytest.mark.asyncio
-async def test_vehicle_hvac_history(kamereon: Kamereon) -> None:
+async def test_vehicle_hvac_history(kamereon: KamereonClient) -> None:
     """Test cars/{vin}/hvac-history response."""
     params = {"type": "month", "start": "202010", "end": "202011"}
     query_string = f"{QUERY_STRING}&end=202011&start=202010&type=month"

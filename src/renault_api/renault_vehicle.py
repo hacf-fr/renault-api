@@ -6,8 +6,10 @@ from typing import cast
 from typing import List
 from typing import Optional
 
-from .kamereon import Kamereon
-from .model import kamereon as model
+from .kamereon import enums
+from .kamereon import models
+from .kamereon import schemas
+from .kamereon.client import KamereonClient
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -23,7 +25,7 @@ class RenaultVehicle:
 
     def __init__(
         self,
-        kamereon: Kamereon,
+        kamereon: KamereonClient,
         account_id: str,
         vin: str,
     ) -> None:
@@ -32,91 +34,91 @@ class RenaultVehicle:
         self._account_id = account_id
         self._vin = vin
 
-    async def get_battery_status(self) -> model.KamereonVehicleBatteryStatusData:
+    async def get_battery_status(self) -> models.KamereonVehicleBatteryStatusData:
         """Get vehicle battery status."""
         response = await self._kamereon.get_vehicle_battery_status(
             self._account_id, self._vin
         )
         return cast(
-            model.KamereonVehicleBatteryStatusData,
-            response.get_attributes(model.KamereonVehicleBatteryStatusDataSchema),
+            models.KamereonVehicleBatteryStatusData,
+            response.get_attributes(schemas.KamereonVehicleBatteryStatusDataSchema),
         )
 
-    async def get_location(self) -> model.KamereonVehicleLocationData:
+    async def get_location(self) -> models.KamereonVehicleLocationData:
         """Get vehicle location."""
         response = await self._kamereon.get_vehicle_location(
             self._account_id, self._vin
         )
         return cast(
-            model.KamereonVehicleLocationData,
-            response.get_attributes(model.KamereonVehicleLocationDataSchema),
+            models.KamereonVehicleLocationData,
+            response.get_attributes(schemas.KamereonVehicleLocationDataSchema),
         )
 
-    async def get_hvac_status(self) -> model.KamereonVehicleHvacStatusData:
+    async def get_hvac_status(self) -> models.KamereonVehicleHvacStatusData:
         """Get vehicle hvac status."""
         response = await self._kamereon.get_vehicle_hvac_status(
             self._account_id, self._vin
         )
         return cast(
-            model.KamereonVehicleHvacStatusData,
-            response.get_attributes(model.KamereonVehicleHvacStatusDataSchema),
+            models.KamereonVehicleHvacStatusData,
+            response.get_attributes(schemas.KamereonVehicleHvacStatusDataSchema),
         )
 
-    async def get_charge_mode(self) -> model.KamereonVehicleChargeModeData:
+    async def get_charge_mode(self) -> models.KamereonVehicleChargeModeData:
         """Get vehicle charge mode."""
         response = await self._kamereon.get_vehicle_charge_mode(
             self._account_id, self._vin
         )
         return cast(
-            model.KamereonVehicleChargeModeData,
-            response.get_attributes(model.KamereonVehicleChargeModeDataSchema),
+            models.KamereonVehicleChargeModeData,
+            response.get_attributes(schemas.KamereonVehicleChargeModeDataSchema),
         )
 
-    async def get_cockpit(self) -> model.KamereonVehicleCockpitData:
+    async def get_cockpit(self) -> models.KamereonVehicleCockpitData:
         """Get vehicle cockpit."""
         response = await self._kamereon.get_vehicle_cockpit(self._account_id, self._vin)
         return cast(
-            model.KamereonVehicleCockpitData,
-            response.get_attributes(model.KamereonVehicleCockpitDataSchema),
+            models.KamereonVehicleCockpitData,
+            response.get_attributes(schemas.KamereonVehicleCockpitDataSchema),
         )
 
-    async def get_lock_status(self) -> model.KamereonVehicleLockStatusData:
+    async def get_lock_status(self) -> models.KamereonVehicleLockStatusData:
         """Get vehicle lock status."""
         response = await self._kamereon.get_vehicle_lock_status(
             self._account_id, self._vin
         )
         return cast(
-            model.KamereonVehicleLockStatusData,
-            response.get_attributes(model.KamereonVehicleLockStatusDataSchema),
+            models.KamereonVehicleLockStatusData,
+            response.get_attributes(schemas.KamereonVehicleLockStatusDataSchema),
         )
 
-    async def get_charging_settings(self) -> model.KamereonVehicleChargingSettingsData:
+    async def get_charging_settings(self) -> models.KamereonVehicleChargingSettingsData:
         """Get vehicle charging settings."""
         response = await self._kamereon.get_vehicle_charging_settings(
             self._account_id, self._vin
         )
         return cast(
-            model.KamereonVehicleChargingSettingsData,
-            response.get_attributes(model.KamereonVehicleChargingSettingsDataSchema),
+            models.KamereonVehicleChargingSettingsData,
+            response.get_attributes(schemas.KamereonVehicleChargingSettingsDataSchema),
         )
 
     async def get_notification_settings(
         self,
-    ) -> model.KamereonVehicleNotificationSettingsData:
+    ) -> models.KamereonVehicleNotificationSettingsData:
         """Get vehicle notification settings."""
         response = await self._kamereon.get_vehicle_notification_settings(
             self._account_id, self._vin
         )
         return cast(
-            model.KamereonVehicleNotificationSettingsData,
+            models.KamereonVehicleNotificationSettingsData,
             response.get_attributes(
-                model.KamereonVehicleNotificationSettingsDataSchema
+                schemas.KamereonVehicleNotificationSettingsDataSchema
             ),
         )
 
     async def get_charge_history(
         self, start: datetime, end: datetime, period: str = "month"
-    ) -> model.KamereonVehicleChargeHistoryData:
+    ) -> models.KamereonVehicleChargeHistoryData:
         """Get vehicle charge history."""
         if not isinstance(start, datetime):  # pragma: no cover
             raise TypeError(
@@ -144,13 +146,13 @@ class RenaultVehicle:
             params=params,
         )
         return cast(
-            model.KamereonVehicleChargeHistoryData,
-            response.get_attributes(model.KamereonVehicleChargeHistoryDataSchema),
+            models.KamereonVehicleChargeHistoryData,
+            response.get_attributes(schemas.KamereonVehicleChargeHistoryDataSchema),
         )
 
     async def get_charges(
         self, start: datetime, end: datetime
-    ) -> model.KamereonVehicleChargesData:
+    ) -> models.KamereonVehicleChargesData:
         """Get vehicle charge statistics."""
         if not isinstance(start, datetime):  # pragma: no cover
             raise TypeError(
@@ -175,13 +177,13 @@ class RenaultVehicle:
             params=params,
         )
         return cast(
-            model.KamereonVehicleChargesData,
-            response.get_attributes(model.KamereonVehicleChargesDataSchema),
+            models.KamereonVehicleChargesData,
+            response.get_attributes(schemas.KamereonVehicleChargesDataSchema),
         )
 
     async def get_hvac_history(
         self, start: datetime, end: datetime, period: str = "month"
-    ) -> model.KamereonVehicleHvacHistoryData:
+    ) -> models.KamereonVehicleHvacHistoryData:
         """Get vehicle hvac history."""
         if not isinstance(start, datetime):  # pragma: no cover
             raise TypeError(
@@ -209,13 +211,13 @@ class RenaultVehicle:
             params=params,
         )
         return cast(
-            model.KamereonVehicleHvacHistoryData,
-            response.get_attributes(model.KamereonVehicleHvacHistoryDataSchema),
+            models.KamereonVehicleHvacHistoryData,
+            response.get_attributes(schemas.KamereonVehicleHvacHistoryDataSchema),
         )
 
     async def get_hvac_sessions(
         self, start: datetime, end: datetime
-    ) -> model.KamereonVehicleHvacSessionsData:
+    ) -> models.KamereonVehicleHvacSessionsData:
         """Get vehicle hvac sessions."""
         if not isinstance(start, datetime):  # pragma: no cover
             raise TypeError(
@@ -240,13 +242,13 @@ class RenaultVehicle:
             params=params,
         )
         return cast(
-            model.KamereonVehicleHvacSessionsData,
-            response.get_attributes(model.KamereonVehicleHvacSessionsDataSchema),
+            models.KamereonVehicleHvacSessionsData,
+            response.get_attributes(schemas.KamereonVehicleHvacSessionsDataSchema),
         )
 
     async def set_ac_start(
         self, temperature: float, when: Optional[datetime] = None
-    ) -> model.KamereonVehicleHvacStartActionData:
+    ) -> models.KamereonVehicleHvacStartActionData:
         """Start vehicle hvac."""
         attributes = {
             "action": "start",
@@ -269,11 +271,11 @@ class RenaultVehicle:
             attributes=attributes,
         )
         return cast(
-            model.KamereonVehicleHvacStartActionData,
-            response.get_attributes(model.KamereonVehicleHvacStartActionDataSchema),
+            models.KamereonVehicleHvacStartActionData,
+            response.get_attributes(schemas.KamereonVehicleHvacStartActionDataSchema),
         )
 
-    async def set_ac_stop(self) -> model.KamereonVehicleHvacStartActionData:
+    async def set_ac_stop(self) -> models.KamereonVehicleHvacStartActionData:
         """Stop vehicle hvac."""
         attributes = {"action": "cancel"}
 
@@ -283,16 +285,16 @@ class RenaultVehicle:
             attributes=attributes,
         )
         return cast(
-            model.KamereonVehicleHvacStartActionData,
-            response.get_attributes(model.KamereonVehicleHvacStartActionDataSchema),
+            models.KamereonVehicleHvacStartActionData,
+            response.get_attributes(schemas.KamereonVehicleHvacStartActionDataSchema),
         )
 
     async def set_charge_schedules(
-        self, schedules: List[model.ChargeSchedule]
-    ) -> model.KamereonVehicleChargeScheduleActionData:
+        self, schedules: List[models.ChargeSchedule]
+    ) -> models.KamereonVehicleChargeScheduleActionData:
         """Set vehicle charge schedules."""
         for schedule in schedules:
-            if not isinstance(schedule, model.ChargeSchedule):  # pragma: no cover
+            if not isinstance(schedule, models.ChargeSchedule):  # pragma: no cover
                 raise TypeError(
                     "`schedules` should be a list of ChargeSchedule, not {}".format(
                         schedules.__class__
@@ -306,17 +308,17 @@ class RenaultVehicle:
             attributes=attributes,
         )
         return cast(
-            model.KamereonVehicleChargeScheduleActionData,
+            models.KamereonVehicleChargeScheduleActionData,
             response.get_attributes(
-                model.KamereonVehicleChargeScheduleActionDataSchema
+                schemas.KamereonVehicleChargeScheduleActionDataSchema
             ),
         )
 
     async def set_charge_mode(
-        self, charge_mode: model.ChargeMode
-    ) -> model.KamereonVehicleChargeModeActionData:
+        self, charge_mode: enums.ChargeMode
+    ) -> models.KamereonVehicleChargeModeActionData:
         """Set vehicle charge mode."""
-        if not isinstance(charge_mode, model.ChargeMode):  # pragma: no cover
+        if not isinstance(charge_mode, enums.ChargeMode):  # pragma: no cover
             raise TypeError(
                 "`charge_mode` should be an instance of ChargeMode, not {}".format(
                     charge_mode.__class__
@@ -330,11 +332,11 @@ class RenaultVehicle:
             attributes=attributes,
         )
         return cast(
-            model.KamereonVehicleChargeModeActionData,
-            response.get_attributes(model.KamereonVehicleChargeModeActionDataSchema),
+            models.KamereonVehicleChargeModeActionData,
+            response.get_attributes(schemas.KamereonVehicleChargeModeActionDataSchema),
         )
 
-    async def set_charge_start(self) -> model.KamereonVehicleChargingStartActionData:
+    async def set_charge_start(self) -> models.KamereonVehicleChargingStartActionData:
         """Start vehicle charge."""
         attributes = {"action": "start"}
 
@@ -344,6 +346,8 @@ class RenaultVehicle:
             attributes=attributes,
         )
         return cast(
-            model.KamereonVehicleChargingStartActionData,
-            response.get_attributes(model.KamereonVehicleChargingStartActionDataSchema),
+            models.KamereonVehicleChargingStartActionData,
+            response.get_attributes(
+                schemas.KamereonVehicleChargingStartActionDataSchema
+            ),
         )

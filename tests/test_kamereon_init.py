@@ -12,14 +12,14 @@ from tests.const import TEST_USERNAME
 from tests.test_credential_store import get_logged_in_credential_store
 
 from renault_api.gigya import GIGYA_LOGIN_TOKEN
-from renault_api.kamereon import Kamereon
+from renault_api.kamereon.client import KamereonClient
 
 FIXTURE_PATH = "tests/fixtures/gigya/"
 
 
-def get_logged_in_kamereon(websession: aiohttp.ClientSession) -> Kamereon:
+def get_logged_in_kamereon(websession: aiohttp.ClientSession) -> KamereonClient:
     """Get logged_in Kamereon."""
-    return Kamereon(
+    return KamereonClient(
         websession=websession,
         country=TEST_COUNTRY,
         locale_details=TEST_LOCALE_DETAILS,
@@ -28,9 +28,9 @@ def get_logged_in_kamereon(websession: aiohttp.ClientSession) -> Kamereon:
 
 
 @pytest.fixture
-def kamereon(websession: aiohttp.ClientSession) -> Kamereon:
+def kamereon(websession: aiohttp.ClientSession) -> KamereonClient:
     """Fixture for testing Kamereon."""
-    return Kamereon(
+    return KamereonClient(
         websession=websession,
         country=TEST_COUNTRY,
         locale_details=TEST_LOCALE_DETAILS,
@@ -38,7 +38,7 @@ def kamereon(websession: aiohttp.ClientSession) -> Kamereon:
 
 
 @pytest.mark.asyncio
-async def test_login(kamereon: Kamereon) -> None:
+async def test_login(kamereon: KamereonClient) -> None:
     """Test valid login response."""
     with aioresponses() as mocked_responses:
         mocked_responses.post(

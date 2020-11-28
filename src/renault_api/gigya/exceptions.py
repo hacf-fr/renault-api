@@ -1,8 +1,10 @@
 """Exceptions for Gigya API."""
 from typing import Optional
 
+from renault_api.exceptions import RenaultException
 
-class GigyaException(Exception):
+
+class GigyaException(RenaultException):
     """Base exception for Gigya errors."""
 
     pass

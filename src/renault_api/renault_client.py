@@ -5,11 +5,11 @@ from typing import Optional
 
 import aiohttp
 
-from .kamereon import Kamereon
+from .const import AVAILABLE_LOCALES
+from .exceptions import RenaultException
+from .kamereon.client import KamereonClient
+from .kamereon.models import KamereonPersonResponse
 from .renault_account import RenaultAccount
-from renault_api.const import AVAILABLE_LOCALES
-from renault_api.exceptions import RenaultException
-from renault_api.model.kamereon import KamereonPersonResponse
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -20,7 +20,7 @@ class RenaultClient:
 
     def __init__(
         self,
-        kamereon: Optional[Kamereon] = None,
+        kamereon: Optional[KamereonClient] = None,
         websession: Optional[aiohttp.ClientSession] = None,
         locale: Optional[str] = None,
     ) -> None:
@@ -36,7 +36,7 @@ class RenaultClient:
                 raise RenaultException(
                     "`locale` is required if kamereon is not provided."
                 )
-            self._kamereon = Kamereon(
+            self._kamereon = KamereonClient(
                 websession=websession,
                 country=locale[-2:],
                 locale_details=AVAILABLE_LOCALES[locale],

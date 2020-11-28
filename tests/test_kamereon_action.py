@@ -10,7 +10,7 @@ from tests.const import TEST_SCHEDULES
 from tests.const import TEST_VIN
 from tests.test_kamereon_init import get_logged_in_kamereon
 
-from renault_api.kamereon import Kamereon
+from renault_api.kamereon.client import KamereonClient
 
 TEST_BASE_URL = f"{TEST_KAMEREON_URL}/commerce/v1"
 TEST_ACCOUNT_URL = f"{TEST_BASE_URL}/accounts/{TEST_ACCOUNT_ID}"
@@ -27,13 +27,13 @@ QUERY_STRING = f"country={TEST_COUNTRY}"
 
 
 @pytest.fixture
-def kamereon(websession: aiohttp.ClientSession) -> Kamereon:
+def kamereon(websession: aiohttp.ClientSession) -> KamereonClient:
     """Fixture for testing Kamereon."""
     return get_logged_in_kamereon(websession=websession)
 
 
 @pytest.mark.asyncio
-async def test_vehicle_hvac_start(kamereon: Kamereon) -> None:
+async def test_vehicle_hvac_start(kamereon: KamereonClient) -> None:
     """Test cars/{vin}/actions/hvac-start response."""
     with aioresponses() as mocked_responses:
         mocked_responses.post(
@@ -50,7 +50,7 @@ async def test_vehicle_hvac_start(kamereon: Kamereon) -> None:
 
 
 @pytest.mark.asyncio
-async def test_vehicle_charge_schedule(kamereon: Kamereon) -> None:
+async def test_vehicle_charge_schedule(kamereon: KamereonClient) -> None:
     """Test cars/{vin}/actions/charge-schedule response."""
     with aioresponses() as mocked_responses:
         mocked_responses.post(
@@ -67,7 +67,7 @@ async def test_vehicle_charge_schedule(kamereon: Kamereon) -> None:
 
 
 @pytest.mark.asyncio
-async def test_vehicle_charge_mode(kamereon: Kamereon) -> None:
+async def test_vehicle_charge_mode(kamereon: KamereonClient) -> None:
     """Test cars/{vin}/actions/charge-mode response."""
     with aioresponses() as mocked_responses:
         mocked_responses.post(
@@ -84,7 +84,7 @@ async def test_vehicle_charge_mode(kamereon: Kamereon) -> None:
 
 
 @pytest.mark.asyncio
-async def test_vehicle_charging_start(kamereon: Kamereon) -> None:
+async def test_vehicle_charging_start(kamereon: KamereonClient) -> None:
     """Test cars/{vin}/actions/charging-start response."""
     with aioresponses() as mocked_responses:
         mocked_responses.post(

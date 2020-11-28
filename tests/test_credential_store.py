@@ -10,13 +10,13 @@ from tests import get_jwt
 from tests.const import TEST_LOGIN_TOKEN
 from tests.const import TEST_PERSON_ID
 
+from renault_api.credential import Credential
+from renault_api.credential import JWTCredential
 from renault_api.credential_store import CredentialStore
 from renault_api.credential_store import FileCredentialStore
 from renault_api.gigya import GIGYA_JWT
 from renault_api.gigya import GIGYA_LOGIN_TOKEN
 from renault_api.gigya import GIGYA_PERSON_ID
-from renault_api.model.credential import Credential
-from renault_api.model.credential import JWTCredential
 
 
 def get_logged_in_credential_store() -> CredentialStore:

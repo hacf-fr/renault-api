@@ -12,8 +12,8 @@ from tests.const import TEST_KAMEREON_URL
 from tests.const import TEST_VIN
 from tests.test_renault_account import get_logged_in_account
 
-from renault_api.model.kamereon import ChargeMode
-from renault_api.model.kamereon import ChargeSchedule
+from renault_api.kamereon.enums import ChargeMode
+from renault_api.kamereon.models import ChargeSchedule
 from renault_api.renault_vehicle import RenaultVehicle
 
 

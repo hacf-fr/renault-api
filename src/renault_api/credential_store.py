@@ -1,14 +1,15 @@
 """Kamereon client for interaction with Renault servers."""
 import json
 import os
-from typing import Dict, List
+from typing import Dict
+from typing import List
 from typing import Optional
 
 import jwt
 
 from renault_api.const import PERMANENT_KEYS
-from renault_api.model.credential import Credential
-from renault_api.model.credential import JWTCredential
+from renault_api.credential import Credential
+from renault_api.credential import JWTCredential
 
 
 class CredentialStore:

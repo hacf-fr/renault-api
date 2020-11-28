@@ -5,7 +5,9 @@ import pytest
 from tests import get_json_files
 from tests import get_response_content
 
-from renault_api.model import kamereon as model
+from renault_api.kamereon import enums
+from renault_api.kamereon import models
+from renault_api.kamereon import schemas
 
 
 FIXTURE_PATH = "tests/fixtures/kamereon/vehicle_data"
@@ -14,8 +16,8 @@ FIXTURE_PATH = "tests/fixtures/kamereon/vehicle_data"
 @pytest.mark.parametrize("filename", get_json_files(FIXTURE_PATH))
 def test_vehicle_data_response(filename: str) -> None:
     """Test vehicle data response."""
-    response: model.KamereonVehicleDataResponse = get_response_content(
-        filename, model.KamereonVehicleDataResponseSchema
+    response: models.KamereonVehicleDataResponse = get_response_content(
+        filename, schemas.KamereonVehicleDataResponseSchema
     )
     response.raise_for_error_code()
     # Ensure the VIN is hidden
@@ -24,9 +26,9 @@ def test_vehicle_data_response(filename: str) -> None:
 
 def test_battery_status_1() -> None:
     """Test vehicle data for battery-status.1.json."""
-    response: model.KamereonVehicleDataResponse = get_response_content(
+    response: models.KamereonVehicleDataResponse = get_response_content(
         f"{FIXTURE_PATH}/battery-status.1.json",
-        model.KamereonVehicleDataResponseSchema,
+        schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
     assert response.data.raw_data["attributes"] == {
@@ -40,8 +42,8 @@ def test_battery_status_1() -> None:
     }
 
     vehicle_data = cast(
-        model.KamereonVehicleBatteryStatusData,
-        response.get_attributes(model.KamereonVehicleBatteryStatusDataSchema),
+        models.KamereonVehicleBatteryStatusData,
+        response.get_attributes(schemas.KamereonVehicleBatteryStatusDataSchema),
     )
 
     assert vehicle_data.timestamp == "2020-11-17T09:06:48+01:00"
@@ -54,15 +56,15 @@ def test_battery_status_1() -> None:
     assert vehicle_data.chargingStatus == -1.0
     assert vehicle_data.chargingRemainingTime is None
     assert vehicle_data.chargingInstantaneousPower is None
-    assert vehicle_data.get_plug_status() == model.PlugState.UNPLUGGED
-    assert vehicle_data.get_charging_status() == model.ChargeState.CHARGE_ERROR
+    assert vehicle_data.get_plug_status() == enums.PlugState.UNPLUGGED
+    assert vehicle_data.get_charging_status() == enums.ChargeState.CHARGE_ERROR
 
 
 def test_battery_status_2() -> None:
     """Test vehicle data for battery-status.2.json."""
-    response: model.KamereonVehicleDataResponse = get_response_content(
+    response: models.KamereonVehicleDataResponse = get_response_content(
         f"{FIXTURE_PATH}/battery-status.2.json",
-        model.KamereonVehicleDataResponseSchema,
+        schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
     assert response.data.raw_data["attributes"] == {
@@ -79,8 +81,8 @@ def test_battery_status_2() -> None:
     }
 
     vehicle_data = cast(
-        model.KamereonVehicleBatteryStatusData,
-        response.get_attributes(model.KamereonVehicleBatteryStatusDataSchema),
+        models.KamereonVehicleBatteryStatusData,
+        response.get_attributes(schemas.KamereonVehicleBatteryStatusDataSchema),
     )
 
     assert vehicle_data.timestamp == "2020-01-12T21:40:16Z"
@@ -93,22 +95,22 @@ def test_battery_status_2() -> None:
     assert vehicle_data.chargingStatus == 1.0
     assert vehicle_data.chargingRemainingTime == 145
     assert vehicle_data.chargingInstantaneousPower == 27.0
-    assert vehicle_data.get_plug_status() == model.PlugState.PLUGGED
-    assert vehicle_data.get_charging_status() == model.ChargeState.CHARGE_IN_PROGRESS
+    assert vehicle_data.get_plug_status() == enums.PlugState.PLUGGED
+    assert vehicle_data.get_charging_status() == enums.ChargeState.CHARGE_IN_PROGRESS
 
 
 def test_cockpit_zoe() -> None:
     """Test vehicle data for cockpit.zoe.json."""
-    response: model.KamereonVehicleDataResponse = get_response_content(
+    response: models.KamereonVehicleDataResponse = get_response_content(
         f"{FIXTURE_PATH}/cockpit.zoe.json",
-        model.KamereonVehicleDataResponseSchema,
+        schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
     assert response.data.raw_data["attributes"] == {"totalMileage": 49114.27}
 
     vehicle_data = cast(
-        model.KamereonVehicleCockpitData,
-        response.get_attributes(model.KamereonVehicleCockpitDataSchema),
+        models.KamereonVehicleCockpitData,
+        response.get_attributes(schemas.KamereonVehicleCockpitDataSchema),
     )
 
     assert vehicle_data.totalMileage == 49114.27
@@ -118,9 +120,9 @@ def test_cockpit_zoe() -> None:
 
 def test_cockpit_captur_ii() -> None:
     """Test vehicle data for cockpit.captur_ii.json."""
-    response: model.KamereonVehicleDataResponse = get_response_content(
+    response: models.KamereonVehicleDataResponse = get_response_content(
         f"{FIXTURE_PATH}/cockpit.captur_ii.json",
-        model.KamereonVehicleDataResponseSchema,
+        schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
     assert response.data.raw_data["attributes"] == {
@@ -130,8 +132,8 @@ def test_cockpit_captur_ii() -> None:
     }
 
     vehicle_data = cast(
-        model.KamereonVehicleCockpitData,
-        response.get_attributes(model.KamereonVehicleCockpitDataSchema),
+        models.KamereonVehicleCockpitData,
+        response.get_attributes(schemas.KamereonVehicleCockpitDataSchema),
     )
 
     assert vehicle_data.totalMileage == 5566.78
@@ -141,9 +143,9 @@ def test_cockpit_captur_ii() -> None:
 
 def test_charging_settings() -> None:
     """Test vehicle data for charging-settings.json."""
-    response: model.KamereonVehicleDataResponse = get_response_content(
+    response: models.KamereonVehicleDataResponse = get_response_content(
         f"{FIXTURE_PATH}/charging-settings.json",
-        model.KamereonVehicleDataResponseSchema,
+        schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
     assert response.data.raw_data["attributes"] == {
@@ -164,8 +166,8 @@ def test_charging_settings() -> None:
     }
 
     vehicle_data = cast(
-        model.KamereonVehicleChargingSettingsData,
-        response.get_attributes(model.KamereonVehicleChargingSettingsDataSchema),
+        models.KamereonVehicleChargingSettingsData,
+        response.get_attributes(schemas.KamereonVehicleChargingSettingsDataSchema),
     )
 
     assert vehicle_data.mode == "scheduled"
@@ -195,9 +197,9 @@ def test_charging_settings() -> None:
 
 def test_location() -> None:
     """Test vehicle data for location.json."""
-    response: model.KamereonVehicleDataResponse = get_response_content(
+    response: models.KamereonVehicleDataResponse = get_response_content(
         f"{FIXTURE_PATH}/location.json",
-        model.KamereonVehicleDataResponseSchema,
+        schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
     assert response.data.raw_data["attributes"] == {
@@ -207,8 +209,8 @@ def test_location() -> None:
     }
 
     vehicle_data = cast(
-        model.KamereonVehicleLocationData,
-        response.get_attributes(model.KamereonVehicleLocationDataSchema),
+        models.KamereonVehicleLocationData,
+        response.get_attributes(schemas.KamereonVehicleLocationDataSchema),
     )
 
     assert vehicle_data.gpsLatitude == 48.1234567
@@ -218,17 +220,17 @@ def test_location() -> None:
 
 def test_charge_mode() -> None:
     """Test vehicle data for charge-mode.json."""
-    response: model.KamereonVehicleDataResponse = get_response_content(
+    response: models.KamereonVehicleDataResponse = get_response_content(
         f"{FIXTURE_PATH}/charge-mode.json",
-        model.KamereonVehicleDataResponseSchema,
+        schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
     assert response.data.raw_data["attributes"] == {"chargeMode": "always"}
 
     vehicle_data = cast(
-        model.KamereonVehicleChargeModeData,
-        response.get_attributes(model.KamereonVehicleChargeModeDataSchema),
+        models.KamereonVehicleChargeModeData,
+        response.get_attributes(schemas.KamereonVehicleChargeModeDataSchema),
     )
 
     assert vehicle_data.chargeMode == "always"
-    assert vehicle_data.get_charge_mode() == model.ChargeMode.ALWAYS
+    assert vehicle_data.get_charge_mode() == enums.ChargeMode.ALWAYS
