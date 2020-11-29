@@ -1,8 +1,13 @@
 """Client for Renault API."""
 import logging
+from typing import Dict
 from typing import List
+from typing import Optional
 
-from . import kamereon
+import aiohttp
+
+from .credential_store import CredentialStore
+from .exceptions import RenaultException
 from .kamereon import models
 from .renault_account import RenaultAccount
 from .renault_session import RenaultSession
@@ -16,10 +21,28 @@ class RenaultClient:
 
     def __init__(
         self,
-        session: RenaultSession,
+        session: Optional[RenaultSession] = None,
+        websession: Optional[aiohttp.ClientSession] = None,
+        locale: Optional[str] = None,
+        country: Optional[str] = None,
+        locale_details: Optional[Dict[str, str]] = None,
+        credential_store: Optional[CredentialStore] = None,
     ) -> None:
         """Initialise Renault client."""
-        self._session = session
+        if session:
+            self._session = session
+        else:
+            if websession is None:  # pragma: no cover
+                raise RenaultException(
+                    "`websession` is required if session is not provided."
+                )
+            self._session = RenaultSession(
+                websession=websession,
+                locale=locale,
+                country=country,
+                locale_details=locale_details,
+                credential_store=credential_store,
+            )
 
     @property
     def session(self) -> RenaultSession:
@@ -28,23 +51,16 @@ class RenaultClient:
 
     async def get_person(self) -> models.KamereonPersonResponse:
         """GET to /persons/{person_id}."""
-        return await kamereon.get_person(
-            self.session.websession,
-            self.session.kamereon_root_url,
-            self.session.kamereon_api_key,
-            await self.session.get_jwt(),
-            self.session.country,
-            await self.session.get_person_id(),
-        )
+        return await self.session.get_person()
 
     async def get_api_accounts(self) -> List[RenaultAccount]:
         """Get list of accounts."""
         response = await self.get_person()
         return list(
-            RenaultAccount(self._session, account.get_account_id())
+            RenaultAccount(account_id=account.get_account_id(), session=self.session)
             for account in response.accounts
         )
 
     async def get_api_account(self, account_id: str) -> RenaultAccount:
         """Get account."""
-        return RenaultAccount(self._session, account_id)
+        return RenaultAccount(account_id=account_id, session=self.session)

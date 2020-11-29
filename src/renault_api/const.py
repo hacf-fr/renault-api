@@ -1,4 +1,5 @@
 """Constants for Renault API."""
+CONF_COUNTRY = "country"
 CONF_LOCALE = "locale"
 CONF_GIGYA_APIKEY = "gigya-api-key"
 CONF_GIGYA_URL = "gigya-api-url"
@@ -6,6 +7,7 @@ CONF_KAMEREON_APIKEY = "kamereon-api-key"
 CONF_KAMEREON_URL = "kamereon-api-url"
 
 PERMANENT_KEYS = [
+    CONF_COUNTRY,
     CONF_LOCALE,
     CONF_GIGYA_APIKEY,
     CONF_GIGYA_URL,

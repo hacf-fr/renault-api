@@ -15,6 +15,28 @@ from . import schemas
 _LOGGER = logging.getLogger(__name__)
 
 
+DATA_ENDPOINTS = {
+    "battery-status": {"version": 2},
+    "charge-history": {"version": 1},
+    "charge-mode": {"version": 1},
+    "charges": {"version": 1},
+    "charging-settings": {"version": 1},
+    "cockpit": {"version": 2},
+    "location": {"version": 1},
+    "hvac-history": {"version": 1},
+    "hvac-sessions": {"version": 1},
+    "hvac-status": {"version": 1},
+    "lock-status": {"version": 1},
+    "notification-settings": {"version": 1},
+}
+ACTION_ENDPOINTS = {
+    "charge-mode": {"version": 1, "type": "ChargeMode"},
+    "charge-schedule": {"version": 2, "type": "ChargeSchedule"},
+    "charging-start": {"version": 1, "type": "ChargingStart"},
+    "hvac-start": {"version": 1, "type": "HvacStart"},
+}
+
+
 def get_commerce_url(root_url: str) -> str:
     """Get the base Kamereon url."""
     return f"{root_url}/commerce/v1"
@@ -40,13 +62,19 @@ async def request(
     websession: aiohttp.ClientSession,
     method: str,
     url: str,
-    headers: Optional[Dict[str, str]] = None,
-    params: Optional[Dict[str, str]] = None,
+    api_key: str,
+    gigya_jwt: str,
+    params: Dict[str, str],
     data: Optional[Dict[str, Any]] = None,
     schema: Optional[Schema] = None,
 ) -> models.KamereonResponse:
     """Process Kamereon HTTP request."""
     schema = schema or schemas.KamereonResponseSchema
+    headers = {
+        "Content-type": "application/vnd.api+json",
+        "apikey": api_key,
+        "x-gigya-id_token": gigya_jwt,
+    }
     async with websession.request(
         method,
         url,
@@ -80,10 +108,6 @@ async def get_person(
 ) -> models.KamereonPersonResponse:
     """GET to /persons/{person_id}."""
     url = get_person_url(root_url, person_id)
-    headers = {
-        "apikey": api_key,
-        "x-gigya-id_token": gigya_jwt,
-    }
     params = {"country": country}
     return cast(
         models.KamereonPersonResponse,
@@ -91,14 +115,15 @@ async def get_person(
             websession,
             "GET",
             url,
-            headers=headers,
+            api_key,
+            gigya_jwt,
             params=params,
             schema=schemas.KamereonPersonResponseSchema,
         ),
     )
 
 
-async def get_vehicles(
+async def get_account_vehicles(
     websession: aiohttp.ClientSession,
     root_url: str,
     api_key: str,
@@ -108,10 +133,6 @@ async def get_vehicles(
 ) -> models.KamereonVehiclesResponse:
     """GET to /accounts/{account_id}/vehicles."""
     url = f"{get_account_url(root_url, account_id)}/vehicles"
-    headers = {
-        "apikey": api_key,
-        "x-gigya-id_token": gigya_jwt,
-    }
     params = {"country": country}
     return cast(
         models.KamereonVehiclesResponse,
@@ -119,11 +140,16 @@ async def get_vehicles(
             websession,
             "GET",
             url,
-            headers=headers,
+            api_key,
+            gigya_jwt,
             params=params,
             schema=schemas.KamereonVehiclesResponseSchema,
         ),
     )
+
+
+def _get_endpoint_version(endpoint_details: Dict[str, Any]) -> int:
+    return int(endpoint_details["version"])
 
 
 async def get_vehicle_data(
@@ -133,18 +159,19 @@ async def get_vehicle_data(
     gigya_jwt: str,
     country: str,
     account_id: str,
-    endpoint_version: int,
     vin: str,
     endpoint: str,
+    endpoint_version: Optional[int] = None,
     params: Optional[Dict[str, str]] = None,
 ) -> models.KamereonVehicleDataResponse:
     """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
-    car_adapter_url = get_car_adapter_url(root_url, account_id, endpoint_version, vin)
+    car_adapter_url = get_car_adapter_url(
+        root_url=root_url,
+        account_id=account_id,
+        version=endpoint_version or _get_endpoint_version(DATA_ENDPOINTS[endpoint]),
+        vin=vin,
+    )
     url = f"{car_adapter_url}/{endpoint}"
-    headers = {
-        "apikey": api_key,
-        "x-gigya-id_token": gigya_jwt,
-    }
     params = params or {}
     params["country"] = country
     return cast(
@@ -153,422 +180,50 @@ async def get_vehicle_data(
             websession,
             "GET",
             url,
-            headers=headers,
+            api_key,
+            gigya_jwt,
             params=params,
             schema=schemas.KamereonVehicleDataResponseSchema,
         ),
     )
 
 
-async def get_vehicle_battery_status_v2(
+async def set_vehicle_action(
     websession: aiohttp.ClientSession,
     root_url: str,
     api_key: str,
     gigya_jwt: str,
     country: str,
     account_id: str,
-    vin: str,
-) -> models.KamereonVehicleDataResponse:
-    """GET to /cars/{vin}/battery-status."""
-    return await get_vehicle_data(
-        websession,
-        root_url,
-        api_key,
-        gigya_jwt,
-        country,
-        account_id,
-        2,
-        vin,
-        "battery-status",
-    )
-
-
-async def get_vehicle_location(
-    websession: aiohttp.ClientSession,
-    root_url: str,
-    api_key: str,
-    gigya_jwt: str,
-    country: str,
-    account_id: str,
-    vin: str,
-) -> models.KamereonVehicleDataResponse:
-    """GET to /cars/{vin}/location."""
-    return await get_vehicle_data(
-        websession,
-        root_url,
-        api_key,
-        gigya_jwt,
-        country,
-        account_id,
-        1,
-        vin,
-        "location",
-    )
-
-
-async def get_vehicle_hvac_status(
-    websession: aiohttp.ClientSession,
-    root_url: str,
-    api_key: str,
-    gigya_jwt: str,
-    country: str,
-    account_id: str,
-    vin: str,
-) -> models.KamereonVehicleDataResponse:
-    """GET to /cars/{vin}/hvac-status."""
-    return await get_vehicle_data(
-        websession,
-        root_url,
-        api_key,
-        gigya_jwt,
-        country,
-        account_id,
-        1,
-        vin,
-        "hvac-status",
-    )
-
-
-async def get_vehicle_charge_mode(
-    websession: aiohttp.ClientSession,
-    root_url: str,
-    api_key: str,
-    gigya_jwt: str,
-    country: str,
-    account_id: str,
-    vin: str,
-) -> models.KamereonVehicleDataResponse:
-    """GET to /cars/{vin}/charge-mode."""
-    return await get_vehicle_data(
-        websession,
-        root_url,
-        api_key,
-        gigya_jwt,
-        country,
-        account_id,
-        1,
-        vin,
-        "charge-mode",
-    )
-
-
-async def get_vehicle_cockpit(
-    websession: aiohttp.ClientSession,
-    root_url: str,
-    api_key: str,
-    gigya_jwt: str,
-    country: str,
-    account_id: str,
-    vin: str,
-) -> models.KamereonVehicleDataResponse:
-    """GET to /cars/{vin}/cockpit."""
-    return await get_vehicle_data(
-        websession, root_url, api_key, gigya_jwt, country, account_id, 2, vin, "cockpit"
-    )
-
-
-async def get_vehicle_lock_status(
-    websession: aiohttp.ClientSession,
-    root_url: str,
-    api_key: str,
-    gigya_jwt: str,
-    country: str,
-    account_id: str,
-    vin: str,
-) -> models.KamereonVehicleDataResponse:
-    """GET to /cars/{vin}/lock-status."""
-    return await get_vehicle_data(
-        websession,
-        root_url,
-        api_key,
-        gigya_jwt,
-        country,
-        account_id,
-        1,
-        vin,
-        "lock-status",
-    )
-
-
-async def get_vehicle_charging_settings(
-    websession: aiohttp.ClientSession,
-    root_url: str,
-    api_key: str,
-    gigya_jwt: str,
-    country: str,
-    account_id: str,
-    vin: str,
-) -> models.KamereonVehicleDataResponse:
-    """GET to /cars/{vin}/charging-settings."""
-    return await get_vehicle_data(
-        websession,
-        root_url,
-        api_key,
-        gigya_jwt,
-        country,
-        account_id,
-        1,
-        vin,
-        "charging-settings",
-    )
-
-
-async def get_vehicle_notification_settings(
-    websession: aiohttp.ClientSession,
-    root_url: str,
-    api_key: str,
-    gigya_jwt: str,
-    country: str,
-    account_id: str,
-    vin: str,
-) -> models.KamereonVehicleDataResponse:
-    """GET to /cars/{vin}/notification-settings."""
-    return await get_vehicle_data(
-        websession,
-        root_url,
-        api_key,
-        gigya_jwt,
-        country,
-        account_id,
-        1,
-        vin,
-        "notification-settings",
-    )
-
-
-async def get_vehicle_charges(
-    websession: aiohttp.ClientSession,
-    root_url: str,
-    api_key: str,
-    gigya_jwt: str,
-    country: str,
-    account_id: str,
-    vin: str,
-    params: Dict[str, str],
-) -> models.KamereonVehicleDataResponse:
-    """GET to /cars/{vin}/charges."""
-    return await get_vehicle_data(
-        websession,
-        root_url,
-        api_key,
-        gigya_jwt,
-        country,
-        account_id,
-        1,
-        vin,
-        "charges",
-        params,
-    )
-
-
-async def get_vehicle_charge_history(
-    websession: aiohttp.ClientSession,
-    root_url: str,
-    api_key: str,
-    gigya_jwt: str,
-    country: str,
-    account_id: str,
-    vin: str,
-    params: Dict[str, str],
-) -> models.KamereonVehicleDataResponse:
-    """GET to /cars/{vin}/charge-history."""
-    return await get_vehicle_data(
-        websession,
-        root_url,
-        api_key,
-        gigya_jwt,
-        country,
-        account_id,
-        1,
-        vin,
-        "charge-history",
-        params,
-    )
-
-
-async def get_vehicle_hvac_sessions(
-    websession: aiohttp.ClientSession,
-    root_url: str,
-    api_key: str,
-    gigya_jwt: str,
-    country: str,
-    account_id: str,
-    vin: str,
-    params: Dict[str, str],
-) -> models.KamereonVehicleDataResponse:
-    """GET to /cars/{vin}/hvac-sessions."""
-    return await get_vehicle_data(
-        websession,
-        root_url,
-        api_key,
-        gigya_jwt,
-        country,
-        account_id,
-        1,
-        vin,
-        "hvac-sessions",
-        params,
-    )
-
-
-async def get_vehicle_hvac_history(
-    websession: aiohttp.ClientSession,
-    root_url: str,
-    api_key: str,
-    gigya_jwt: str,
-    country: str,
-    account_id: str,
-    vin: str,
-    params: Dict[str, str],
-) -> models.KamereonVehicleDataResponse:
-    """GET to /cars/{vin}/hvac-history."""
-    return await get_vehicle_data(
-        websession,
-        root_url,
-        api_key,
-        gigya_jwt,
-        country,
-        account_id,
-        1,
-        vin,
-        "hvac-history",
-        params,
-    )
-
-
-async def set_vehicle_data(
-    websession: aiohttp.ClientSession,
-    root_url: str,
-    api_key: str,
-    gigya_jwt: str,
-    country: str,
-    account_id: str,
-    endpoint_version: int,
     vin: str,
     endpoint: str,
-    data: Dict[str, Any],
+    attributes: Dict[str, Any],
+    endpoint_version: Optional[int] = None,
+    data_type: Optional[Dict[str, Any]] = None,
 ) -> models.KamereonVehicleDataResponse:
     """POST to /v{endpoint_version}/cars/{vin}/actions/{endpoint}."""
-    car_adapter_url = get_car_adapter_url(root_url, account_id, endpoint_version, vin)
+    car_adapter_url = get_car_adapter_url(
+        root_url=root_url,
+        account_id=account_id,
+        version=endpoint_version or _get_endpoint_version(ACTION_ENDPOINTS[endpoint]),
+        vin=vin,
+    )
     url = f"{car_adapter_url}/actions/{endpoint}"
-    headers = {
-        "apikey": api_key,
-        "x-gigya-id_token": gigya_jwt,
-    }
     params = {"country": country}
+    data = {
+        "type": data_type or ACTION_ENDPOINTS[endpoint]["type"],
+        "attributes": attributes,
+    }
     return cast(
         models.KamereonVehicleDataResponse,
         await request(
             websession,
             "POST",
             url,
-            headers,
+            api_key,
+            gigya_jwt,
             params,
             data,
             schemas.KamereonVehicleDataResponseSchema,
         ),
-    )
-
-
-async def set_vehicle_hvac_start(
-    websession: aiohttp.ClientSession,
-    root_url: str,
-    api_key: str,
-    gigya_jwt: str,
-    country: str,
-    account_id: str,
-    vin: str,
-    attributes: Dict[str, Any],
-) -> models.KamereonVehicleDataResponse:
-    """POST to /cars/{vin}/actions/hvac-start."""
-    data = {"type": "HvacStart", "attributes": attributes}
-    return await set_vehicle_data(
-        websession,
-        root_url,
-        api_key,
-        gigya_jwt,
-        country,
-        account_id,
-        1,
-        vin,
-        "hvac-start",
-        data,
-    )
-
-
-async def set_vehicle_charge_schedule(
-    websession: aiohttp.ClientSession,
-    root_url: str,
-    api_key: str,
-    gigya_jwt: str,
-    country: str,
-    account_id: str,
-    vin: str,
-    attributes: Dict[str, Any],
-) -> models.KamereonVehicleDataResponse:
-    """POST to /cars/{vin}/actions/charge-schedule."""
-    data = {"type": "ChargeSchedule", "attributes": attributes}
-    return await set_vehicle_data(
-        websession,
-        root_url,
-        api_key,
-        gigya_jwt,
-        country,
-        account_id,
-        2,
-        vin,
-        "charge-schedule",
-        data,
-    )
-
-
-async def set_vehicle_charge_mode(
-    websession: aiohttp.ClientSession,
-    root_url: str,
-    api_key: str,
-    gigya_jwt: str,
-    country: str,
-    account_id: str,
-    vin: str,
-    attributes: Dict[str, Any],
-) -> models.KamereonVehicleDataResponse:
-    """POST to /cars/{vin}/actions/charge-mode."""
-    data = {"type": "ChargeMode", "attributes": attributes}
-    return await set_vehicle_data(
-        websession,
-        root_url,
-        api_key,
-        gigya_jwt,
-        country,
-        account_id,
-        1,
-        vin,
-        "charge-mode",
-        data,
-    )
-
-
-async def set_vehicle_charging_start(
-    websession: aiohttp.ClientSession,
-    root_url: str,
-    api_key: str,
-    gigya_jwt: str,
-    country: str,
-    account_id: str,
-    vin: str,
-    attributes: Dict[str, Any],
-) -> models.KamereonVehicleDataResponse:
-    """POST to /cars/{vin}/actions/charging-start."""
-    data = {"type": "ChargingStart", "attributes": attributes}
-    return await set_vehicle_data(
-        websession,
-        root_url,
-        api_key,
-        gigya_jwt,
-        country,
-        account_id,
-        1,
-        vin,
-        "charging-start",
-        data,
     )

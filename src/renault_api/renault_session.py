@@ -1,19 +1,24 @@
 """Session provider for interaction with Renault servers."""
 import logging
+from typing import Any
 from typing import Dict
 from typing import Optional
 
 import aiohttp
 
-from renault_api import gigya
-from renault_api.const import CONF_GIGYA_APIKEY
-from renault_api.const import CONF_GIGYA_URL
-from renault_api.const import CONF_KAMEREON_APIKEY
-from renault_api.const import CONF_KAMEREON_URL
-from renault_api.credential import Credential
-from renault_api.credential import JWTCredential
-from renault_api.credential_store import CredentialStore
-from renault_api.gigya.exceptions import GigyaException
+from . import gigya
+from . import kamereon
+from .const import CONF_COUNTRY
+from .const import CONF_GIGYA_APIKEY
+from .const import CONF_GIGYA_URL
+from .const import CONF_KAMEREON_APIKEY
+from .const import CONF_KAMEREON_URL
+from .const import CONF_LOCALE
+from .credential import Credential
+from .credential import JWTCredential
+from .credential_store import CredentialStore
+from .exceptions import RenaultException
+from .kamereon import models
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -25,39 +30,22 @@ class RenaultSession:
     def __init__(
         self,
         websession: aiohttp.ClientSession,
-        country: str,
-        locale_details: Dict[str, str],
+        locale: Optional[str] = None,
+        country: Optional[str] = None,
+        locale_details: Optional[Dict[str, str]] = None,
         credential_store: Optional[CredentialStore] = None,
     ) -> None:
         """Initialise SessionProvider."""
         self._websession = websession
-
-        self._country = country
-        self._kamereon_api_key = locale_details[CONF_KAMEREON_APIKEY]
-        self._kamereon_root_url = locale_details[CONF_KAMEREON_URL]
-        self._gigya_api_key = locale_details[CONF_GIGYA_APIKEY]
-        self._gigya_root_url = locale_details[CONF_GIGYA_URL]
         self._credentials: CredentialStore = credential_store or CredentialStore()
 
-    @property
-    def websession(self) -> aiohttp.ClientSession:
-        """Get websession."""
-        return self._websession
-
-    @property
-    def kamereon_api_key(self) -> str:
-        """Get kamereon api key."""
-        return self._kamereon_api_key
-
-    @property
-    def kamereon_root_url(self) -> str:
-        """Get kamereon root url."""
-        return self._kamereon_root_url
-
-    @property
-    def country(self) -> str:
-        """Get country."""
-        return self._country
+        if locale_details:
+            for k, v in locale_details.items():
+                self._credentials[k] = Credential(v)
+        if locale:
+            self._credentials[CONF_LOCALE] = Credential(locale)
+        if country:
+            self._credentials[CONF_COUNTRY] = Credential(country)
 
     async def login(self, login_id: str, password: str) -> None:
         """Forward login to Gigya."""
@@ -65,50 +53,130 @@ class RenaultSession:
 
         response = await gigya.login(
             self._websession,
-            self._gigya_root_url,
-            self._gigya_api_key,
+            await self._get_gigya_root_url(),
+            await self._get_gigya_api_key(),
             login_id,
             password,
         )
         credential = Credential(response.get_session_cookie())
         self._credentials[gigya.GIGYA_LOGIN_TOKEN] = credential
 
-    def _get_login_token(self) -> str:
-        login_token = self._credentials.get_value(gigya.GIGYA_LOGIN_TOKEN)
-        if login_token:
-            return login_token
-        raise GigyaException(
-            f"Credential `{gigya.GIGYA_LOGIN_TOKEN}` not found in credential cache."
-        )
+    async def _get_credential(self, key: str) -> str:
+        value = self._credentials.get_value(key)
+        if value:
+            return value
+        raise RenaultException(f"Credential `{key}` not found in credential cache.")
 
-    async def get_person_id(self) -> str:
+    async def _get_country(self) -> str:
+        return await self._get_credential(CONF_COUNTRY)
+
+    async def _get_kamereon_api_key(self) -> str:
+        return await self._get_credential(CONF_KAMEREON_APIKEY)
+
+    async def _get_kamereon_root_url(self) -> str:
+        return await self._get_credential(CONF_KAMEREON_URL)
+
+    async def _get_gigya_api_key(self) -> str:
+        return await self._get_credential(CONF_GIGYA_APIKEY)
+
+    async def _get_gigya_root_url(self) -> str:
+        return await self._get_credential(CONF_GIGYA_URL)
+
+    async def _get_login_token(self) -> str:
+        return await self._get_credential(gigya.GIGYA_LOGIN_TOKEN)
+
+    async def _get_person_id(self) -> str:
         """Get person id."""
         person_id = self._credentials.get_value(gigya.GIGYA_PERSON_ID)
         if person_id:
             return person_id
-        login_token = self._get_login_token()
+        login_token = await self._get_login_token()
         response = await gigya.get_account_info(
             self._websession,
-            self._gigya_root_url,
-            self._gigya_api_key,
+            await self._get_gigya_root_url(),
+            await self._get_gigya_api_key(),
             login_token,
         )
         person_id = response.get_person_id()
         self._credentials[gigya.GIGYA_PERSON_ID] = Credential(person_id)
         return person_id
 
-    async def get_jwt(self) -> str:
+    async def _get_jwt(self) -> str:
         """Get json web token."""
         jwt = self._credentials.get_value(gigya.GIGYA_JWT)
         if jwt:
             return jwt
-        login_token = self._get_login_token()
+        login_token = await self._get_login_token()
         response = await gigya.get_jwt(
             self._websession,
-            self._gigya_root_url,
-            self._gigya_api_key,
+            await self._get_gigya_root_url(),
+            await self._get_gigya_api_key(),
             login_token,
         )
         jwt = response.get_jwt()
         self._credentials[gigya.GIGYA_JWT] = JWTCredential(jwt)
         return jwt
+
+    async def get_person(self) -> models.KamereonPersonResponse:
+        """GET to /persons/{person_id}."""
+        return await kamereon.get_person(
+            websession=self._websession,
+            root_url=await self._get_kamereon_root_url(),
+            api_key=await self._get_kamereon_api_key(),
+            gigya_jwt=await self._get_jwt(),
+            country=await self._get_country(),
+            person_id=await self._get_person_id(),
+        )
+
+    async def get_account_vehicles(
+        self, account_id: str
+    ) -> models.KamereonVehiclesResponse:
+        """GET to /accounts/{account_id}/vehicles."""
+        return await kamereon.get_account_vehicles(
+            websession=self._websession,
+            root_url=await self._get_kamereon_root_url(),
+            api_key=await self._get_kamereon_api_key(),
+            gigya_jwt=await self._get_jwt(),
+            country=await self._get_country(),
+            account_id=account_id,
+        )
+
+    async def get_vehicle_data(
+        self,
+        account_id: str,
+        vin: str,
+        endpoint: str,
+        params: Optional[Dict[str, str]] = None,
+    ) -> models.KamereonVehicleDataResponse:
+        """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
+        return await kamereon.get_vehicle_data(
+            websession=self._websession,
+            root_url=await self._get_kamereon_root_url(),
+            api_key=await self._get_kamereon_api_key(),
+            gigya_jwt=await self._get_jwt(),
+            country=await self._get_country(),
+            account_id=account_id,
+            vin=vin,
+            endpoint=endpoint,
+            params=params,
+        )
+
+    async def set_vehicle_action(
+        self,
+        account_id: str,
+        vin: str,
+        endpoint: str,
+        attributes: Dict[str, Any],
+    ) -> models.KamereonVehicleDataResponse:
+        """POST to /v{endpoint_version}/cars/{vin}/actions/{endpoint}."""
+        return await kamereon.set_vehicle_action(
+            websession=self._websession,
+            root_url=await self._get_kamereon_root_url(),
+            api_key=await self._get_kamereon_api_key(),
+            gigya_jwt=await self._get_jwt(),
+            country=await self._get_country(),
+            account_id=account_id,
+            vin=vin,
+            endpoint=endpoint,
+            attributes=attributes,
+        )
