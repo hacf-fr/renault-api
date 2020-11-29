@@ -22,7 +22,7 @@ def test_vehicles_response(filename: str) -> None:
     assert response.accountId.startswith("account-id")
     for vehicle_link in response.vehicleLinks:
         # Ensure the VIN and RegistrationNumber are hidden
-        assert vehicle_link.vin.startswith("VF1AAAA")
+        assert vehicle_link.get_vin().startswith("VF1AAAA")
         vehicle_details = vehicle_link.get_details()
         assert vehicle_details.get_vin().startswith("VF1AAAA")
         assert vehicle_details.get_registration_number().startswith("REG-")
