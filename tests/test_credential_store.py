@@ -88,6 +88,7 @@ def test_jwt_credential() -> None:
     # Try to get values from filled store
     assert test_key in credential_store
     assert credential_store.get(test_key) == test_value
+    assert credential_store.get_value(test_key) == test_value.value
     assert credential_store[test_key] == test_value
 
     # Try again with expired
