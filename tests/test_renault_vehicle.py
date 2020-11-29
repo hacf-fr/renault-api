@@ -8,9 +8,11 @@ from aioresponses import aioresponses
 from tests import get_file_content
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
+from tests.const import TEST_LOCALE_DETAILS
 from tests.const import TEST_KAMEREON_URL
 from tests.const import TEST_VIN
-from tests.test_renault_account import get_logged_in_account
+from tests.test_credential_store import get_logged_in_credential_store
+from tests.test_renault_session import get_logged_in_session
 
 from renault_api.kamereon.enums import ChargeMode
 from renault_api.kamereon.models import ChargeSchedule
@@ -29,16 +31,33 @@ FIXTURE_PATH = "tests/fixtures/kamereon/"
 QUERY_STRING = f"country={TEST_COUNTRY}"
 
 
-async def get_logged_in_vehicle(websession: aiohttp.ClientSession) -> RenaultVehicle:
-    """Get logged_in Kamereon."""
-    account = await get_logged_in_account(websession)
-    return await account.get_api_vehicle(TEST_VIN)
-
-
 @pytest.fixture
-async def vehicle(websession: aiohttp.ClientSession) -> RenaultVehicle:
+def vehicle(websession: aiohttp.ClientSession) -> RenaultVehicle:
     """Fixture for testing Gigya."""
-    return await get_logged_in_vehicle(websession)
+    return RenaultVehicle(
+        account_id=TEST_ACCOUNT_ID,
+        vin=TEST_VIN,
+        session=get_logged_in_session(websession),
+    )
+
+
+def tests_init(websession: aiohttp.ClientSession) -> None:
+    """Fixture for testing Gigya."""
+
+    assert RenaultVehicle(
+        account_id=TEST_ACCOUNT_ID,
+        vin=TEST_VIN,
+        session=get_logged_in_session(websession),
+    )
+
+    assert RenaultVehicle(
+        account_id=TEST_ACCOUNT_ID,
+        vin=TEST_VIN,
+        websession=websession,
+        country=TEST_COUNTRY,
+        locale_details=TEST_LOCALE_DETAILS,
+        credential_store=get_logged_in_credential_store(),
+    )
 
 
 @pytest.mark.asyncio
