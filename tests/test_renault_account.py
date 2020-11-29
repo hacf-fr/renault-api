@@ -31,8 +31,7 @@ def account(websession: aiohttp.ClientSession) -> RenaultAccount:
 
 
 def tests_init(websession: aiohttp.ClientSession) -> None:
-    """Fixture for testing Gigya."""
-
+    """Test initialisation."""
     assert RenaultAccount(
         account_id=TEST_ACCOUNT_ID,
         session=get_logged_in_session(websession),

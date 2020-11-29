@@ -8,8 +8,8 @@ from aioresponses import aioresponses
 from tests import get_file_content
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
-from tests.const import TEST_LOCALE_DETAILS
 from tests.const import TEST_KAMEREON_URL
+from tests.const import TEST_LOCALE_DETAILS
 from tests.const import TEST_VIN
 from tests.test_credential_store import get_logged_in_credential_store
 from tests.test_renault_session import get_logged_in_session
@@ -33,7 +33,7 @@ QUERY_STRING = f"country={TEST_COUNTRY}"
 
 @pytest.fixture
 def vehicle(websession: aiohttp.ClientSession) -> RenaultVehicle:
-    """Fixture for testing Gigya."""
+    """Fixture for testing vehicle."""
     return RenaultVehicle(
         account_id=TEST_ACCOUNT_ID,
         vin=TEST_VIN,
@@ -42,8 +42,7 @@ def vehicle(websession: aiohttp.ClientSession) -> RenaultVehicle:
 
 
 def tests_init(websession: aiohttp.ClientSession) -> None:
-    """Fixture for testing Gigya."""
-
+    """Test initialisation."""
     assert RenaultVehicle(
         account_id=TEST_ACCOUNT_ID,
         vin=TEST_VIN,

@@ -28,8 +28,7 @@ def client(websession: aiohttp.ClientSession) -> RenaultClient:
 
 
 def tests_init(websession: aiohttp.ClientSession) -> None:
-    """Fixture for testing Gigya."""
-
+    """Test initialisation."""
     assert RenaultClient(
         session=get_logged_in_session(websession),
     )

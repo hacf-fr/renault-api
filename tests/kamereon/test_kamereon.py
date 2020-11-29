@@ -8,19 +8,10 @@ from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
 from tests.const import TEST_KAMEREON_APIKEY
 from tests.const import TEST_KAMEREON_URL
-from tests.const import TEST_GIGYA_URL
-from tests.const import TEST_LOCALE_DETAILS
-from tests.const import TEST_LOGIN_TOKEN
-from tests.const import TEST_PASSWORD
 from tests.const import TEST_PERSON_ID
-from tests.const import TEST_USERNAME
 from tests.const import TEST_VIN
-from tests.test_credential_store import get_logged_in_credential_store
 
 from renault_api import kamereon
-from renault_api.exceptions import RenaultException
-from renault_api.gigya import GIGYA_LOGIN_TOKEN
-from renault_api.renault_session import RenaultSession
 
 FIXTURE_PATH = "tests/fixtures/kamereon/"
 
@@ -39,6 +30,7 @@ QUERY_STRING = f"country={TEST_COUNTRY}"
 
 @pytest.mark.asyncio
 async def test_get_person(websession: aiohttp.ClientSession) -> None:
+    """Test get_person."""
     with aioresponses() as mocked_responses:
         mocked_responses.get(
             f"{TEST_KAMEREON_BASE_URL}/persons/{TEST_PERSON_ID}?{QUERY_STRING}",

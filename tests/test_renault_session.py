@@ -5,6 +5,7 @@ from aioresponses import aioresponses
 from tests import get_file_content
 from tests.const import TEST_COUNTRY
 from tests.const import TEST_GIGYA_URL
+from tests.const import TEST_LOCALE
 from tests.const import TEST_LOCALE_DETAILS
 from tests.const import TEST_LOGIN_TOKEN
 from tests.const import TEST_PASSWORD
@@ -22,6 +23,28 @@ FIXTURE_PATH = "tests/fixtures/gigya/"
 def get_logged_in_session(websession: aiohttp.ClientSession) -> RenaultSession:
     """Get logged_in Kamereon."""
     return RenaultSession(
+        websession=websession,
+        country=TEST_COUNTRY,
+        locale_details=TEST_LOCALE_DETAILS,
+        credential_store=get_logged_in_credential_store(),
+    )
+
+
+def tests_init(websession: aiohttp.ClientSession) -> None:
+    """Test initialisation."""
+    assert RenaultSession(
+        websession=websession,
+        locale=TEST_LOCALE,
+    )
+    assert RenaultSession(
+        websession=websession,
+        country=TEST_COUNTRY,
+    )
+    assert RenaultSession(
+        websession=websession,
+        locale_details=TEST_LOCALE_DETAILS,
+    )
+    assert RenaultSession(
         websession=websession,
         country=TEST_COUNTRY,
         locale_details=TEST_LOCALE_DETAILS,
