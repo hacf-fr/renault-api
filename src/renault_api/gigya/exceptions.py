@@ -17,3 +17,9 @@ class GigyaResponseException(GigyaException):
         """Initialise GigyaResponseException."""
         self.error_code = error_code
         self.error_details = error_details
+
+
+class InvalidCredentialsException(GigyaResponseException):
+    """Invalid loginID or password."""
+
+    pass
