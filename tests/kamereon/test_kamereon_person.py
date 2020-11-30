@@ -23,4 +23,5 @@ def test_person_response() -> None:
     assert response.accounts[1].accountStatus == "ACTIVE"
 
     for account in response.accounts:
-        assert account.get_account_id().startswith("account-id")
+        assert account.accountId
+        assert account.accountId.startswith("account-id")

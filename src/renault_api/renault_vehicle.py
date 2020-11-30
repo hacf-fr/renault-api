@@ -32,16 +32,19 @@ class RenaultVehicle:
         self,
         account_id: str,
         vin: str,
+        *,
         session: Optional[RenaultSession] = None,
         websession: Optional[aiohttp.ClientSession] = None,
         locale: Optional[str] = None,
         country: Optional[str] = None,
         locale_details: Optional[Dict[str, str]] = None,
         credential_store: Optional[CredentialStore] = None,
+        vehicle_details: Optional[models.KamereonVehiclesDetails] = None,
     ) -> None:
         """Initialise Renault account."""
         self._account_id = account_id
         self._vin = vin
+        self._vehicle_details = vehicle_details
 
         if session:
             self._session = session

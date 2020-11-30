@@ -66,12 +66,19 @@ class RenaultAccount:
     async def get_api_vehicles(self) -> List[RenaultVehicle]:
         """Get list of accounts linked to credentials."""
         response = await self.get_vehicles()
-        return list(
-            RenaultVehicle(
-                account_id=self.account_id, vin=vehicle.get_vin(), session=self.session
+        result: List[RenaultVehicle] = []
+        for vehicle in response.vehicleLinks:
+            if vehicle.vin is None:  # pragma: no cover
+                continue
+            result.append(
+                RenaultVehicle(
+                    account_id=self.account_id,
+                    vin=vehicle.vin,
+                    session=self.session,
+                    vehicle_details=vehicle.vehicleDetails,
+                )
             )
-            for vehicle in response.vehicleLinks
-        )
+        return result
 
     async def get_api_vehicle(self, vin: str) -> RenaultVehicle:
         """Get list of accounts linked to credentials."""

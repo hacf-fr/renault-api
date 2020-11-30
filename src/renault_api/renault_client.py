@@ -56,10 +56,14 @@ class RenaultClient:
     async def get_api_accounts(self) -> List[RenaultAccount]:
         """Get list of accounts."""
         response = await self.get_person()
-        return list(
-            RenaultAccount(account_id=account.get_account_id(), session=self.session)
-            for account in response.accounts
-        )
+        result: List[RenaultAccount] = []
+        for account in response.accounts:
+            if account.accountId is None:  # pragma: no cover
+                continue
+            result.append(
+                RenaultAccount(account_id=account.accountId, session=self.session)
+            )
+        return result
 
     async def get_api_account(self, account_id: str) -> RenaultAccount:
         """Get account."""
