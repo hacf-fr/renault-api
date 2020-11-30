@@ -9,8 +9,6 @@ from typing import Optional
 
 from marshmallow.schema import Schema
 
-from renault_api.kamereon.exceptions import InvalidUpstreamException
-
 from . import enums
 from . import exceptions
 from renault_api.models import BaseModel
@@ -23,7 +21,8 @@ COMMON_ERRRORS = [
     },
     {
         "errorCode": "err.tech.500",
-        "error_details": "Invalid response from the upstream server (The request sent to the GDC is erroneous) ; 502 Bad Gateway",
+        "error_details": "Invalid response from the upstream server"
+        " (The request sent to the GDC is erroneous) ; 502 Bad Gateway",
         "error_type": exceptions.InvalidUpstreamException,
     },
     {
@@ -105,7 +104,9 @@ class KamereonPersonAccount(BaseModel):
     def get_account_id(self) -> str:
         """Return jwt token."""
         if self.accountId is None:  # pragma: no cover
-            raise KamereonException("`accountId` is None in KamereonPersonAccount.")
+            raise exceptions.KamereonException(
+                "`accountId` is None in KamereonPersonAccount."
+            )
         return self.accountId
 
 
@@ -138,13 +139,15 @@ class KamereonVehiclesDetails(BaseModel):
     def get_vin(self) -> str:
         """Return vehicle vin."""
         if self.vin is None:  # pragma: no cover
-            raise KamereonException("`vin` is None in KamereonVehiclesDetails.")
+            raise exceptions.KamereonException(
+                "`vin` is None in KamereonVehiclesDetails."
+            )
         return self.vin
 
     def get_registration_number(self) -> str:
         """Return vehicle vin."""
         if self.registrationNumber is None:  # pragma: no cover
-            raise KamereonException(
+            raise exceptions.KamereonException(
                 "`registrationNumber` is None in KamereonVehiclesDetails."
             )
         return self.registrationNumber
@@ -152,30 +155,42 @@ class KamereonVehiclesDetails(BaseModel):
     def get_energy_code(self) -> enums.EnergyCode:
         """Return vehicle energy code."""
         if self.energy is None:  # pragma: no cover
-            raise KamereonException("`energy` is None in KamereonVehiclesDetails.")
+            raise exceptions.KamereonException(
+                "`energy` is None in KamereonVehiclesDetails."
+            )
         if self.energy.code is None:  # pragma: no cover
-            raise KamereonException("`energy.code` is None in KamereonVehiclesDetails.")
+            raise exceptions.KamereonException(
+                "`energy.code` is None in KamereonVehiclesDetails."
+            )
         try:
             return enums.EnergyCode(self.energy.code)
         except ValueError:  # pragma: no cover
-            raise KamereonException(
+            raise exceptions.KamereonException(
                 f"Unable to convert `{self.energy.code}` to EnergyCode."
             )
 
     def get_brand_label(self) -> str:
         """Return vehicle model label."""
         if self.brand is None:  # pragma: no cover
-            raise KamereonException("`brand` is None in KamereonVehiclesDetails.")
+            raise exceptions.KamereonException(
+                "`brand` is None in KamereonVehiclesDetails."
+            )
         if self.brand.label is None:  # pragma: no cover
-            raise KamereonException("`brand.label` is None in KamereonVehiclesDetails.")
+            raise exceptions.KamereonException(
+                "`brand.label` is None in KamereonVehiclesDetails."
+            )
         return self.brand.label
 
     def get_model_label(self) -> str:
         """Return vehicle model label."""
         if self.model is None:  # pragma: no cover
-            raise KamereonException("`model` is None in KamereonVehiclesDetails.")
+            raise exceptions.KamereonException(
+                "`model` is None in KamereonVehiclesDetails."
+            )
         if self.model.label is None:  # pragma: no cover
-            raise KamereonException("`model.label` is None in KamereonVehiclesDetails.")
+            raise exceptions.KamereonException(
+                "`model.label` is None in KamereonVehiclesDetails."
+            )
         return self.model.label
 
 
@@ -189,13 +204,15 @@ class KamereonVehiclesLink(BaseModel):
     def get_vin(self) -> str:
         """Return vehicle vin."""
         if self.vin is None:  # pragma: no cover
-            raise KamereonException("`vin` is None in KamereonVehiclesLink.")
+            raise exceptions.KamereonException("`vin` is None in KamereonVehiclesLink.")
         return self.vin
 
     def get_details(self) -> KamereonVehiclesDetails:
         """Return vehicle details."""
         if self.vehicleDetails is None:  # pragma: no cover
-            raise KamereonException("`vehicleDetails` is None in KamereonVehiclesLink.")
+            raise exceptions.KamereonException(
+                "`vehicleDetails` is None in KamereonVehiclesLink."
+            )
         return self.vehicleDetails
 
 
@@ -231,9 +248,11 @@ class KamereonVehicleDataResponse(KamereonResponse):
     def get_attributes(self, schema: Schema) -> KamereonVehicleDataAttributes:
         """Return jwt token."""
         if self.data is None:  # pragma: no cover
-            raise KamereonException("`data` is None in KamereonVehicleData.")
+            raise exceptions.KamereonException("`data` is None in KamereonVehicleData.")
         if self.data.attributes is None:  # pragma: no cover
-            raise KamereonException("`data.attributes` is None in KamereonVehicleData.")
+            raise exceptions.KamereonException(
+                "`data.attributes` is None in KamereonVehicleData."
+            )
         return cast(KamereonVehicleDataAttributes, schema.load(self.data.attributes))
 
 
@@ -255,24 +274,28 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
     def get_plug_status(self) -> Optional[enums.PlugState]:
         """Return plug status."""
         if "plugStatus" not in self.raw_data:  # pragma: no cover
-            raise KamereonException("`plugStatus` is None in KamereonVehicleData.")
+            raise exceptions.KamereonException(
+                "`plugStatus` is None in KamereonVehicleData."
+            )
         try:
             return enums.PlugState(self.plugStatus)
         except ValueError:  # pragma: no cover
             # should we return PlugState.NOT_AVAILABLE?
-            raise KamereonException(
+            raise exceptions.KamereonException(
                 f"Unable to convert `{self.plugStatus}` to PlugState."
             )
 
     def get_charging_status(self) -> Optional[enums.ChargeState]:
         """Return charging status."""
         if "chargingStatus" not in self.raw_data:  # pragma: no cover
-            raise KamereonException("`chargingStatus` is None in KamereonVehicleData.")
+            raise exceptions.KamereonException(
+                "`chargingStatus` is None in KamereonVehicleData."
+            )
         try:
             return enums.ChargeState(self.chargingStatus)
         except ValueError:  # pragma: no cover
             # should we return ChargeState.NOT_AVAILABLE?
-            raise KamereonException(
+            raise exceptions.KamereonException(
                 f"Unable to convert `{self.chargingStatus}` to ChargeState."
             )
 
@@ -303,11 +326,13 @@ class KamereonVehicleChargeModeData(KamereonVehicleDataAttributes):
     def get_charge_mode(self) -> Optional[enums.ChargeMode]:
         """Return charge mode."""
         if "chargeMode" not in self.raw_data:  # pragma: no cover
-            raise KamereonException("`chargeMode` is None in KamereonVehicleData.")
+            raise exceptions.KamereonException(
+                "`chargeMode` is None in KamereonVehicleData."
+            )
         try:
             return enums.ChargeMode(self.chargeMode)
         except ValueError:  # pragma: no cover
-            raise KamereonException(
+            raise exceptions.KamereonException(
                 f"Unable to convert `{self.chargeMode}` to ChargeMode."
             )
 

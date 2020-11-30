@@ -3,9 +3,9 @@ import pytest
 from tests import get_json_files
 from tests import get_response_content
 
+from renault_api.kamereon import exceptions
 from renault_api.kamereon import models
 from renault_api.kamereon import schemas
-from renault_api.kamereon import exceptions
 
 
 FIXTURE_PATH = "tests/fixtures/kamereon/error"
