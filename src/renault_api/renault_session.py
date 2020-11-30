@@ -1,4 +1,5 @@
 """Session provider for interaction with Renault servers."""
+import asyncio
 import logging
 from typing import Any
 from typing import Dict
@@ -37,6 +38,7 @@ class RenaultSession:
         credential_store: Optional[CredentialStore] = None,
     ) -> None:
         """Initialise SessionProvider."""
+        self._gigya_lock = asyncio.Lock()
         self._websession = websession
         self._credentials: CredentialStore = credential_store or CredentialStore()
 
@@ -101,35 +103,37 @@ class RenaultSession:
 
     async def _get_person_id(self) -> str:
         """Get person id."""
-        person_id = self._credentials.get_value(gigya.GIGYA_PERSON_ID)
-        if person_id:
+        async with self._gigya_lock:
+            person_id = self._credentials.get_value(gigya.GIGYA_PERSON_ID)
+            if person_id:
+                return person_id
+            login_token = await self._get_login_token()
+            response = await gigya.get_account_info(
+                self._websession,
+                await self._get_gigya_root_url(),
+                await self._get_gigya_api_key(),
+                login_token,
+            )
+            person_id = response.get_person_id()
+            self._credentials[gigya.GIGYA_PERSON_ID] = Credential(person_id)
             return person_id
-        login_token = await self._get_login_token()
-        response = await gigya.get_account_info(
-            self._websession,
-            await self._get_gigya_root_url(),
-            await self._get_gigya_api_key(),
-            login_token,
-        )
-        person_id = response.get_person_id()
-        self._credentials[gigya.GIGYA_PERSON_ID] = Credential(person_id)
-        return person_id
 
     async def _get_jwt(self) -> str:
         """Get json web token."""
-        jwt = self._credentials.get_value(gigya.GIGYA_JWT)
-        if jwt:
+        async with self._gigya_lock:
+            jwt = self._credentials.get_value(gigya.GIGYA_JWT)
+            if jwt:
+                return jwt
+            login_token = await self._get_login_token()
+            response = await gigya.get_jwt(
+                self._websession,
+                await self._get_gigya_root_url(),
+                await self._get_gigya_api_key(),
+                login_token,
+            )
+            jwt = response.get_jwt()
+            self._credentials[gigya.GIGYA_JWT] = JWTCredential(jwt)
             return jwt
-        login_token = await self._get_login_token()
-        response = await gigya.get_jwt(
-            self._websession,
-            await self._get_gigya_root_url(),
-            await self._get_gigya_api_key(),
-            login_token,
-        )
-        jwt = response.get_jwt()
-        self._credentials[gigya.GIGYA_JWT] = JWTCredential(jwt)
-        return jwt
 
     async def get_person(self) -> models.KamereonPersonResponse:
         """GET to /persons/{person_id}."""
