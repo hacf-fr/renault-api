@@ -6,8 +6,6 @@ from typing import Optional
 
 import aiohttp
 
-from renault_api.helpers import get_api_keys
-
 from . import gigya
 from . import kamereon
 from .const import CONF_COUNTRY
@@ -21,6 +19,7 @@ from .credential import JWTCredential
 from .credential_store import CredentialStore
 from .exceptions import RenaultException
 from .kamereon import models
+from renault_api.helpers import get_api_keys
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -74,12 +73,10 @@ class RenaultSession:
         raise RenaultException(f"Credential `{key}` not found in credential cache.")
 
     async def _update_from_locale(self) -> None:
-        locale = self._get_credential(CONF_LOCALE)
+        locale = await self._get_credential(CONF_LOCALE)
         if CONF_COUNTRY not in self._credentials:
             self._credentials[CONF_COUNTRY] = Credential(locale[-2:])
-        locale_details = await get_api_keys(
-            locale=locale, aiohttp_session=self._websession
-        )
+        locale_details = await get_api_keys(locale=locale, websession=self._websession)
         for k, v in locale_details.items():
             if k not in self._credentials:
                 self._credentials[k] = Credential(v)

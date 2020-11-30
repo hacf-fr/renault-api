@@ -65,7 +65,7 @@ async def test_preload_unknown_api_keys(websession: ClientSession) -> None:
     with aioresponses() as mocked_responses:
         mocked_responses.get(fake_url, status=200, body=fake_body)
 
-        api_keys = await get_api_keys(fake_locale, aiohttp_session=websession)
+        api_keys = await get_api_keys(fake_locale, websession=websession)
 
         assert api_keys == expected_api_keys
 
@@ -80,5 +80,5 @@ async def test_preload_invalid_api_keys(websession: ClientSession) -> None:
         mocked_responses.get(fake_url, status=404)
 
         with pytest.raises(RenaultException) as excinfo:
-            await get_api_keys(fake_locale, aiohttp_session=websession)
+            await get_api_keys(fake_locale, websession=websession)
         assert "Locale not found on Renault server" in str(excinfo)

@@ -20,31 +20,11 @@ from renault_api.renault_session import RenaultSession
 FIXTURE_PATH = "tests/fixtures/gigya/"
 
 
-def get_logged_in_session(websession: aiohttp.ClientSession) -> RenaultSession:
+def get_logged_in_session(
+    websession: aiohttp.ClientSession,
+) -> RenaultSession:
     """Get logged_in Kamereon."""
     return RenaultSession(
-        websession=websession,
-        country=TEST_COUNTRY,
-        locale_details=TEST_LOCALE_DETAILS,
-        credential_store=get_logged_in_credential_store(),
-    )
-
-
-def tests_init(websession: aiohttp.ClientSession) -> None:
-    """Test initialisation."""
-    assert RenaultSession(
-        websession=websession,
-        locale=TEST_LOCALE,
-    )
-    assert RenaultSession(
-        websession=websession,
-        country=TEST_COUNTRY,
-    )
-    assert RenaultSession(
-        websession=websession,
-        locale_details=TEST_LOCALE_DETAILS,
-    )
-    assert RenaultSession(
         websession=websession,
         country=TEST_COUNTRY,
         locale_details=TEST_LOCALE_DETAILS,
@@ -60,6 +40,98 @@ def session(websession: aiohttp.ClientSession) -> RenaultSession:
         country=TEST_COUNTRY,
         locale_details=TEST_LOCALE_DETAILS,
     )
+
+
+@pytest.mark.asyncio
+async def tests_init_locale_only(websession: aiohttp.ClientSession) -> None:
+    """Test initialisation."""
+    session = RenaultSession(
+        websession=websession,
+        locale=TEST_LOCALE,
+    )
+    assert await session._get_country()
+    assert await session._get_gigya_api_key()
+    assert await session._get_gigya_root_url()
+    assert await session._get_kamereon_api_key()
+    assert await session._get_kamereon_root_url()
+
+
+@pytest.mark.asyncio
+async def tests_init_country_only(websession: aiohttp.ClientSession) -> None:
+    """Test initialisation."""
+    session = RenaultSession(
+        websession=websession,
+        country=TEST_COUNTRY,
+    )
+    assert await session._get_country()
+    with pytest.raises(
+        RenaultException,
+        match="Credential `gigya-api-key` not found in credential cache.",
+    ):
+        assert await session._get_gigya_api_key()
+    with pytest.raises(
+        RenaultException,
+        match="Credential `gigya-root-url` not found in credential cache.",
+    ):
+        assert await session._get_gigya_root_url()
+    with pytest.raises(
+        RenaultException,
+        match="Credential `kamereon-api-key` not found in credential cache.",
+    ):
+        assert await session._get_kamereon_api_key()
+    with pytest.raises(
+        RenaultException,
+        match="Credential `kamereon-root-url` not found in credential cache.",
+    ):
+        assert await session._get_kamereon_root_url()
+
+
+@pytest.mark.asyncio
+async def tests_init_locale_details_only(websession: aiohttp.ClientSession) -> None:
+    """Test initialisation."""
+    session = RenaultSession(
+        websession=websession,
+        locale_details=TEST_LOCALE_DETAILS,
+    )
+    with pytest.raises(
+        RenaultException,
+        match="Credential `country` not found in credential cache.",
+    ):
+        assert await session._get_country()
+    assert await session._get_gigya_api_key()
+    assert await session._get_gigya_root_url()
+    assert await session._get_kamereon_api_key()
+    assert await session._get_kamereon_root_url()
+
+
+@pytest.mark.asyncio
+async def tests_init_locale_and_details(websession: aiohttp.ClientSession) -> None:
+    """Test initialisation."""
+    session = RenaultSession(
+        websession=websession,
+        locale=TEST_LOCALE,
+        locale_details=TEST_LOCALE_DETAILS,
+    )
+    assert await session._get_country()
+    assert await session._get_gigya_api_key()
+    assert await session._get_gigya_root_url()
+    assert await session._get_kamereon_api_key()
+    assert await session._get_kamereon_root_url()
+
+
+@pytest.mark.asyncio
+async def tests_init_locale_country(websession: aiohttp.ClientSession) -> None:
+    """Test initialisation."""
+    session = RenaultSession(
+        websession=websession,
+        locale=TEST_LOCALE,
+        country=TEST_COUNTRY,
+    )
+    assert await session._get_country()
+    assert await session._get_gigya_api_key()
+    assert await session._get_gigya_root_url()
+    assert await session._get_kamereon_api_key()
+    assert await session._get_kamereon_root_url()
 
 
 @pytest.mark.asyncio
