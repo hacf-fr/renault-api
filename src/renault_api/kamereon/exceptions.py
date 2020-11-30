@@ -17,3 +17,27 @@ class KamereonResponseException(KamereonException):
         """Initialise KamereonResponseException."""
         self.error_code = error_code
         self.error_details = error_details
+
+
+class AccessDeniedException(KamereonResponseException):
+    """Access is denied for this resource."""
+
+    pass
+
+
+class NotSupportedException(KamereonResponseException):
+    """This feature is not technically supported by this gateway."""
+
+    pass
+
+
+class InvalidUpstreamException(KamereonResponseException):
+    """Invalid response from the upstream server."""
+
+    pass
+
+
+class QuotaLimitException(KamereonResponseException):
+    """You have reached your quota limit."""
+
+    pass

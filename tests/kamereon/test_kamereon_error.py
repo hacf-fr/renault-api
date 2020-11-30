@@ -5,7 +5,7 @@ from tests import get_response_content
 
 from renault_api.kamereon import models
 from renault_api.kamereon import schemas
-from renault_api.kamereon.exceptions import KamereonResponseException
+from renault_api.kamereon import exceptions
 
 
 FIXTURE_PATH = "tests/fixtures/kamereon/error"
@@ -17,7 +17,7 @@ def test_vehicle_error_response(filename: str) -> None:
     response: models.KamereonVehicleDataResponse = get_response_content(
         filename, schemas.KamereonVehicleDataResponseSchema
     )
-    with pytest.raises(KamereonResponseException):
+    with pytest.raises(exceptions.KamereonResponseException):
         response.raise_for_error_code()
     assert response.errors is not None
 
@@ -28,7 +28,7 @@ def test_vehicle_error_quota_limit() -> None:
         f"{FIXTURE_PATH}/quota_limit.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
-    with pytest.raises(KamereonResponseException) as excinfo:
+    with pytest.raises(exceptions.QuotaLimitException) as excinfo:
         response.raise_for_error_code()
     assert excinfo.value.error_code == "err.func.wired.overloaded"
     assert excinfo.value.error_details == "You have reached your quota limit"
@@ -40,7 +40,7 @@ def test_vehicle_error_invalid_date() -> None:
         f"{FIXTURE_PATH}/invalid_date.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
-    with pytest.raises(KamereonResponseException) as excinfo:
+    with pytest.raises(exceptions.KamereonResponseException) as excinfo:
         response.raise_for_error_code()
     assert excinfo.value.error_code == "err.func.400"
     assert (
@@ -55,7 +55,7 @@ def test_vehicle_error_invalid_upstream() -> None:
         f"{FIXTURE_PATH}/invalid_upstream.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
-    with pytest.raises(KamereonResponseException) as excinfo:
+    with pytest.raises(exceptions.InvalidUpstreamException) as excinfo:
         response.raise_for_error_code()
     assert excinfo.value.error_code == "err.tech.500"
     assert (
@@ -71,7 +71,7 @@ def test_vehicle_error_not_supported() -> None:
         f"{FIXTURE_PATH}/not_supported.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
-    with pytest.raises(KamereonResponseException) as excinfo:
+    with pytest.raises(exceptions.NotSupportedException) as excinfo:
         response.raise_for_error_code()
     assert excinfo.value.error_code == "err.tech.501"
     assert (
@@ -86,7 +86,7 @@ def test_vehicle_error_resource_not_found() -> None:
         f"{FIXTURE_PATH}/resource_not_found.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
-    with pytest.raises(KamereonResponseException) as excinfo:
+    with pytest.raises(exceptions.KamereonResponseException) as excinfo:
         response.raise_for_error_code()
     assert excinfo.value.error_code == "err.func.wired.notFound"
     assert excinfo.value.error_details == "Resource not found"
@@ -98,7 +98,7 @@ def test_vehicle_error_access_denied() -> None:
         f"{FIXTURE_PATH}/access_denied.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
-    with pytest.raises(KamereonResponseException) as excinfo:
+    with pytest.raises(exceptions.AccessDeniedException) as excinfo:
         response.raise_for_error_code()
     assert excinfo.value.error_code == "err.func.403"
     assert excinfo.value.error_details == "Access is denied for this resource"

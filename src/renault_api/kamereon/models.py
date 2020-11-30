@@ -9,10 +9,34 @@ from typing import Optional
 
 from marshmallow.schema import Schema
 
+from renault_api.kamereon.exceptions import InvalidUpstreamException
+
 from . import enums
-from .exceptions import KamereonException
-from .exceptions import KamereonResponseException
+from . import exceptions
 from renault_api.models import BaseModel
+
+COMMON_ERRRORS = [
+    {
+        "errorCode": "err.func.403",
+        "error_details": "Access is denied for this resource",
+        "error_type": exceptions.AccessDeniedException,
+    },
+    {
+        "errorCode": "err.tech.500",
+        "error_details": "Invalid response from the upstream server (The request sent to the GDC is erroneous) ; 502 Bad Gateway",
+        "error_type": exceptions.InvalidUpstreamException,
+    },
+    {
+        "errorCode": "err.tech.501",
+        "error_details": "This feature is not technically supported by this gateway",
+        "error_type": exceptions.NotSupportedException,
+    },
+    {
+        "errorCode": "err.func.wired.overloaded",
+        "error_details": "You have reached your quota limit",
+        "error_type": exceptions.QuotaLimitException,
+    },
+]
 
 
 @dataclass
@@ -24,7 +48,14 @@ class KamereonResponseError(BaseModel):
 
     def raise_for_error_code(self) -> None:
         """Raise exception from response error."""
-        raise KamereonResponseException(self.errorCode, self.get_error_details())
+        error_details = self.get_error_details()
+        for common_error in COMMON_ERRRORS:
+            if (
+                self.errorCode == common_error["errorCode"]
+                and error_details == common_error["error_details"]
+            ):
+                raise common_error["error_type"](self.errorCode, error_details)
+        raise exceptions.KamereonResponseException(self.errorCode, error_details)
 
     def get_error_details(self) -> Optional[str]:
         """Extract the error details sometimes hidden inside nested JSON."""
