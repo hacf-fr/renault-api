@@ -32,43 +32,47 @@ def test_vehicles_response(filename: str) -> None:
         assert vehicle_details.registrationNumber
         assert vehicle_details.registrationNumber.startswith("REG-")
 
-        # Ensure the energy code is found
+        # Ensure the methods work
         assert vehicle_details.get_brand_label()
-        assert vehicle_details.get_model_label()
         assert vehicle_details.get_energy_code()
+        assert vehicle_details.get_model_code()
+        assert vehicle_details.get_model_label()
 
 
 def test_zoe40_1() -> None:
-    """Test vehicles list response."""
+    """Test vehicle details for zoe_40.1.json."""
     response: models.KamereonVehiclesResponse = get_response_content(
         f"{FIXTURE_PATH}/zoe_40.1.json", schemas.KamereonVehiclesResponseSchema
     )
     vehicle_details = response.vehicleLinks[0].vehicleDetails
     assert vehicle_details
     assert vehicle_details.get_brand_label() == "RENAULT"
-    assert vehicle_details.get_model_label() == "ZOE"
     assert vehicle_details.get_energy_code() == enums.EnergyCode.ELECTRIQUE
+    assert vehicle_details.get_model_code() == "X101VE"
+    assert vehicle_details.get_model_label() == "ZOE"
 
 
 def test_zoe40_2() -> None:
-    """Test vehicles list response."""
+    """Test vehicle details for zoe_40.2.json."""
     response: models.KamereonVehiclesResponse = get_response_content(
         f"{FIXTURE_PATH}/zoe_40.2.json", schemas.KamereonVehiclesResponseSchema
     )
     vehicle_details = response.vehicleLinks[0].vehicleDetails
     assert vehicle_details
     assert vehicle_details.get_brand_label() == "RENAULT"
-    assert vehicle_details.get_model_label() == "ZOE"
     assert vehicle_details.get_energy_code() == enums.EnergyCode.ELECTRIQUE
+    assert vehicle_details.get_model_code() == "X101VE"
+    assert vehicle_details.get_model_label() == "ZOE"
 
 
 def test_capturii_1() -> None:
-    """Test vehicles list response."""
+    """Test vehicle details for captur_ii.1.json."""
     response: models.KamereonVehiclesResponse = get_response_content(
         f"{FIXTURE_PATH}/captur_ii.1.json", schemas.KamereonVehiclesResponseSchema
     )
     vehicle_details = response.vehicleLinks[0].vehicleDetails
     assert vehicle_details
     assert vehicle_details.get_brand_label() == "RENAULT"
-    assert vehicle_details.get_model_label() == "CAPTUR II"
     assert vehicle_details.get_energy_code() == enums.EnergyCode.ESSENCE
+    assert vehicle_details.get_model_code() == "XJB1SU"
+    assert vehicle_details.get_model_label() == "CAPTUR II"

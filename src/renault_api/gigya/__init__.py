@@ -1,4 +1,4 @@
-"""Gigya client for authentication."""
+"""Gigya API."""
 import logging
 from typing import Any
 from typing import cast
@@ -95,7 +95,7 @@ async def get_jwt(
     api_key: str,
     login_token: str,
 ) -> models.GigyaGetJWTResponse:
-    """Send POST to /accounts.getAccountInfo."""
+    """Send POST to /accounts.getJWT."""
     return cast(
         models.GigyaGetJWTResponse,
         await request(

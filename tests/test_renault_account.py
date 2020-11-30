@@ -23,7 +23,7 @@ QUERY_STRING = f"country={TEST_COUNTRY}"
 
 @pytest.fixture
 def account(websession: aiohttp.ClientSession) -> RenaultAccount:
-    """Fixture for testing Gigya."""
+    """Fixture for testing RenaultAccount."""
     return RenaultAccount(
         account_id=TEST_ACCOUNT_ID,
         session=get_logged_in_session(websession),
@@ -31,7 +31,7 @@ def account(websession: aiohttp.ClientSession) -> RenaultAccount:
 
 
 def tests_init(websession: aiohttp.ClientSession) -> None:
-    """Test initialisation."""
+    """Test RenaultAccount initialisation."""
     assert RenaultAccount(
         account_id=TEST_ACCOUNT_ID,
         session=get_logged_in_session(websession),
@@ -60,7 +60,7 @@ async def test_get_vehicles(account: RenaultAccount) -> None:
 
 @pytest.mark.asyncio
 async def test_get_api_vehicles(account: RenaultAccount) -> None:
-    """Test get_vehicles."""
+    """Test get_api_vehicles."""
     with aioresponses() as mocked_responses:
         mocked_responses.get(
             f"{TEST_KAMEREON_ACCOUNT_URL}/vehicles?{QUERY_STRING}",
@@ -72,6 +72,6 @@ async def test_get_api_vehicles(account: RenaultAccount) -> None:
 
 @pytest.mark.asyncio
 async def test_get_api_vehicle(account: RenaultAccount) -> None:
-    """Test get_vehicles."""
+    """Test get_api_vehicle."""
     vehicle = await account.get_api_vehicle(TEST_VIN)
     assert vehicle._vin == TEST_VIN

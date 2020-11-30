@@ -27,7 +27,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class RenaultSession:
-    """Kamereon client for interaction with Renault servers."""
+    """Renault session for interaction with Renault servers."""
 
     def __init__(
         self,
@@ -37,7 +37,7 @@ class RenaultSession:
         locale_details: Optional[Dict[str, str]] = None,
         credential_store: Optional[CredentialStore] = None,
     ) -> None:
-        """Initialise SessionProvider."""
+        """Initialise RenaultSession."""
         self._gigya_lock = asyncio.Lock()
         self._websession = websession
         self._credentials: CredentialStore = credential_store or CredentialStore()
@@ -51,7 +51,7 @@ class RenaultSession:
             self._credentials[CONF_COUNTRY] = Credential(country)
 
     async def login(self, login_id: str, password: str) -> None:
-        """Forward login to Gigya."""
+        """Attempt login on Gigya."""
         self._credentials.clear_keys(gigya.GIGYA_KEYS)
 
         response = await gigya.login(
@@ -65,6 +65,7 @@ class RenaultSession:
         self._credentials[gigya.GIGYA_LOGIN_TOKEN] = credential
 
     async def _get_credential(self, key: str) -> str:
+        """Get specified credential, or raise RenaultException."""
         if key not in self._credentials:
             if CONF_LOCALE in self._credentials:
                 await self._update_from_locale()
@@ -75,6 +76,7 @@ class RenaultSession:
         raise RenaultException(f"Credential `{key}` not found in credential cache.")
 
     async def _update_from_locale(self) -> None:
+        """Update all missing setting based on locale."""
         locale = await self._get_credential(CONF_LOCALE)
         if CONF_COUNTRY not in self._credentials:
             self._credentials[CONF_COUNTRY] = Credential(locale[-2:])
@@ -84,25 +86,31 @@ class RenaultSession:
                 self._credentials[k] = Credential(v)
 
     async def _get_country(self) -> str:
+        """Get country from credential store."""
         return await self._get_credential(CONF_COUNTRY)
 
     async def _get_kamereon_api_key(self) -> str:
+        """Get Kamereon api-key from credential store."""
         return await self._get_credential(CONF_KAMEREON_APIKEY)
 
     async def _get_kamereon_root_url(self) -> str:
+        """Get Kamereon root url from credential store."""
         return await self._get_credential(CONF_KAMEREON_URL)
 
     async def _get_gigya_api_key(self) -> str:
+        """Get Gigya api-key from credential store."""
         return await self._get_credential(CONF_GIGYA_APIKEY)
 
     async def _get_gigya_root_url(self) -> str:
+        """Get Gigya root url from credential store."""
         return await self._get_credential(CONF_GIGYA_URL)
 
     async def _get_login_token(self) -> str:
+        """Get current login token from credential store."""
         return await self._get_credential(gigya.GIGYA_LOGIN_TOKEN)
 
     async def _get_person_id(self) -> str:
-        """Get person id."""
+        """Get person id from credential store or from Gigya."""
         async with self._gigya_lock:
             person_id = self._credentials.get_value(gigya.GIGYA_PERSON_ID)
             if person_id:
@@ -119,7 +127,7 @@ class RenaultSession:
             return person_id
 
     async def _get_jwt(self) -> str:
-        """Get json web token."""
+        """Get json web token from credential store or from Gigya.."""
         async with self._gigya_lock:
             jwt = self._credentials.get_value(gigya.GIGYA_JWT)
             if jwt:

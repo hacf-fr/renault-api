@@ -1,4 +1,4 @@
-"""Kamereon client for interaction with Renault servers."""
+"""Kamereon API."""
 import logging
 from typing import Any
 from typing import cast
@@ -38,7 +38,7 @@ ACTION_ENDPOINTS = {
 
 
 def get_commerce_url(root_url: str) -> str:
-    """Get the base Kamereon url."""
+    """Get the Kamereon base commerce url."""
     return f"{root_url}/commerce/v1"
 
 

@@ -1,4 +1,4 @@
-"""Exceptions for Renault API."""
+"""Kamereon exceptions."""
 from typing import Optional
 
 from renault_api.exceptions import RenaultException

@@ -64,7 +64,7 @@ class RenaultAccount:
         )
 
     async def get_api_vehicles(self) -> List[RenaultVehicle]:
-        """Get list of accounts linked to credentials."""
+        """Get vehicle proxies."""
         response = await self.get_vehicles()
         result: List[RenaultVehicle] = []
         for vehicle in response.vehicleLinks:
@@ -81,5 +81,5 @@ class RenaultAccount:
         return result
 
     async def get_api_vehicle(self, vin: str) -> RenaultVehicle:
-        """Get list of accounts linked to credentials."""
+        """Get vehicle proxy for specified vin."""
         return RenaultVehicle(account_id=self.account_id, vin=vin, session=self.session)

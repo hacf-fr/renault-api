@@ -1,4 +1,4 @@
-"""Test cases for initialisation of the Kamereon client."""
+"""Tests for Kamereon API."""
 import aiohttp
 import pytest
 from aioresponses import aioresponses

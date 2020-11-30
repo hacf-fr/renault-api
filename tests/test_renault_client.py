@@ -21,14 +21,14 @@ QUERY_STRING = f"country={TEST_COUNTRY}"
 
 @pytest.fixture
 def client(websession: aiohttp.ClientSession) -> RenaultClient:
-    """Fixture for testing Renault client."""
+    """Fixture for testing RenaultClient."""
     return RenaultClient(
         session=get_logged_in_session(websession),
     )
 
 
 def tests_init(websession: aiohttp.ClientSession) -> None:
-    """Test initialisation."""
+    """Test RenaultClient initialisation."""
     assert RenaultClient(
         session=get_logged_in_session(websession),
     )
@@ -43,7 +43,7 @@ def tests_init(websession: aiohttp.ClientSession) -> None:
 
 @pytest.mark.asyncio
 async def test_get_person(client: RenaultClient) -> None:
-    """Test get_accounts."""
+    """Test get_person."""
     with aioresponses() as mocked_responses:
         mocked_responses.get(
             f"{TEST_KAMEREON_BASE_URL}/persons/{TEST_PERSON_ID}?{QUERY_STRING}",
@@ -56,7 +56,7 @@ async def test_get_person(client: RenaultClient) -> None:
 
 @pytest.mark.asyncio
 async def test_get_api_accounts(client: RenaultClient) -> None:
-    """Test get_accounts."""
+    """Test get_api_accounts."""
     with aioresponses() as mocked_responses:
         mocked_responses.get(
             f"{TEST_KAMEREON_BASE_URL}/persons/{TEST_PERSON_ID}?{QUERY_STRING}",
@@ -69,6 +69,6 @@ async def test_get_api_accounts(client: RenaultClient) -> None:
 
 @pytest.mark.asyncio
 async def test_get_api_account(client: RenaultClient) -> None:
-    """Test get_account."""
+    """Test get_api_account."""
     account = await client.get_api_account(TEST_ACCOUNT_ID)
     assert account._account_id == TEST_ACCOUNT_ID

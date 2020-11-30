@@ -41,7 +41,7 @@ class RenaultVehicle:
         credential_store: Optional[CredentialStore] = None,
         vehicle_details: Optional[models.KamereonVehiclesDetails] = None,
     ) -> None:
-        """Initialise Renault account."""
+        """Initialise Renault vehicle."""
         self._account_id = account_id
         self._vin = vin
         self._vehicle_details = vehicle_details
@@ -214,7 +214,7 @@ class RenaultVehicle:
     async def get_charges(
         self, start: datetime, end: datetime
     ) -> models.KamereonVehicleChargesData:
-        """Get vehicle charge statistics."""
+        """Get vehicle charges."""
         if not isinstance(start, datetime):  # pragma: no cover
             raise TypeError(
                 "`start` should be an instance of datetime.datetime, not {}".format(
@@ -313,7 +313,7 @@ class RenaultVehicle:
     async def set_ac_start(
         self, temperature: float, when: Optional[datetime] = None
     ) -> models.KamereonVehicleHvacStartActionData:
-        """Start vehicle hvac."""
+        """Start vehicle ac."""
         attributes = {
             "action": "start",
             "targetTemperature": temperature,
@@ -341,7 +341,7 @@ class RenaultVehicle:
         )
 
     async def set_ac_stop(self) -> models.KamereonVehicleHvacStartActionData:
-        """Stop vehicle hvac."""
+        """Stop vehicle ac."""
         attributes = {"action": "cancel"}
 
         response = await self.session.set_vehicle_action(

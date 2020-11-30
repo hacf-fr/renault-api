@@ -96,7 +96,7 @@ class KamereonResponse(BaseModel):
 
 @dataclass
 class KamereonPersonAccount(BaseModel):
-    """Kamereon account data."""
+    """Kamereon person account data."""
 
     accountId: Optional[str]  # noqa: N815
     accountType: Optional[str]  # noqa: N815
@@ -112,7 +112,7 @@ class KamereonPersonResponse(KamereonResponse):
 
 @dataclass
 class KamereonVehiclesDetailsGroup(BaseModel):
-    """Kamereon account data."""
+    """Kamereon vehicle details group data."""
 
     code: Optional[str]
     label: Optional[str]
@@ -121,7 +121,7 @@ class KamereonVehiclesDetailsGroup(BaseModel):
 
 @dataclass
 class KamereonVehiclesDetails(BaseModel):
-    """Kamereon account data."""
+    """Kamereon vehicle details."""
 
     vin: Optional[str]
     registrationNumber: Optional[str]  # noqa: N815
@@ -147,6 +147,12 @@ class KamereonVehiclesDetails(BaseModel):
         if self.brand is None:  # pragma: no cover
             return None
         return self.brand.label
+
+    def get_model_code(self) -> Optional[str]:
+        """Return vehicle model code."""
+        if self.model is None:  # pragma: no cover
+            return None
+        return self.model.code
 
     def get_model_label(self) -> Optional[str]:
         """Return vehicle model label."""
@@ -174,7 +180,7 @@ class KamereonVehiclesResponse(KamereonResponse):
 
 @dataclass
 class KamereonVehicleDataAttributes(BaseModel):
-    """Kamereon vehicle data."""
+    """Kamereon vehicle data attributes."""
 
 
 @dataclass

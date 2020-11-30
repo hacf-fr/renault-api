@@ -1,4 +1,4 @@
-"""Test cases for the Gigya client."""
+"""Tests for Gigya API."""
 import aiohttp
 import pytest
 from aioresponses import aioresponses
@@ -23,7 +23,7 @@ TEST_ROOT_URL = TEST_LOCALE_DETAILS[CONF_GIGYA_URL]
 
 @pytest.mark.asyncio
 async def test_login(websession: aiohttp.ClientSession) -> None:
-    """Test valid login response."""
+    """Test login response."""
     with aioresponses() as mocked_responses:
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.login",
@@ -43,12 +43,12 @@ async def test_login(websession: aiohttp.ClientSession) -> None:
 
 @pytest.mark.asyncio
 async def test_person_id(websession: aiohttp.ClientSession) -> None:
-    """Test valid getAccountInfo response."""
+    """Test get_account_info response."""
     with aioresponses() as mocked_responses:
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.getAccountInfo",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/account_info.json"),
+            body=get_file_content(f"{FIXTURE_PATH}/get_account_info.json"),
             headers={"content-type": "text/javascript"},
         )
 
@@ -60,7 +60,7 @@ async def test_person_id(websession: aiohttp.ClientSession) -> None:
 
 @pytest.mark.asyncio
 async def test_get_jwt_token(websession: aiohttp.ClientSession) -> None:
-    """Test valid getJWT response."""
+    """Test get_jwt response."""
     with aioresponses() as mocked_responses:
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.getJWT",

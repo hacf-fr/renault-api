@@ -54,7 +54,7 @@ class RenaultClient:
         return await self.session.get_person()
 
     async def get_api_accounts(self) -> List[RenaultAccount]:
-        """Get list of accounts."""
+        """Get account proxies."""
         response = await self.get_person()
         result: List[RenaultAccount] = []
         for account in response.accounts:
@@ -66,5 +66,5 @@ class RenaultClient:
         return result
 
     async def get_api_account(self, account_id: str) -> RenaultAccount:
-        """Get account."""
+        """Get account proxy for specified account id."""
         return RenaultAccount(account_id=account_id, session=self.session)

@@ -35,7 +35,7 @@ class GigyaResponse(BaseModel):
 
 @dataclass
 class GigyaLoginSessionInfo(BaseModel):
-    """Gigya Login sessionInfo data."""
+    """Gigya Login sessionInfo details."""
 
     cookieValue: Optional[str]  # noqa: N815
 
@@ -59,7 +59,7 @@ class GigyaLoginResponse(GigyaResponse):
 
 @dataclass
 class GigyaGetAccountInfoData(BaseModel):
-    """Gigya Login sessionInfo data."""
+    """Gigya GetAccountInfo data details."""
 
     personId: Optional[str]  # noqa: N815
 

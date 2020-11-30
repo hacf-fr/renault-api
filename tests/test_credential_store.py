@@ -20,7 +20,7 @@ from renault_api.gigya import GIGYA_PERSON_ID
 
 
 def get_logged_in_credential_store() -> CredentialStore:
-    """Get valid Gigya for mocking Kamereon."""
+    """Get credential store initialised with Gigya credentials."""
     credential_store = CredentialStore()
     credential_store[GIGYA_LOGIN_TOKEN] = Credential(TEST_LOGIN_TOKEN)
     credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
@@ -29,7 +29,7 @@ def get_logged_in_credential_store() -> CredentialStore:
 
 
 def test_invalid_credential() -> None:
-    """Test get/set with simple credential."""
+    """Test set with invalid types."""
     credential_store = CredentialStore()
 
     test_key = "test"
@@ -133,7 +133,7 @@ def test_clear() -> None:
 
 
 def test_clear_keys() -> None:
-    """Test clearance of credential store."""
+    """Test clearance of specified keys from credential store."""
     credential_store = CredentialStore()
     test_key = "test"
     test_permanent_key = "locale"

@@ -21,7 +21,7 @@ def test_vehicle_data_response(filename: str) -> None:
     )
     response.raise_for_error_code()
     # Ensure the VIN is hidden
-    assert response.data.id.startswith("VF1AAAAA555777")
+    assert response.data.id.startswith("VF1AAAA")
 
 
 def test_battery_status_1() -> None:

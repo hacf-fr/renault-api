@@ -23,7 +23,7 @@ FIXTURE_PATH = "tests/fixtures/gigya/"
 def get_logged_in_session(
     websession: aiohttp.ClientSession,
 ) -> RenaultSession:
-    """Get logged_in Kamereon."""
+    """Get initialised RenaultSession."""
     return RenaultSession(
         websession=websession,
         country=TEST_COUNTRY,
@@ -34,7 +34,7 @@ def get_logged_in_session(
 
 @pytest.fixture
 def session(websession: aiohttp.ClientSession) -> RenaultSession:
-    """Fixture for testing Kamereon."""
+    """Fixture for testing RenaultSession."""
     return RenaultSession(
         websession=websession,
         country=TEST_COUNTRY,
@@ -44,7 +44,7 @@ def session(websession: aiohttp.ClientSession) -> RenaultSession:
 
 @pytest.mark.asyncio
 async def tests_init_locale_only(websession: aiohttp.ClientSession) -> None:
-    """Test initialisation."""
+    """Test initialisation with locale only."""
     session = RenaultSession(
         websession=websession,
         locale=TEST_LOCALE,
@@ -58,7 +58,7 @@ async def tests_init_locale_only(websession: aiohttp.ClientSession) -> None:
 
 @pytest.mark.asyncio
 async def tests_init_country_only(websession: aiohttp.ClientSession) -> None:
-    """Test initialisation."""
+    """Test initialisation with country only."""
     session = RenaultSession(
         websession=websession,
         country=TEST_COUNTRY,
@@ -88,7 +88,7 @@ async def tests_init_country_only(websession: aiohttp.ClientSession) -> None:
 
 @pytest.mark.asyncio
 async def tests_init_locale_details_only(websession: aiohttp.ClientSession) -> None:
-    """Test initialisation."""
+    """Test initialisation with locale_details only."""
     session = RenaultSession(
         websession=websession,
         locale_details=TEST_LOCALE_DETAILS,
@@ -106,7 +106,7 @@ async def tests_init_locale_details_only(websession: aiohttp.ClientSession) -> N
 
 @pytest.mark.asyncio
 async def tests_init_locale_and_details(websession: aiohttp.ClientSession) -> None:
-    """Test initialisation."""
+    """Test initialisation with locale and locale_details."""
     session = RenaultSession(
         websession=websession,
         locale=TEST_LOCALE,
@@ -121,7 +121,7 @@ async def tests_init_locale_and_details(websession: aiohttp.ClientSession) -> No
 
 @pytest.mark.asyncio
 async def tests_init_locale_country(websession: aiohttp.ClientSession) -> None:
-    """Test initialisation."""
+    """Test initialisation with locale and country."""
     session = RenaultSession(
         websession=websession,
         locale=TEST_LOCALE,
@@ -136,7 +136,7 @@ async def tests_init_locale_country(websession: aiohttp.ClientSession) -> None:
 
 @pytest.mark.asyncio
 async def test_not_logged_in(session: RenaultSession) -> None:
-    """Test valid login response."""
+    """Test errors when not logged in."""
     with pytest.raises(
         RenaultException,
         match=f"Credential `{GIGYA_LOGIN_TOKEN}` not found in credential cache.",
@@ -156,7 +156,7 @@ async def test_not_logged_in(session: RenaultSession) -> None:
 
 @pytest.mark.asyncio
 async def test_login(session: RenaultSession) -> None:
-    """Test valid login response."""
+    """Test login/person/jwt response."""
     with aioresponses() as mocked_responses:
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.login",
@@ -167,7 +167,7 @@ async def test_login(session: RenaultSession) -> None:
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.getAccountInfo",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/account_info.json"),
+            body=get_file_content(f"{FIXTURE_PATH}/get_account_info.json"),
             headers={"content-type": "text/javascript"},
         )
         mocked_responses.post(
@@ -187,7 +187,8 @@ async def test_login(session: RenaultSession) -> None:
         assert await session._get_jwt()
         assert len(mocked_responses.requests) == 3
 
+    with aioresponses() as mocked_responses:
         # Ensure further requests use cache
         assert await session._get_person_id() == TEST_PERSON_ID
         assert await session._get_jwt()
-        assert len(mocked_responses.requests) == 3
+        assert len(mocked_responses.requests) == 0

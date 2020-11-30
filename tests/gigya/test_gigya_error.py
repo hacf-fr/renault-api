@@ -1,4 +1,4 @@
-"""Tests for Gigya models."""
+"""Tests for Gigya errors."""
 import pytest
 from tests import get_json_files
 from tests import get_response_content
@@ -12,8 +12,8 @@ FIXTURE_PATH = "tests/fixtures/gigya/errors"
 
 
 @pytest.mark.parametrize("filename", get_json_files(FIXTURE_PATH))
-def test_vehicle_error_response(filename: str) -> None:
-    """Test vehicle error response."""
+def test_error_response(filename: str) -> None:
+    """Test all error responses."""
     response: models.GigyaResponse = get_response_content(
         filename, schemas.GigyaResponseSchema
     )

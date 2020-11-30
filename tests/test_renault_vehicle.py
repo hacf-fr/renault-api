@@ -33,7 +33,7 @@ QUERY_STRING = f"country={TEST_COUNTRY}"
 
 @pytest.fixture
 def vehicle(websession: aiohttp.ClientSession) -> RenaultVehicle:
-    """Fixture for testing vehicle."""
+    """Fixture for testing RenaultVehicle."""
     return RenaultVehicle(
         account_id=TEST_ACCOUNT_ID,
         vin=TEST_VIN,
@@ -42,7 +42,7 @@ def vehicle(websession: aiohttp.ClientSession) -> RenaultVehicle:
 
 
 def tests_init(websession: aiohttp.ClientSession) -> None:
-    """Test initialisation."""
+    """Test RenaultVehicle initialisation."""
     assert RenaultVehicle(
         account_id=TEST_ACCOUNT_ID,
         vin=TEST_VIN,
