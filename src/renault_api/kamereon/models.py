@@ -160,6 +160,14 @@ class KamereonVehiclesDetails(BaseModel):
             return None
         return self.model.label
 
+    def reports_charging_power_in_watts(self) -> bool:
+        """Return True if model reports chargingInstantaneousPower in watts."""
+        if self.get_model_code() in [
+            "X101VE",  # ZOE 40
+        ]:
+            return True
+        return False
+
 
 @dataclass
 class KamereonVehiclesLink(BaseModel):

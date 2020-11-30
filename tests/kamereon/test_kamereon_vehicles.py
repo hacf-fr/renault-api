@@ -50,6 +50,7 @@ def test_zoe40_1() -> None:
     assert vehicle_details.get_energy_code() == enums.EnergyCode.ELECTRIQUE
     assert vehicle_details.get_model_code() == "X101VE"
     assert vehicle_details.get_model_label() == "ZOE"
+    assert vehicle_details.reports_charging_power_in_watts()
 
 
 def test_zoe40_2() -> None:
@@ -63,6 +64,7 @@ def test_zoe40_2() -> None:
     assert vehicle_details.get_energy_code() == enums.EnergyCode.ELECTRIQUE
     assert vehicle_details.get_model_code() == "X101VE"
     assert vehicle_details.get_model_label() == "ZOE"
+    assert vehicle_details.reports_charging_power_in_watts()
 
 
 def test_capturii_1() -> None:
@@ -76,3 +78,4 @@ def test_capturii_1() -> None:
     assert vehicle_details.get_energy_code() == enums.EnergyCode.ESSENCE
     assert vehicle_details.get_model_code() == "XJB1SU"
     assert vehicle_details.get_model_label() == "CAPTUR II"
+    assert not vehicle_details.reports_charging_power_in_watts()
