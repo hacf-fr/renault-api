@@ -6,6 +6,8 @@ from typing import Optional
 
 import aiohttp
 
+from renault_api.helpers import get_api_keys
+
 from . import gigya
 from . import kamereon
 from .const import CONF_COUNTRY
@@ -62,10 +64,25 @@ class RenaultSession:
         self._credentials[gigya.GIGYA_LOGIN_TOKEN] = credential
 
     async def _get_credential(self, key: str) -> str:
+        if key not in self._credentials:
+            if CONF_LOCALE in self._credentials:
+                await self._update_from_locale()
+
         value = self._credentials.get_value(key)
         if value:
             return value
         raise RenaultException(f"Credential `{key}` not found in credential cache.")
+
+    async def _update_from_locale(self) -> None:
+        locale = self._get_credential(CONF_LOCALE)
+        if CONF_COUNTRY not in self._credentials:
+            self._credentials[CONF_COUNTRY] = Credential(locale[-2:])
+        locale_details = await get_api_keys(
+            locale=locale, aiohttp_session=self._websession
+        )
+        for k, v in locale_details.items():
+            if k not in self._credentials:
+                self._credentials[k] = Credential(v)
 
     async def _get_country(self) -> str:
         return await self._get_credential(CONF_COUNTRY)
