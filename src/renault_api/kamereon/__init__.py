@@ -65,7 +65,7 @@ async def request(
     api_key: str,
     gigya_jwt: str,
     params: Dict[str, str],
-    data: Optional[Dict[str, Any]] = None,
+    json: Optional[Dict[str, Any]] = None,
     schema: Optional[Schema] = None,
 ) -> models.KamereonResponse:
     """Process Kamereon HTTP request."""
@@ -80,7 +80,7 @@ async def request(
         url,
         headers=headers,
         params=params,
-        data=data,
+        json=json,
     ) as http_response:
         response_text = await http_response.text()
         _LOGGER.debug(
@@ -210,9 +210,11 @@ async def set_vehicle_action(
     )
     url = f"{car_adapter_url}/actions/{endpoint}"
     params = {"country": country}
-    data = {
-        "type": data_type or ACTION_ENDPOINTS[endpoint]["type"],
-        "attributes": attributes,
+    json = {
+        "data": {
+            "type": data_type or ACTION_ENDPOINTS[endpoint]["type"],
+            "attributes": attributes,
+        }
     }
     return cast(
         models.KamereonVehicleDataResponse,
@@ -223,7 +225,7 @@ async def set_vehicle_action(
             api_key,
             gigya_jwt,
             params,
-            data,
+            json,
             schemas.KamereonVehicleDataResponseSchema,
         ),
     )
