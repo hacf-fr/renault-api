@@ -24,5 +24,9 @@ def test_get_keys_succeeds(runner: CliRunner, locale: str) -> None:
     runner.invoke(__main__.set, ["--locale", locale])
     result = runner.invoke(__main__.get_keys)
     assert result.exit_code == 0
-    expected_output = f"Current locale: {locale}\nCurrent gigya-api-key: None\nCurrent gigya-api-url: None\nCurrent kamereon-api-key: None\nCurrent kamereon-api-url: None\n"
+    expected_output = f"Current locale: {locale}\n"
+    "Current gigya-api-key: None\n"
+    "Current gigya-api-url: None\n"
+    "Current kamereon-api-key: None\n"
+    "Current kamereon-api-url: None\n"
     assert result.output == expected_output

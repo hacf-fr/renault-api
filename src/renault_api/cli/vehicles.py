@@ -1,16 +1,16 @@
 """CLI function for a vehicle."""
-from typing import Optional, cast
-import aiohttp
+from typing import cast
+from typing import Optional
 
+import aiohttp
 import click
 from tabulate import tabulate
-
-from renault_api.cli.core import get_locale
-from renault_api.kamereon import Kamereon
 
 from .kamereon import CLIKamereon
 from .kamereon import ensure_logged_in
 from .kamereon import get_account
+from renault_api.cli.core import get_locale
+from renault_api.kamereon import Kamereon
 
 
 async def display_vehicles(

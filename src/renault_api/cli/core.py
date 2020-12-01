@@ -7,7 +7,8 @@ from typing import Optional
 
 import click
 
-from renault_api.const import CONF_LOCALE, PERMANENT_KEYS
+from renault_api.const import CONF_LOCALE
+from renault_api.const import PERMANENT_KEYS
 from renault_api.credential_store import CredentialStore
 from renault_api.credential_store import FileCredentialStore
 from renault_api.exceptions import RenaultException

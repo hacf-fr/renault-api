@@ -4,15 +4,16 @@ from typing import Optional
 import click
 from aiohttp.client import ClientSession
 from click.core import Context
-from renault_api.cli.vehicles import display_vehicles
 
-from .core import display_keys, set_options
+from .core import display_keys
 from .core import set_debug
+from .core import set_options
 from .helpers import coro
 from .helpers import create_aiohttp_closed_event
 from .kamereon import display_accounts
 from .kamereon import do_login
 from renault_api.cli.vehicle_status import display_status
+from renault_api.cli.vehicles import display_vehicles
 from renault_api.exceptions import RenaultException
 
 

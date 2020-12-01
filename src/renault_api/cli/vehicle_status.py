@@ -1,10 +1,10 @@
 """CLI function for a vehicle."""
-import aiohttp
-import dateutil.parser
-from typing import Any, Dict
+from typing import Dict
 from typing import Optional
 
+import aiohttp
 import click
+import dateutil.parser
 from tabulate import tabulate
 
 from .core import get_locale
