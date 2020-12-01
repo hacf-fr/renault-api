@@ -40,6 +40,21 @@ How to request a feature
 Request features on the `Issue Tracker`_.
 
 
+Providing samples
+-----------------
+
+Providing samples for more vehicles helps us improve the library. If you have a vehicle for which we
+do not have the specifications yet, or if you have found a new feature for an existing vehicle, then
+please send us the samples.
+
+- Grab a trace.
+- Add the json file to the correct `test/fixtures/kamereon` subfolder.
+- Ensure that `vin` starts with `VF1AAAA` _(we do not want the real VIN)_
+- Ensure that `vehicleDetails.vin` also starts with `VF1AAAA` _(we do not want the real VIN)_
+- Ensure that `vehicleDetails.registrationNumber` starts with `REG-` _(we do not want the real registration number)_
+- Ensure that the json file passes pre-commit (can be parsed online via https://codebeautify.org/jsonviewer)
+- Create a pull request
+
 How to set up your development environment
 ------------------------------------------
 
@@ -49,7 +64,7 @@ You need Python 3.7+ and the following tools:
 - Nox_
 - nox-poetry_
 
-**WARNING**: due to an open issue with Poetry, we recommand to use the 1.0.10 version. You can install it
+**WARNING**: due to an open issue with Poetry, we recommand that you use the 1.0.10 version. You can install it
 with the commmand:
 
 .. code:: console
