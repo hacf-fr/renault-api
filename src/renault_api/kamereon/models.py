@@ -211,11 +211,11 @@ class KamereonVehicleDataResponse(KamereonResponse):
 
     def get_attributes(self, schema: Schema) -> Optional[KamereonVehicleDataAttributes]:
         """Return jwt token."""
-        if self.data is None:  # pragma: no cover
-            return None
-        if self.data.attributes is None:  # pragma: no cover
-            return None
-        return cast(KamereonVehicleDataAttributes, schema.load(self.data.attributes))
+        return (
+            cast(KamereonVehicleDataAttributes, schema.load(self.data.attributes))
+            if self.data and self.data.attributes is not None
+            else None
+        )
 
 
 @dataclass
@@ -235,10 +235,12 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
 
     def get_plug_status(self) -> Optional[enums.PlugState]:
         """Return plug status."""
-        if self.plugStatus is None:  # pragma: no cover
-            return None
         try:
-            return enums.PlugState(self.plugStatus)
+            return (
+                enums.PlugState(self.plugStatus)
+                if self.plugStatus is not None
+                else None
+            )
         except ValueError:  # pragma: no cover
             # should we return PlugState.NOT_AVAILABLE?
             raise exceptions.KamereonException(
@@ -247,10 +249,12 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
 
     def get_charging_status(self) -> Optional[enums.ChargeState]:
         """Return charging status."""
-        if self.chargingStatus is None:  # pragma: no cover
-            return None
         try:
-            return enums.ChargeState(self.chargingStatus)
+            return (
+                enums.ChargeState(self.chargingStatus)
+                if self.chargingStatus is not None
+                else None
+            )
         except ValueError:  # pragma: no cover
             # should we return ChargeState.NOT_AVAILABLE?
             raise exceptions.KamereonException(
@@ -283,10 +287,12 @@ class KamereonVehicleChargeModeData(KamereonVehicleDataAttributes):
 
     def get_charge_mode(self) -> Optional[enums.ChargeMode]:
         """Return charge mode."""
-        if self.chargeMode is None:  # pragma: no cover
-            return None
         try:
-            return enums.ChargeMode(self.chargeMode)
+            return (
+                enums.ChargeMode(self.chargeMode)
+                if self.chargeMode is not None
+                else None
+            )
         except ValueError:  # pragma: no cover
             raise exceptions.KamereonException(
                 f"Unable to convert `{self.chargeMode}` to ChargeMode."
