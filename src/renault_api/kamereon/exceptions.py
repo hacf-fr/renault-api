@@ -41,3 +41,15 @@ class QuotaLimitException(KamereonResponseException):
     """You have reached your quota limit."""
 
     pass
+
+
+class InvalidInputException(KamereonResponseException):
+    """The input is invalid."""
+
+    pass
+
+
+class ResourceNotFoundException(KamereonResponseException):
+    """Resource not found."""
+
+    pass

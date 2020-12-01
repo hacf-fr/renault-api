@@ -40,7 +40,7 @@ def test_vehicle_error_invalid_date() -> None:
         f"{FIXTURE_PATH}/invalid_date.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
-    with pytest.raises(exceptions.KamereonResponseException) as excinfo:
+    with pytest.raises(exceptions.InvalidInputException) as excinfo:
         response.raise_for_error_code()
     assert excinfo.value.error_code == "err.func.400"
     assert (
@@ -86,7 +86,7 @@ def test_vehicle_error_resource_not_found() -> None:
         f"{FIXTURE_PATH}/resource_not_found.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
-    with pytest.raises(exceptions.KamereonResponseException) as excinfo:
+    with pytest.raises(exceptions.ResourceNotFoundException) as excinfo:
         response.raise_for_error_code()
     assert excinfo.value.error_code == "err.func.wired.notFound"
     assert excinfo.value.error_details == "Resource not found"

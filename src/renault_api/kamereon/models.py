@@ -15,24 +15,27 @@ from renault_api.models import BaseModel
 
 COMMON_ERRRORS: List[Dict[str, Any]] = [
     {
+        "errorCode": "err.func.400",
+        "error_type": exceptions.InvalidInputException,
+    },
+    {
         "errorCode": "err.func.403",
-        "error_details": "Access is denied for this resource",
         "error_type": exceptions.AccessDeniedException,
     },
     {
         "errorCode": "err.tech.500",
-        "error_details": "Invalid response from the upstream server"
-        " (The request sent to the GDC is erroneous) ; 502 Bad Gateway",
         "error_type": exceptions.InvalidUpstreamException,
     },
     {
         "errorCode": "err.tech.501",
-        "error_details": "This feature is not technically supported by this gateway",
         "error_type": exceptions.NotSupportedException,
     },
     {
+        "errorCode": "err.func.wired.notFound",
+        "error_type": exceptions.ResourceNotFoundException,
+    },
+    {
         "errorCode": "err.func.wired.overloaded",
-        "error_details": "You have reached your quota limit",
         "error_type": exceptions.QuotaLimitException,
     },
 ]
@@ -49,13 +52,12 @@ class KamereonResponseError(BaseModel):
         """Raise exception from response error."""
         error_details = self.get_error_details()
         for common_error in COMMON_ERRRORS:
-            if (
-                self.errorCode == common_error["errorCode"]
-                and error_details == common_error["error_details"]
-            ):
+            if self.errorCode == common_error["errorCode"]:
                 error_type = common_error["error_type"]
                 raise error_type(self.errorCode, error_details)
-        raise exceptions.KamereonResponseException(self.errorCode, error_details)
+        raise exceptions.KamereonResponseException(
+            self.errorCode, error_details
+        )  # pragma: no cover
 
     def get_error_details(self) -> Optional[str]:
         """Extract the error details sometimes hidden inside nested JSON."""
