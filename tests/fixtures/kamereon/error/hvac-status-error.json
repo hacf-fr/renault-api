@@ -1,0 +1,16 @@
+{
+  "type": "FUNCTIONAL",
+  "messages": [
+    {
+      "code": "err.func.403",
+      "message": "{\"errors\":[{\"status\":\"403\",\"code\":\"403011\",\"title\":\"Operation not supported\",\"detail\":\"Operation not supported for this can (C1A)\"}]}"
+    }
+  ],
+  "errors": [
+    {
+      "errorCode": "err.func.403",
+      "errorMessage": "{\"errors\":[{\"status\":\"403\",\"code\":\"403011\",\"title\":\"Operation not supported\",\"detail\":\"Operation not supported for this can (C1A)\"}]}"
+    }
+  ],
+  "error_reference": "FUNCTIONAL"
+}
