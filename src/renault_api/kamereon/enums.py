@@ -2,13 +2,6 @@
 from enum import Enum
 
 
-class EnergyCode(Enum):
-    """Enum for vehicleDetails energy code."""
-
-    ESSENCE = "ESS"
-    ELECTRIQUE = "ELEC"
-
-
 class ChargeState(Enum):
     """Enum for battery-status charge state."""
 

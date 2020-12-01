@@ -129,36 +129,39 @@ class KamereonVehiclesDetails(BaseModel):
     model: Optional[KamereonVehiclesDetailsGroup]
     energy: Optional[KamereonVehiclesDetailsGroup]
 
-    def get_energy_code(self) -> Optional[enums.EnergyCode]:
+    def get_energy_code(self) -> Optional[str]:
         """Return vehicle energy code."""
-        if self.energy is None:  # pragma: no cover
-            return None
-        if self.energy.code is None:  # pragma: no cover
-            return None
-        try:
-            return enums.EnergyCode(self.energy.code)
-        except ValueError:  # pragma: no cover
-            raise exceptions.KamereonException(
-                f"Unable to convert `{self.energy.code}` to EnergyCode."
-            )
+        return self.energy.code if self.energy else None
 
     def get_brand_label(self) -> Optional[str]:
         """Return vehicle model label."""
-        if self.brand is None:  # pragma: no cover
-            return None
-        return self.brand.label
+        return self.brand.label if self.brand else None
 
     def get_model_code(self) -> Optional[str]:
         """Return vehicle model code."""
-        if self.model is None:  # pragma: no cover
-            return None
-        return self.model.code
+        return self.model.code if self.model else None
 
     def get_model_label(self) -> Optional[str]:
         """Return vehicle model label."""
-        if self.model is None:  # pragma: no cover
-            return None
-        return self.model.label
+        return self.model.label if self.model else None
+
+    def uses_electricity(self) -> bool:
+        """Return True if model uses electricity."""
+        if self.get_energy_code() in [
+            # May need to add hibrid models in the future
+            "ELEC",
+        ]:
+            return True
+        return False
+
+    def uses_fuel(self) -> bool:
+        """Return True if model uses fuel."""
+        if self.get_energy_code() in [
+            # May need to add hibrid models in the future
+            "ESS",
+        ]:
+            return True
+        return False
 
     def reports_charging_power_in_watts(self) -> bool:
         """Return True if model reports chargingInstantaneousPower in watts."""

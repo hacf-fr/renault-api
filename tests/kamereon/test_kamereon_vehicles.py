@@ -3,7 +3,6 @@ import pytest
 from tests import get_json_files
 from tests import get_response_content
 
-from renault_api.kamereon import enums
 from renault_api.kamereon import models
 from renault_api.kamereon import schemas
 
@@ -47,10 +46,12 @@ def test_zoe40_1() -> None:
     vehicle_details = response.vehicleLinks[0].vehicleDetails
     assert vehicle_details
     assert vehicle_details.get_brand_label() == "RENAULT"
-    assert vehicle_details.get_energy_code() == enums.EnergyCode.ELECTRIQUE
+    assert vehicle_details.get_energy_code() == "ELEC"
     assert vehicle_details.get_model_code() == "X101VE"
     assert vehicle_details.get_model_label() == "ZOE"
     assert vehicle_details.reports_charging_power_in_watts()
+    assert vehicle_details.uses_electricity()
+    assert not vehicle_details.uses_fuel()
 
 
 def test_zoe40_2() -> None:
@@ -61,10 +62,12 @@ def test_zoe40_2() -> None:
     vehicle_details = response.vehicleLinks[0].vehicleDetails
     assert vehicle_details
     assert vehicle_details.get_brand_label() == "RENAULT"
-    assert vehicle_details.get_energy_code() == enums.EnergyCode.ELECTRIQUE
+    assert vehicle_details.get_energy_code() == "ELEC"
     assert vehicle_details.get_model_code() == "X101VE"
     assert vehicle_details.get_model_label() == "ZOE"
     assert vehicle_details.reports_charging_power_in_watts()
+    assert vehicle_details.uses_electricity()
+    assert not vehicle_details.uses_fuel()
 
 
 def test_capturii_1() -> None:
@@ -75,7 +78,9 @@ def test_capturii_1() -> None:
     vehicle_details = response.vehicleLinks[0].vehicleDetails
     assert vehicle_details
     assert vehicle_details.get_brand_label() == "RENAULT"
-    assert vehicle_details.get_energy_code() == enums.EnergyCode.ESSENCE
+    assert vehicle_details.get_energy_code() == "ESS"
     assert vehicle_details.get_model_code() == "XJB1SU"
     assert vehicle_details.get_model_label() == "CAPTUR II"
     assert not vehicle_details.reports_charging_power_in_watts()
+    assert not vehicle_details.uses_electricity()
+    assert vehicle_details.uses_fuel()
