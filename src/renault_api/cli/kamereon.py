@@ -9,7 +9,7 @@ from .core import CONF_VIN
 from renault_api.const import CONF_LOCALE
 from renault_api.exceptions import RenaultException
 from renault_api.helpers import get_api_keys
-from renault_api.session_provider import CREDENTIAL_GIGYA_LOGIN_TOKEN
+from renault_api.kamereon import CREDENTIAL_GIGYA_LOGIN_TOKEN
 from renault_api.kamereon import Kamereon
 
 
