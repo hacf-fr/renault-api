@@ -7,10 +7,10 @@ import click
 from aiohttp.client import ClientSession
 from click.core import Context
 
-from . import settings
 from . import renault_account
 from . import renault_client
 from . import renault_vehicle
+from . import settings
 from .helpers import coro
 from .helpers import create_aiohttp_closed_event
 from renault_api.exceptions import RenaultException
@@ -120,7 +120,9 @@ async def status(ctx: Context) -> None:
 @click.option(
     "--at",
     default=None,
-    help="Date/time at which to complete preconditioning (defaults to immediate if not given). You can use times like 'in 5 minutes' or 'tomorrow at 9am'.",
+    help="Date/time at which to complete preconditioning"
+    " (defaults to immediate if not given). You can use"
+    " times like 'in 5 minutes' or 'tomorrow at 9am'.",
 )
 @main.command()
 @click.pass_context
@@ -144,29 +146,21 @@ async def ac_start(ctx: Context, temperature: int, at: str) -> None:
 
 
 @main.command()
-@coro  # type: ignore
-async def get_keys() -> None:
+def get_keys() -> None:
     """Get the current configuration keys."""
-    async with ClientSession() as websession:
-        try:
-            await renault_client.display_keys(websession)
-        except RenaultException as exc:
-            raise click.ClickException(str(exc)) from exc
-        finally:
-            closed_event = create_aiohttp_closed_event(websession)
-            await websession.close()
-            await closed_event.wait()
+    settings.display_keys()
 
 
 @main.command()
+@click.pass_context
 @coro  # type: ignore
 @click.option("--user", prompt=True)
 @click.option("--password", prompt=True, hide_input=True)
-async def login(user: str, password: str) -> None:
+async def login(ctx: Context, user: str, password: str) -> None:
     """Login to Renault."""
     async with ClientSession() as websession:
         try:
-            await renault_client.do_login(websession, user, password)
+            await renault_client.login(websession, ctx.obj, user, password)
         except RenaultException as exc:
             raise click.ClickException(str(exc)) from exc
         finally:

@@ -1,5 +1,7 @@
 """CLI function for a vehicle."""
-from typing import Any, Dict
+from typing import Any
+from typing import Dict
+from typing import Optional
 
 import aiohttp
 import click
@@ -7,9 +9,11 @@ import dateparser
 import dateutil.parser
 from tabulate import tabulate
 
-from . import settings
 from . import renault_account
-from renault_api.exceptions import KamereonResponseException, RenaultException
+from . import settings
+from renault_api.exceptions import RenaultException
+from renault_api.kamereon.exceptions import KamereonResponseException
+from renault_api.kamereon.exceptions import QuotaLimitException
 from renault_api.renault_account import RenaultAccount
 from renault_api.renault_vehicle import RenaultVehicle
 
@@ -18,30 +22,40 @@ async def _get_vin(ctx_data: Dict[str, Any], account: RenaultAccount) -> str:
     """Prompt the user for vin."""
     # First, check context data
     if "vin" in ctx_data:
-        return ctx_data["vin"]
+        return str(ctx_data["vin"])
 
     # Second, check credential store
     credential_store = settings.CLICredentialStore.get_instance()
-    if settings.CONF_VIN in credential_store:
-        return credential_store.get_value(settings.CONF_VIN)
+    vin = credential_store.get_value(settings.CONF_VIN)
+    if vin:
+        return vin
 
     # Third, prompt the user
     response = await account.get_vehicles()
     if not response.vehicleLinks:
         raise RenaultException("No vehicle found.")
     if len(response.vehicleLinks) == 1:
-        return response.vehicleLinks[0].vin
+        return str(response.vehicleLinks[0].vin)
     elif len(response.vehicleLinks) > 1:
         menu = "Multiple vehicles found:\n"
         for i, vehicle in enumerate(response.vehicleLinks):
-            menu = menu + f"\t[{i+1}] {vehicle.vin}\n"
+            vehicle_details = vehicle.vehicleDetails
+            assert vehicle_details  # noqa: S101
+            menu = (
+                menu
+                + f"\t[{i+1}] {vehicle_details.vin} "
+                + f"({vehicle_details.get_brand_label()}"
+                + f"{vehicle_details.get_model_label()})\n"
+            )
 
         while True:
             i = int(click.prompt(f"{menu}Please select"))
             try:
-                return response.vehicleLinks[i - 1].vin
+                return str(response.vehicleLinks[i - 1].vin)
             except (KeyError, IndexError) as exc:
                 click.echo(f"Invalid option: {exc}.", err=True)
+
+    raise RenaultException("Unable to get vin.")  # Unreachable
 
 
 async def _get_vehicle(
@@ -74,7 +88,7 @@ async def display_status(
 ) -> None:
     """Display vehicle status."""
     vehicle = await _get_vehicle(websession=websession, ctx_data=ctx_data)
-    status_table = {}
+    status_table: Dict[str, Any] = {}
 
     await update_battery_status(vehicle, status_table)
     await update_charge_mode(vehicle, status_table)
@@ -85,89 +99,107 @@ async def display_status(
     click.echo(tabulate(status_table.items()))
 
 
+def update_status_table(
+    status_table: Dict[str, Any],
+    key: str,
+    value: Optional[Any],
+    unit: Optional[str],
+) -> None:
+    if value is None:
+        return
+    if unit == "datetime":
+        unit = None
+        value = dateutil.parser.parse(value)
+    if unit is None:
+        status_table[key] = value
+    else:
+        status_table[key] = "{0} {1}".format(value, unit)
+
+
 async def update_battery_status(
-    vehicle: RenaultVehicle, status_table: Dict[str, str]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_battery_status."""
     try:
         response = await vehicle.get_battery_status()
+    except QuotaLimitException as exc:
+        raise click.ClickException(repr(exc)) from exc
     except KamereonResponseException as exc:
-        if exc.error_code == "err.func.wired.overloaded":
-            raise click.ClickException(exc.error_details) from exc
         click.echo(f"battery-status: {exc.error_details}", err=True)
     else:
-        if response.batteryLevel is not None:
-            status_table["Battery level"] = f"{response.batteryLevel} %"
-        if (
-            response.batteryAvailableEnergy is not None
-            and response.batteryAvailableEnergy > 0
-        ):
-            status_table["Available energy"] = f"{response.batteryAvailableEnergy} kWh"
-        if response.batteryAutonomy is not None:
-            status_table["Range estimate"] = f"{response.batteryAutonomy} km"
-        if response.plugStatus is not None:
-            status_table["Plug state"] = response.get_plug_status().name
-        if response.chargingStatus is not None:
-            status_table["Charging state"] = response.get_charging_status().name
-        if response.chargingInstantaneousPower is not None:
-            status_table[
-                "Charge rate"
-            ] = f"{response.chargingInstantaneousPower:.2f} kW"
-        if response.chargingRemainingTime is not None:
-            status_table["Time remaining"] = f"{response.chargingRemainingTime} min"
+        if response.batteryAvailableEnergy == 0:
+            response.batteryAvailableEnergy = None
+
+        items = [
+            ("Battery level", response.batteryLevel, "%"),
+            ("Last updated", response.timestamp, "datetime"),
+            ("Available energy", response.batteryAvailableEnergy, "kWh"),
+            ("Range estimate", response.batteryAutonomy, "km"),
+            ("Plug state", response.get_plug_status(), "enum"),
+            ("Charging state", response.get_charging_status(), "enum"),
+            ("Charge rate", response.chargingInstantaneousPower, "kW"),
+            ("Time remaining", response.chargingRemainingTime, "min"),
+        ]
+
+        for key, value, unit in items:
+            update_status_table(status_table, key, value, unit)
 
 
 async def update_charge_mode(
-    vehicle: RenaultVehicle, status_table: Dict[str, str]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_charge_mode."""
     try:
         response = await vehicle.get_charge_mode()
+    except QuotaLimitException as exc:
+        raise click.ClickException(repr(exc)) from exc
     except KamereonResponseException as exc:
-        if exc.error_code == "err.func.wired.overloaded":
-            raise click.ClickException(exc.error_details) from exc
         click.echo(f"charge-mode: {exc.error_details}", err=True)
     else:
-        if response.chargeMode is not None:
-            status_table["Charge mode"] = response.chargeMode
+        items = [("Charge mode", response.chargeMode, "{0}")]
+
+        for key, value, unit in items:
+            update_status_table(status_table, key, value, unit)
 
 
-async def update_cockpit(vehicle: RenaultVehicle, status_table: Dict[str, str]) -> None:
+async def update_cockpit(vehicle: RenaultVehicle, status_table: Dict[str, Any]) -> None:
     """Update status table from get_vehicle_cockpit."""
     try:
         response = await vehicle.get_cockpit()
+    except QuotaLimitException as exc:
+        raise click.ClickException(repr(exc)) from exc
     except KamereonResponseException as exc:
-        if exc.error_code == "err.func.wired.overloaded":
-            raise click.ClickException(exc.error_details) from exc
         click.echo(f"cockpit: {exc.error_details}", err=True)
     else:
-        if response.totalMileage is not None:
-            status_table["Total mileage"] = f"{response.totalMileage} km"
-        if response.fuelAutonomy is not None:
-            status_table["Fuel autonomy"] = f"{response.fuelAutonomy} km"
-        if response.fuelQuantity is not None:
-            status_table["Fuel quantity"] = f"{response.fuelQuantity} L"
+        items = [
+            ("Total mileage", response.totalMileage, "{0} km"),
+            ("Fuel autonomy", response.fuelAutonomy, "{0} km"),
+            ("Fuel quantity", response.fuelQuantity, "{0} L"),
+        ]
+
+        for key, value, unit in items:
+            update_status_table(status_table, key, value, unit)
 
 
 async def update_location(
-    vehicle: RenaultVehicle, status_table: Dict[str, str]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_location."""
     try:
         response = await vehicle.get_location()
+    except QuotaLimitException as exc:
+        raise click.ClickException(repr(exc)) from exc
     except KamereonResponseException as exc:
-        if exc.error_code == "err.func.wired.overloaded":
-            raise click.ClickException(exc.error_details) from exc
         click.echo(f"location: {exc.error_details}", err=True)
     else:
-        if response.gpsLatitude is not None:
-            status_table["GPS Latitude"] = response.gpsLatitude
-        if response.gpsLongitude is not None:
-            status_table["GPS Longitude"] = response.gpsLongitude
-        if response.lastUpdateTime is not None:
-            status_table["GPS last updated"] = dateutil.parser.parse(
-                response.lastUpdateTime
-            )
+        items = [
+            ("GPS Latitude", response.gpsLatitude, None),
+            ("GPS Longitude", response.gpsLongitude, None),
+            ("GPS last updated", response.lastUpdateTime, "datetime"),
+        ]
+
+        for key, value, unit in items:
+            update_status_table(status_table, key, value, unit)
 
 
 async def update_hvac_status(
@@ -176,17 +208,16 @@ async def update_hvac_status(
     """Update status table from get_vehicle_hvac_status."""
     try:
         response = await vehicle.get_hvac_status()
+    except QuotaLimitException as exc:
+        raise click.ClickException(repr(exc)) from exc
     except KamereonResponseException as exc:
-        if exc.error_code == "err.func.wired.overloaded":
-            raise click.ClickException(exc.error_details) from exc
         click.echo(f"hvac-status: {exc.error_details}", err=True)
     else:
-        if response.hvacStatus is not None:
-            status_table["HVAC status"] = response.hvacStatus
-        # Todo: add nextHvacStartDate to KamereonVehicleHvacStatusData
-        # if response.nextHvacStartDate is not None:
-        #     status_table["HVAC start at"] = dateutil.parser.parse(
-        #         response.nextHvacStartDate
-        #     )
-        if response.externalTemperature is not None:
-            status_table["External temperature"] = f"{response.externalTemperature} °C"
+        items = [
+            ("HVAC status", response.hvacStatus, None),
+            ("HVAC start at", response.nextHvacStartDate, "datetime"),
+            ("External temperature", response.externalTemperature, "°C"),
+        ]
+
+        for key, value, unit in items:
+            update_status_table(status_table, key, value, unit)

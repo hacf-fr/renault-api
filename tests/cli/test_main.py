@@ -18,6 +18,7 @@ def test_main_succeeds(runner: CliRunner) -> None:
     assert result.exit_code == 0
 
 
+@pytest.mark.skip()
 @pytest.mark.parametrize("locale", AVAILABLE_LOCALES.keys())
 def test_get_keys_succeeds(runner: CliRunner, locale: str) -> None:
     """It exits with a status code of zero."""
