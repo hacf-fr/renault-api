@@ -10,7 +10,7 @@ from renault_api.credential_store import CredentialStore
 from renault_api.credential_store import FileCredentialStore
 from renault_api.exceptions import RenaultException
 from renault_api.helpers import get_api_keys
-from renault_api.model.credential import Credential
+from renault_api.credential import Credential
 
 CONF_ACCOUNT_ID = "accound-id"
 CONF_VIN = "vin"
