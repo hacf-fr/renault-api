@@ -279,6 +279,7 @@ class KamereonVehicleHvacStatusData(KamereonVehicleDataAttributes):
 
     externalTemperature: Optional[float]  # noqa: N815
     hvacStatus: Optional[str]  # noqa: N815
+    nextHvacStartDate: Optional[str]  # noqa: N815
 
 
 @dataclass
