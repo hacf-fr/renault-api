@@ -1,38 +1,79 @@
 """CLI function for a vehicle."""
-from typing import Dict
-from typing import Optional
+from typing import Any, Dict
 
 import aiohttp
 import click
+import dateparser
 import dateutil.parser
 from tabulate import tabulate
 
-from .core import get_locale
-from .kamereon import CLIKamereon
-from .kamereon import ensure_logged_in
-from .kamereon import get_account
-from .kamereon import get_vin
-from renault_api.exceptions import KamereonResponseException
+from . import settings
+from . import renault_account
+from renault_api.exceptions import KamereonResponseException, RenaultException
+from renault_api.renault_account import RenaultAccount
 from renault_api.renault_vehicle import RenaultVehicle
 
 
-async def display_status(
+async def _get_vin(ctx_data: Dict[str, Any], account: RenaultAccount) -> str:
+    """Prompt the user for vin."""
+    # First, check context data
+    if "vin" in ctx_data:
+        return ctx_data["vin"]
+
+    # Second, check credential store
+    credential_store = settings.CLICredentialStore.get_instance()
+    if settings.CONF_VIN in credential_store:
+        return credential_store.get_value(settings.CONF_VIN)
+
+    # Third, prompt the user
+    response = await account.get_vehicles()
+    if not response.vehicleLinks:
+        raise RenaultException("No vehicle found.")
+    if len(response.vehicleLinks) == 1:
+        return response.vehicleLinks[0].vin
+    elif len(response.vehicleLinks) > 1:
+        menu = "Multiple vehicles found:\n"
+        for i, vehicle in enumerate(response.vehicleLinks):
+            menu = menu + f"\t[{i+1}] {vehicle.vin}\n"
+
+        while True:
+            i = int(click.prompt(f"{menu}Please select"))
+            try:
+                return response.vehicleLinks[i - 1].vin
+            except (KeyError, IndexError) as exc:
+                click.echo(f"Invalid option: {exc}.", err=True)
+
+
+async def _get_vehicle(
+    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
+) -> RenaultVehicle:
+    account = await renault_account.get_account(
+        websession=websession, ctx_data=ctx_data
+    )
+    vin = await _get_vin(ctx_data, account)
+    return await account.get_api_vehicle(vin)
+
+
+async def ac_start(
     websession: aiohttp.ClientSession,
-    locale: Optional[str],
-    account: Optional[str],
-    vin: Optional[str],
+    ctx_data: Dict[str, Any],
+    temperature: int,
+    at: str,
 ) -> None:
     """Display vehicle status."""
-    if not locale:
-        locale = await get_locale(websession)
-    if not account:
-        account = await get_account(websession, locale)
-    if not vin:
-        vin = await get_vin(websession, locale, account)
+    vehicle = await _get_vehicle(websession=websession, ctx_data=ctx_data)
+    if at:
+        when = dateparser.parse(at)
+    else:
+        when = None
+    await vehicle.set_ac_start(temperature=temperature, when=when)
 
-    await ensure_logged_in(websession, locale)
-    kamereon = await CLIKamereon.get_instance(websession, locale)
-    vehicle = RenaultVehicle(kamereon=kamereon, account_id=account, vin=vin)
+
+async def display_status(
+    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
+) -> None:
+    """Display vehicle status."""
+    vehicle = await _get_vehicle(websession=websession, ctx_data=ctx_data)
     status_table = {}
 
     await update_battery_status(vehicle, status_table)

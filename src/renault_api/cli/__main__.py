@@ -1,20 +1,49 @@
 """Command-line interface."""
+import logging
+from datetime import datetime
 from typing import Optional
 
 import click
 from aiohttp.client import ClientSession
 from click.core import Context
 
-from .core import display_keys
-from .core import set_debug
-from .core import set_options
+from . import settings
+from . import renault_account
+from . import renault_client
+from . import renault_vehicle
 from .helpers import coro
 from .helpers import create_aiohttp_closed_event
-from .kamereon import display_accounts
-from .kamereon import do_login
-from renault_api.cli.vehicle_status import display_status
-from renault_api.cli.vehicles import display_vehicles
 from renault_api.exceptions import RenaultException
+
+
+def _set_debug(debug: bool, log: bool) -> None:
+    """Renault CLI."""
+    if debug or log:
+        renault_log = logging.getLogger("renault_api")
+        renault_log.setLevel(logging.DEBUG)
+
+        if log:
+            # create formatter and add it to the handlers
+            formatter = logging.Formatter(
+                "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+            )
+
+            # create file handler which logs even debug messages
+            fh = logging.FileHandler(f"logs/{datetime.today():%Y-%m-%d}.log")
+            fh.setLevel(logging.DEBUG)
+            fh.setFormatter(formatter)
+
+            # And enable our own debug logging
+            renault_log.addHandler(fh)
+
+        if debug:
+            logging.basicConfig()
+
+        renault_log.warning(
+            "Debug output enabled. Logs may contain personally identifiable "
+            "information and account credentials! Be sure to sanitise these logs "
+            "before sending them to a third party or posting them online."
+        )
 
 
 @click.group()
@@ -40,7 +69,7 @@ def main(
     """Renault CLI."""
     ctx.ensure_object(dict)
     if debug or log:
-        set_debug(debug, log)
+        _set_debug(debug, log)
     if locale:
         ctx.obj["locale"] = locale
     if account:
@@ -62,7 +91,7 @@ async def set(
     """Set configuration keys."""
     async with ClientSession() as websession:
         try:
-            await set_options(websession, locale, account, vin)
+            await settings.set_options(websession, locale, account, vin)
         except RenaultException as exc:
             raise click.ClickException(str(exc)) from exc
         finally:
@@ -78,11 +107,33 @@ async def status(ctx: Context) -> None:
     """Set configuration keys."""
     async with ClientSession() as websession:
         try:
-            await display_status(
+            await renault_vehicle.display_status(websession, ctx_data=ctx.obj)
+        except RenaultException as exc:
+            raise click.ClickException(str(exc)) from exc
+        finally:
+            closed_event = create_aiohttp_closed_event(websession)
+            await websession.close()
+            await closed_event.wait()
+
+
+@click.option("--temperature", type=int, help="Target temperature (in Celsius)")
+@click.option(
+    "--at",
+    default=None,
+    help="Date/time at which to complete preconditioning (defaults to immediate if not given). You can use times like 'in 5 minutes' or 'tomorrow at 9am'.",
+)
+@main.command()
+@click.pass_context
+@coro  # type: ignore
+async def ac_start(ctx: Context, temperature: int, at: str) -> None:
+    """Start air conditionning."""
+    async with ClientSession() as websession:
+        try:
+            await renault_vehicle.ac_start(
                 websession,
-                locale=ctx.obj.get("locale"),
-                account=ctx.obj.get("account"),
-                vin=ctx.obj.get("vin"),
+                ctx_data=ctx.obj,
+                temperature=temperature,
+                at=at,
             )
         except RenaultException as exc:
             raise click.ClickException(str(exc)) from exc
@@ -98,7 +149,7 @@ async def get_keys() -> None:
     """Get the current configuration keys."""
     async with ClientSession() as websession:
         try:
-            await display_keys(websession)
+            await renault_client.display_keys(websession)
         except RenaultException as exc:
             raise click.ClickException(str(exc)) from exc
         finally:
@@ -115,7 +166,7 @@ async def login(user: str, password: str) -> None:
     """Login to Renault."""
     async with ClientSession() as websession:
         try:
-            await do_login(websession, user, password)
+            await renault_client.do_login(websession, user, password)
         except RenaultException as exc:
             raise click.ClickException(str(exc)) from exc
         finally:
@@ -125,12 +176,13 @@ async def login(user: str, password: str) -> None:
 
 
 @main.command()
+@click.pass_context
 @coro  # type: ignore
-async def accounts() -> None:
+async def accounts(ctx: Context) -> None:
     """Login to Renault."""
     async with ClientSession() as websession:
         try:
-            await display_accounts(websession)
+            await renault_client.display_accounts(websession, ctx.obj)
         except RenaultException as exc:
             raise click.ClickException(str(exc)) from exc
         finally:
@@ -139,18 +191,14 @@ async def accounts() -> None:
             await closed_event.wait()
 
 
-@click.option(
-    "--account",
-    default=None,
-    help="Kamereon account ID to use",
-)
 @main.command()
+@click.pass_context
 @coro  # type: ignore
-async def vehicles(account: Optional[str]) -> None:
+async def vehicles(ctx: Context) -> None:
     """Login to Renault."""
     async with ClientSession() as websession:
         try:
-            await display_vehicles(websession, account)
+            await renault_account.display_vehicles(websession, ctx.obj)
         except RenaultException as exc:
             raise click.ClickException(str(exc)) from exc
         finally:

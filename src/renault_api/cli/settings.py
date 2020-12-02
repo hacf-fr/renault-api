@@ -1,11 +1,8 @@
-"""Core functions for the CLI."""
-import logging
+"""Singletons for the CLI."""
+import click
 import os
-from datetime import datetime
 from locale import getdefaultlocale
 from typing import Optional
-
-import click
 
 from renault_api.const import CONF_LOCALE
 from renault_api.const import PERMANENT_KEYS
@@ -32,36 +29,6 @@ class CLICredentialStore:
                 os.path.expanduser("~/.credentials/renault-api.json")
             )
         return CLICredentialStore.__instance
-
-
-def set_debug(debug: bool, log: bool) -> None:
-    """Renault CLI."""
-    if debug or log:
-        renault_log = logging.getLogger("renault_api")
-        renault_log.setLevel(logging.DEBUG)
-
-        if log:
-            # create formatter and add it to the handlers
-            formatter = logging.Formatter(
-                "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-            )
-
-            # create file handler which logs even debug messages
-            fh = logging.FileHandler(f"logs/{datetime.today():%Y-%m-%d}.log")
-            fh.setLevel(logging.DEBUG)
-            fh.setFormatter(formatter)
-
-            # And enable our own debug logging
-            renault_log.addHandler(fh)
-
-        if debug:
-            logging.basicConfig()
-
-        renault_log.warning(
-            "Debug output enabled. Logs may contain personally identifiable "
-            "information and account credentials! Be sure to sanitise these logs "
-            "before sending them to a third party or posting them online."
-        )
 
 
 async def set_options(
