@@ -1,16 +1,23 @@
 """Gigya models."""
 from dataclasses import dataclass
+from typing import Any
+from typing import Dict
+from typing import List
 from typing import Optional
 
-import marshmallow_dataclass
+from . import exceptions
+from renault_api.models import BaseModel
 
-from . import BaseSchema
-from renault_api.exceptions import GigyaException
-from renault_api.exceptions import GigyaResponseException
+COMMON_ERRRORS: List[Dict[str, Any]] = [
+    {
+        "errorCode": 403042,
+        "error_type": exceptions.InvalidCredentialsException,
+    }
+]
 
 
 @dataclass
-class GigyaResponse:
+class GigyaResponse(BaseModel):
     """Gigya response."""
 
     errorCode: int  # noqa: N815
@@ -19,17 +26,16 @@ class GigyaResponse:
     def raise_for_error_code(self) -> None:
         """Checks the response information."""
         if self.errorCode > 0:
-            raise GigyaResponseException(self.errorCode, self.errorDetails)
-
-
-GigyaResponseSchema = marshmallow_dataclass.class_schema(
-    GigyaResponse, base_schema=BaseSchema
-)()
+            for common_error in COMMON_ERRRORS:
+                if self.errorCode == common_error["errorCode"]:
+                    error_type = common_error["error_type"]
+                    raise error_type(self.errorCode, self.errorDetails)
+            raise exceptions.GigyaResponseException(self.errorCode, self.errorDetails)
 
 
 @dataclass
-class GigyaLoginSessionInfo:
-    """Gigya Login sessionInfo data."""
+class GigyaLoginSessionInfo(BaseModel):
+    """Gigya Login sessionInfo details."""
 
     cookieValue: Optional[str]  # noqa: N815
 
@@ -43,20 +49,17 @@ class GigyaLoginResponse(GigyaResponse):
     def get_session_cookie(self) -> str:
         """Return cookie value from session information."""
         if not self.sessionInfo:  # pragma: no cover
-            raise GigyaException("`sessionInfo` is None in Login response.")
+            raise exceptions.GigyaException("`sessionInfo` is None in Login response.")
         if not self.sessionInfo.cookieValue:  # pragma: no cover
-            raise GigyaException("`sessionInfo.cookieValue` is None in Login response.")
+            raise exceptions.GigyaException(
+                "`sessionInfo.cookieValue` is None in Login response."
+            )
         return self.sessionInfo.cookieValue
 
 
-GigyaLoginResponseSchema = marshmallow_dataclass.class_schema(
-    GigyaLoginResponse, base_schema=BaseSchema
-)()
-
-
 @dataclass
-class GigyaGetAccountInfoData:
-    """Gigya Login sessionInfo data."""
+class GigyaGetAccountInfoData(BaseModel):
+    """Gigya GetAccountInfo data details."""
 
     personId: Optional[str]  # noqa: N815
 
@@ -70,15 +73,14 @@ class GigyaGetAccountInfoResponse(GigyaResponse):
     def get_person_id(self) -> str:
         """Return person id."""
         if not self.data:  # pragma: no cover
-            raise GigyaException("`data` is None in GetAccountInfo response.")
+            raise exceptions.GigyaException(
+                "`data` is None in GetAccountInfo response."
+            )
         if not self.data.personId:  # pragma: no cover
-            raise GigyaException("`data.personId` is None in GetAccountInfo response.")
+            raise exceptions.GigyaException(
+                "`data.personId` is None in GetAccountInfo response."
+            )
         return self.data.personId
-
-
-GigyaGetAccountInfoResponseSchema = marshmallow_dataclass.class_schema(
-    GigyaGetAccountInfoResponse, base_schema=BaseSchema
-)()
 
 
 @dataclass
@@ -87,13 +89,8 @@ class GigyaGetJWTResponse(GigyaResponse):
 
     id_token: Optional[str]
 
-    def get_jwt_token(self) -> str:
+    def get_jwt(self) -> str:
         """Return jwt token."""
         if not self.id_token:  # pragma: no cover
-            raise GigyaException("`id_token` is None in GetJWT response.")
+            raise exceptions.GigyaException("`id_token` is None in GetJWT response.")
         return self.id_token
-
-
-GigyaGetJWTResponseSchema = marshmallow_dataclass.class_schema(
-    GigyaGetJWTResponse, base_schema=BaseSchema
-)()

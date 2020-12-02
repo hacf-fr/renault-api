@@ -2,27 +2,22 @@
 from datetime import datetime
 from typing import List
 
+import aiohttp
 import pytest
-from aiohttp.client import ClientSession
 from aioresponses import aioresponses
 from tests import get_file_content
-from tests import get_jwt
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
 from tests.const import TEST_KAMEREON_URL
-from tests.const import TEST_LOCALE
-from tests.const import TEST_PERSON_ID
+from tests.const import TEST_LOCALE_DETAILS
 from tests.const import TEST_VIN
+from tests.test_credential_store import get_logged_in_credential_store
+from tests.test_renault_session import get_logged_in_session
 
-from renault_api.kamereon import CREDENTIAL_GIGYA_JWT
-from renault_api.kamereon import CREDENTIAL_GIGYA_LOGIN_TOKEN
-from renault_api.kamereon import CREDENTIAL_GIGYA_PERSON_ID
-from renault_api.model.credential import Credential
-from renault_api.model.credential import JWTCredential
-from renault_api.model.kamereon import ChargeMode
-from renault_api.model.kamereon import ChargeSchedule
-from renault_api.renault_client import RenaultClient
+from renault_api.kamereon.enums import ChargeMode
+from renault_api.kamereon.models import ChargeSchedule
 from renault_api.renault_vehicle import RenaultVehicle
+
 
 TEST_KAMEREON_BASE_URL = f"{TEST_KAMEREON_URL}/commerce/v1"
 TEST_KAMEREON_ACCOUNT_URL = f"{TEST_KAMEREON_BASE_URL}/accounts/{TEST_ACCOUNT_ID}"
@@ -37,18 +32,31 @@ QUERY_STRING = f"country={TEST_COUNTRY}"
 
 
 @pytest.fixture
-async def vehicle(websession: ClientSession) -> RenaultVehicle:
-    """Fixture for testing Gigya."""
-    client = RenaultClient(websession=websession, locale=TEST_LOCALE)
-    client._kamereon._credentials[CREDENTIAL_GIGYA_LOGIN_TOKEN] = Credential(
-        "sample-cookie-value"
+def vehicle(websession: aiohttp.ClientSession) -> RenaultVehicle:
+    """Fixture for testing RenaultVehicle."""
+    return RenaultVehicle(
+        account_id=TEST_ACCOUNT_ID,
+        vin=TEST_VIN,
+        session=get_logged_in_session(websession),
     )
-    client._kamereon._credentials[CREDENTIAL_GIGYA_PERSON_ID] = Credential(
-        TEST_PERSON_ID
+
+
+def tests_init(websession: aiohttp.ClientSession) -> None:
+    """Test RenaultVehicle initialisation."""
+    assert RenaultVehicle(
+        account_id=TEST_ACCOUNT_ID,
+        vin=TEST_VIN,
+        session=get_logged_in_session(websession),
     )
-    client._kamereon._credentials[CREDENTIAL_GIGYA_JWT] = JWTCredential(get_jwt())
-    account = await client.get_api_account(TEST_ACCOUNT_ID)
-    return await account.get_api_vehicle(TEST_VIN)
+
+    assert RenaultVehicle(
+        account_id=TEST_ACCOUNT_ID,
+        vin=TEST_VIN,
+        websession=websession,
+        country=TEST_COUNTRY,
+        locale_details=TEST_LOCALE_DETAILS,
+        credential_store=get_logged_in_credential_store(),
+    )
 
 
 @pytest.mark.asyncio

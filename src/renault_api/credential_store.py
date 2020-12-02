@@ -2,15 +2,14 @@
 import json
 import os
 from typing import Dict
+from typing import List
 from typing import Optional
 
 import jwt
 
-from renault_api.model.credential import Credential
-from renault_api.model.credential import JWTCredential
-
-
-PERMANENT_KEYS = ["locale"]
+from renault_api.const import PERMANENT_KEYS
+from renault_api.credential import Credential
+from renault_api.credential import JWTCredential
 
 
 class CredentialStore:
@@ -36,6 +35,19 @@ class CredentialStore:
                 return cred
         return None
 
+    def get_value(self, name: str) -> Optional[str]:
+        """Get a credential value from the credential store."""
+        if name in list(self._store.keys()):
+            cred = self._store[name]
+            if not cred.has_expired():
+                return cred.value
+        return None
+
+    def __delitem__(self, name: str) -> None:
+        """Remove a credential from the credential store."""
+        del self._store[name]
+        self._write()
+
     def __setitem__(self, name: str, value: Credential) -> None:
         """Add a credential to the credential store."""
         if not isinstance(name, str):  # pragma: no cover
@@ -59,9 +71,16 @@ class CredentialStore:
         pass
 
     def clear(self) -> None:
-        """Remove all non-permanent keys."""
+        """Remove all non-permanent keys from credential store."""
         for key in list(self._store.keys()):
             if key not in PERMANENT_KEYS:
+                del self._store[key]
+        self._write()
+
+    def clear_keys(self, to_delete: List[str]) -> None:
+        """Remove specified keys from credential store."""
+        for key in list(self._store.keys()):
+            if key in to_delete:
                 del self._store[key]
         self._write()
 

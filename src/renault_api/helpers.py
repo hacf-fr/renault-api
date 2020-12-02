@@ -5,8 +5,7 @@ import logging
 from typing import Dict
 from typing import Optional
 
-from aiohttp import ClientSession
-from aiohttp.client_exceptions import ClientResponseError
+import aiohttp
 
 from .const import AVAILABLE_LOCALES
 from .const import CONF_GIGYA_APIKEY
@@ -22,14 +21,14 @@ _LOGGER = logging.getLogger(__package__)
 async def get_api_keys(
     locale: str,
     force_load: bool = False,
-    aiohttp_session: Optional[ClientSession] = None,
+    websession: Optional[aiohttp.ClientSession] = None,
 ) -> Dict[str, str]:
     """Get the API keys for specified locale.
 
     Args:
         locale (str): locale code (preferrably from AVAILABLE_LOCALES.keys())
         force_load (bool): bypass internal AVAILABLE_LOCALES
-        aiohttp_session (ClientSession): required if locale not in AVAILABLE_LOCALES
+        websession (aiohttp.ClientSession): required if locale not in AVAILABLE_LOCALES
 
     Returns:
         Dict with gigya-api-key, gigya-api-url,
@@ -47,14 +46,14 @@ async def get_api_keys(
             "Attempting to load details from Renault servers.",
             locale,
         )
-        if aiohttp_session is None:
+        if websession is None:
             raise RenaultException("aiohttp_session is not set.")
 
         url = f"{LOCALE_BASE_URL}/configuration/android/config_{locale}.json"
-        async with aiohttp_session.get(url) as response:
+        async with websession.get(url) as response:
             try:
                 response.raise_for_status()
-            except ClientResponseError as exc:
+            except aiohttp.ClientResponseError as exc:
                 raise RenaultException(
                     f"Locale not found on Renault server (HTTPStatus = {exc.status})."
                 ) from exc
@@ -76,14 +75,14 @@ async def get_api_keys(
 
 
 def create_aiohttp_closed_event(
-    session: ClientSession,
+    websession: aiohttp.ClientSession,
 ) -> asyncio.Event:  # pragma: no cover
     """Work around aiohttp issue that doesn't properly close transports on exit.
 
     See https://github.com/aio-libs/aiohttp/issues/1925#issuecomment-639080209
 
     Args:
-        session (ClientSession): session for which to generate the event.
+        websession (aiohttp.ClientSession): session for which to generate the event.
 
     Returns:
         An event that will be set once all transports have been properly closed.
@@ -109,7 +108,7 @@ def create_aiohttp_closed_event(
             # _app_protocol and _transport are set to None.
             pass
 
-    for conn in session.connector._conns.values():  # type: ignore
+    for conn in websession.connector._conns.values():  # type: ignore
         for handler, _ in conn:
             proto = getattr(handler.transport, "_ssl_protocol", None)
             if proto is None:

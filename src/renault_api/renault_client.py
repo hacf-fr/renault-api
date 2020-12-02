@@ -1,13 +1,16 @@
 """Client for Renault API."""
 import logging
+from typing import Dict
 from typing import List
+from typing import Optional
 
-from aiohttp import ClientSession
+import aiohttp
 
-from .kamereon import Kamereon
+from .credential_store import CredentialStore
+from .exceptions import RenaultException
+from .kamereon import models
 from .renault_account import RenaultAccount
-from renault_api.const import AVAILABLE_LOCALES
-from renault_api.model.kamereon import KamereonPersonResponse
+from .renault_session import RenaultSession
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -16,30 +19,52 @@ _LOGGER = logging.getLogger(__name__)
 class RenaultClient:
     """Proxy to a Renault profile."""
 
-    def __init__(self, websession: ClientSession, locale: str) -> None:
+    def __init__(
+        self,
+        session: Optional[RenaultSession] = None,
+        websession: Optional[aiohttp.ClientSession] = None,
+        locale: Optional[str] = None,
+        country: Optional[str] = None,
+        locale_details: Optional[Dict[str, str]] = None,
+        credential_store: Optional[CredentialStore] = None,
+    ) -> None:
         """Initialise Renault client."""
-        self._kamereon = Kamereon(
-            websession=websession,
-            country=locale[-2:],
-            locale_details=AVAILABLE_LOCALES[locale],
-        )
+        if session:
+            self._session = session
+        else:
+            if websession is None:  # pragma: no cover
+                raise RenaultException(
+                    "`websession` is required if session is not provided."
+                )
+            self._session = RenaultSession(
+                websession=websession,
+                locale=locale,
+                country=country,
+                locale_details=locale_details,
+                credential_store=credential_store,
+            )
 
-    async def login(self, login_id: str, password: str) -> None:
-        """Login."""
-        await self._kamereon.login(login_id, password)
+    @property
+    def session(self) -> RenaultSession:
+        """Get session provider."""
+        return self._session
 
-    async def get_person(self) -> KamereonPersonResponse:
-        """Get person details."""
-        return await self._kamereon.get_person()
+    async def get_person(self) -> models.KamereonPersonResponse:
+        """GET to /persons/{person_id}."""
+        return await self.session.get_person()
 
     async def get_api_accounts(self) -> List[RenaultAccount]:
-        """Get list of accounts."""
+        """Get account proxies."""
         response = await self.get_person()
-        return list(
-            RenaultAccount(self._kamereon, account.get_account_id())
-            for account in response.accounts
-        )
+        result: List[RenaultAccount] = []
+        for account in response.accounts:
+            if account.accountId is None:  # pragma: no cover
+                continue
+            result.append(
+                RenaultAccount(account_id=account.accountId, session=self.session)
+            )
+        return result
 
     async def get_api_account(self, account_id: str) -> RenaultAccount:
-        """Get account."""
-        return RenaultAccount(self._kamereon, account_id)
+        """Get account proxy for specified account id."""
+        return RenaultAccount(account_id=account_id, session=self.session)

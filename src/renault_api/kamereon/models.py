@@ -1,20 +1,44 @@
 """Kamereon models."""
 import json
 from dataclasses import dataclass
-from enum import Enum
 from typing import Any
 from typing import cast
 from typing import Dict
 from typing import List
 from typing import Optional
 
-import marshmallow_dataclass
 from marshmallow.schema import Schema
 
-from . import BaseModel
-from . import BaseSchema
-from renault_api.exceptions import KamereonException
-from renault_api.exceptions import KamereonResponseException
+from . import enums
+from . import exceptions
+from renault_api.models import BaseModel
+
+COMMON_ERRRORS: List[Dict[str, Any]] = [
+    {
+        "errorCode": "err.func.400",
+        "error_type": exceptions.InvalidInputException,
+    },
+    {
+        "errorCode": "err.func.403",
+        "error_type": exceptions.AccessDeniedException,
+    },
+    {
+        "errorCode": "err.tech.500",
+        "error_type": exceptions.InvalidUpstreamException,
+    },
+    {
+        "errorCode": "err.tech.501",
+        "error_type": exceptions.NotSupportedException,
+    },
+    {
+        "errorCode": "err.func.wired.notFound",
+        "error_type": exceptions.ResourceNotFoundException,
+    },
+    {
+        "errorCode": "err.func.wired.overloaded",
+        "error_type": exceptions.QuotaLimitException,
+    },
+]
 
 
 @dataclass
@@ -26,7 +50,14 @@ class KamereonResponseError(BaseModel):
 
     def raise_for_error_code(self) -> None:
         """Raise exception from response error."""
-        raise KamereonResponseException(self.errorCode, self.get_error_details())
+        error_details = self.get_error_details()
+        for common_error in COMMON_ERRRORS:
+            if self.errorCode == common_error["errorCode"]:
+                error_type = common_error["error_type"]
+                raise error_type(self.errorCode, error_details)
+        raise exceptions.KamereonResponseException(
+            self.errorCode, error_details
+        )  # pragma: no cover
 
     def get_error_details(self) -> Optional[str]:
         """Extract the error details sometimes hidden inside nested JSON."""
@@ -67,17 +98,11 @@ class KamereonResponse(BaseModel):
 
 @dataclass
 class KamereonPersonAccount(BaseModel):
-    """Kamereon account data."""
+    """Kamereon person account data."""
 
     accountId: Optional[str]  # noqa: N815
     accountType: Optional[str]  # noqa: N815
     accountStatus: Optional[str]  # noqa: N815
-
-    def get_account_id(self) -> str:
-        """Return jwt token."""
-        if self.accountId is None:  # pragma: no cover
-            raise KamereonException("`accountId` is None in KamereonPersonAccount.")
-        return self.accountId
 
 
 @dataclass
@@ -87,21 +112,9 @@ class KamereonPersonResponse(KamereonResponse):
     accounts: List[KamereonPersonAccount]
 
 
-KamereonPersonResponseSchema = marshmallow_dataclass.class_schema(
-    KamereonPersonResponse, base_schema=BaseSchema
-)()
-
-
-class EnergyCode(Enum):
-    """Enum for vehicleDetails energy code."""
-
-    ESSENCE = "ESS"
-    ELECTRIQUE = "ELEC"
-
-
 @dataclass
 class KamereonVehiclesDetailsGroup(BaseModel):
-    """Kamereon account data."""
+    """Kamereon vehicle details group data."""
 
     code: Optional[str]
     label: Optional[str]
@@ -110,7 +123,7 @@ class KamereonVehiclesDetailsGroup(BaseModel):
 
 @dataclass
 class KamereonVehiclesDetails(BaseModel):
-    """Kamereon account data."""
+    """Kamereon vehicle details."""
 
     vin: Optional[str]
     registrationNumber: Optional[str]  # noqa: N815
@@ -118,48 +131,47 @@ class KamereonVehiclesDetails(BaseModel):
     model: Optional[KamereonVehiclesDetailsGroup]
     energy: Optional[KamereonVehiclesDetailsGroup]
 
-    def get_vin(self) -> str:
-        """Return vehicle vin."""
-        if self.vin is None:  # pragma: no cover
-            raise KamereonException("`vin` is None in KamereonVehiclesDetails.")
-        return self.vin
-
-    def get_registration_number(self) -> str:
-        """Return vehicle vin."""
-        if self.registrationNumber is None:  # pragma: no cover
-            raise KamereonException(
-                "`registrationNumber` is None in KamereonVehiclesDetails."
-            )
-        return self.registrationNumber
-
-    def get_energy_code(self) -> EnergyCode:
+    def get_energy_code(self) -> Optional[str]:
         """Return vehicle energy code."""
-        if self.energy is None:  # pragma: no cover
-            raise KamereonException("`energy` is None in KamereonVehiclesDetails.")
-        if self.energy.code is None:  # pragma: no cover
-            raise KamereonException("`energy.code` is None in KamereonVehiclesDetails.")
-        try:
-            return EnergyCode(self.energy.code)
-        except ValueError:  # pragma: no cover
-            raise KamereonException(
-                f"Unable to convert `{self.energy.code}` to EnergyCode."
-            )
+        return self.energy.code if self.energy else None
 
-    def get_brand_label(self) -> str:
+    def get_brand_label(self) -> Optional[str]:
         """Return vehicle model label."""
-        if self.brand is None:  # pragma: no cover
-            raise KamereonException("`brand` is None in KamereonVehiclesDetails.")
-        if self.brand.label is None:  # pragma: no cover
-            raise KamereonException("`brand.label` is None in KamereonVehiclesDetails.")
-        return self.brand.label
+        return self.brand.label if self.brand else None
 
-    def get_model_label(self) -> str:
+    def get_model_code(self) -> Optional[str]:
+        """Return vehicle model code."""
+        return self.model.code if self.model else None
+
+    def get_model_label(self) -> Optional[str]:
         """Return vehicle model label."""
-        if self.model is None:  # pragma: no cover
-            raise KamereonException("`model` is None in KamereonVehiclesDetails.")
-        if self.model.label is None:  # pragma: no cover
-            raise KamereonException("`model.label` is None in KamereonVehiclesDetails.")
-        return self.model.label
+        return self.model.label if self.model else None
+
+    def uses_electricity(self) -> bool:
+        """Return True if model uses electricity."""
+        if self.get_energy_code() in [
+            # May need to add hibrid models in the future
+            "ELEC",
+        ]:
+            return True
+        return False
+
+    def uses_fuel(self) -> bool:
+        """Return True if model uses fuel."""
+        if self.get_energy_code() in [
+            # May need to add hibrid models in the future
+            "ESS",
+        ]:
+            return True
+        return False
+
+    def reports_charging_power_in_watts(self) -> bool:
+        """Return True if model reports chargingInstantaneousPower in watts."""
+        if self.get_model_code() in [
+            "X101VE",  # ZOE 40
+        ]:
+            return True
+        return False
 
 
 @dataclass
@@ -168,18 +180,6 @@ class KamereonVehiclesLink(BaseModel):
 
     vin: Optional[str]
     vehicleDetails: Optional[KamereonVehiclesDetails]  # noqa: N815
-
-    def get_vin(self) -> str:
-        """Return vehicle vin."""
-        if self.vin is None:  # pragma: no cover
-            raise KamereonException("`vin` is None in KamereonVehiclesLink.")
-        return self.vin
-
-    def get_details(self) -> KamereonVehiclesDetails:
-        """Return vehicle details."""
-        if self.vehicleDetails is None:  # pragma: no cover
-            raise KamereonException("`vehicleDetails` is None in KamereonVehiclesLink.")
-        return self.vehicleDetails
 
 
 @dataclass
@@ -191,14 +191,9 @@ class KamereonVehiclesResponse(KamereonResponse):
     vehicleLinks: List[KamereonVehiclesLink]  # noqa: N815
 
 
-KamereonVehiclesResponseSchema = marshmallow_dataclass.class_schema(
-    KamereonVehiclesResponse, base_schema=BaseSchema
-)()
-
-
 @dataclass
 class KamereonVehicleDataAttributes(BaseModel):
-    """Kamereon vehicle data."""
+    """Kamereon vehicle data attributes."""
 
 
 @dataclass
@@ -216,41 +211,13 @@ class KamereonVehicleDataResponse(KamereonResponse):
 
     data: Optional[KamereonVehicleData]
 
-    def get_attributes(self, schema: Schema) -> KamereonVehicleDataAttributes:
+    def get_attributes(self, schema: Schema) -> Optional[KamereonVehicleDataAttributes]:
         """Return jwt token."""
-        if self.data is None:  # pragma: no cover
-            raise KamereonException("`data` is None in KamereonVehicleData.")
-        if self.data.attributes is None:  # pragma: no cover
-            raise KamereonException("`data.attributes` is None in KamereonVehicleData.")
-        return cast(KamereonVehicleDataAttributes, schema.load(self.data.attributes))
-
-
-KamereonVehicleDataResponseSchema = marshmallow_dataclass.class_schema(
-    KamereonVehicleDataResponse, base_schema=BaseSchema
-)()
-
-
-class ChargeState(Enum):
-    """Enum for battery-status charge state."""
-
-    NOT_IN_CHARGE = 0.0
-    WAITING_FOR_PLANNED_CHARGE = 0.1
-    CHARGE_ENDED = 0.2
-    WAITING_FOR_CURRENT_CHARGE = 0.3
-    ENERGY_FLAP_OPENED = 0.4
-    CHARGE_IN_PROGRESS = 1.0
-    # This next is more accurately "not charging" (<= ZE40) or "error" (ZE50).
-    CHARGE_ERROR = -1.0
-    NOT_AVAILABLE = -1.1
-
-
-class PlugState(Enum):
-    """Enum for battery-status plug state."""
-
-    UNPLUGGED = 0
-    PLUGGED = 1
-    PLUG_ERROR = -1
-    NOT_AVAILABLE = -2147483648
+        return (
+            cast(KamereonVehicleDataAttributes, schema.load(self.data.attributes))
+            if self.data and self.data.attributes is not None
+            else None
+        )
 
 
 @dataclass
@@ -268,34 +235,33 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
     chargingRemainingTime: Optional[int]  # noqa: N815
     chargingInstantaneousPower: Optional[float]  # noqa: N815
 
-    def get_plug_status(self) -> Optional[PlugState]:
+    def get_plug_status(self) -> Optional[enums.PlugState]:
         """Return plug status."""
-        if "plugStatus" not in self.raw_data:  # pragma: no cover
-            raise KamereonException("`plugStatus` is None in KamereonVehicleData.")
         try:
-            return PlugState(self.plugStatus)
+            return (
+                enums.PlugState(self.plugStatus)
+                if self.plugStatus is not None
+                else None
+            )
         except ValueError:  # pragma: no cover
             # should we return PlugState.NOT_AVAILABLE?
-            raise KamereonException(
+            raise exceptions.KamereonException(
                 f"Unable to convert `{self.plugStatus}` to PlugState."
             )
 
-    def get_charging_status(self) -> Optional[ChargeState]:
+    def get_charging_status(self) -> Optional[enums.ChargeState]:
         """Return charging status."""
-        if "chargingStatus" not in self.raw_data:  # pragma: no cover
-            raise KamereonException("`chargingStatus` is None in KamereonVehicleData.")
         try:
-            return ChargeState(self.chargingStatus)
+            return (
+                enums.ChargeState(self.chargingStatus)
+                if self.chargingStatus is not None
+                else None
+            )
         except ValueError:  # pragma: no cover
             # should we return ChargeState.NOT_AVAILABLE?
-            raise KamereonException(
+            raise exceptions.KamereonException(
                 f"Unable to convert `{self.chargingStatus}` to ChargeState."
             )
-
-
-KamereonVehicleBatteryStatusDataSchema = marshmallow_dataclass.class_schema(
-    KamereonVehicleBatteryStatusData, base_schema=BaseSchema
-)()
 
 
 @dataclass
@@ -307,30 +273,13 @@ class KamereonVehicleLocationData(KamereonVehicleDataAttributes):
     gpsLongitude: Optional[float]  # noqa: N815
 
 
-KamereonVehicleLocationDataSchema = marshmallow_dataclass.class_schema(
-    KamereonVehicleLocationData, base_schema=BaseSchema
-)()
-
-
 @dataclass
 class KamereonVehicleHvacStatusData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data hvac-status attributes."""
 
     externalTemperature: Optional[float]  # noqa: N815
     hvacStatus: Optional[str]  # noqa: N815
-
-
-KamereonVehicleHvacStatusDataSchema = marshmallow_dataclass.class_schema(
-    KamereonVehicleHvacStatusData, base_schema=BaseSchema
-)()
-
-
-class ChargeMode(Enum):
-    """Enum for charge-mode."""
-
-    ALWAYS = "always"
-    ALWAYS_CHARGING = "always_charging"
-    SCHEDULE_MODE = "schedule_mode"
+    nextHvacStartDate: Optional[str]  # noqa: N815
 
 
 @dataclass
@@ -339,21 +288,18 @@ class KamereonVehicleChargeModeData(KamereonVehicleDataAttributes):
 
     chargeMode: Optional[str]  # noqa: N815
 
-    def get_charge_mode(self) -> Optional[ChargeMode]:
+    def get_charge_mode(self) -> Optional[enums.ChargeMode]:
         """Return charge mode."""
-        if "chargeMode" not in self.raw_data:  # pragma: no cover
-            raise KamereonException("`chargeMode` is None in KamereonVehicleData.")
         try:
-            return ChargeMode(self.chargeMode)
+            return (
+                enums.ChargeMode(self.chargeMode)
+                if self.chargeMode is not None
+                else None
+            )
         except ValueError:  # pragma: no cover
-            raise KamereonException(
+            raise exceptions.KamereonException(
                 f"Unable to convert `{self.chargeMode}` to ChargeMode."
             )
-
-
-KamereonVehicleChargeModeDataSchema = marshmallow_dataclass.class_schema(
-    KamereonVehicleChargeModeData, base_schema=BaseSchema
-)()
 
 
 @dataclass
@@ -365,19 +311,9 @@ class KamereonVehicleCockpitData(KamereonVehicleDataAttributes):
     totalMileage: Optional[float]  # noqa: N815
 
 
-KamereonVehicleCockpitDataSchema = marshmallow_dataclass.class_schema(
-    KamereonVehicleCockpitData, base_schema=BaseSchema
-)()
-
-
 @dataclass
 class KamereonVehicleLockStatusData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data lock-status attributes."""
-
-
-KamereonVehicleLockStatusDataSchema = marshmallow_dataclass.class_schema(
-    KamereonVehicleLockStatusData, base_schema=BaseSchema
-)()
 
 
 @dataclass
@@ -432,19 +368,9 @@ class KamereonVehicleChargingSettingsData(KamereonVehicleDataAttributes):
     schedules: Optional[List[ChargeSchedule]]
 
 
-KamereonVehicleChargingSettingsDataSchema = marshmallow_dataclass.class_schema(
-    KamereonVehicleChargingSettingsData, base_schema=BaseSchema
-)()
-
-
 @dataclass
 class KamereonVehicleNotificationSettingsData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data notification-settings attributes."""
-
-
-KamereonVehicleNotificationSettingsDataSchema = marshmallow_dataclass.class_schema(
-    KamereonVehicleNotificationSettingsData, base_schema=BaseSchema
-)()
 
 
 @dataclass
@@ -452,19 +378,9 @@ class KamereonVehicleChargeHistoryData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data charge-history attributes."""
 
 
-KamereonVehicleChargeHistoryDataSchema = marshmallow_dataclass.class_schema(
-    KamereonVehicleChargeHistoryData, base_schema=BaseSchema
-)()
-
-
 @dataclass
 class KamereonVehicleChargesData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data charges attributes."""
-
-
-KamereonVehicleChargesDataSchema = marshmallow_dataclass.class_schema(
-    KamereonVehicleChargesData, base_schema=BaseSchema
-)()
 
 
 @dataclass
@@ -472,19 +388,9 @@ class KamereonVehicleHvacHistoryData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data hvac-history attributes."""
 
 
-KamereonVehicleHvacHistoryDataSchema = marshmallow_dataclass.class_schema(
-    KamereonVehicleHvacHistoryData, base_schema=BaseSchema
-)()
-
-
 @dataclass
 class KamereonVehicleHvacSessionsData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data hvac-sessions attributes."""
-
-
-KamereonVehicleHvacSessionsDataSchema = marshmallow_dataclass.class_schema(
-    KamereonVehicleHvacSessionsData, base_schema=BaseSchema
-)()
 
 
 @dataclass
@@ -492,19 +398,9 @@ class KamereonVehicleHvacStartActionData(KamereonVehicleDataAttributes):
     """Kamereon vehicle action data hvac-start attributes."""
 
 
-KamereonVehicleHvacStartActionDataSchema = marshmallow_dataclass.class_schema(
-    KamereonVehicleHvacStartActionData, base_schema=BaseSchema
-)()
-
-
 @dataclass
 class KamereonVehicleChargeScheduleActionData(KamereonVehicleDataAttributes):
     """Kamereon vehicle action data charge-schedule attributes."""
-
-
-KamereonVehicleChargeScheduleActionDataSchema = marshmallow_dataclass.class_schema(
-    KamereonVehicleChargeScheduleActionData, base_schema=BaseSchema
-)()
 
 
 @dataclass
@@ -512,16 +408,6 @@ class KamereonVehicleChargeModeActionData(KamereonVehicleDataAttributes):
     """Kamereon vehicle action data charge-mode attributes."""
 
 
-KamereonVehicleChargeModeActionDataSchema = marshmallow_dataclass.class_schema(
-    KamereonVehicleChargeModeActionData, base_schema=BaseSchema
-)()
-
-
 @dataclass
 class KamereonVehicleChargingStartActionData(KamereonVehicleDataAttributes):
     """Kamereon vehicle action data charging-start attributes."""
-
-
-KamereonVehicleChargingStartActionDataSchema = marshmallow_dataclass.class_schema(
-    KamereonVehicleChargingStartActionData, base_schema=BaseSchema
-)()

@@ -7,15 +7,29 @@ from unittest import mock
 
 import pytest
 from tests import get_jwt
+from tests.const import TEST_LOGIN_TOKEN
+from tests.const import TEST_PERSON_ID
 
+from renault_api.credential import Credential
+from renault_api.credential import JWTCredential
 from renault_api.credential_store import CredentialStore
 from renault_api.credential_store import FileCredentialStore
-from renault_api.model.credential import Credential
-from renault_api.model.credential import JWTCredential
+from renault_api.gigya import GIGYA_JWT
+from renault_api.gigya import GIGYA_LOGIN_TOKEN
+from renault_api.gigya import GIGYA_PERSON_ID
+
+
+def get_logged_in_credential_store() -> CredentialStore:
+    """Get credential store initialised with Gigya credentials."""
+    credential_store = CredentialStore()
+    credential_store[GIGYA_LOGIN_TOKEN] = Credential(TEST_LOGIN_TOKEN)
+    credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
+    credential_store[GIGYA_JWT] = JWTCredential(get_jwt())
+    return credential_store
 
 
 def test_invalid_credential() -> None:
-    """Test get/set with simple credential."""
+    """Test set with invalid types."""
     credential_store = CredentialStore()
 
     test_key = "test"
@@ -47,6 +61,14 @@ def test_simple_credential() -> None:
     assert credential_store.get(test_key) == test_value
     assert credential_store[test_key] == test_value
 
+    # Delete value
+    del credential_store[test_key]
+
+    # Try to get values from filled store
+    assert test_key not in credential_store
+    assert credential_store.get(test_key) is None
+    assert credential_store.get_value(test_key) is None
+
 
 def test_jwt_credential() -> None:
     """Test get/set with jwt credential."""
@@ -66,12 +88,14 @@ def test_jwt_credential() -> None:
     # Try to get values from filled store
     assert test_key in credential_store
     assert credential_store.get(test_key) == test_value
+    assert credential_store.get_value(test_key) == test_value.value
     assert credential_store[test_key] == test_value
 
     # Try again with expired
     expired_time = time.time() + 3600
     with mock.patch("time.time", mock.MagicMock(return_value=expired_time)):
         assert test_key not in credential_store
+        assert credential_store.get_value(test_key) is None
         assert not credential_store.get(test_key)
         with pytest.raises(KeyError):
             credential_store[test_key]
@@ -99,13 +123,43 @@ def test_clear() -> None:
     assert test_permanent_key in credential_store
     assert credential_store[test_permanent_key] == test_pemanent_value
 
-    # Try to get values from filled store
+    # Clear the store
     credential_store.clear()
 
     # Try to get values from filled store
     assert test_key not in credential_store
     assert test_permanent_key in credential_store
     assert credential_store[test_permanent_key] == test_pemanent_value
+
+
+def test_clear_keys() -> None:
+    """Test clearance of specified keys from credential store."""
+    credential_store = CredentialStore()
+    test_key = "test"
+    test_permanent_key = "locale"
+
+    # Try to get value from empty store
+    assert test_key not in credential_store
+    assert test_permanent_key not in credential_store
+
+    # Set value
+    test_value = Credential("test_value")
+    test_pemanent_value = Credential("test_locale")
+    credential_store[test_key] = test_value
+    credential_store[test_permanent_key] = test_pemanent_value
+
+    # Try to get values from filled store
+    assert test_key in credential_store
+    assert credential_store[test_key] == test_value
+    assert test_permanent_key in credential_store
+    assert credential_store[test_permanent_key] == test_pemanent_value
+
+    # Clear the store
+    credential_store.clear_keys([test_permanent_key])
+
+    # Try to get values from filled store
+    assert test_key in credential_store
+    assert test_permanent_key not in credential_store
 
 
 def test_file_store() -> None:
