@@ -78,40 +78,18 @@ def main(
         ctx.obj["vin"] = vin
 
 
-@click.option("--locale", default=None, help="API locale (eg. fr_FR)")
-@click.option(
-    "--account", default=None, help="Kamereon account ID to use for future calls"
-)
-@click.option("--vin", default=None, help="Vehicle VIN to use for future calls")
-@main.command()
-@coro  # type: ignore
-async def set(
-    locale: Optional[str], account: Optional[str], vin: Optional[str]
-) -> None:
-    """Store specified settings into credential store."""
-    async with ClientSession() as websession:
-        try:
-            await renault_settings.set_options(websession, locale, account, vin)
-        except RenaultException as exc:
-            raise click.ClickException(str(exc)) from exc
-        finally:
-            closed_event = create_aiohttp_closed_event(websession)
-            await websession.close()
-            await closed_event.wait()
-
-
 @main.command()
 @click.pass_context
 @coro  # type: ignore
-async def status(ctx: Context) -> None:
-    """Display vehicle status."""
+async def ac_cancel(ctx: Context) -> None:
+    """Cancel air conditionning."""
     async with ClientSession() as websession:
         try:
-            await renault_vehicle.display_status(websession, ctx_data=ctx.obj)
+            await renault_vehicle.ac_cancel(websession=websession, ctx_data=ctx.obj)
         except RenaultException as exc:
             raise click.ClickException(str(exc)) from exc
         finally:
-            closed_event = create_aiohttp_closed_event(websession)
+            closed_event = create_aiohttp_closed_event(websession=websession)
             await websession.close()
             await closed_event.wait()
 
@@ -148,29 +126,17 @@ async def ac_start(ctx: Context, temperature: int, at: Optional[str]) -> None:
 @main.command()
 @click.pass_context
 @coro  # type: ignore
-async def ac_cancel(ctx: Context) -> None:
-    """Cancel air conditionning."""
+async def accounts(ctx: Context) -> None:
+    """Display list of accounts."""
     async with ClientSession() as websession:
         try:
-            await renault_vehicle.ac_cancel(websession=websession, ctx_data=ctx.obj)
+            await renault_client.display_accounts(websession, ctx.obj)
         except RenaultException as exc:
             raise click.ClickException(str(exc)) from exc
         finally:
-            closed_event = create_aiohttp_closed_event(websession=websession)
+            closed_event = create_aiohttp_closed_event(websession)
             await websession.close()
             await closed_event.wait()
-
-
-@main.command()
-def settings() -> None:
-    """Display the current configuration keys."""
-    renault_settings.display_settings()
-
-
-@main.command()
-def reset() -> None:
-    """Clear all credentials/settings from the credential store."""
-    renault_settings.reset()
 
 
 @main.command()
@@ -192,13 +158,47 @@ async def login(ctx: Context, user: str, password: str) -> None:
 
 
 @main.command()
-@click.pass_context
+def reset() -> None:
+    """Clear all credentials/settings from the credential store."""
+    renault_settings.reset()
+
+
+@click.option("--locale", default=None, help="API locale (eg. fr_FR)")
+@click.option(
+    "--account", default=None, help="Kamereon account ID to use for future calls"
+)
+@click.option("--vin", default=None, help="Vehicle VIN to use for future calls")
+@main.command()
 @coro  # type: ignore
-async def accounts(ctx: Context) -> None:
-    """Login to Renault."""
+async def set(
+    locale: Optional[str], account: Optional[str], vin: Optional[str]
+) -> None:
+    """Store specified settings into credential store."""
     async with ClientSession() as websession:
         try:
-            await renault_client.display_accounts(websession, ctx.obj)
+            await renault_settings.set_options(websession, locale, account, vin)
+        except RenaultException as exc:
+            raise click.ClickException(str(exc)) from exc
+        finally:
+            closed_event = create_aiohttp_closed_event(websession)
+            await websession.close()
+            await closed_event.wait()
+
+
+@main.command()
+def settings() -> None:
+    """Display the current configuration keys."""
+    renault_settings.display_settings()
+
+
+@main.command()
+@click.pass_context
+@coro  # type: ignore
+async def status(ctx: Context) -> None:
+    """Display vehicle status."""
+    async with ClientSession() as websession:
+        try:
+            await renault_vehicle.display_status(websession, ctx_data=ctx.obj)
         except RenaultException as exc:
             raise click.ClickException(str(exc)) from exc
         finally:
@@ -211,7 +211,7 @@ async def accounts(ctx: Context) -> None:
 @click.pass_context
 @coro  # type: ignore
 async def vehicles(ctx: Context) -> None:
-    """Login to Renault."""
+    """Display list of vehicles."""
     async with ClientSession() as websession:
         try:
             await renault_account.display_vehicles(websession, ctx.obj)
