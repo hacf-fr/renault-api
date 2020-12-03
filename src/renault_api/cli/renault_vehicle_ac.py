@@ -1,18 +1,12 @@
 """CLI function for a vehicle."""
-from datetime import datetime
 from typing import Any
 from typing import Dict
 
 import aiohttp
 import click
 import dateparser
-from tabulate import tabulate
 
 from . import renault_vehicle
-from renault_api.credential import Credential
-from renault_api.exceptions import RenaultException
-from renault_api.renault_account import RenaultAccount
-from renault_api.renault_vehicle import RenaultVehicle
 
 
 async def start(
