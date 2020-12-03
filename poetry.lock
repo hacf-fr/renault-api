@@ -1210,8 +1210,11 @@ version = "3.4.0"
 docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pytest-cov", "jaraco.test (>=3.2.0)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy"]
 
+[extras]
+cli = ["click", "tabulate", "dateparser"]
+
 [metadata]
-content-hash = "413348b2074c32f52df80d88ee743349ddf0989b90ae2ce3c0195b196e2b57b3"
+content-hash = "6ac598128eca9887fc48d4378850ed2c50cfa8238d020eaa68b473d8101a0341"
 lock-version = "1.0"
 python-versions = "^3.7.1"
 
