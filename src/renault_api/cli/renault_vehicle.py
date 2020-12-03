@@ -5,7 +5,6 @@ from typing import Optional
 
 import aiohttp
 import click
-import dateparser
 import dateutil.parser
 from tabulate import tabulate
 
@@ -79,9 +78,10 @@ async def _get_vin(ctx_data: Dict[str, Any], account: RenaultAccount) -> str:
             return vin
 
 
-async def _get_vehicle(
+async def get_vehicle(
     websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
 ) -> RenaultVehicle:
+    """Get RenaultVehicle for use by CLI."""
     account = await renault_account.get_account(
         websession=websession, ctx_data=ctx_data
     )
@@ -89,35 +89,11 @@ async def _get_vehicle(
     return await account.get_api_vehicle(vin)
 
 
-async def ac_start(
-    websession: aiohttp.ClientSession,
-    ctx_data: Dict[str, Any],
-    temperature: int,
-    at: str,
-) -> None:
-    """Display vehicle status."""
-    vehicle = await _get_vehicle(websession=websession, ctx_data=ctx_data)
-    if at:
-        when = dateparser.parse(at)
-    else:
-        when = None
-    await vehicle.set_ac_start(temperature=temperature, when=when)
-
-
-async def ac_cancel(
-    websession: aiohttp.ClientSession,
-    ctx_data: Dict[str, Any],
-) -> None:
-    """Display vehicle status."""
-    vehicle = await _get_vehicle(websession=websession, ctx_data=ctx_data)
-    await vehicle.set_ac_stop()
-
-
 async def display_status(
     websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
 ) -> None:
     """Display vehicle status."""
-    vehicle = await _get_vehicle(websession=websession, ctx_data=ctx_data)
+    vehicle = await get_vehicle(websession=websession, ctx_data=ctx_data)
     status_table: Dict[str, Any] = {}
 
     await update_battery_status(vehicle, status_table)

@@ -20,14 +20,14 @@ def coro(f):  # type: ignore
 
 
 def create_aiohttp_closed_event(
-    session: ClientSession,
+    websession: ClientSession,
 ) -> asyncio.Event:  # pragma: no cover
     """Work around aiohttp issue that doesn't properly close transports on exit.
 
     See https://github.com/aio-libs/aiohttp/issues/1925#issuecomment-639080209
 
     Args:
-        session (ClientSession): session for which to generate the event.
+        websession (ClientSession): session for which to generate the event.
 
     Returns:
         An event that will be set once all transports have been properly closed.
@@ -53,7 +53,7 @@ def create_aiohttp_closed_event(
             # _app_protocol and _transport are set to None.
             pass
 
-    for conn in session.connector._conns.values():  # type: ignore
+    for conn in websession.connector._conns.values():  # type: ignore
         for handler, _ in conn:
             proto = getattr(handler.transport, "_ssl_protocol", None)
             if proto is None:

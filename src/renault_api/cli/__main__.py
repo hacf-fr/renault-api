@@ -9,8 +9,9 @@ from click.core import Context
 
 from . import renault_account
 from . import renault_client
-from . import renault_vehicle
 from . import renault_settings
+from . import renault_vehicle
+from . import renault_vehicle_ac
 from .helpers import coro
 from .helpers import create_aiohttp_closed_event
 from renault_api.exceptions import RenaultException
@@ -85,7 +86,7 @@ async def ac_cancel(ctx: Context) -> None:
     """Cancel air conditionning."""
     async with ClientSession() as websession:
         try:
-            await renault_vehicle.ac_cancel(websession=websession, ctx_data=ctx.obj)
+            await renault_vehicle_ac.cancel(websession=websession, ctx_data=ctx.obj)
         except RenaultException as exc:
             raise click.ClickException(str(exc)) from exc
         finally:
@@ -94,7 +95,76 @@ async def ac_cancel(ctx: Context) -> None:
             await closed_event.wait()
 
 
-@click.option("--temperature", type=int, help="Target temperature (in Celsius)")
+@click.option(
+    "--from", "start", help="Date to start showing history from", required=True
+)
+@click.option(
+    "--to",
+    "end",
+    help="Date to finish showing history at (cannot be in the future)",
+    required=True,
+)
+@click.option(
+    "--period",
+    default="month",
+    help="Period over which to aggregate.",
+    type=click.Choice(["day", "month"], case_sensitive=False),
+)
+@main.command()
+@click.pass_context
+@coro  # type: ignore
+async def ac_history(ctx: Context, start: str, end: str, period: Optional[str]) -> None:
+    """Start air conditionning."""
+    async with ClientSession() as websession:
+        try:
+            await renault_vehicle_ac.history(
+                websession=websession,
+                ctx_data=ctx.obj,
+                start=start,
+                end=end,
+                period=period,
+            )
+        except RenaultException as exc:
+            raise click.ClickException(str(exc)) from exc
+        finally:
+            closed_event = create_aiohttp_closed_event(websession)
+            await websession.close()
+            await closed_event.wait()
+
+
+@click.option(
+    "--from", "start", help="Date to start showing history from", required=True
+)
+@click.option(
+    "--to",
+    "end",
+    help="Date to finish showing history at (cannot be in the future)",
+    required=True,
+)
+@main.command()
+@click.pass_context
+@coro  # type: ignore
+async def ac_sessions(ctx: Context, start: str, end: str) -> None:
+    """Start air conditionning."""
+    async with ClientSession() as websession:
+        try:
+            await renault_vehicle_ac.sessions(
+                websession=websession,
+                ctx_data=ctx.obj,
+                start=start,
+                end=end,
+            )
+        except RenaultException as exc:
+            raise click.ClickException(str(exc)) from exc
+        finally:
+            closed_event = create_aiohttp_closed_event(websession)
+            await websession.close()
+            await closed_event.wait()
+
+
+@click.option(
+    "--temperature", type=int, help="Target temperature (in Celsius)", required=True
+)
 @click.option(
     "--at",
     default=None,
@@ -109,7 +179,7 @@ async def ac_start(ctx: Context, temperature: int, at: Optional[str]) -> None:
     """Start air conditionning."""
     async with ClientSession() as websession:
         try:
-            await renault_vehicle.ac_start(
+            await renault_vehicle_ac.start(
                 websession=websession,
                 ctx_data=ctx.obj,
                 temperature=temperature,

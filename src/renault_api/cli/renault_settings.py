@@ -1,8 +1,8 @@
 """Singletons for the CLI."""
 import os
 from locale import getdefaultlocale
+from textwrap import TextWrapper
 from typing import Optional
-from textwrap import TextWrapper, wrap
 
 import aiohttp
 import click
