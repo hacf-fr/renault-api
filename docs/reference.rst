@@ -7,7 +7,7 @@ Reference
 
 
 renault_api.cli.__main__
---------------------
+------------------------
 
 .. automodule:: renault_api.cli.__main__
    :members:
