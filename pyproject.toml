@@ -25,6 +25,7 @@ aiohttp = "^3.7.1"
 # Warning: as of 2020-11-19, pyjwt is pinned to 1.7.1 on HA-core
 pyjwt = "^1.7.1"
 marshmallow-dataclass = "^8.2.0"
+tabulate = "^0.8.7"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.1.2"
