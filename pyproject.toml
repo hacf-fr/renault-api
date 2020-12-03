@@ -19,13 +19,14 @@ Changelog = "https://github.com/hacf-fr/renault-api/releases"
 
 [tool.poetry.dependencies]
 python = "^3.7.1"
-click = "^7.0"
 # Warning: as of 2020-11-19, aiohttp is pinned to 3.7.1 on HA-core
 aiohttp = "^3.7.1"
 # Warning: as of 2020-11-19, pyjwt is pinned to 1.7.1 on HA-core
 pyjwt = "^1.7.1"
 marshmallow-dataclass = "^8.2.0"
-tabulate = "^0.8.7"
+click = { version ="^7.0", optional = true }
+tabulate = { version = "^0.8.7", optional = true }
+dateparser = {version = "^1.0.0", optional = true}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.1.2"
@@ -53,6 +54,12 @@ Pygments = "^2.7.2"
 pytest-asyncio = "^0.14.0"
 aioresponses = "^0.7.1"
 pytest-cov = "^2.10.1"
+click = "^7.0"
+tabulate = "^0.8.7"
+dateparser = "^1.0.0"
+
+[tool.poetry.extras]
+cli = ["click", "tabulate", "dateparser"]
 
 [tool.poetry.scripts]
 renault-api = "renault_api.__main__:main"
