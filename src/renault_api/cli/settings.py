@@ -17,6 +17,8 @@ from renault_api.helpers import get_api_keys
 CONF_ACCOUNT_ID = "accound-id"
 CONF_VIN = "vin"
 
+CREDENTIAL_PATH = os.path.expanduser("~/.credentials/renault-api.json")
+
 
 class CLICredentialStore:
     """Singleton of the CredentialStore for the CLI."""
@@ -27,9 +29,7 @@ class CLICredentialStore:
     def get_instance(cls) -> CredentialStore:
         """Get singleton Credential Store."""
         if not CLICredentialStore.__instance:
-            CLICredentialStore.__instance = FileCredentialStore(
-                os.path.expanduser("~/.credentials/renault-api.json")
-            )
+            CLICredentialStore.__instance = FileCredentialStore(CREDENTIAL_PATH)
         return CLICredentialStore.__instance
 
 
@@ -73,6 +73,11 @@ async def get_locale(websession: aiohttp.ClientSession) -> str:
             except RenaultException as exc:
                 click.echo(str(exc), err=True)
             else:
+                if click.confirm(
+                    "Do you want to save the locale to the credential store?",
+                    default=False,
+                ):
+                    credential_store[CONF_LOCALE] = Credential(locale)
                 return locale
             click.echo(f"Locale `{locale}` is unknown.", err=True)
 

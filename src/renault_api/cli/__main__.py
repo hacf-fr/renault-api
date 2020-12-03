@@ -1,6 +1,7 @@
 """Command-line interface."""
 import logging
 from datetime import datetime
+import os
 from typing import Optional
 
 import click
@@ -48,8 +49,8 @@ def _set_debug(debug: bool, log: bool) -> None:
 
 @click.group()
 @click.version_option()
-@click.option("--debug", is_flag=True)
-@click.option("--log", is_flag=True)
+@click.option("--debug", is_flag=True, help="Display debug traces.")
+@click.option("--log", is_flag=True, help="Log debug traces to file.")
 @click.option("--locale", default=None, help="API locale (eg. fr_FR)")
 @click.option(
     "--account",
@@ -127,7 +128,7 @@ async def status(ctx: Context) -> None:
 @main.command()
 @click.pass_context
 @coro  # type: ignore
-async def ac_start(ctx: Context, temperature: int, at: str) -> None:
+async def ac_start(ctx: Context, temperature: int, at: Optional[str]) -> None:
     """Start air conditionning."""
     async with ClientSession() as websession:
         try:
@@ -149,6 +150,15 @@ async def ac_start(ctx: Context, temperature: int, at: str) -> None:
 def get_keys() -> None:
     """Get the current configuration keys."""
     settings.display_keys()
+
+
+@main.command()
+def reset() -> None:
+    """Clear all credentials/settings from the credential store."""
+    try:
+        os.remove(settings.CREDENTIAL_PATH)
+    except FileNotFoundError:
+        pass
 
 
 @main.command()

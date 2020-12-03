@@ -6,6 +6,8 @@ import aiohttp
 import click
 from tabulate import tabulate
 
+from renault_api.credential import Credential
+
 from . import renault_client
 from . import settings
 from renault_api.exceptions import RenaultException
@@ -29,27 +31,41 @@ async def _get_account_id(ctx_data: Dict[str, Any], client: RenaultClient) -> st
     response = await client.get_person()
     if not response.accounts:
         raise RenaultException("No account found.")
-    if len(response.accounts) == 1:
-        return str(response.accounts[0].accountId)
-    elif len(response.accounts) > 1:
-        menu = "Multiple accounts found:\n"
-        for i, account in enumerate(response.accounts):
-            menu = menu + f"\t[{i+1}] {account.accountId} ({account.accountType})\n"
 
-        while True:
-            i = int(click.prompt(f"{menu}Please select"))
-            try:
-                account_id = str(response.accounts[i - 1].accountId)
-            except (KeyError, IndexError) as exc:
-                click.echo(f"Invalid option: {exc}.", err=True)
-            else:
-                click.echo(
-                    "To avoid seeing this message again, use:"
-                    f" > renault-api set --account {account_id}"
-                )
-                return account_id
+    account_table = []
+    default = None
+    for i, account in enumerate(response.accounts):
+        api_account = await client.get_api_account(account.accountId)
+        vehicles = await api_account.get_vehicles()
+        if account.accountType == "MYRENAULT":
+            default = i + 1
+        account_table.append(
+            [i + 1, account.accountId, account.accountType, len(vehicles.vehicleLinks)]
+        )
+        # menu = menu + f"\t[{i+1}] {account.accountId} ({account.accountType})\n"
 
-    raise RenaultException("Unable to get account_id.")  # Unreachable
+    menu = tabulate(account_table, headers=["", "ID", "Type", "Vehicles"])
+    prompt = f"\n{menu}\n\nPlease select account"
+
+    while True:
+        i = int(
+            click.prompt(
+                prompt,
+                default=default,
+                type=click.IntRange(min=1, max=len(response.accounts)),
+            )
+        )
+        try:
+            account_id = str(response.accounts[i - 1].accountId)
+        except (KeyError, IndexError) as exc:
+            click.echo(f"Invalid option: {exc}.", err=True)
+        else:
+            if click.confirm(
+                "Do you want to save the account ID to the credential store?",
+                default=False,
+            ):
+                credential_store[settings.CONF_ACCOUNT_ID] = Credential(account_id)
+            return account_id
 
 
 async def get_account(

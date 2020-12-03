@@ -9,6 +9,8 @@ import dateparser
 import dateutil.parser
 from tabulate import tabulate
 
+from renault_api.credential import Credential
+
 from . import renault_account
 from . import settings
 from renault_api.exceptions import RenaultException
@@ -34,28 +36,48 @@ async def _get_vin(ctx_data: Dict[str, Any], account: RenaultAccount) -> str:
     response = await account.get_vehicles()
     if not response.vehicleLinks:
         raise RenaultException("No vehicle found.")
-    if len(response.vehicleLinks) == 1:
-        return str(response.vehicleLinks[0].vin)
-    elif len(response.vehicleLinks) > 1:
-        menu = "Multiple vehicles found:\n"
-        for i, vehicle in enumerate(response.vehicleLinks):
-            vehicle_details = vehicle.vehicleDetails
-            assert vehicle_details  # noqa: S101
-            menu = (
-                menu
-                + f"\t[{i+1}] {vehicle_details.vin} "
-                + f"({vehicle_details.get_brand_label()}"
-                + f"{vehicle_details.get_model_label()})\n"
+
+    vehicle_table = []
+    default = None
+    for i, vehicle in enumerate(response.vehicleLinks):
+        vehicle_details = vehicle.vehicleDetails
+        assert vehicle_details  # noqa: S101
+        vehicle_table.append(
+            [
+                i + 1,
+                vehicle_details.vin,
+                vehicle_details.registrationNumber,
+                vehicle_details.get_brand_label(),
+                vehicle_details.get_model_label(),
+            ]
+        )
+
+    if len(vehicle_table) == 1:
+        default = 1
+    menu = tabulate(
+        vehicle_table, headers=["", "Vin", "Registration", "Brand", "Model"]
+    )
+    prompt = f"\n{menu}\n\nPlease select vehicle"
+
+    while True:
+        i = int(
+            click.prompt(
+                prompt,
+                default=default,
+                type=click.IntRange(min=1, max=len(response.vehicleLinks)),
             )
-
-        while True:
-            i = int(click.prompt(f"{menu}Please select"))
-            try:
-                return str(response.vehicleLinks[i - 1].vin)
-            except (KeyError, IndexError) as exc:
-                click.echo(f"Invalid option: {exc}.", err=True)
-
-    raise RenaultException("Unable to get vin.")  # Unreachable
+        )
+        try:
+            vin = str(response.vehicleLinks[i - 1].vin)
+        except (KeyError, IndexError) as exc:
+            click.echo(f"Invalid option: {exc}.", err=True)
+        else:
+            if click.confirm(
+                "Do you want to save the VIN to the credential store?",
+                default=False,
+            ):
+                credential_store[settings.CONF_VIN] = Credential(vin)
+            return vin
 
 
 async def _get_vehicle(
