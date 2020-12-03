@@ -10,7 +10,7 @@ import dateutil.parser
 from tabulate import tabulate
 
 from . import renault_account
-from . import settings
+from . import renault_settings
 from renault_api.credential import Credential
 from renault_api.exceptions import RenaultException
 from renault_api.kamereon.exceptions import KamereonResponseException
@@ -26,8 +26,8 @@ async def _get_vin(ctx_data: Dict[str, Any], account: RenaultAccount) -> str:
         return str(ctx_data["vin"])
 
     # Second, check credential store
-    credential_store = settings.CLICredentialStore.get_instance()
-    vin = credential_store.get_value(settings.CONF_VIN)
+    credential_store = renault_settings.CLICredentialStore.get_instance()
+    vin = credential_store.get_value(renault_settings.CONF_VIN)
     if vin:
         return vin
 
@@ -75,7 +75,7 @@ async def _get_vin(ctx_data: Dict[str, Any], account: RenaultAccount) -> str:
                 "Do you want to save the VIN to the credential store?",
                 default=False,
             ):
-                credential_store[settings.CONF_VIN] = Credential(vin)
+                credential_store[renault_settings.CONF_VIN] = Credential(vin)
             return vin
 
 
@@ -102,6 +102,15 @@ async def ac_start(
     else:
         when = None
     await vehicle.set_ac_start(temperature=temperature, when=when)
+
+
+async def ac_cancel(
+    websession: aiohttp.ClientSession,
+    ctx_data: Dict[str, Any],
+) -> None:
+    """Display vehicle status."""
+    vehicle = await _get_vehicle(websession=websession, ctx_data=ctx_data)
+    await vehicle.set_ac_stop()
 
 
 async def display_status(

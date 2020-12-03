@@ -7,7 +7,7 @@ import click
 from tabulate import tabulate
 
 from . import renault_client
-from . import settings
+from . import renault_settings
 from renault_api.credential import Credential
 from renault_api.exceptions import RenaultException
 from renault_api.renault_account import RenaultAccount
@@ -21,8 +21,8 @@ async def _get_account_id(ctx_data: Dict[str, Any], client: RenaultClient) -> st
         return str(ctx_data["account"])
 
     # Second, check credential store
-    credential_store = settings.CLICredentialStore.get_instance()
-    account_id = credential_store.get_value(settings.CONF_ACCOUNT_ID)
+    credential_store = renault_settings.CLICredentialStore.get_instance()
+    account_id = credential_store.get_value(renault_settings.CONF_ACCOUNT_ID)
     if account_id:
         return account_id
 
@@ -63,7 +63,9 @@ async def _get_account_id(ctx_data: Dict[str, Any], client: RenaultClient) -> st
                 "Do you want to save the account ID to the credential store?",
                 default=False,
             ):
-                credential_store[settings.CONF_ACCOUNT_ID] = Credential(account_id)
+                credential_store[renault_settings.CONF_ACCOUNT_ID] = Credential(
+                    account_id
+                )
             return account_id
 
 

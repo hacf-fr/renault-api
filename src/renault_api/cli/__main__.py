@@ -10,7 +10,7 @@ from click.core import Context
 from . import renault_account
 from . import renault_client
 from . import renault_vehicle
-from . import settings
+from . import renault_settings
 from .helpers import coro
 from .helpers import create_aiohttp_closed_event
 from renault_api.exceptions import RenaultException
@@ -66,7 +66,7 @@ def main(
     account: Optional[str],
     vin: Optional[str],
 ) -> None:
-    """Renault CLI."""
+    """Main entry point for the Renault CLI."""
     ctx.ensure_object(dict)
     if debug or log:
         _set_debug(debug, log)
@@ -88,10 +88,10 @@ def main(
 async def set(
     locale: Optional[str], account: Optional[str], vin: Optional[str]
 ) -> None:
-    """Set configuration keys."""
+    """Store specified settings into credential store."""
     async with ClientSession() as websession:
         try:
-            await settings.set_options(websession, locale, account, vin)
+            await renault_settings.set_options(websession, locale, account, vin)
         except RenaultException as exc:
             raise click.ClickException(str(exc)) from exc
         finally:
@@ -104,7 +104,7 @@ async def set(
 @click.pass_context
 @coro  # type: ignore
 async def status(ctx: Context) -> None:
-    """Set configuration keys."""
+    """Display vehicle status."""
     async with ClientSession() as websession:
         try:
             await renault_vehicle.display_status(websession, ctx_data=ctx.obj)
@@ -132,7 +132,7 @@ async def ac_start(ctx: Context, temperature: int, at: Optional[str]) -> None:
     async with ClientSession() as websession:
         try:
             await renault_vehicle.ac_start(
-                websession,
+                websession=websession,
                 ctx_data=ctx.obj,
                 temperature=temperature,
                 at=at,
@@ -146,15 +146,31 @@ async def ac_start(ctx: Context, temperature: int, at: Optional[str]) -> None:
 
 
 @main.command()
-def get_keys() -> None:
-    """Get the current configuration keys."""
-    settings.display_keys()
+@click.pass_context
+@coro  # type: ignore
+async def ac_cancel(ctx: Context) -> None:
+    """Cancel air conditionning."""
+    async with ClientSession() as websession:
+        try:
+            await renault_vehicle.ac_cancel(websession=websession, ctx_data=ctx.obj)
+        except RenaultException as exc:
+            raise click.ClickException(str(exc)) from exc
+        finally:
+            closed_event = create_aiohttp_closed_event(websession=websession)
+            await websession.close()
+            await closed_event.wait()
+
+
+@main.command()
+def settings() -> None:
+    """Display the current configuration keys."""
+    renault_settings.display_settings()
 
 
 @main.command()
 def reset() -> None:
     """Clear all credentials/settings from the credential store."""
-    settings.reset()
+    renault_settings.reset()
 
 
 @main.command()

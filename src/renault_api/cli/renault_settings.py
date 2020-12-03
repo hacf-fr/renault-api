@@ -2,12 +2,13 @@
 import os
 from locale import getdefaultlocale
 from typing import Optional
+from textwrap import TextWrapper, wrap
 
 import aiohttp
 import click
+from tabulate import tabulate
 
 from renault_api.const import CONF_LOCALE
-from renault_api.const import PERMANENT_KEYS
 from renault_api.credential import Credential
 from renault_api.credential_store import CredentialStore
 from renault_api.credential_store import FileCredentialStore
@@ -82,11 +83,15 @@ async def get_locale(websession: aiohttp.ClientSession) -> str:
             click.echo(f"Locale `{locale}` is unknown.", err=True)
 
 
-def display_keys() -> None:
+def display_settings() -> None:
     """Get the current configuration keys."""
     credential_store = CLICredentialStore.get_instance()
-    for key in PERMANENT_KEYS:
-        click.echo(f"Current {key}: {credential_store.get_value(key)}")
+    wrapper = TextWrapper(width=80)
+    items = list(
+        [key, "\n".join(wrapper.wrap(credential_store.get_value(key)))]
+        for key in credential_store._store.keys()
+    )
+    click.echo(tabulate(items, headers=["Key", "Value"]))
 
 
 def reset() -> None:

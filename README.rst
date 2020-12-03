@@ -56,23 +56,13 @@ You can install *Renault API* via pip_ from PyPI_:
 
 
 CLI Usage
------
+---------
 
-Quickstart, with prompts:
-
-.. code:: console
-
-   $ renault-api status
-
-Store settings to avoid prompts:
+Quickstart, prompts for credentials, settings and generates traces:
 
 .. code:: console
 
-   $ renault-api set --locale <locale> # eg. fr_FR
-   $ renault-api set --account <account> # eg. xxxxxx-xxxx-xxxx-xxxx-xxxxxx
-   $ renault-api set --vin <vin> # eg. VF1Ayyyyyyyy
-   $ renault-api login --user <user> --password <password>
-   $ renault-api status
+   $ renault-api --log status
 
 Please see the `Command-line Reference <Usage_>`_ for full details.
 
