@@ -105,6 +105,7 @@ def update_status_table(
     value: Optional[Any],
     unit: Optional[str],
 ) -> None:
+    """Update statuses with formatted strings."""
     if value is None:
         return
     if unit == "datetime":
@@ -129,14 +130,16 @@ async def update_battery_status(
     else:
         if response.batteryAvailableEnergy == 0:
             response.batteryAvailableEnergy = None
+        if response.chargingStatus == -1.0 and response.plugStatus == 0:
+            response.chargingStatus = 0.0
 
         items = [
             ("Battery level", response.batteryLevel, "%"),
             ("Last updated", response.timestamp, "datetime"),
             ("Available energy", response.batteryAvailableEnergy, "kWh"),
             ("Range estimate", response.batteryAutonomy, "km"),
-            ("Plug state", response.get_plug_status(), "enum"),
-            ("Charging state", response.get_charging_status(), "enum"),
+            ("Plug state", response.get_plug_status(), None),
+            ("Charging state", response.get_charging_status(), None),
             ("Charge rate", response.chargingInstantaneousPower, "kW"),
             ("Time remaining", response.chargingRemainingTime, "min"),
         ]
@@ -156,7 +159,7 @@ async def update_charge_mode(
     except KamereonResponseException as exc:
         click.echo(f"charge-mode: {exc.error_details}", err=True)
     else:
-        items = [("Charge mode", response.chargeMode, "{0}")]
+        items = [("Charge mode", response.chargeMode, None)]
 
         for key, value, unit in items:
             update_status_table(status_table, key, value, unit)
@@ -172,9 +175,9 @@ async def update_cockpit(vehicle: RenaultVehicle, status_table: Dict[str, Any]) 
         click.echo(f"cockpit: {exc.error_details}", err=True)
     else:
         items = [
-            ("Total mileage", response.totalMileage, "{0} km"),
-            ("Fuel autonomy", response.fuelAutonomy, "{0} km"),
-            ("Fuel quantity", response.fuelQuantity, "{0} L"),
+            ("Total mileage", response.totalMileage, "km"),
+            ("Fuel autonomy", response.fuelAutonomy, "km"),
+            ("Fuel quantity", response.fuelQuantity, "L"),
         ]
 
         for key, value, unit in items:
