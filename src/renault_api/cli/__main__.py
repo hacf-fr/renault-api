@@ -1,7 +1,6 @@
 """Command-line interface."""
 import logging
 from datetime import datetime
-import os
 from typing import Optional
 
 import click
@@ -155,10 +154,7 @@ def get_keys() -> None:
 @main.command()
 def reset() -> None:
     """Clear all credentials/settings from the credential store."""
-    try:
-        os.remove(settings.CREDENTIAL_PATH)
-    except FileNotFoundError:
-        pass
+    settings.reset()
 
 
 @main.command()

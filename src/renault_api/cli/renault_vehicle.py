@@ -9,10 +9,9 @@ import dateparser
 import dateutil.parser
 from tabulate import tabulate
 
-from renault_api.credential import Credential
-
 from . import renault_account
 from . import settings
+from renault_api.credential import Credential
 from renault_api.exceptions import RenaultException
 from renault_api.kamereon.exceptions import KamereonResponseException
 from renault_api.kamereon.exceptions import QuotaLimitException

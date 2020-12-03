@@ -87,3 +87,11 @@ def display_keys() -> None:
     credential_store = CLICredentialStore.get_instance()
     for key in PERMANENT_KEYS:
         click.echo(f"Current {key}: {credential_store.get_value(key)}")
+
+
+def reset() -> None:
+    """Clear all credentials/settings from the credential store."""
+    try:
+        os.remove(CREDENTIAL_PATH)
+    except FileNotFoundError:
+        pass

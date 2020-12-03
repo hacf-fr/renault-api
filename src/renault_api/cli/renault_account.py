@@ -6,10 +6,9 @@ import aiohttp
 import click
 from tabulate import tabulate
 
-from renault_api.credential import Credential
-
 from . import renault_client
 from . import settings
+from renault_api.credential import Credential
 from renault_api.exceptions import RenaultException
 from renault_api.renault_account import RenaultAccount
 from renault_api.renault_client import RenaultClient
