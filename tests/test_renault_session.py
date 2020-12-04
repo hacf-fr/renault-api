@@ -1,9 +1,9 @@
 """Test cases for initialisation of the Kamereon client."""
 from typing import cast
+
 import aiohttp
 import pytest
 from aioresponses import aioresponses
-from renault_api.credential import JWTCredential
 from tests import get_file_content
 from tests.const import TEST_COUNTRY
 from tests.const import TEST_GIGYA_URL
@@ -15,9 +15,11 @@ from tests.const import TEST_PERSON_ID
 from tests.const import TEST_USERNAME
 from tests.test_credential_store import get_logged_in_credential_store
 
+from renault_api.credential import JWTCredential
 from renault_api.exceptions import NotAuthenticatedException
 from renault_api.exceptions import RenaultException
-from renault_api.gigya import GIGYA_JWT, GIGYA_LOGIN_TOKEN
+from renault_api.gigya import GIGYA_JWT
+from renault_api.gigya import GIGYA_LOGIN_TOKEN
 from renault_api.renault_session import RenaultSession
 
 FIXTURE_PATH = "tests/fixtures/gigya/"
