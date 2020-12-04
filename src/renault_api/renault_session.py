@@ -18,7 +18,9 @@ from .const import CONF_LOCALE
 from .credential import Credential
 from .credential import JWTCredential
 from .credential_store import CredentialStore
+from .exceptions import NotAuthenticatedException
 from .exceptions import RenaultException
+from .gigya.exceptions import GigyaResponseException
 from .kamereon import models
 from renault_api.helpers import get_api_keys
 
@@ -73,6 +75,9 @@ class RenaultSession:
         value = self._credentials.get_value(key)
         if value:
             return value
+
+        if key == gigya.GIGYA_LOGIN_TOKEN:
+            raise NotAuthenticatedException("Gigya login token not available.")
         raise RenaultException(f"Credential `{key}` not found in credential cache.")
 
     async def _update_from_locale(self) -> None:
@@ -133,15 +138,21 @@ class RenaultSession:
             if jwt:
                 return jwt
             login_token = await self._get_login_token()
-            response = await gigya.get_jwt(
-                self._websession,
-                await self._get_gigya_root_url(),
-                await self._get_gigya_api_key(),
-                login_token,
-            )
-            jwt = response.get_jwt()
-            self._credentials[gigya.GIGYA_JWT] = JWTCredential(jwt)
-            return jwt
+            try:
+                response = await gigya.get_jwt(
+                    self._websession,
+                    await self._get_gigya_root_url(),
+                    await self._get_gigya_api_key(),
+                    login_token,
+                )
+            except GigyaResponseException as exc:
+                if exc.error_code in [403005, 403013]:  # pragma: no branch
+                    self._credentials.clear_keys(gigya.GIGYA_KEYS)
+                raise NotAuthenticatedException("Authentication expired.") from exc
+            else:
+                jwt = response.get_jwt()
+                self._credentials[gigya.GIGYA_JWT] = JWTCredential(jwt)
+                return jwt
 
     async def get_person(self) -> models.KamereonPersonResponse:
         """GET to /persons/{person_id}."""
