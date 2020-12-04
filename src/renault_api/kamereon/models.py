@@ -11,6 +11,7 @@ from marshmallow.schema import Schema
 
 from . import enums
 from . import exceptions
+from . import helpers
 from renault_api.models import BaseModel
 
 COMMON_ERRRORS: List[Dict[str, Any]] = [
@@ -366,6 +367,18 @@ class KamereonVehicleChargingSettingsData(KamereonVehicleDataAttributes):
 
     mode: Optional[str]
     schedules: Optional[List[ChargeSchedule]]
+
+    def update(self, args: Dict[str, Any]) -> None:
+        """Update schedule."""
+        if "id" not in args:  # pragma: no cover
+            raise ValueError("id not provided for update.")
+        if self.schedules is None:  # pragma: no cover
+            self.schedules = []
+        for schedule in self.schedules:
+            if schedule.id == args["id"]:  # pragma: no branch
+                helpers.update_schedule(schedule, args)
+                return
+        self.schedules.append(helpers.create_schedule(args))  # pragma: no cover
 
 
 @dataclass

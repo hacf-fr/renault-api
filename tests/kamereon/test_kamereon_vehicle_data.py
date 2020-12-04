@@ -191,9 +191,6 @@ def test_charging_settings() -> None:
     assert schedule_data.sunday.startTime == "T12:45Z"
     assert schedule_data.sunday.duration == 45
 
-    # Check that for_json returns the same as the original data
-    assert schedule_data.for_json() == schedule_data.raw_data
-
 
 def test_location() -> None:
     """Test vehicle data for location.json."""
