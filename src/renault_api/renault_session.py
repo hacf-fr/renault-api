@@ -18,6 +18,7 @@ from .const import CONF_LOCALE
 from .credential import Credential
 from .credential import JWTCredential
 from .credential_store import CredentialStore
+from .exceptions import NotAuthenticatedException
 from .exceptions import RenaultException
 from .gigya.exceptions import GigyaResponseException
 from .kamereon import models
@@ -74,6 +75,9 @@ class RenaultSession:
         value = self._credentials.get_value(key)
         if value:
             return value
+
+        if key == gigya.GIGYA_LOGIN_TOKEN:
+            raise NotAuthenticatedException("Gigya login token not available.")
         raise RenaultException(f"Credential `{key}` not found in credential cache.")
 
     async def _update_from_locale(self) -> None:
@@ -144,7 +148,7 @@ class RenaultSession:
             except GigyaResponseException as exc:
                 if exc.error_code in [403005]:
                     self._credentials.clear_keys(gigya.GIGYA_KEYS)
-                raise
+                raise NotAuthenticatedException("Authentication expired.") from exc
             else:
                 jwt = response.get_jwt()
                 self._credentials[gigya.GIGYA_JWT] = JWTCredential(jwt)
