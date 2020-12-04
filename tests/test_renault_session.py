@@ -1,7 +1,9 @@
 """Test cases for initialisation of the Kamereon client."""
+from typing import cast
 import aiohttp
 import pytest
 from aioresponses import aioresponses
+from renault_api.credential import JWTCredential
 from tests import get_file_content
 from tests.const import TEST_COUNTRY
 from tests.const import TEST_GIGYA_URL
@@ -15,6 +17,7 @@ from tests.test_credential_store import get_logged_in_credential_store
 
 from renault_api.exceptions import NotAuthenticatedException
 from renault_api.exceptions import RenaultException
+from renault_api.gigya import GIGYA_JWT, GIGYA_LOGIN_TOKEN
 from renault_api.renault_session import RenaultSession
 
 FIXTURE_PATH = "tests/fixtures/gigya/"
@@ -194,3 +197,47 @@ async def test_login(session: RenaultSession) -> None:
         assert await session._get_person_id() == TEST_PERSON_ID
         assert await session._get_jwt()
         assert len(mocked_responses.requests) == 0
+
+
+@pytest.mark.asyncio
+async def test_expired_login_token(websession: aiohttp.ClientSession) -> None:
+    """Test _get_jwt response on expired login token."""
+    session = get_logged_in_session(websession=websession)
+    with aioresponses() as mocked_responses:
+        mocked_responses.post(
+            f"{TEST_GIGYA_URL}/accounts.getJWT",
+            status=200,
+            body=get_file_content(f"{FIXTURE_PATH}/errors/get_jwt.403005.json"),
+            headers={"content-type": "text/javascript"},
+        )
+
+        # First attempt uses cached values
+        assert await session._get_jwt()
+        assert len(mocked_responses.requests) == 0
+
+        assert GIGYA_JWT in session._credentials
+        assert GIGYA_LOGIN_TOKEN in session._credentials
+
+        # mark JWT as expired
+        jwt_credential = cast(JWTCredential, session._credentials.get(GIGYA_JWT))
+        jwt_credential.expiry = 1
+
+        # first attempt show authentication as expired
+        with pytest.raises(
+            NotAuthenticatedException,
+            match="Authentication expired.",
+        ):
+            assert await session._get_jwt()
+
+        assert len(mocked_responses.requests) == 1
+        assert GIGYA_JWT not in session._credentials
+        assert GIGYA_LOGIN_TOKEN not in session._credentials
+
+        # subsequent attempts just show not authenticated
+        with pytest.raises(
+            NotAuthenticatedException,
+            match="Gigya login token not available.",
+        ):
+            assert await session._get_jwt()
+
+        assert len(mocked_responses.requests) == 1
