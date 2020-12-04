@@ -16,7 +16,7 @@ TEST_UPDATE = {
 
 
 def test_for_json() -> None:
-    """Test vehicle data for charging-settings.json."""
+    """Test for updating charge settings."""
     response: models.KamereonVehicleDataResponse = get_response_content(
         f"{FIXTURE_PATH}/charging-settings.json",
         schemas.KamereonVehicleDataResponseSchema,
