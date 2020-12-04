@@ -13,8 +13,8 @@ from tests.const import TEST_PERSON_ID
 from tests.const import TEST_USERNAME
 from tests.test_credential_store import get_logged_in_credential_store
 
+from renault_api.exceptions import NotAuthenticatedException
 from renault_api.exceptions import RenaultException
-from renault_api.gigya import GIGYA_LOGIN_TOKEN
 from renault_api.renault_session import RenaultSession
 
 FIXTURE_PATH = "tests/fixtures/gigya/"
@@ -138,18 +138,20 @@ async def tests_init_locale_country(websession: aiohttp.ClientSession) -> None:
 async def test_not_logged_in(session: RenaultSession) -> None:
     """Test errors when not logged in."""
     with pytest.raises(
-        RenaultException,
-        match=f"Credential `{GIGYA_LOGIN_TOKEN}` not found in credential cache.",
+        NotAuthenticatedException,
+        match="Gigya login token not available.",
     ):
         await session._get_login_token()
+
     with pytest.raises(
-        RenaultException,
-        match=f"Credential `{GIGYA_LOGIN_TOKEN}` not found in credential cache.",
+        NotAuthenticatedException,
+        match="Gigya login token not available.",
     ):
         await session._get_person_id()
+
     with pytest.raises(
-        RenaultException,
-        match=f"Credential `{GIGYA_LOGIN_TOKEN}` not found in credential cache.",
+        NotAuthenticatedException,
+        match="Gigya login token not available.",
     ):
         await session._get_jwt()
 
