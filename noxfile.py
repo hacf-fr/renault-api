@@ -117,7 +117,7 @@ def mypy(session: Session) -> None:
 @nox.session(python=python_versions)
 def tests(session: Session) -> None:
     """Run the test suite."""
-    session.install(".")
+    session.install(".[cli]")
     session.install(
         "coverage[toml]", "pytest", "pygments", "pytest-asyncio", "aioresponses"
     )
@@ -146,7 +146,7 @@ def coverage(session: Session) -> None:
 @nox.session(python=python_versions)
 def typeguard(session: Session) -> None:
     """Runtime type checking using Typeguard."""
-    session.install(".")
+    session.install(".[cli]")
     session.install("pytest", "typeguard", "pygments", "pytest-asyncio", "aioresponses")
     session.run("pytest", f"--typeguard-packages={package}", *session.posargs)
 
@@ -164,7 +164,7 @@ def xdoctest(session: Session) -> None:
 def docs_build(session: Session) -> None:
     """Build the documentation."""
     args = session.posargs or ["docs", "docs/_build"]
-    session.install(".")
+    session.install(".[cli]")
     session.install("sphinx", "sphinx-click", "sphinx-rtd-theme")
 
     build_dir = Path("docs", "_build")
