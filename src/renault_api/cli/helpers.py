@@ -1,12 +1,8 @@
 """Helpers for Renault API."""
 import asyncio
 import functools
-import logging
 
 from aiohttp import ClientSession
-
-
-_LOGGER = logging.getLogger(__package__)
 
 
 def coro(f):  # type: ignore
