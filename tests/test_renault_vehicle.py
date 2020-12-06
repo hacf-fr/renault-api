@@ -5,6 +5,7 @@ from typing import List
 import aiohttp
 import pytest
 from aioresponses import aioresponses
+from aioresponses.core import RequestCall  # type:ignore
 from tests import get_file_content
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
@@ -13,6 +14,7 @@ from tests.const import TEST_LOCALE_DETAILS
 from tests.const import TEST_VIN
 from tests.test_credential_store import get_logged_in_credential_store
 from tests.test_renault_session import get_logged_in_session
+from yarl import URL
 
 from renault_api.kamereon.enums import ChargeMode
 from renault_api.kamereon.models import ChargeSchedule
@@ -263,6 +265,15 @@ async def test_set_charge_mode(vehicle: RenaultVehicle) -> None:
             ),
         )
         assert await vehicle.set_charge_mode(ChargeMode.SCHEDULE_MODE)
+        key = (
+            "POST",
+            URL(f"{TEST_KAMEREON_VEHICLE_URL1}/actions/charge-mode?{QUERY_STRING}"),
+        )
+        request: RequestCall = mocked_responses.requests[key][0]
+        # assert mocked_responses.requests.keys() == {}
+        assert request.kwargs["json"] == {
+            "data": {"attributes": {"action": "schedule_mode"}, "type": "ChargeMode"}
+        }
 
 
 @pytest.mark.asyncio

@@ -391,7 +391,7 @@ class RenaultVehicle:
                     charge_mode.__class__
                 )
             )
-        attributes = {"action": charge_mode.name}
+        attributes = {"action": charge_mode.value}
 
         response = await self.session.set_vehicle_action(
             account_id=self.account_id,
