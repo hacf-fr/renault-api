@@ -1,5 +1,6 @@
 """Test cases for the Renault client API keys."""
 from datetime import datetime
+from datetime import timezone
 from typing import List
 
 import aiohttp
@@ -229,50 +230,65 @@ async def test_get_hvac_sessions(vehicle: RenaultVehicle) -> None:
 async def test_set_ac_start(vehicle: RenaultVehicle) -> None:
     """Test set_ac_start."""
     with aioresponses() as mocked_responses:
+        url = f"{TEST_KAMEREON_VEHICLE_URL1}/actions/hvac-start?{QUERY_STRING}"
         mocked_responses.post(
-            f"{TEST_KAMEREON_VEHICLE_URL1}/actions/hvac-start?{QUERY_STRING}",
+            url,
             status=200,
             body=get_file_content(
                 f"{FIXTURE_PATH}/vehicle_action/hvac-start.start.json"
             ),
         )
-        assert await vehicle.set_ac_start(21, datetime(2020, 11, 24))
+        assert await vehicle.set_ac_start(
+            21, datetime(2020, 11, 24, 6, 30, tzinfo=timezone.utc)
+        )
+        request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+        assert request.kwargs["json"] == {
+            "data": {
+                "type": "HvacStart",
+                "attributes": {
+                    "action": "start",
+                    "targetTemperature": 21,
+                    "startDateTime": "2020-11-24T06:30:00Z",
+                },
+            }
+        }
 
 
 @pytest.mark.asyncio
 async def test_set_ac_stop(vehicle: RenaultVehicle) -> None:
     """Test set_ac_stop."""
     with aioresponses() as mocked_responses:
+        url = f"{TEST_KAMEREON_VEHICLE_URL1}/actions/hvac-start?{QUERY_STRING}"
         mocked_responses.post(
-            f"{TEST_KAMEREON_VEHICLE_URL1}/actions/hvac-start?{QUERY_STRING}",
+            url,
             status=200,
             body=get_file_content(
                 f"{FIXTURE_PATH}/vehicle_action/hvac-start.cancel.json"
             ),
         )
         assert await vehicle.set_ac_stop()
+        request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+        assert request.kwargs["json"] == {
+            "data": {"type": "HvacStart", "attributes": {"action": "cancel"}}
+        }
 
 
 @pytest.mark.asyncio
 async def test_set_charge_mode(vehicle: RenaultVehicle) -> None:
     """Test set_charge_mode."""
     with aioresponses() as mocked_responses:
+        url = f"{TEST_KAMEREON_VEHICLE_URL1}/actions/charge-mode?{QUERY_STRING}"
         mocked_responses.post(
-            f"{TEST_KAMEREON_VEHICLE_URL1}/actions/charge-mode?{QUERY_STRING}",
+            url,
             status=200,
             body=get_file_content(
                 f"{FIXTURE_PATH}/vehicle_action/charge-mode.schedule_mode.json"
             ),
         )
         assert await vehicle.set_charge_mode(ChargeMode.SCHEDULE_MODE)
-        key = (
-            "POST",
-            URL(f"{TEST_KAMEREON_VEHICLE_URL1}/actions/charge-mode?{QUERY_STRING}"),
-        )
-        request: RequestCall = mocked_responses.requests[key][0]
-        # assert mocked_responses.requests.keys() == {}
+        request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
         assert request.kwargs["json"] == {
-            "data": {"attributes": {"action": "schedule_mode"}, "type": "ChargeMode"}
+            "data": {"type": "ChargeMode", "attributes": {"action": "schedule_mode"}}
         }
 
 
@@ -281,25 +297,35 @@ async def test_set_charge_schedules(vehicle: RenaultVehicle) -> None:
     """Test set_charge_schedules."""
     schedules: List[ChargeSchedule] = []
     with aioresponses() as mocked_responses:
+        url = f"{TEST_KAMEREON_VEHICLE_URL2}/actions/charge-schedule?{QUERY_STRING}"
         mocked_responses.post(
-            f"{TEST_KAMEREON_VEHICLE_URL2}/actions/charge-schedule?{QUERY_STRING}",
+            url,
             status=200,
             body=get_file_content(
                 f"{FIXTURE_PATH}/vehicle_action/charge-schedule.schedules.json"
             ),
         )
         assert await vehicle.set_charge_schedules(schedules)
+        request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+        assert request.kwargs["json"] == {
+            "data": {"type": "ChargeSchedule", "attributes": {"schedules": []}}
+        }
 
 
 @pytest.mark.asyncio
 async def test_set_charge_start(vehicle: RenaultVehicle) -> None:
     """Test set_charge_start."""
     with aioresponses() as mocked_responses:
+        url = f"{TEST_KAMEREON_VEHICLE_URL1}/actions/charging-start?{QUERY_STRING}"
         mocked_responses.post(
-            f"{TEST_KAMEREON_VEHICLE_URL1}/actions/charging-start?{QUERY_STRING}",
+            url,
             status=200,
             body=get_file_content(
                 f"{FIXTURE_PATH}/vehicle_action/charging-start.start.json"
             ),
         )
         assert await vehicle.set_charge_start()
+        request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+        assert request.kwargs["json"] == {
+            "data": {"type": "ChargingStart", "attributes": {"action": "start"}}
+        }
