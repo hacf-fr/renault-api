@@ -13,11 +13,11 @@ from renault_api.exceptions import RenaultException
 def coro_with_websession(func: Callable[..., Any]) -> Callable[..., Any]:
     """Ensure the routine runs on an event loop CLI."""
 
-    async def run_command(func: Callable[..., Any], *args: Any, **kwargs: Any) -> Any:
+    async def run_command(func: Callable[..., Any], *args: Any, **kwargs: Any) -> None:
         async with ClientSession() as websession:
             try:
                 kwargs["websession"] = websession
-                return await func(*args, **kwargs)
+                await func(*args, **kwargs)
             except RenaultException as exc:
                 raise click.ClickException(str(exc)) from exc
             finally:
@@ -26,8 +26,8 @@ def coro_with_websession(func: Callable[..., Any]) -> Callable[..., Any]:
                 await closed_event.wait()
 
     @functools.wraps(func)
-    def wrapper(*args: Any, **kwargs: Any) -> Any:
-        return asyncio.run(run_command(func, *args, **kwargs))
+    def wrapper(*args: Any, **kwargs: Any) -> None:
+        asyncio.run(run_command(func, *args, **kwargs))
 
     return wrapper
 

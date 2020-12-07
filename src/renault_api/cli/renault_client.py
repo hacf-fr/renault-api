@@ -8,6 +8,7 @@ import click
 from tabulate import tabulate
 
 from . import renault_settings
+from renault_api.credential_store import CredentialStore
 from renault_api.exceptions import RenaultException
 from renault_api.gigya import GIGYA_LOGIN_TOKEN
 from renault_api.helpers import get_api_keys
@@ -25,10 +26,10 @@ class CLIClient:
     ) -> RenaultClient:
         """Get singleton RenaultClient."""
         if not CLIClient.__instance:
-            credential_store = renault_settings.CLICredentialStore.get_instance()
+            credential_store: CredentialStore = ctx_data["credential_store"]
             locale = ctx_data.get("locale")
             if not locale:
-                locale = await renault_settings.get_locale(websession)
+                locale = await renault_settings.get_locale(websession, ctx_data)
 
             country = locale[-2:]
             api_keys = await get_api_keys(locale=locale, websession=websession)
@@ -54,7 +55,7 @@ async def _ensure_logged_in(
     websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
 ) -> None:
     """Prompt the user for credentials."""
-    credential_store = renault_settings.CLICredentialStore.get_instance()
+    credential_store: CredentialStore = ctx_data["credential_store"]
     if GIGYA_LOGIN_TOKEN in credential_store:
         return
 

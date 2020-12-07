@@ -12,6 +12,7 @@ from tabulate import tabulate
 from . import renault_client
 from . import renault_settings
 from renault_api.credential import Credential
+from renault_api.credential_store import CredentialStore
 from renault_api.exceptions import RenaultException
 from renault_api.kamereon.models import KamereonPersonAccount
 from renault_api.renault_account import RenaultAccount
@@ -25,7 +26,8 @@ async def _get_account_id(ctx_data: Dict[str, Any], client: RenaultClient) -> st
         return str(ctx_data["account"])
 
     # Second, check credential store
-    credential_store = renault_settings.CLICredentialStore.get_instance()
+    credential_store: CredentialStore = ctx_data["credential_store"]
+
     account_id = credential_store.get_value(renault_settings.CONF_ACCOUNT_ID)
     if account_id:
         return account_id

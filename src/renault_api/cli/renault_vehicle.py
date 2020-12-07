@@ -11,6 +11,7 @@ from tabulate import tabulate
 from . import renault_account
 from . import renault_settings
 from renault_api.credential import Credential
+from renault_api.credential_store import CredentialStore
 from renault_api.exceptions import RenaultException
 from renault_api.kamereon.exceptions import KamereonResponseException
 from renault_api.kamereon.exceptions import QuotaLimitException
@@ -25,7 +26,8 @@ async def _get_vin(ctx_data: Dict[str, Any], account: RenaultAccount) -> str:
         return str(ctx_data["vin"])
 
     # Second, check credential store
-    credential_store = renault_settings.CLICredentialStore.get_instance()
+    credential_store: CredentialStore = ctx_data["credential_store"]
+
     vin = credential_store.get_value(renault_settings.CONF_VIN)
     if vin:
         return vin

@@ -1,5 +1,6 @@
 """Command-line interface."""
 import logging
+import os
 from datetime import datetime
 from typing import Any
 from typing import Dict
@@ -14,6 +15,7 @@ from . import renault_account
 from . import renault_client
 from . import renault_settings
 from . import renault_vehicle
+from renault_api.credential_store import FileCredentialStore
 
 
 def _set_debug(debug: bool, log: bool) -> None:
@@ -62,12 +64,15 @@ def main(
     ctx: Context,
     debug: bool,
     log: bool,
-    locale: Optional[str],
-    account: Optional[str],
-    vin: Optional[str],
+    locale: Optional[str] = None,
+    account: Optional[str] = None,
+    vin: Optional[str] = None,
 ) -> None:
     """Main entry point for the Renault CLI."""
     ctx.ensure_object(dict)
+    ctx.obj["credential_store"] = FileCredentialStore(
+        os.path.expanduser(renault_settings.CREDENTIAL_PATH)
+    )
     if debug or log:
         _set_debug(debug, log)
     if locale:
@@ -84,9 +89,10 @@ def main(
 async def accounts(
     ctx_data: Dict[str, Any],
     *,
-    websession: aiohttp.ClientSession,
+    websession: Optional[aiohttp.ClientSession] = None,
 ) -> None:
     """Display list of accounts."""
+    assert websession  # noqa: S101
     await renault_client.display_accounts(websession, ctx_data)
 
 
@@ -100,9 +106,10 @@ async def login(
     *,
     user: str,
     password: str,
-    websession: aiohttp.ClientSession,
+    websession: Optional[aiohttp.ClientSession] = None,
 ) -> None:
     """Login to Renault."""
+    assert websession  # noqa: S101
     await renault_client.login(websession, ctx_data, user, password)
 
 
@@ -118,22 +125,26 @@ def reset() -> None:
     "--account", default=None, help="Kamereon account ID to use for future calls"
 )
 @click.option("--vin", default=None, help="Vehicle VIN to use for future calls")
+@click.pass_obj
 @helpers.coro_with_websession
 async def set(
+    ctx_data: Dict[str, Any],
     *,
-    locale: Optional[str],
-    account: Optional[str],
-    vin: Optional[str],
-    websession: aiohttp.ClientSession,
+    locale: Optional[str] = None,
+    account: Optional[str] = None,
+    vin: Optional[str] = None,
+    websession: Optional[aiohttp.ClientSession] = None,
 ) -> None:
     """Store specified settings into credential store."""
-    await renault_settings.set_options(websession, locale, account, vin)
+    assert websession  # noqa: S101
+    await renault_settings.set_options(websession, ctx_data, locale, account, vin)
 
 
 @main.command()
-def settings() -> None:
+@click.pass_obj
+def settings(ctx_data: Dict[str, Any]) -> None:
     """Display the current configuration keys."""
-    renault_settings.display_settings()
+    renault_settings.display_settings(ctx_data)
 
 
 @main.command()
@@ -142,9 +153,10 @@ def settings() -> None:
 async def status(
     ctx_data: Dict[str, Any],
     *,
-    websession: aiohttp.ClientSession,
+    websession: Optional[aiohttp.ClientSession] = None,
 ) -> None:
     """Display vehicle status."""
+    assert websession  # noqa: S101
     await renault_vehicle.display_status(websession, ctx_data)
 
 
@@ -154,9 +166,10 @@ async def status(
 async def vehicles(
     ctx_data: Dict[str, Any],
     *,
-    websession: aiohttp.ClientSession,
+    websession: Optional[aiohttp.ClientSession] = None,
 ) -> None:
     """Display list of vehicles."""
+    assert websession  # noqa: S101
     await renault_account.display_vehicles(websession, ctx_data)
 
 
