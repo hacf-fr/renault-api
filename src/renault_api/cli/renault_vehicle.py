@@ -51,7 +51,7 @@ async def _get_vin(ctx_data: Dict[str, Any], account: RenaultAccount) -> str:
         )
 
     if len(vehicle_table) == 1:
-        default = 1
+        default = "1"
     menu = tabulate(
         vehicle_table, headers=["", "Vin", "Registration", "Brand", "Model"]
     )
@@ -82,9 +82,7 @@ async def get_vehicle(
     websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
 ) -> RenaultVehicle:
     """Get RenaultVehicle for use by CLI."""
-    account = await renault_account.get_account(
-        websession=websession, ctx_data=ctx_data
-    )
+    account = await renault_account.get_account(websession, ctx_data)
     vin = await _get_vin(ctx_data, account)
     return await account.get_api_vehicle(vin)
 
@@ -93,7 +91,7 @@ async def display_status(
     websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
 ) -> None:
     """Display vehicle status."""
-    vehicle = await get_vehicle(websession=websession, ctx_data=ctx_data)
+    vehicle = await get_vehicle(websession, ctx_data)
     status_table: Dict[str, Any] = {}
 
     await update_battery_status(vehicle, status_table)

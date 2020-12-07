@@ -88,7 +88,7 @@ def display_settings() -> None:
     credential_store = CLICredentialStore.get_instance()
     wrapper = TextWrapper(width=80)
     items = list(
-        [key, "\n".join(wrapper.wrap(credential_store.get_value(key)))]
+        [key, "\n".join(wrapper.wrap(credential_store.get_value(key) or "-"))]
         for key in credential_store._store.keys()
     )
     click.echo(tabulate(items, headers=["Key", "Value"]))

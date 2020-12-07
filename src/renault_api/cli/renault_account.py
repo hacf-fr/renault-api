@@ -1,6 +1,9 @@
 """CLI function for a vehicle."""
 from typing import Any
 from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Tuple
 
 import aiohttp
 import click
@@ -10,6 +13,7 @@ from . import renault_client
 from . import renault_settings
 from renault_api.credential import Credential
 from renault_api.exceptions import RenaultException
+from renault_api.kamereon.models import KamereonPersonAccount
 from renault_api.renault_account import RenaultAccount
 from renault_api.renault_client import RenaultClient
 
@@ -31,20 +35,7 @@ async def _get_account_id(ctx_data: Dict[str, Any], client: RenaultClient) -> st
     if not response.accounts:
         raise RenaultException("No account found.")
 
-    account_table = []
-    default = None
-    for i, account in enumerate(response.accounts):
-        api_account = await client.get_api_account(account.accountId)
-        vehicles = await api_account.get_vehicles()
-        if account.accountType == "MYRENAULT":
-            default = i + 1
-        account_table.append(
-            [i + 1, account.accountId, account.accountType, len(vehicles.vehicleLinks)]
-        )
-        # menu = menu + f"\t[{i+1}] {account.accountId} ({account.accountType})\n"
-
-    menu = tabulate(account_table, headers=["", "ID", "Type", "Vehicles"])
-    prompt = f"\n{menu}\n\nPlease select account"
+    prompt, default = await _get_account_prompt(response.accounts, client)
 
     while True:
         i = int(
@@ -67,6 +58,28 @@ async def _get_account_id(ctx_data: Dict[str, Any], client: RenaultClient) -> st
                     account_id
                 )
             return account_id
+
+
+async def _get_account_prompt(
+    accounts: List[KamereonPersonAccount], client: RenaultClient
+) -> Tuple[str, Optional[str]]:
+    """Get prompt for selecting account."""
+    account_table = []
+    default = None
+    for i, account in enumerate(accounts):
+        if not account.accountId:  # pragma: no cover
+            continue
+        api_account = await client.get_api_account(account.accountId)
+        vehicles = await api_account.get_vehicles()
+        if account.accountType == "MYRENAULT":
+            default = str(i + 1)
+        account_table.append(
+            [i + 1, account.accountId, account.accountType, len(vehicles.vehicleLinks)]
+        )
+
+    menu = tabulate(account_table, headers=["", "ID", "Type", "Vehicles"])
+    prompt = f"\n{menu}\n\nPlease select account"
+    return (prompt, default)
 
 
 async def get_account(
