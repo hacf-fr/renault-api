@@ -23,7 +23,7 @@ def test_main_succeeds(runner: CliRunner) -> None:
 def test_get_keys_succeeds(runner: CliRunner, locale: str) -> None:
     """It exits with a status code of zero."""
     runner.invoke(__main__.set, ["--locale", locale])
-    result = runner.invoke(__main__.get_keys)
+    result = runner.invoke(__main__.settings)
     assert result.exit_code == 0
     expected_output = f"Current locale: {locale}\n"
     "Current gigya-api-key: None\n"
