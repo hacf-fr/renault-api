@@ -57,11 +57,11 @@ async def get_locale(
     default_locale = getdefaultlocale()[0]
     while True:
         locale = click.prompt("Please select a locale", default=default_locale)
-        if locale:
+        if locale:  # pragma: no branch
             try:
                 await get_api_keys(locale, websession=websession)
-            except RenaultException as exc:
-                click.echo(str(exc), err=True)
+            except RenaultException as exc:  # pragma: no cover
+                click.echo(f"Locale `{locale}` is unknown: {exc}", err=True)
             else:
                 if click.confirm(
                     "Do you want to save the locale to the credential store?",
@@ -69,7 +69,6 @@ async def get_locale(
                 ):
                     credential_store[CONF_LOCALE] = Credential(locale)
                 return locale
-            click.echo(f"Locale `{locale}` is unknown.", err=True)
 
 
 async def get_logged_in_client(
@@ -89,11 +88,11 @@ async def _ensure_logged_in(
         return
 
     while True:
-        user = click.prompt("user")
-        password = click.prompt("password", hide_input=True)
+        user = click.prompt("User")
+        password = click.prompt("Password", hide_input=True)
         try:
             await login(websession, ctx_data, user, password)
-        except RenaultException as exc:
+        except RenaultException as exc:  # pragma: no cover
             click.echo(f"Login failed: {exc}.", err=True)
         else:
             return
