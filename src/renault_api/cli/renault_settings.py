@@ -1,6 +1,5 @@
 """Singletons for the CLI."""
 import os
-from locale import getdefaultlocale
 from textwrap import TextWrapper
 from typing import Any
 from typing import Dict
@@ -13,7 +12,6 @@ from tabulate import tabulate
 from renault_api.const import CONF_LOCALE
 from renault_api.credential import Credential
 from renault_api.credential_store import CredentialStore
-from renault_api.exceptions import RenaultException
 from renault_api.helpers import get_api_keys
 
 CONF_ACCOUNT_ID = "accound-id"
@@ -43,33 +41,6 @@ async def set_options(
         credential_store[CONF_ACCOUNT_ID] = Credential(account)
     if vin:
         credential_store[CONF_VIN] = Credential(vin)
-
-
-async def get_locale(
-    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
-) -> str:
-    """Prompt the user for locale."""
-    credential_store: CredentialStore = ctx_data["credential_store"]
-    locale = credential_store.get_value(CONF_LOCALE)
-    if locale:
-        return locale
-
-    default_locale = getdefaultlocale()[0]
-    while True:
-        locale = click.prompt("Please select a locale", default=default_locale)
-        if locale:
-            try:
-                await get_api_keys(locale, websession=websession)
-            except RenaultException as exc:
-                click.echo(str(exc), err=True)
-            else:
-                if click.confirm(
-                    "Do you want to save the locale to the credential store?",
-                    default=False,
-                ):
-                    credential_store[CONF_LOCALE] = Credential(locale)
-                return locale
-            click.echo(f"Locale `{locale}` is unknown.", err=True)
 
 
 def display_settings(ctx_data: Dict[str, Any]) -> None:

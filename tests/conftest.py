@@ -5,6 +5,7 @@ from typing import AsyncGenerator
 
 import pytest
 from aiohttp.client import ClientSession
+from aioresponses import aioresponses
 
 
 @pytest.fixture
@@ -16,6 +17,13 @@ async def websession() -> AsyncGenerator[ClientSession, None]:
         closed_event = create_aiohttp_closed_event(aiohttp_session)
         await aiohttp_session.close()
         await closed_event.wait()
+
+
+@pytest.fixture
+def mocked_responses() -> aioresponses:
+    """Fixture for mocking aiohttp responses."""
+    with aioresponses() as m:
+        yield m
 
 
 def create_aiohttp_closed_event(

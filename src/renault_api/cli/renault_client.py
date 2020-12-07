@@ -1,4 +1,5 @@
 """Singletons for the CLI."""
+from locale import getdefaultlocale
 from typing import Any
 from typing import Dict
 from typing import Optional
@@ -7,7 +8,8 @@ import aiohttp
 import click
 from tabulate import tabulate
 
-from . import renault_settings
+from renault_api.const import CONF_LOCALE
+from renault_api.credential import Credential
 from renault_api.credential_store import CredentialStore
 from renault_api.exceptions import RenaultException
 from renault_api.gigya import GIGYA_LOGIN_TOKEN
@@ -29,7 +31,7 @@ class CLIClient:
             credential_store: CredentialStore = ctx_data["credential_store"]
             locale = ctx_data.get("locale")
             if not locale:
-                locale = await renault_settings.get_locale(websession, ctx_data)
+                locale = await get_locale(websession, ctx_data)
 
             country = locale[-2:]
             api_keys = await get_api_keys(locale=locale, websession=websession)
@@ -41,6 +43,33 @@ class CLIClient:
                 credential_store=credential_store,
             )
         return CLIClient.__instance
+
+
+async def get_locale(
+    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
+) -> str:
+    """Prompt the user for locale."""
+    credential_store: CredentialStore = ctx_data["credential_store"]
+    locale = credential_store.get_value(CONF_LOCALE)
+    if locale:
+        return locale
+
+    default_locale = getdefaultlocale()[0]
+    while True:
+        locale = click.prompt("Please select a locale", default=default_locale)
+        if locale:
+            try:
+                await get_api_keys(locale, websession=websession)
+            except RenaultException as exc:
+                click.echo(str(exc), err=True)
+            else:
+                if click.confirm(
+                    "Do you want to save the locale to the credential store?",
+                    default=False,
+                ):
+                    credential_store[CONF_LOCALE] = Credential(locale)
+                return locale
+            click.echo(f"Locale `{locale}` is unknown.", err=True)
 
 
 async def get_logged_in_client(
