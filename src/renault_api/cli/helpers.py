@@ -3,25 +3,21 @@ import asyncio
 import functools
 from typing import Any
 from typing import Callable
-from typing import cast
-from typing import TypeVar
 
 import click
 from aiohttp import ClientSession
 
 from renault_api.exceptions import RenaultException
 
-F = TypeVar("F", bound=Callable[..., Any])
 
-
-def coro_with_websession(func: F) -> F:
+def coro_with_websession(func: Callable[..., Any]) -> Callable[..., Any]:
     """Ensure the routine runs on an event loop CLI."""
 
-    async def run_command(func: F, *args: Any, **kwargs: Any) -> None:
+    async def run_command(func: Callable[..., Any], *args: Any, **kwargs: Any) -> Any:
         async with ClientSession() as websession:
             try:
                 kwargs["websession"] = websession
-                await func(*args, **kwargs)
+                return await func(*args, **kwargs)
             except RenaultException as exc:
                 raise click.ClickException(str(exc)) from exc
             finally:
@@ -33,7 +29,7 @@ def coro_with_websession(func: F) -> F:
     def wrapper(*args: Any, **kwargs: Any) -> Any:
         return asyncio.run(run_command(func, *args, **kwargs))
 
-    return cast(F, wrapper)
+    return wrapper
 
 
 def create_aiohttp_closed_event(
