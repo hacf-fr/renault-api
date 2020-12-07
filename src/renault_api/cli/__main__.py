@@ -1,20 +1,19 @@
 """Command-line interface."""
 import logging
 from datetime import datetime
+from typing import Any
+from typing import Dict
 from typing import Optional
 
+import aiohttp
 import click
-from aiohttp.client import ClientSession
 from click.core import Context
 
+from . import helpers
 from . import renault_account
 from . import renault_client
 from . import renault_settings
 from . import renault_vehicle
-from . import renault_vehicle_ac
-from .helpers import coro
-from .helpers import create_aiohttp_closed_event
-from renault_api.exceptions import RenaultException
 
 
 def _set_debug(debug: bool, log: bool) -> None:
@@ -80,37 +79,31 @@ def main(
 
 
 @main.command()
-@click.pass_context
-@coro  # type: ignore
-async def accounts(ctx: Context) -> None:
+@click.pass_obj
+@helpers.coro_with_websession
+async def accounts(
+    ctx_data: Dict[str, Any],
+    *,
+    websession: aiohttp.ClientSession,
+) -> None:
     """Display list of accounts."""
-    async with ClientSession() as websession:
-        try:
-            await renault_client.display_accounts(websession, ctx.obj)
-        except RenaultException as exc:
-            raise click.ClickException(str(exc)) from exc
-        finally:
-            closed_event = create_aiohttp_closed_event(websession)
-            await websession.close()
-            await closed_event.wait()
+    await renault_client.display_accounts(websession, ctx_data)
 
 
 @main.command()
-@click.pass_context
-@coro  # type: ignore
 @click.option("--user", prompt=True)
 @click.option("--password", prompt=True, hide_input=True)
-async def login(ctx: Context, user: str, password: str) -> None:
+@click.pass_obj
+@helpers.coro_with_websession
+async def login(
+    ctx_data: Dict[str, Any],
+    *,
+    user: str,
+    password: str,
+    websession: aiohttp.ClientSession,
+) -> None:
     """Login to Renault."""
-    async with ClientSession() as websession:
-        try:
-            await renault_client.login(websession, ctx.obj, user, password)
-        except RenaultException as exc:
-            raise click.ClickException(str(exc)) from exc
-        finally:
-            closed_event = create_aiohttp_closed_event(websession)
-            await websession.close()
-            await closed_event.wait()
+    await renault_client.login(websession, ctx_data, user, password)
 
 
 @main.command()
@@ -119,26 +112,22 @@ def reset() -> None:
     renault_settings.reset()
 
 
+@main.command()
 @click.option("--locale", default=None, help="API locale (eg. fr_FR)")
 @click.option(
     "--account", default=None, help="Kamereon account ID to use for future calls"
 )
 @click.option("--vin", default=None, help="Vehicle VIN to use for future calls")
-@main.command()
-@coro  # type: ignore
+@helpers.coro_with_websession
 async def set(
-    locale: Optional[str], account: Optional[str], vin: Optional[str]
+    *,
+    locale: Optional[str],
+    account: Optional[str],
+    vin: Optional[str],
+    websession: aiohttp.ClientSession,
 ) -> None:
     """Store specified settings into credential store."""
-    async with ClientSession() as websession:
-        try:
-            await renault_settings.set_options(websession, locale, account, vin)
-        except RenaultException as exc:
-            raise click.ClickException(str(exc)) from exc
-        finally:
-            closed_event = create_aiohttp_closed_event(websession)
-            await websession.close()
-            await closed_event.wait()
+    await renault_settings.set_options(websession, locale, account, vin)
 
 
 @main.command()
@@ -148,36 +137,28 @@ def settings() -> None:
 
 
 @main.command()
-@click.pass_context
-@coro  # type: ignore
-async def status(ctx: Context) -> None:
+@click.pass_obj
+@helpers.coro_with_websession
+async def status(
+    ctx_data: Dict[str, Any],
+    *,
+    websession: aiohttp.ClientSession,
+) -> None:
     """Display vehicle status."""
-    async with ClientSession() as websession:
-        try:
-            await renault_vehicle.display_status(websession, ctx_data=ctx.obj)
-        except RenaultException as exc:
-            raise click.ClickException(str(exc)) from exc
-        finally:
-            closed_event = create_aiohttp_closed_event(websession)
-            await websession.close()
-            await closed_event.wait()
+    await renault_vehicle.display_status(websession, ctx_data)
 
 
 @main.command()
-@click.pass_context
-@coro  # type: ignore
-async def vehicles(ctx: Context) -> None:
+@click.pass_obj
+@helpers.coro_with_websession
+async def vehicles(
+    ctx_data: Dict[str, Any],
+    *,
+    websession: aiohttp.ClientSession,
+) -> None:
     """Display list of vehicles."""
-    async with ClientSession() as websession:
-        try:
-            await renault_account.display_vehicles(websession, ctx.obj)
-        except RenaultException as exc:
-            raise click.ClickException(str(exc)) from exc
-        finally:
-            closed_event = create_aiohttp_closed_event(websession)
-            await websession.close()
-            await closed_event.wait()
+    await renault_account.display_vehicles(websession, ctx_data)
 
 
-if __name__ == "__main__":
-    main(prog_name="renault-api")  # pragma: no cover
+if __name__ == "__main__":  # pragma: no cover
+    main(prog_name="renault-api")
