@@ -1,10 +1,6 @@
 """Test cases for the __main__ module."""
 import os
-import pathlib
-from typing import Generator
 
-import pytest
-from _pytest.monkeypatch import MonkeyPatch
 from aioresponses import aioresponses
 from click.testing import CliRunner
 from tests.const import TEST_ACCOUNT_ID
@@ -24,19 +20,7 @@ from renault_api.const import CONF_LOCALE
 from renault_api.credential_store import FileCredentialStore
 
 
-@pytest.fixture
-def runner(
-    monkeypatch: MonkeyPatch, tmpdir: pathlib.Path
-) -> Generator[CliRunner, None, None]:
-    """Fixture for invoking command-line interfaces."""
-    runner = CliRunner()
-
-    monkeypatch.setattr("os.path.expanduser", lambda x: x.replace("~", str(tmpdir)))
-
-    yield runner
-
-
-def test_set_locale(mocked_responses: aioresponses, runner: CliRunner) -> None:
+def test_set_locale(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
     """Test set locale."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
     for key in [
@@ -48,7 +32,7 @@ def test_set_locale(mocked_responses: aioresponses, runner: CliRunner) -> None:
     ]:
         assert key not in credential_store
 
-    result = runner.invoke(__main__.main, f"set --locale {TEST_LOCALE}")
+    result = cli_runner.invoke(__main__.main, f"set --locale {TEST_LOCALE}")
     assert result.exit_code == 0
 
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
@@ -64,7 +48,7 @@ def test_set_locale(mocked_responses: aioresponses, runner: CliRunner) -> None:
     assert "" == result.output
 
 
-def test_set_account(mocked_responses: aioresponses, runner: CliRunner) -> None:
+def test_set_account(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
     """Test set locale."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
     for key in [
@@ -72,7 +56,7 @@ def test_set_account(mocked_responses: aioresponses, runner: CliRunner) -> None:
     ]:
         assert key not in credential_store
 
-    result = runner.invoke(__main__.main, f"set --account {TEST_ACCOUNT_ID}")
+    result = cli_runner.invoke(__main__.main, f"set --account {TEST_ACCOUNT_ID}")
     assert result.exit_code == 0
 
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
@@ -84,7 +68,7 @@ def test_set_account(mocked_responses: aioresponses, runner: CliRunner) -> None:
     assert "" == result.output
 
 
-def test_set_vin(mocked_responses: aioresponses, runner: CliRunner) -> None:
+def test_set_vin(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
     """Test set vin."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
     for key in [
@@ -92,7 +76,7 @@ def test_set_vin(mocked_responses: aioresponses, runner: CliRunner) -> None:
     ]:
         assert key not in credential_store
 
-    result = runner.invoke(__main__.main, f"set --vin {TEST_VIN}")
+    result = cli_runner.invoke(__main__.main, f"set --vin {TEST_VIN}")
     assert result.exit_code == 0
 
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
@@ -104,12 +88,14 @@ def test_set_vin(mocked_responses: aioresponses, runner: CliRunner) -> None:
     assert "" == result.output
 
 
-def test_get_keys_succeeds(mocked_responses: aioresponses, runner: CliRunner) -> None:
+def test_get_keys_succeeds(
+    mocked_responses: aioresponses, cli_runner: CliRunner
+) -> None:
     """It exits with a status code of zero."""
-    result = runner.invoke(__main__.main, f"set --locale {TEST_LOCALE}")
+    result = cli_runner.invoke(__main__.main, f"set --locale {TEST_LOCALE}")
     assert result.exit_code == 0
 
-    result = runner.invoke(__main__.main, "settings")
+    result = cli_runner.invoke(__main__.main, "settings")
     assert result.exit_code == 0
 
     expected_output = (
@@ -124,20 +110,20 @@ def test_get_keys_succeeds(mocked_responses: aioresponses, runner: CliRunner) ->
     assert expected_output == result.output
 
 
-def test_reset(mocked_responses: aioresponses, runner: CliRunner) -> None:
+def test_reset(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
     """Test set vin."""
     assert not os.path.exists(os.path.expanduser(CREDENTIAL_PATH))
 
-    result = runner.invoke(__main__.main, f"set --locale {TEST_LOCALE}")
+    result = cli_runner.invoke(__main__.main, f"set --locale {TEST_LOCALE}")
     assert result.exit_code == 0
     assert os.path.exists(os.path.expanduser(CREDENTIAL_PATH))
 
     # Reset a first time - file should get deleted
-    result = runner.invoke(__main__.main, "reset")
+    result = cli_runner.invoke(__main__.main, "reset")
     assert result.exit_code == 0
     assert not os.path.exists(os.path.expanduser(CREDENTIAL_PATH))
 
     # Reset a second time - make sure it doesn't error
-    result = runner.invoke(__main__.main, "reset")
+    result = cli_runner.invoke(__main__.main, "reset")
     assert result.exit_code == 0
     assert not os.path.exists(os.path.expanduser(CREDENTIAL_PATH))

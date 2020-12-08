@@ -1,10 +1,6 @@
 """Test cases for the __main__ module."""
 import os
-import pathlib
-from typing import Generator
 
-import pytest
-from _pytest.monkeypatch import MonkeyPatch
 from aioresponses import aioresponses
 from click.testing import CliRunner
 from tests import fixtures
@@ -47,20 +43,8 @@ EXPEXTED_BATTERY_STATUS = (
 )
 
 
-@pytest.fixture
-def runner(
-    monkeypatch: MonkeyPatch, tmpdir: pathlib.Path
-) -> Generator[CliRunner, None, None]:
-    """Fixture for invoking command-line interfaces."""
-    runner = CliRunner()
-
-    monkeypatch.setattr("os.path.expanduser", lambda x: x.replace("~", str(tmpdir)))
-
-    yield runner
-
-
 def test_vehicle_status_prompt(
-    mocked_responses: aioresponses, runner: CliRunner
+    mocked_responses: aioresponses, cli_runner: CliRunner
 ) -> None:
     """It exits with a status code of zero."""
     fixtures.inject_gigya_all(mocked_responses)
@@ -79,7 +63,7 @@ def test_vehicle_status_prompt(
     fixtures.inject_kamereon_vehicles(mocked_responses)
     fixtures.inject_vehicle_status(mocked_responses)
 
-    result = runner.invoke(
+    result = cli_runner.invoke(
         __main__.main,
         "status",
         input=f"{TEST_LOCALE}\nN\n{TEST_USERNAME}\n{TEST_PASSWORD}\n1\ny\n1\ny\n",
@@ -114,7 +98,7 @@ def test_vehicle_status_prompt(
 
 
 def test_vehicle_status_store(
-    mocked_responses: aioresponses, runner: CliRunner
+    mocked_responses: aioresponses, cli_runner: CliRunner
 ) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
@@ -127,14 +111,14 @@ def test_vehicle_status_store(
 
     fixtures.inject_vehicle_status(mocked_responses)
 
-    result = runner.invoke(__main__.main, "status")
+    result = cli_runner.invoke(__main__.main, "status")
     assert result.exit_code == 0, result.exception
 
     assert EXPEXTED_BATTERY_STATUS == result.output
 
 
 def test_vehicle_status_no_prompt(
-    mocked_responses: aioresponses, runner: CliRunner
+    mocked_responses: aioresponses, cli_runner: CliRunner
 ) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
@@ -145,7 +129,7 @@ def test_vehicle_status_no_prompt(
 
     fixtures.inject_vehicle_status(mocked_responses)
 
-    result = runner.invoke(
+    result = cli_runner.invoke(
         __main__.main, f"--account {TEST_ACCOUNT_ID} --vin {TEST_VIN} status"
     )
     assert result.exit_code == 0, result.exception

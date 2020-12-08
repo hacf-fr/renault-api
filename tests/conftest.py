@@ -1,11 +1,15 @@
 """Test configuration."""
 import asyncio
 import functools
+import pathlib
 from typing import AsyncGenerator
+from typing import Generator
 
 import pytest
+from _pytest.monkeypatch import MonkeyPatch
 from aiohttp.client import ClientSession
 from aioresponses import aioresponses
+from click.testing import CliRunner
 
 
 @pytest.fixture
@@ -24,6 +28,18 @@ def mocked_responses() -> aioresponses:
     """Fixture for mocking aiohttp responses."""
     with aioresponses() as m:
         yield m
+
+
+@pytest.fixture
+def cli_runner(
+    monkeypatch: MonkeyPatch, tmpdir: pathlib.Path
+) -> Generator[CliRunner, None, None]:
+    """Fixture for invoking command-line interfaces."""
+    runner = CliRunner()
+
+    monkeypatch.setattr("os.path.expanduser", lambda x: x.replace("~", str(tmpdir)))
+
+    yield runner
 
 
 def create_aiohttp_closed_event(
