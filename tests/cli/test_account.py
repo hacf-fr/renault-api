@@ -1,5 +1,6 @@
 """Test cases for the __main__ module."""
 import os
+from locale import getdefaultlocale
 
 from aioresponses import aioresponses
 from click.testing import CliRunner
@@ -51,7 +52,7 @@ def test_list_vehicles_prompt(
     assert result.exit_code == 0, result.exception
 
     expected_output = (
-        f"Please select a locale [fr_FR]: {TEST_LOCALE}\n"
+        f"Please select a locale [{getdefaultlocale()[0]}]: {TEST_LOCALE}\n"
         "Do you want to save the locale to the credential store? [y/N]: N\n"
         "\n"
         f"User: {TEST_USERNAME}\n"
