@@ -34,7 +34,7 @@ async def _get_account_id(ctx_data: Dict[str, Any], client: RenaultClient) -> st
 
     # Third, prompt the user
     response = await client.get_person()
-    if not response.accounts:
+    if not response.accounts:  # pragma: no cover
         raise RenaultException("No account found.")
 
     prompt, default = await _get_account_prompt(response.accounts, client)
@@ -49,16 +49,18 @@ async def _get_account_id(ctx_data: Dict[str, Any], client: RenaultClient) -> st
         )
         try:
             account_id = str(response.accounts[i - 1].accountId)
-        except (KeyError, IndexError) as exc:
+        except (KeyError, IndexError) as exc:  # pragma: no cover
             click.echo(f"Invalid option: {exc}.", err=True)
         else:
-            if click.confirm(
+            if click.confirm(  # pragma: no branch
                 "Do you want to save the account ID to the credential store?",
                 default=False,
             ):
                 credential_store[renault_settings.CONF_ACCOUNT_ID] = Credential(
                     account_id
                 )
+            # Add blank new line
+            click.echo("")
             return account_id
 
 
@@ -80,7 +82,7 @@ async def _get_account_prompt(
         )
 
     menu = tabulate(account_table, headers=["", "ID", "Type", "Vehicles"])
-    prompt = f"\n{menu}\n\nPlease select account"
+    prompt = f"{menu}\n\nPlease select account"
     return (prompt, default)
 
 
