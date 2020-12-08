@@ -79,7 +79,7 @@ def main(
         ctx.obj["locale"] = locale
     if account:
         ctx.obj["account"] = account
-    if vin:
+    if vin:  # pragma: no branch
         ctx.obj["vin"] = vin
 
 
