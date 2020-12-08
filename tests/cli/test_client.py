@@ -20,10 +20,7 @@ from tests.const import TEST_USERNAME
 
 from renault_api.cli import __main__
 from renault_api.cli.renault_settings import CREDENTIAL_PATH
-from renault_api.const import CONF_GIGYA_APIKEY
 from renault_api.const import CONF_GIGYA_URL
-from renault_api.const import CONF_KAMEREON_APIKEY
-from renault_api.const import CONF_KAMEREON_URL
 from renault_api.const import CONF_LOCALE
 from renault_api.credential import Credential
 from renault_api.credential import JWTCredential
@@ -127,15 +124,15 @@ def test_list_accounts_prompt(
     result = runner.invoke(
         __main__.main,
         "accounts",
-        input=f"{TEST_USERNAME}\n{TEST_PASSWORD}\n{TEST_LOCALE}\nN",
+        input=f"{TEST_LOCALE}\nN\n{TEST_USERNAME}\n{TEST_PASSWORD}\n",
     )
     assert result.exit_code == 0, result.exception
 
     expected_output = (
-        f"User: {TEST_USERNAME}\n"
-        "Password: \n"
         f"Please select a locale [fr_FR]: {TEST_LOCALE}\n"
         "Do you want to save the locale to the credential store? [y/N]: N\n"
+        f"User: {TEST_USERNAME}\n"
+        "Password: \n"
         "Type       ID\n"
         "---------  ------------\n"
         "MYRENAULT  account-id-1\n"

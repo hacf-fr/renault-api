@@ -2,7 +2,6 @@
 from locale import getdefaultlocale
 from typing import Any
 from typing import Dict
-from typing import Optional
 
 import aiohttp
 import click
@@ -15,34 +14,7 @@ from renault_api.exceptions import RenaultException
 from renault_api.gigya import GIGYA_LOGIN_TOKEN
 from renault_api.helpers import get_api_keys
 from renault_api.renault_client import RenaultClient
-
-
-class CLIClient:
-    """Singleton of the RenaultClient for the CLI."""
-
-    __instance: Optional[RenaultClient] = None
-
-    @classmethod
-    async def get_instance(
-        cls, websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
-    ) -> RenaultClient:
-        """Get singleton RenaultClient."""
-        if not CLIClient.__instance:
-            credential_store: CredentialStore = ctx_data["credential_store"]
-            locale = ctx_data.get("locale")
-            if not locale:
-                locale = await get_locale(websession, ctx_data)
-
-            country = locale[-2:]
-            api_keys = await get_api_keys(locale=locale, websession=websession)
-            return RenaultClient(
-                websession=websession,
-                locale=locale,
-                country=country,
-                locale_details=api_keys,
-                credential_store=credential_store,
-            )
-        return CLIClient.__instance
+from renault_api.renault_session import RenaultSession
 
 
 async def get_locale(
@@ -71,27 +43,45 @@ async def get_locale(
                 return locale
 
 
+async def _create_renault_session(
+    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
+) -> RenaultSession:
+    """Get RenaultClient for use by CLI."""
+    credential_store: CredentialStore = ctx_data["credential_store"]
+    locale = ctx_data.get("locale")
+    if not locale:
+        locale = await get_locale(websession, ctx_data)
+
+    country = locale[-2:]
+    locale_details = await get_api_keys(locale=locale, websession=websession)
+    return RenaultSession(
+        websession=websession,
+        locale=locale,
+        country=country,
+        locale_details=locale_details,
+        credential_store=credential_store,
+    )
+
+
 async def get_logged_in_client(
     websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
 ) -> RenaultClient:
     """Get RenaultClient for use by CLI."""
-    await _ensure_logged_in(websession, ctx_data)
-    return await CLIClient.get_instance(websession, ctx_data)
+    session = await _create_renault_session(websession=websession, ctx_data=ctx_data)
 
-
-async def _ensure_logged_in(
-    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
-) -> None:
-    """Prompt the user for credentials."""
     credential_store: CredentialStore = ctx_data["credential_store"]
-    if GIGYA_LOGIN_TOKEN in credential_store:
-        return
+    if GIGYA_LOGIN_TOKEN not in credential_store:
+        await _prompt_login(session)
+    return RenaultClient(session=session)
 
+
+async def _prompt_login(session: RenaultSession) -> None:
+    """Prompt the user for credentials."""
     while True:
         user = click.prompt("User")
         password = click.prompt("Password", hide_input=True)
         try:
-            await login(websession, ctx_data, user, password)
+            await session.login(user, password)
         except RenaultException as exc:  # pragma: no cover
             click.echo(f"Login failed: {exc}.", err=True)
         else:
@@ -105,8 +95,8 @@ async def login(
     password: str,
 ) -> None:
     """Attempt login."""
-    client = await CLIClient.get_instance(websession=websession, ctx_data=ctx_data)
-    await client.session.login(user, password)
+    session = await _create_renault_session(websession=websession, ctx_data=ctx_data)
+    await session.login(user, password)
 
 
 async def display_accounts(
