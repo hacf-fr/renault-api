@@ -71,6 +71,7 @@ def test_login_prompt(mocked_responses: aioresponses, runner: CliRunner) -> None
         "Password: \n"
         f"Please select a locale [fr_FR]: {TEST_LOCALE}\n"
         "Do you want to save the locale to the credential store? [y/N]: y\n"
+        "\n"
     )
     assert expected_output == result.output
 
@@ -131,8 +132,10 @@ def test_list_accounts_prompt(
     expected_output = (
         f"Please select a locale [fr_FR]: {TEST_LOCALE}\n"
         "Do you want to save the locale to the credential store? [y/N]: N\n"
+        "\n"
         f"User: {TEST_USERNAME}\n"
         "Password: \n"
+        "\n"
         "Type       ID\n"
         "---------  ------------\n"
         "MYRENAULT  account-id-1\n"

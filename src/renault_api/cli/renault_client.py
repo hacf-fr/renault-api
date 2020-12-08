@@ -40,6 +40,8 @@ async def get_locale(
                     default=False,
                 ):
                     credential_store[CONF_LOCALE] = Credential(locale)
+                # Add blank new line
+                click.echo("")
                 return locale
 
 
@@ -85,6 +87,8 @@ async def _prompt_login(session: RenaultSession) -> None:
         except RenaultException as exc:  # pragma: no cover
             click.echo(f"Login failed: {exc}.", err=True)
         else:
+            # Add blank new line
+            click.echo("")
             return
 
 
