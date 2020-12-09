@@ -17,7 +17,7 @@ async def start(
     temperature: int,
     at: Optional[str] = None,
 ) -> None:
-    """Start air conditionning."""
+    """Start air conditioning."""
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
     )
@@ -33,7 +33,7 @@ async def cancel(
     websession: aiohttp.ClientSession,
     ctx_data: Dict[str, Any],
 ) -> None:
-    """Cancel air conditionning."""
+    """Cancel air conditioning."""
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
     )
@@ -48,7 +48,7 @@ async def history(
     end: str,
     period: Optional[str] = None,
 ) -> None:
-    """Display vehicle status."""
+    """Display air conditioning history."""
     parsed_start, parsed_end = parse_dates(start, end)
 
     vehicle = await renault_vehicle.get_vehicle(
@@ -66,7 +66,7 @@ async def sessions(
     start: str,
     end: str,
 ) -> None:
-    """Display vehicle status."""
+    """Display air conditioning sessions."""
     parsed_start, parsed_end = parse_dates(start, end)
 
     vehicle = await renault_vehicle.get_vehicle(
