@@ -6,7 +6,7 @@ from renault_api.const import CONF_KAMEREON_APIKEY
 from renault_api.const import CONF_KAMEREON_URL
 
 
-TEST_ACCOUNT_ID = "accound-id-1"
+TEST_ACCOUNT_ID = "account-id-1"
 TEST_LOCALE = "fr_FR"
 TEST_LOGIN_TOKEN = "sample-cookie-value"
 TEST_PASSWORD = "test_password"

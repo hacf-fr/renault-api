@@ -59,7 +59,7 @@ pytest-cov = "^2.10.1"
 cli = ["click", "tabulate", "dateparser"]
 
 [tool.poetry.scripts]
-renault-api = "renault_api.__main__:main"
+renault-api = "renault_api.cli.__main__:main"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]

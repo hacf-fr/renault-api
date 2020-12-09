@@ -1,56 +1,45 @@
-"""Test configuration."""
+"""Helpers for Renault API."""
 import asyncio
 import functools
-import pathlib
-from typing import AsyncGenerator
-from typing import Generator
+from typing import Any
+from typing import Callable
 
-import pytest
-from _pytest.monkeypatch import MonkeyPatch
-from aiohttp.client import ClientSession
-from aioresponses import aioresponses
-from click.testing import CliRunner
+import click
+from aiohttp import ClientSession
+
+from renault_api.exceptions import RenaultException
 
 
-@pytest.fixture
-async def websession() -> AsyncGenerator[ClientSession, None]:
-    """Fixture for generating ClientSession."""
-    async with ClientSession() as aiohttp_session:
-        yield aiohttp_session
+def coro_with_websession(func: Callable[..., Any]) -> Callable[..., Any]:
+    """Ensure the routine runs on an event loop with a websession."""
 
-        closed_event = create_aiohttp_closed_event(aiohttp_session)
-        await aiohttp_session.close()
-        await closed_event.wait()
+    async def run_command(func: Callable[..., Any], *args: Any, **kwargs: Any) -> None:
+        async with ClientSession() as websession:
+            try:
+                kwargs["websession"] = websession
+                await func(*args, **kwargs)
+            except RenaultException as exc:  # pragma: no cover
+                raise click.ClickException(str(exc)) from exc
+            finally:
+                closed_event = create_aiohttp_closed_event(websession)
+                await websession.close()
+                await closed_event.wait()
 
+    def wrapper(*args: Any, **kwargs: Any) -> None:
+        asyncio.run(run_command(func, *args, **kwargs))
 
-@pytest.fixture
-def mocked_responses() -> aioresponses:
-    """Fixture for mocking aiohttp responses."""
-    with aioresponses() as m:
-        yield m
-
-
-@pytest.fixture
-def cli_runner(
-    monkeypatch: MonkeyPatch, tmpdir: pathlib.Path
-) -> Generator[CliRunner, None, None]:
-    """Fixture for invoking command-line interfaces."""
-    runner = CliRunner()
-
-    monkeypatch.setattr("os.path.expanduser", lambda x: x.replace("~", str(tmpdir)))
-
-    yield runner
+    return functools.update_wrapper(wrapper, func)
 
 
 def create_aiohttp_closed_event(
-    session: ClientSession,
+    websession: ClientSession,
 ) -> asyncio.Event:  # pragma: no cover
     """Work around aiohttp issue that doesn't properly close transports on exit.
 
     See https://github.com/aio-libs/aiohttp/issues/1925#issuecomment-639080209
 
     Args:
-        session (ClientSession): session for which to generate the event.
+        websession (ClientSession): session for which to generate the event.
 
     Returns:
         An event that will be set once all transports have been properly closed.
@@ -76,7 +65,7 @@ def create_aiohttp_closed_event(
             # _app_protocol and _transport are set to None.
             pass
 
-    for conn in session.connector._conns.values():  # type: ignore
+    for conn in websession.connector._conns.values():  # type: ignore
         for handler, _ in conn:
             proto = getattr(handler.transport, "_ssl_protocol", None)
             if proto is None:

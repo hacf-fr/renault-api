@@ -55,10 +55,16 @@ You can install *Renault API* via pip_ from PyPI_:
    $ pip install renault-api
 
 
-Usage
------
+CLI Usage
+---------
 
-Please see the `Command-line Reference <Usage_>`_ for details.
+Quickstart, prompts for credentials, settings and generates traces:
+
+.. code:: console
+
+   $ renault-api --log status
+
+Please see the `Command-line Reference <Usage_>`_ for full details.
 
 
 Contributing
