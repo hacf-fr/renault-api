@@ -244,7 +244,7 @@ class RenaultVehicle:
         )
 
     async def get_hvac_history(
-        self, start: datetime, end: datetime, period: str = "month"
+        self, start: datetime, end: datetime, period: str
     ) -> models.KamereonVehicleHvacHistoryData:
         """Get vehicle hvac history."""
         if not isinstance(start, datetime):  # pragma: no cover

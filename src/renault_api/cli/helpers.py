@@ -1,11 +1,14 @@
 """Helpers for Renault API."""
 import asyncio
 import functools
+from datetime import datetime
 from typing import Any
 from typing import Callable
+from typing import Tuple
 
+import aiohttp
 import click
-from aiohttp import ClientSession
+import dateparser
 
 from renault_api.exceptions import RenaultException
 
@@ -14,7 +17,7 @@ def coro_with_websession(func: Callable[..., Any]) -> Callable[..., Any]:
     """Ensure the routine runs on an event loop with a websession."""
 
     async def run_command(func: Callable[..., Any], *args: Any, **kwargs: Any) -> None:
-        async with ClientSession() as websession:
+        async with aiohttp.ClientSession() as websession:
             try:
                 kwargs["websession"] = websession
                 await func(*args, **kwargs)
@@ -32,14 +35,14 @@ def coro_with_websession(func: Callable[..., Any]) -> Callable[..., Any]:
 
 
 def create_aiohttp_closed_event(
-    websession: ClientSession,
+    websession: aiohttp.ClientSession,
 ) -> asyncio.Event:  # pragma: no cover
     """Work around aiohttp issue that doesn't properly close transports on exit.
 
     See https://github.com/aio-libs/aiohttp/issues/1925#issuecomment-639080209
 
     Args:
-        websession (ClientSession): session for which to generate the event.
+        websession (aiohttp.ClientSession): session for which to generate the event.
 
     Returns:
         An event that will be set once all transports have been properly closed.
@@ -86,3 +89,16 @@ def create_aiohttp_closed_event(
         all_is_lost.set()
 
     return all_is_lost
+
+
+def parse_dates(start: str, end: str) -> Tuple[datetime, datetime]:
+    """Convert start/end string arguments into datetime arguments."""
+    parsed_start = dateparser.parse(start)
+    parsed_end = dateparser.parse(end)
+
+    if not parsed_start:
+        raise ValueError(f"Unable to parse start `{start}` into datetime.")
+    if not parsed_end:
+        raise ValueError(f"Unable to parse start `{end}` into datetime.")
+
+    return (parsed_start, parsed_end)
