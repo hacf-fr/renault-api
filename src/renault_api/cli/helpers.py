@@ -97,8 +97,8 @@ def parse_dates(start: str, end: str) -> Tuple[datetime, datetime]:
     parsed_end = dateparser.parse(end)
 
     if not parsed_start:
-        raise ValueError(f"Unable to parse start `{start}` into datetime.")
+        raise ValueError(f"Unable to parse `{start}` into start datetime.")
     if not parsed_end:
-        raise ValueError(f"Unable to parse start `{end}` into datetime.")
+        raise ValueError(f"Unable to parse `{end}` into end datetime.")
 
     return (parsed_start, parsed_end)
