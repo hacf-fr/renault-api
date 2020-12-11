@@ -197,17 +197,20 @@ async def charges(
 
 
 @main.command()
+@click.option("--id", type=int, help="Schedule ID")
 @click.pass_obj
 @helpers.coro_with_websession
 async def charging_settings(
     ctx_data: Dict[str, Any],
     *,
+    id: Optional[int] = None,
     websession: aiohttp.ClientSession,
 ) -> None:
     """Display charging settings."""
     await renault_vehicle_charge.settings(
         websession=websession,
         ctx_data=ctx_data,
+        id=id,
     )
 
 

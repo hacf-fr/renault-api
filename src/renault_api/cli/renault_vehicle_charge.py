@@ -140,6 +140,7 @@ async def mode(
 async def settings(
     websession: aiohttp.ClientSession,
     ctx_data: Dict[str, Any],
+    id: Optional[int] = None,
 ) -> None:
     """Display charging settings."""
     vehicle = await renault_vehicle.get_vehicle(
@@ -154,6 +155,8 @@ async def settings(
         return
 
     for schedule in response.schedules:
+        if id and id != schedule.id:  # pragma: no cover
+            continue
         click.echo(
             f"Schedule ID: {schedule.id}{' [Active]' if schedule.activated else ''}"
         )
