@@ -5,22 +5,12 @@ from typing import Any
 from typing import Dict
 
 from . import models
-
-
-_DAYS = [
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-    "sunday",
-]
+from .enums import DAYS_OF_WEEK
 
 
 def update_schedule(schedule: models.ChargeSchedule, settings: Dict[str, Any]) -> None:
     """Update schedule."""
-    for day in _DAYS:
+    for day in DAYS_OF_WEEK:
         if day in settings.keys():
             day_settings = settings[day]
 

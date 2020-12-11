@@ -2,6 +2,17 @@
 from enum import Enum
 
 
+DAYS_OF_WEEK = [
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
+]
+
+
 class ChargeState(Enum):
     """Enum for battery-status charge state."""
 

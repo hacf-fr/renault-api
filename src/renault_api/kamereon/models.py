@@ -362,17 +362,12 @@ class ChargeSchedule(BaseModel):
 
     def for_json(self) -> Dict[str, Any]:
         """Create dict for json."""
-        return {
-            "id": self.id,
-            "activated": self.activated,
-            "monday": self.monday.for_json() if self.monday else {},
-            "tuesday": self.tuesday.for_json() if self.tuesday else {},
-            "wednesday": self.wednesday.for_json() if self.wednesday else {},
-            "thursday": self.thursday.for_json() if self.thursday else {},
-            "friday": self.friday.for_json() if self.friday else {},
-            "saturday": self.saturday.for_json() if self.saturday else {},
-            "sunday": self.sunday.for_json() if self.sunday else {},
-        }
+        result: Dict[str, Any] = {"id": self.id, "activated": self.activated}
+        for day in enums.DAYS_OF_WEEK:
+            if self.__dict__.get(day):  # pragma: no branch
+                schedule: ChargeDaySchedule = self.__dict__[day]
+                result[day] = schedule.for_json()
+        return result
 
 
 @dataclass

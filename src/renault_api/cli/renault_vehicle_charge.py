@@ -13,19 +13,11 @@ from tabulate import tabulate
 from . import helpers
 from . import renault_vehicle
 from renault_api.kamereon.enums import ChargeMode
+from renault_api.kamereon.enums import DAYS_OF_WEEK
 from renault_api.kamereon.models import ChargeDaySchedule
 from renault_api.kamereon.models import ChargeSchedule
 
 
-_DAYS_OF_WEEK = [
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-    "sunday",
-]
 _DAY_SCHEDULE_REGEX = re.compile(
     "(?P<prefix>T?)"
     "(?P<hours>[0-2][0-9])"
@@ -194,7 +186,7 @@ async def settings(
             ]
             click.echo(
                 tabulate(
-                    [_format_charge_schedule(schedule, key) for key in _DAYS_OF_WEEK],
+                    [_format_charge_schedule(schedule, key) for key in DAYS_OF_WEEK],
                     headers=headers,
                 )
             )
@@ -217,7 +209,7 @@ def update_settings(
     **kwargs: Dict[str, Any],
 ) -> None:
     """Update charging settings."""
-    for day in _DAYS_OF_WEEK:
+    for day in DAYS_OF_WEEK:
         if day in kwargs:  # pragma: no branch
             day_value = kwargs.pop(day)
             if day_value:
