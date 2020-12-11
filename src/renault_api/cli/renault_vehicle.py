@@ -10,6 +10,7 @@ import click
 import dateutil.parser
 from tabulate import tabulate
 
+from . import helpers
 from . import renault_account
 from . import renault_settings
 from renault_api.credential import Credential
@@ -127,13 +128,7 @@ def update_status_table(
     """Update statuses with formatted strings."""
     if value is None:
         return
-    if unit == "datetime":
-        unit = None
-        value = dateutil.parser.parse(value)
-    if unit is None:
-        status_table[key] = value
-    else:
-        status_table[key] = "{0} {1}".format(value, unit)
+    status_table[key] = helpers.get_display_value(value, unit)
 
 
 async def update_battery_status(
@@ -156,7 +151,7 @@ async def update_battery_status(
 
         items = [
             ("Battery level", response.batteryLevel, "%"),
-            ("Last updated", response.timestamp, "datetime"),
+            ("Last updated", response.timestamp, "tzdatetime"),
             ("Available energy", response.batteryAvailableEnergy, "kWh"),
             ("Range estimate", response.batteryAutonomy, "km"),
             ("Plug state", response.get_plug_status(), None),
@@ -219,7 +214,7 @@ async def update_location(
         items = [
             ("GPS Latitude", response.gpsLatitude, None),
             ("GPS Longitude", response.gpsLongitude, None),
-            ("GPS last updated", response.lastUpdateTime, "datetime"),
+            ("GPS last updated", response.lastUpdateTime, "tzdatetime"),
         ]
 
         for key, value, unit in items:
@@ -239,7 +234,7 @@ async def update_hvac_status(
     else:
         items = [
             ("HVAC status", response.hvacStatus, None),
-            ("HVAC start at", response.nextHvacStartDate, "datetime"),
+            ("HVAC start at", response.nextHvacStartDate, "tzdatetime"),
             ("External temperature", response.externalTemperature, "°C"),
         ]
 

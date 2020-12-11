@@ -29,9 +29,23 @@ EXPECTED_CHARGES = (
     "2020-11-11 01:31:03  2020-11-11 09:30:17  7:59:00     3.10 kW     "
     "  15 %          74 %           59 %             slow           ok\n"
 )
+EXPECTED_CHARGING_START = "{'action': 'start'}\n"
+EXPECTED_CHARGING_SETTINGS_GET = (
+    "Mode: scheduled\n"
+    "Schedule ID: 1 [Active]\n"
+    "Day        Start time    End time    Duration\n"
+    "---------  ------------  ----------  ----------\n"
+    "Monday     13:00         13:15       0:15:00\n"
+    "Tuesday    05:30         12:30       7:00:00\n"
+    "Wednesday  23:30         06:30       7:00:00\n"
+    "Thursday   23:00         06:00       7:00:00\n"
+    "Friday     13:15         13:30       0:15:00\n"
+    "Saturday   13:30         14:00       0:30:00\n"
+    "Sunday     13:45         14:30       0:45:00\n"
+)
 
 
-def test_vehicle_charge_history_day(
+def test_charge_history_day(
     mocked_responses: aioresponses, cli_runner: CliRunner
 ) -> None:
     """It exits with a status code of zero."""
@@ -48,7 +62,7 @@ def test_vehicle_charge_history_day(
     assert EXPECTED_CHARGE_HISTORY_DAY == result.output
 
 
-def test_vehicle_charge_history_month(
+def test_charge_history_month(
     mocked_responses: aioresponses, cli_runner: CliRunner
 ) -> None:
     """It exits with a status code of zero."""
@@ -65,9 +79,7 @@ def test_vehicle_charge_history_month(
     assert EXPECTED_CHARGE_HISTORY_MONTH == result.output
 
 
-def test_vehicle_charge_mode_get(
-    mocked_responses: aioresponses, cli_runner: CliRunner
-) -> None:
+def test_charge_mode_get(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_kamereon_charge_mode(mocked_responses)
@@ -78,9 +90,7 @@ def test_vehicle_charge_mode_get(
     assert EXPECTED_CHARGE_MODE_GET == result.output
 
 
-def test_vehicle_charge_mode_set(
-    mocked_responses: aioresponses, cli_runner: CliRunner
-) -> None:
+def test_charge_mode_set(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_kamereon_action_charge_mode(mocked_responses, mode="schedule_mode")
@@ -91,7 +101,7 @@ def test_vehicle_charge_mode_set(
     assert EXPECTED_CHARGE_MODE_SET == result.output
 
 
-def test_vehicle_charges(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_charges(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_kamereon_charges(mocked_responses, start="20201101", end="20201130")
@@ -102,3 +112,27 @@ def test_vehicle_charges(mocked_responses: aioresponses, cli_runner: CliRunner) 
     assert result.exit_code == 0, result.exception
 
     assert EXPECTED_CHARGES == result.output
+
+
+def test_charging_settings_get(
+    mocked_responses: aioresponses, cli_runner: CliRunner
+) -> None:
+    """It exits with a status code of zero."""
+    initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_kamereon_charging_settings(mocked_responses)
+
+    result = cli_runner.invoke(__main__.main, "charging-settings")
+    assert result.exit_code == 0, result.exception
+
+    assert EXPECTED_CHARGING_SETTINGS_GET == result.output
+
+
+def test_charging_start(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+    """It exits with a status code of zero."""
+    initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_kamereon_action_charging_start(mocked_responses)
+
+    result = cli_runner.invoke(__main__.main, "charging-start")
+    assert result.exit_code == 0, result.exception
+
+    assert EXPECTED_CHARGING_START == result.output

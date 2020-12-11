@@ -6,11 +6,25 @@ from typing import Optional
 
 import aiohttp
 import click
+from click.core import Option
 from tabulate import tabulate
+
+from renault_api.kamereon.models import ChargeDaySchedule, ChargeSchedule
 
 from . import helpers
 from . import renault_vehicle
 from renault_api.kamereon.enums import ChargeMode
+
+
+_DAYS_OF_WEEK = [
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
+]
 
 
 async def charges(
@@ -27,7 +41,7 @@ async def charges(
     )
     response = await vehicle.get_charges(start=parsed_start, end=parsed_end)
     charges: List[Dict[str, Any]] = response.raw_data["charges"]
-    if not charges:
+    if not charges:  # pragma: no cover
         click.echo("No data available.")
         return
 
@@ -49,8 +63,8 @@ async def charges(
 
 def _format_charges_item(item: Dict[str, Any]) -> List[str]:
     return [
-        helpers.get_display_value(item.get("chargeStartDate"), "datetime"),
-        helpers.get_display_value(item.get("chargeEndDate"), "datetime"),
+        helpers.get_display_value(item.get("chargeStartDate"), "tzdatetime"),
+        helpers.get_display_value(item.get("chargeEndDate"), "tzdatetime"),
         helpers.get_display_value(item.get("chargeDuration"), "minutes"),
         helpers.get_display_value(item.get("chargeStartInstantaneousPower"), "kW"),
         helpers.get_display_value(item.get("chargeStartBatteryLevel"), "%"),
@@ -78,7 +92,7 @@ async def history(
         start=parsed_start, end=parsed_end, period=period
     )
     charge_summaries: List[Dict[str, Any]] = response.raw_data["chargeSummaries"]
-    if not charge_summaries:
+    if not charge_summaries:  # pragma: no cover
         click.echo("No data available.")
         return
 
@@ -133,7 +147,43 @@ async def settings(
         websession=websession, ctx_data=ctx_data
     )
     response = await vehicle.get_charging_settings()
-    click.echo(response.raw_data)
+    # Display mode
+    display_data = [("Mode", response.mode)]
+    click.echo(f"Mode: {response.mode}")
+
+    if not response.schedules:  # pragma: no cover
+        click.echo("No data available.")
+        return
+
+    for schedule in response.schedules:
+        click.echo(
+            f"Schedule ID: {schedule.id}{' [Active]' if schedule.activated else ''}"
+        )
+
+        headers = [
+            "Day",
+            "Start time",
+            "End time",
+            "Duration",
+        ]
+        click.echo(
+            tabulate(
+                [_format_charge_schedule(schedule, key) for key in _DAYS_OF_WEEK],
+                headers=headers,
+            )
+        )
+
+
+def _format_charge_schedule(schedule: ChargeSchedule, key: str) -> List[str]:
+    details: Optional[ChargeDaySchedule] = getattr(schedule, key)
+    if not details:
+        return [key, "-", "-", "-"]
+    return [
+        key.capitalize(),
+        helpers.get_display_value(details.startTime, "tztime"),
+        helpers.get_display_value(details.get_end_time(), "tztime"),
+        helpers.get_display_value(details.duration, "minutes"),
+    ]
 
 
 async def start(

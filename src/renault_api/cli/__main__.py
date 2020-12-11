@@ -156,7 +156,7 @@ async def charge_mode(
 @main.command()
 @click.pass_obj
 @helpers.coro_with_websession
-async def charge_start(
+async def charging_start(
     ctx_data: Dict[str, Any],
     *,
     websession: aiohttp.ClientSession,

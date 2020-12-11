@@ -7,6 +7,7 @@ from typing import Any
 from typing import Callable
 from typing import Optional
 from typing import Tuple
+from tzlocal import get_localzone
 
 import aiohttp
 import click
@@ -110,11 +111,25 @@ def parse_dates(start: str, end: str) -> Tuple[datetime, datetime]:
     return (parsed_start, parsed_end)
 
 
-def _format_datetime(date: str) -> str:
+def _timezone_offset():
+    offset = get_localzone().utcoffset(datetime.now()).total_seconds() / 60
+    return offset / 60, offset % 60
+
+
+def _format_tzdatetime(datetime: str) -> str:
     return (
-        dateutil.parser.parse(date)
+        dateutil.parser.parse(datetime)
         .astimezone(dateutil.tz.tzlocal())
         .strftime(_DATETIME_FORMAT)
+    )
+
+
+def _format_tztime(time: str) -> str:
+    offset_hours, offset_minutes = _timezone_offset()
+    raw_hours = int(time[1:3])
+    raw_minutes = int(time[4:6])
+    return "{:02g}:{:02g}".format(
+        (raw_hours + offset_hours) % 24, raw_minutes + offset_minutes
     )
 
 
@@ -132,9 +147,11 @@ def get_display_value(
     if value is None:
         return ""
     if unit is None:
-        return value
-    if unit == "datetime":
-        return _format_datetime(value)
+        return str(value)
+    if unit == "tzdatetime":
+        return _format_tzdatetime(value)
+    if unit == "tztime":
+        return _format_tztime(value)
     if unit == "minutes":
         return _format_minutes(value)
     if unit == "kW":
