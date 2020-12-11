@@ -153,6 +153,32 @@ def inject_kamereon_charge_mode(mocked_responses: aioresponses) -> None:
     )
 
 
+def inject_kamereon_charge_history(
+    mocked_responses: aioresponses, start: str, end: str, period: str
+) -> None:
+    """Inject sample charges."""
+    query_string = f"{DEFAULT_QUERY_STRING}&end={end}&start={start}&type={period}"
+    urlpath = f"{ADAPTER_PATH}/charge-history?{query_string}"
+    inject_kamereon(
+        mocked_responses,
+        urlpath,
+        f"vehicle_data/charge-history.{period}.json",
+    )
+
+
+def inject_kamereon_charges(
+    mocked_responses: aioresponses, start: str, end: str
+) -> None:
+    """Inject sample charges."""
+    query_string = f"{DEFAULT_QUERY_STRING}&end={end}&start={start}"
+    urlpath = f"{ADAPTER_PATH}/charges?{query_string}"
+    inject_kamereon(
+        mocked_responses,
+        urlpath,
+        "vehicle_data/charges.json",
+    )
+
+
 def inject_kamereon_cockpit(mocked_responses: aioresponses) -> None:
     """Inject sample cockpit."""
     urlpath = f"{ADAPTER2_PATH}/cockpit?{DEFAULT_QUERY_STRING}"

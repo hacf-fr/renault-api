@@ -1,13 +1,15 @@
 """CLI function for a vehicle."""
 from typing import Any
 from typing import Dict
+from typing import List
 from typing import Optional
 
 import aiohttp
 import click
+from tabulate import tabulate
 
+from . import helpers
 from . import renault_vehicle
-from .helpers import parse_dates
 from renault_api.kamereon.enums import ChargeMode
 
 
@@ -18,13 +20,45 @@ async def charges(
     end: str,
 ) -> None:
     """Display charges."""
-    parsed_start, parsed_end = parse_dates(start, end)
+    parsed_start, parsed_end = helpers.parse_dates(start, end)
 
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
     )
     response = await vehicle.get_charges(start=parsed_start, end=parsed_end)
-    click.echo(response.raw_data)
+    charges: List[Dict[str, Any]] = response.raw_data["charges"]
+    if not charges:
+        click.echo("No data available.")
+        return
+
+    headers = [
+        "Charge start",
+        "Charge end",
+        "Duration",
+        "Power (kW)",
+        "Started at",
+        "Finished at",
+        "Charge gained",
+        "Power level",
+        "Status",
+    ]
+    click.echo(
+        tabulate([_format_charges_item(item) for item in charges], headers=headers)
+    )
+
+
+def _format_charges_item(item: Dict[str, Any]) -> List[str]:
+    return [
+        helpers.get_display_value(item.get("chargeStartDate"), "datetime"),
+        helpers.get_display_value(item.get("chargeEndDate"), "datetime"),
+        helpers.get_display_value(item.get("chargeDuration"), "minutes"),
+        helpers.get_display_value(item.get("chargeStartInstantaneousPower"), "kW"),
+        helpers.get_display_value(item.get("chargeStartBatteryLevel"), "%"),
+        helpers.get_display_value(item.get("chargeEndBatteryLevel"), "%"),
+        helpers.get_display_value(item.get("chargeBatteryLevelRecovered"), "%"),
+        helpers.get_display_value(item.get("chargePower")),
+        helpers.get_display_value(item.get("chargeEndStatus")),
+    ]
 
 
 async def history(
@@ -35,7 +69,7 @@ async def history(
     period: Optional[str] = None,
 ) -> None:
     """Display charge history."""
-    parsed_start, parsed_end = parse_dates(start, end)
+    parsed_start, parsed_end = helpers.parse_dates(start, end)
 
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
@@ -43,7 +77,32 @@ async def history(
     response = await vehicle.get_charge_history(
         start=parsed_start, end=parsed_end, period=period
     )
-    click.echo(response.raw_data)
+    charge_summaries: List[Dict[str, Any]] = response.raw_data["chargeSummaries"]
+    if not charge_summaries:
+        click.echo("No data available.")
+        return
+
+    headers = [
+        period.capitalize(),
+        "Number of charges",
+        "Total time charging",
+        "Errors",
+    ]
+    click.echo(
+        tabulate(
+            [_format_charge_history_item(item, period) for item in charge_summaries],
+            headers=headers,
+        )
+    )
+
+
+def _format_charge_history_item(item: Dict[str, Any], period: str) -> List[str]:
+    return [
+        helpers.get_display_value(item.get(period)),
+        helpers.get_display_value(item.get("totalChargesNumber")),
+        helpers.get_display_value(item.get("totalChargesDuration"), "minutes"),
+        helpers.get_display_value(item.get("totalChargesErrors")),
+    ]
 
 
 async def mode(

@@ -2,15 +2,21 @@
 import asyncio
 import functools
 from datetime import datetime
+from datetime import timedelta
 from typing import Any
 from typing import Callable
+from typing import Optional
 from typing import Tuple
 
 import aiohttp
 import click
 import dateparser
+import dateutil
 
 from renault_api.exceptions import RenaultException
+
+
+_DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 
 def coro_with_websession(func: Callable[..., Any]) -> Callable[..., Any]:
@@ -102,3 +108,36 @@ def parse_dates(start: str, end: str) -> Tuple[datetime, datetime]:
         raise ValueError(f"Unable to parse `{end}` into end datetime.")
 
     return (parsed_start, parsed_end)
+
+
+def _format_datetime(date: str) -> str:
+    return (
+        dateutil.parser.parse(date)
+        .astimezone(dateutil.tz.tzlocal())
+        .strftime(_DATETIME_FORMAT)
+    )
+
+
+def _format_minutes(mins: float) -> str:
+    d = timedelta(minutes=mins)
+    return str(d)
+
+
+def get_display_value(
+    value: Optional[Any] = None,
+    unit: Optional[str] = None,
+    round: Optional[int] = None,
+) -> str:
+    """Get a display for value."""
+    if value is None:
+        return ""
+    if unit is None:
+        return value
+    if unit == "datetime":
+        return _format_datetime(value)
+    if unit == "minutes":
+        return _format_minutes(value)
+    if unit == "kW":
+        value = value / 1000
+        return f"{value:.2f} {unit}"
+    return f"{value} {unit}"
