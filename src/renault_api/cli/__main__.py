@@ -188,7 +188,7 @@ async def charging_settings(
     set: bool,
     id: Optional[int] = None,
     websession: aiohttp.ClientSession,
-    **kwargs: Dict[str, Any],
+    **kwargs: Any,
 ) -> None:
     """Display charging settings."""
     await renault_vehicle_charge.settings(

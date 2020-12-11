@@ -145,7 +145,7 @@ async def settings(
     ctx_data: Dict[str, Any],
     set: bool,
     id: Optional[int] = None,
-    **kwargs: Dict[str, Any],
+    **kwargs: Any,
 ) -> None:
     """Display charging settings."""
     vehicle = await renault_vehicle.get_vehicle(
@@ -206,7 +206,7 @@ def _format_charge_schedule(schedule: ChargeSchedule, key: str) -> List[str]:
 
 def update_settings(
     schedule: ChargeSchedule,
-    **kwargs: Dict[str, Any],
+    **kwargs: Any,
 ) -> None:
     """Update charging settings."""
     for day in DAYS_OF_WEEK:
