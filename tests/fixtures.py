@@ -93,6 +93,21 @@ def inject_kamereon(
     )
 
 
+def inject_kamereon_action(
+    mocked_responses: aioresponses,
+    urlpath: str,
+    filename: str,
+) -> None:
+    """Inject Kamereon data."""
+    url = f"{KAMEREON_BASE_URL}/{urlpath}"
+    body = get_file_content(f"{KAMEREON_FIXTURE_PATH}/{filename}")
+    mocked_responses.post(
+        url,
+        status=200,
+        body=body,
+    )
+
+
 def inject_kamereon_person(mocked_responses: aioresponses) -> None:
     """Inject sample person."""
     urlpath = f"persons/{TEST_PERSON_ID}?{DEFAULT_QUERY_STRING}"
@@ -156,7 +171,7 @@ def inject_kamereon_charge_mode(mocked_responses: aioresponses) -> None:
 def inject_kamereon_charge_history(
     mocked_responses: aioresponses, start: str, end: str, period: str
 ) -> None:
-    """Inject sample charges."""
+    """Inject sample charge-history."""
     query_string = f"{DEFAULT_QUERY_STRING}&end={end}&start={start}&type={period}"
     urlpath = f"{ADAPTER_PATH}/charge-history?{query_string}"
     inject_kamereon(
@@ -186,6 +201,18 @@ def inject_kamereon_cockpit(mocked_responses: aioresponses) -> None:
         mocked_responses,
         urlpath,
         "vehicle_data/cockpit.zoe.json",
+    )
+
+
+def inject_kamereon_action_charge_mode(
+    mocked_responses: aioresponses, mode: str
+) -> None:
+    """Inject sample charge-mode."""
+    urlpath = f"{ADAPTER_PATH}/actions/charge-mode?{DEFAULT_QUERY_STRING}"
+    inject_kamereon_action(
+        mocked_responses,
+        urlpath,
+        f"vehicle_action/charge-mode.{mode}.json",
     )
 
 

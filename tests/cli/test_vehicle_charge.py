@@ -6,14 +6,6 @@ from tests import fixtures
 from . import initialise_credential_store
 from renault_api.cli import __main__
 
-EXPECTED_CHARGES = (
-    "Charge start         Charge end           Duration    Power (kW)  "
-    "  Started at    Finished at    Charge gained    Power level    Status\n"
-    "-------------------  -------------------  ----------  ------------"
-    "  ------------  -------------  ---------------  -------------  --------\n"
-    "2020-11-11 01:31:03  2020-11-11 09:30:17  7:59:00     3.10 kW     "
-    "  15 %          74 %           59 %             slow           ok\n"
-)
 EXPECTED_CHARGE_HISTORY_DAY = (
     "     Day    Number of charges  Total time charging      Errors\n"
     "--------  -------------------  ---------------------  --------\n"
@@ -25,19 +17,35 @@ EXPECTED_CHARGE_HISTORY_MONTH = (
     "-------  -------------------  ---------------------  --------\n"
     " 202011                    1  7:59:00                       0\n"
 )
+EXPECTED_CHARGE_MODE_GET = (
+    "-----------  ------\n" "Charge mode  always\n" "-----------  ------\n"
+)
+EXPECTED_CHARGE_MODE_SET = "{'action': 'schedule_mode'}\n"
+EXPECTED_CHARGES = (
+    "Charge start         Charge end           Duration    Power (kW)  "
+    "  Started at    Finished at    Charge gained    Power level    Status\n"
+    "-------------------  -------------------  ----------  ------------"
+    "  ------------  -------------  ---------------  -------------  --------\n"
+    "2020-11-11 01:31:03  2020-11-11 09:30:17  7:59:00     3.10 kW     "
+    "  15 %          74 %           59 %             slow           ok\n"
+)
 
 
-def test_vehicle_charges(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_vehicle_charge_history_day(
+    mocked_responses: aioresponses, cli_runner: CliRunner
+) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_kamereon_charges(mocked_responses, start="20201101", end="20201130")
+    fixtures.inject_kamereon_charge_history(
+        mocked_responses, start="20201101", end="20201130", period="day"
+    )
 
     result = cli_runner.invoke(
-        __main__.main, "charges --from 2020-11-01 --to 2020-11-30"
+        __main__.main, "charge-history --from 2020-11-01 --to 2020-11-30 --period day"
     )
     assert result.exit_code == 0, result.exception
 
-    assert EXPECTED_CHARGES == result.output
+    assert EXPECTED_CHARGE_HISTORY_DAY == result.output
 
 
 def test_vehicle_charge_history_month(
@@ -57,18 +65,40 @@ def test_vehicle_charge_history_month(
     assert EXPECTED_CHARGE_HISTORY_MONTH == result.output
 
 
-def test_vehicle_charge_history_day(
+def test_vehicle_charge_mode_get(
     mocked_responses: aioresponses, cli_runner: CliRunner
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_kamereon_charge_history(
-        mocked_responses, start="20201101", end="20201130", period="day"
-    )
+    fixtures.inject_kamereon_charge_mode(mocked_responses)
+
+    result = cli_runner.invoke(__main__.main, "charge-mode")
+    assert result.exit_code == 0, result.exception
+
+    assert EXPECTED_CHARGE_MODE_GET == result.output
+
+
+def test_vehicle_charge_mode_set(
+    mocked_responses: aioresponses, cli_runner: CliRunner
+) -> None:
+    """It exits with a status code of zero."""
+    initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_kamereon_action_charge_mode(mocked_responses, mode="schedule_mode")
+
+    result = cli_runner.invoke(__main__.main, "charge-mode --mode schedule_mode")
+    assert result.exit_code == 0, result.exception
+
+    assert EXPECTED_CHARGE_MODE_SET == result.output
+
+
+def test_vehicle_charges(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+    """It exits with a status code of zero."""
+    initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_kamereon_charges(mocked_responses, start="20201101", end="20201130")
 
     result = cli_runner.invoke(
-        __main__.main, "charge-history --from 2020-11-01 --to 2020-11-30 --period day"
+        __main__.main, "charges --from 2020-11-01 --to 2020-11-30"
     )
     assert result.exit_code == 0, result.exception
 
-    assert EXPECTED_CHARGE_HISTORY_DAY == result.output
+    assert EXPECTED_CHARGES == result.output

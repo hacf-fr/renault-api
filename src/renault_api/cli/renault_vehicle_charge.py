@@ -117,9 +117,11 @@ async def mode(
     if mode:
         charge_mode = ChargeMode(mode)
         response = await vehicle.set_charge_mode(charge_mode)
+        click.echo(response.raw_data)
     else:
         response = await vehicle.get_charge_mode()
-    click.echo(response.raw_data)
+        display_data = [("Charge mode", response.chargeMode)]
+        click.echo(tabulate(display_data))
 
 
 async def settings(
