@@ -108,7 +108,7 @@ async def charge_history(
     period: Optional[str],
     websession: aiohttp.ClientSession,
 ) -> None:
-    """Display air conditioning history."""
+    """Display charge history."""
     await renault_vehicle_charge.history(
         websession=websession,
         ctx_data=ctx_data,
@@ -190,7 +190,7 @@ async def charging_settings(
     websession: aiohttp.ClientSession,
     **kwargs: Any,
 ) -> None:
-    """Display charging settings."""
+    """Display or update charging settings."""
     await renault_vehicle_charge.settings(
         websession=websession,
         ctx_data=ctx_data,

@@ -337,12 +337,9 @@ class ChargeDaySchedule(BaseModel):
             return None
         start_hours = int(self.startTime[1:3])
         start_minutes = int(self.startTime[4:6])
-        end_minutes = start_hours * 60 + start_minutes + (self.duration or 0)
-        end_hours = end_minutes // 60
-        end_minutes = end_minutes % 60
-        if end_hours > 24:
-            end_hours = end_hours - 24
-
+        total_minutes = start_hours * 60 + start_minutes + (self.duration or 0)
+        end_hours, end_minutes = divmod(total_minutes, 60)
+        end_hours = end_hours % 24
         return f"T{end_hours:02g}:{end_minutes:02g}Z"
 
 
@@ -362,10 +359,13 @@ class ChargeSchedule(BaseModel):
 
     def for_json(self) -> Dict[str, Any]:
         """Create dict for json."""
-        result: Dict[str, Any] = {"id": self.id, "activated": self.activated}
-        for day in enums.DAYS_OF_WEEK:
-            if self.__dict__.get(day):  # pragma: no branch
-                schedule: ChargeDaySchedule = self.__dict__[day]
+        result: Dict[str, Any] = {
+            "id": self.id,
+            "activated": self.activated,
+        }
+        for day in helpers.DAYS_OF_WEEK:
+            schedule: ChargeDaySchedule = self.__dict__.get(day)
+            if schedule:  # pragma: no branch
                 result[day] = schedule.for_json()
         return result
 

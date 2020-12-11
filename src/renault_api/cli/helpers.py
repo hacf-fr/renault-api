@@ -14,7 +14,7 @@ import dateparser
 import tzlocal
 
 from renault_api.exceptions import RenaultException
-from renault_api.kamereon.enums import DAYS_OF_WEEK
+from renault_api.kamereon.helpers import DAYS_OF_WEEK
 
 
 _DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"

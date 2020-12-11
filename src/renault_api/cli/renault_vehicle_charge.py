@@ -13,7 +13,7 @@ from tabulate import tabulate
 from . import helpers
 from . import renault_vehicle
 from renault_api.kamereon.enums import ChargeMode
-from renault_api.kamereon.enums import DAYS_OF_WEEK
+from renault_api.kamereon.helpers import DAYS_OF_WEEK
 from renault_api.kamereon.models import ChargeDaySchedule
 from renault_api.kamereon.models import ChargeSchedule
 
