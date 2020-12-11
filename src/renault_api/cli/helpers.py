@@ -126,7 +126,16 @@ def _format_tzdatetime(date_string: str) -> str:
 def _format_tztime(time: str) -> str:
     total_minutes = int(time[1:3]) * 60 + int(time[4:6]) + _timezone_offset()
     hours, minutes = divmod(total_minutes, 60)
-    return "{:02g}:{:02g}".format(hours, minutes)
+    hours = hours % 24  # Ensure it is 00-23
+    return f"{hours:02g}:{minutes:02g}"
+
+
+def convert_minutes_to_tztime(minutes: int) -> str:
+    """Convert minutes to Thh:mmZ format."""
+    total_minutes = minutes - _timezone_offset()
+    hours, minutes = divmod(total_minutes, 60)
+    hours = hours % 24  # Ensure it is 00-23
+    return f"T{hours:02g}:{minutes:02g}Z"
 
 
 def _format_minutes(mins: float) -> str:

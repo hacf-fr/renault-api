@@ -198,19 +198,49 @@ async def charges(
 
 @main.command()
 @click.option("--id", type=int, help="Schedule ID")
+@click.option("--set", is_flag=True, help="Update specified schedule.")
+@click.option(
+    "--monday", help="Monday schedule in format `HH:MM,DURATION` or `THH:MMZ,DURATION`."
+)
+@click.option(
+    "--tuesday",
+    help="Tuesday schedule in format `HH:MM,DURATION` or `THH:MMZ,DURATION`.",
+)
+@click.option(
+    "--wednesday",
+    help="Wednesday schedule in format `HH:MM,DURATION` or `THH:MMZ,DURATION`.",
+)
+@click.option(
+    "--thursday",
+    help="Thursday schedule in format `HH:MM,DURATION` or `THH:MMZ,DURATION`.",
+)
+@click.option(
+    "--friday", help="Friday schedule in format `HH:MM,DURATION` or `THH:MMZ,DURATION`."
+)
+@click.option(
+    "--saturday",
+    help="Saturday schedule in format `HH:MM,DURATION` or `THH:MMZ,DURATION`.",
+)
+@click.option(
+    "--sunday", help="Sunday schedule in format `HH:MM,DURATION` or `THH:MMZ,DURATION`."
+)
 @click.pass_obj
 @helpers.coro_with_websession
 async def charging_settings(
     ctx_data: Dict[str, Any],
     *,
+    set: bool,
     id: Optional[int] = None,
     websession: aiohttp.ClientSession,
+    **kwargs: Dict[str, Any],
 ) -> None:
     """Display charging settings."""
     await renault_vehicle_charge.settings(
         websession=websession,
         ctx_data=ctx_data,
         id=id,
+        set=set,
+        **kwargs,
     )
 
 

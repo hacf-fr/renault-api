@@ -1,8 +1,10 @@
 """CLI function for a vehicle."""
+import re
 from typing import Any
 from typing import Dict
 from typing import List
 from typing import Optional
+from typing import Tuple
 
 import aiohttp
 import click
@@ -24,6 +26,15 @@ _DAYS_OF_WEEK = [
     "saturday",
     "sunday",
 ]
+_DAY_SCHEDULE_REGEX = re.compile(
+    "(?P<prefix>T?)"
+    "(?P<hours>[0-2][0-9])"
+    ":"
+    "(?P<minutes>[0-5][0-9])"
+    "(?P<suffix>Z?)"
+    ","
+    "(?P<duration>[0-9]+)"
+)
 
 
 async def charges(
@@ -140,7 +151,9 @@ async def mode(
 async def settings(
     websession: aiohttp.ClientSession,
     ctx_data: Dict[str, Any],
+    set: bool,
     id: Optional[int] = None,
+    **kwargs: Dict[str, Any],
 ) -> None:
     """Display charging settings."""
     vehicle = await renault_vehicle.get_vehicle(
@@ -149,10 +162,19 @@ async def settings(
     response = await vehicle.get_charging_settings()
     # Display mode
     click.echo(f"Mode: {response.mode}")
-
     if not response.schedules:  # pragma: no cover
-        click.echo("No data available.")
+        click.echo("No schedules found.")
         return
+
+    if set:
+        id = id or 1
+        for schedule in response.schedules:
+            if id == schedule.id:  # pragma: no cover
+                update_settings(schedule, **kwargs)
+                break
+            raise IndexError(f"Schedule id {id} not found.")  # pragma: no cover
+        write_response = await vehicle.set_charge_schedules(response.schedules)
+        click.echo(write_response.raw_data)
 
     for schedule in response.schedules:
         if id and id != schedule.id:  # pragma: no cover
@@ -185,6 +207,63 @@ def _format_charge_schedule(schedule: ChargeSchedule, key: str) -> List[str]:
         helpers.get_display_value(details.get_end_time(), "tztime"),
         helpers.get_display_value(details.duration, "minutes"),
     ]
+
+
+def update_settings(
+    schedule: ChargeSchedule,
+    **kwargs: Dict[str, Any],
+) -> None:
+    """Update charging settings."""
+    for day in _DAYS_OF_WEEK:
+        if day in kwargs:
+            day_value = str(kwargs.pop(day))
+            if day_value:
+                start_time, duration = _parse_day_schedule(day_value)
+                setattr(
+                    schedule,
+                    day,
+                    ChargeDaySchedule(
+                        raw_data={}, startTime=start_time, duration=duration
+                    ),
+                )
+
+
+def _parse_day_schedule(raw: str) -> Tuple[str, int]:
+    match = _DAY_SCHEDULE_REGEX.match(raw)
+    if not match:
+        raise ValueError(
+            f"Invalid specification for charge schedule: `{raw}`. "
+            "Should be of the form HHMM,DURATION"
+        )
+
+    hours = int(match.group("hours"))
+    if hours > 23:
+        raise ValueError(
+            f"Invalid specification for charge schedule: `{raw}`. "
+            "Hours should be less than 24."
+        )
+    minutes = int(match.group("minutes"))
+    if (minutes % 15) != 0:
+        raise ValueError(
+            f"Invalid specification for charge schedule: `{raw}`. "
+            "Minutes should be a multiple of 15."
+        )
+    duration = int(match.group("duration"))
+    if (duration % 15) != 0:
+        raise ValueError(
+            f"Invalid specification for charge schedule: `{raw}`. "
+            "Duration should be a multiple of 15."
+        )
+    if match.group("prefix") and match.group("suffix"):
+        formatted_start_time = f"T{hours:02g}:{minutes:02g}Z"
+    elif not (match.group("prefix") or match.group("suffix")):
+        formatted_start_time = helpers.convert_minutes_to_tztime(hours * 60 + minutes)
+    else:
+        raise ValueError(
+            f"Invalid specification for charge schedule: `{raw}`. "
+            "If provided, both T and Z must be set."
+        )
+    return (formatted_start_time, duration)
 
 
 async def start(
