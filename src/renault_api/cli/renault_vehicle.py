@@ -7,7 +7,6 @@ from typing import Tuple
 
 import aiohttp
 import click
-import dateutil.parser
 from tabulate import tabulate
 
 from . import helpers

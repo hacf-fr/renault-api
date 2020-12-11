@@ -24,7 +24,7 @@ from renault_api.gigya import GIGYA_PERSON_ID
 def initialise_credential_store(
     include_account_id: Optional[bool] = None,
     include_vin: Optional[bool] = None,
-):
+) -> None:
     """Initialise CLI credential store."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
     credential_store[CONF_LOCALE] = Credential(TEST_LOCALE)

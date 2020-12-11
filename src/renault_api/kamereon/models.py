@@ -337,7 +337,7 @@ class ChargeDaySchedule(BaseModel):
             return None
         start_hours = int(self.startTime[1:3])
         start_minutes = int(self.startTime[4:6])
-        end_minutes = start_hours * 60 + start_minutes + self.duration
+        end_minutes = start_hours * 60 + start_minutes + (self.duration or 0)
         end_hours = end_minutes // 60
         end_minutes = end_minutes % 60
         if end_hours > 24:

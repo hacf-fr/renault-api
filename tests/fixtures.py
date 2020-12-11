@@ -232,7 +232,7 @@ def inject_kamereon_action_charging_start(mocked_responses: aioresponses) -> Non
     inject_kamereon_action(
         mocked_responses,
         urlpath,
-        f"vehicle_action/charging-start.start.json",
+        "vehicle_action/charging-start.start.json",
     )
 
 

@@ -7,12 +7,11 @@ from typing import Any
 from typing import Callable
 from typing import Optional
 from typing import Tuple
-from tzlocal import get_localzone
 
 import aiohttp
 import click
 import dateparser
-import dateutil
+import tzlocal
 
 from renault_api.exceptions import RenaultException
 
@@ -103,34 +102,31 @@ def parse_dates(start: str, end: str) -> Tuple[datetime, datetime]:
     parsed_start = dateparser.parse(start)
     parsed_end = dateparser.parse(end)
 
-    if not parsed_start:
+    if not parsed_start:  # pragma: no cover
         raise ValueError(f"Unable to parse `{start}` into start datetime.")
-    if not parsed_end:
+    if not parsed_end:  # pragma: no cover
         raise ValueError(f"Unable to parse `{end}` into end datetime.")
 
     return (parsed_start, parsed_end)
 
 
-def _timezone_offset():
-    offset = get_localzone().utcoffset(datetime.now()).total_seconds() / 60
-    return offset / 60, offset % 60
+def _timezone_offset() -> int:
+    """Return UTC offset in minutes."""
+    utcoffset = tzlocal.get_localzone().utcoffset(datetime.now())
+    if utcoffset:
+        return int(utcoffset.total_seconds() / 60)
+    return 0  # pragma: no cover
 
 
-def _format_tzdatetime(datetime: str) -> str:
-    return (
-        dateutil.parser.parse(datetime)
-        .astimezone(dateutil.tz.tzlocal())
-        .strftime(_DATETIME_FORMAT)
-    )
+def _format_tzdatetime(date_string: str) -> str:
+    date = datetime.fromisoformat(date_string.replace("Z", "+00:00"))
+    return str(date.astimezone(tzlocal.get_localzone()).strftime(_DATETIME_FORMAT))
 
 
 def _format_tztime(time: str) -> str:
-    offset_hours, offset_minutes = _timezone_offset()
-    raw_hours = int(time[1:3])
-    raw_minutes = int(time[4:6])
-    return "{:02g}:{:02g}".format(
-        (raw_hours + offset_hours) % 24, raw_minutes + offset_minutes
-    )
+    total_minutes = int(time[1:3]) * 60 + int(time[4:6]) + _timezone_offset()
+    hours, minutes = divmod(total_minutes, 60)
+    return "{:02g}:{:02g}".format(hours, minutes)
 
 
 def _format_minutes(mins: float) -> str:
@@ -141,10 +137,9 @@ def _format_minutes(mins: float) -> str:
 def get_display_value(
     value: Optional[Any] = None,
     unit: Optional[str] = None,
-    round: Optional[int] = None,
 ) -> str:
     """Get a display for value."""
-    if value is None:
+    if value is None:  # pragma: no cover
         return ""
     if unit is None:
         return str(value)

@@ -6,14 +6,13 @@ from typing import Optional
 
 import aiohttp
 import click
-from click.core import Option
 from tabulate import tabulate
-
-from renault_api.kamereon.models import ChargeDaySchedule, ChargeSchedule
 
 from . import helpers
 from . import renault_vehicle
 from renault_api.kamereon.enums import ChargeMode
+from renault_api.kamereon.models import ChargeDaySchedule
+from renault_api.kamereon.models import ChargeSchedule
 
 
 _DAYS_OF_WEEK = [
@@ -84,6 +83,7 @@ async def history(
 ) -> None:
     """Display charge history."""
     parsed_start, parsed_end = helpers.parse_dates(start, end)
+    period = period or "month"
 
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
@@ -130,12 +130,11 @@ async def mode(
     )
     if mode:
         charge_mode = ChargeMode(mode)
-        response = await vehicle.set_charge_mode(charge_mode)
-        click.echo(response.raw_data)
+        write_response = await vehicle.set_charge_mode(charge_mode)
+        click.echo(write_response.raw_data)
     else:
-        response = await vehicle.get_charge_mode()
-        display_data = [("Charge mode", response.chargeMode)]
-        click.echo(tabulate(display_data))
+        read_response = await vehicle.get_charge_mode()
+        click.echo(f"Charge mode: {read_response.chargeMode}")
 
 
 async def settings(
@@ -148,7 +147,6 @@ async def settings(
     )
     response = await vehicle.get_charging_settings()
     # Display mode
-    display_data = [("Mode", response.mode)]
     click.echo(f"Mode: {response.mode}")
 
     if not response.schedules:  # pragma: no cover
@@ -176,7 +174,7 @@ async def settings(
 
 def _format_charge_schedule(schedule: ChargeSchedule, key: str) -> List[str]:
     details: Optional[ChargeDaySchedule] = getattr(schedule, key)
-    if not details:
+    if not details:  # pragma: no cover
         return [key, "-", "-", "-"]
     return [
         key.capitalize(),

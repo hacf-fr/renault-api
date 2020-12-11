@@ -177,6 +177,7 @@ async def test_get_charge_history_month(vehicle: RenaultVehicle) -> None:
         assert await vehicle.get_charge_history(
             start=datetime(2020, 10, 1),
             end=datetime(2020, 11, 15),
+            period="month",
         )
 
 

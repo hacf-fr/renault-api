@@ -17,9 +17,7 @@ EXPECTED_CHARGE_HISTORY_MONTH = (
     "-------  -------------------  ---------------------  --------\n"
     " 202011                    1  7:59:00                       0\n"
 )
-EXPECTED_CHARGE_MODE_GET = (
-    "-----------  ------\n" "Charge mode  always\n" "-----------  ------\n"
-)
+EXPECTED_CHARGE_MODE_GET = "Charge mode: always\n"
 EXPECTED_CHARGE_MODE_SET = "{'action': 'schedule_mode'}\n"
 EXPECTED_CHARGES = (
     "Charge start         Charge end           Duration    Power (kW)  "
