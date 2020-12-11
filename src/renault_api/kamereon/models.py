@@ -390,9 +390,10 @@ class HvacSchedule(BaseModel):
             "id": self.id,
             "activated": self.activated,
         }
-        for day in helpers._DAYS:
-            if self.__dict__.get(day):
-                ret[day] = self.__dict__[day].for_json()
+        for day in helpers.DAYS_OF_WEEK:
+            schedule: Optional[HvacDaySchedule] = self.__dict__.get(day)
+            if schedule:
+                ret[day] = schedule.for_json()
         return ret
 
 

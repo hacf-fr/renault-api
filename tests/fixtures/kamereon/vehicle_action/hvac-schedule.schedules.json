@@ -1,0 +1,32 @@
+{
+  "data": {
+    "type": "HvacSchedule",
+    "id": "guid",
+    "attributes": {
+      "schedules": [
+        {
+          "id": 1,
+          "activated": false
+        },
+        {
+          "id": 2,
+          "activated": true,
+          "monday": { "readyAtTime": "T20:45Z" },
+          "sunday": { "readyAtTime": "T20:45Z" }
+        },
+        {
+          "id": 3,
+          "activated": false
+        },
+        {
+          "id": 4,
+          "activated": false
+        },
+        {
+          "id": 5,
+          "activated": false
+        }
+      ]
+    }
+  }
+}

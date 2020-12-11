@@ -16,7 +16,9 @@ from tests.test_credential_store import get_logged_in_credential_store
 from tests.test_renault_session import get_logged_in_session
 from yarl import URL
 
+from renault_api.kamereon.helpers import DAYS_OF_WEEK
 from renault_api.kamereon.models import ChargeSchedule
+from renault_api.kamereon.models import HvacSchedule
 from renault_api.renault_vehicle import RenaultVehicle
 
 
@@ -73,6 +75,30 @@ async def test_get_hvac_status(
     """Test get_hvac_status."""
     fixtures.inject_get_hvac_status(mocked_responses)
     assert await vehicle.get_hvac_status()
+
+
+@pytest.mark.asyncio
+async def test_get_hvac_settings(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
+    """Test get_hvac_settings."""
+    fixtures.inject_get_hvac_settings(mocked_responses)
+    data = await vehicle.get_hvac_settings()
+
+    assert data.mode == "scheduled"
+    assert data.schedules
+    schedules: List[HvacSchedule] = data.schedules
+    assert schedules
+    assert schedules[1].id == 2
+    assert schedules[1].activated is True
+    assert schedules[1].wednesday and schedules[1].wednesday.readyAtTime == "T15:15Z"
+    assert schedules[1].friday and schedules[1].friday.readyAtTime == "T15:15Z"
+
+    for i in (0, 2, 3, 4):
+        assert schedules[i].id == i + 1
+        assert schedules[i].activated is False
+        for day in DAYS_OF_WEEK:
+            assert schedules[i].__dict__[day] is None
 
 
 @pytest.mark.asyncio
@@ -270,3 +296,19 @@ async def test_set_charge_start(
     assert await vehicle.set_charge_start()
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
     assert expected_json == request.kwargs["json"]
+
+
+@pytest.mark.asyncio
+async def test_set_hvac_schedules(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
+    """Test set_hvac_schedules."""
+    schedules: List[HvacSchedule] = []
+    url = fixtures.inject_set_hvac_schedules(mocked_responses)
+
+    assert await vehicle.set_hvac_schedules(schedules)
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+
+    assert request.kwargs["json"] == {
+        "data": {"type": "HvacSchedule", "attributes": {"schedules": []}}
+    }
