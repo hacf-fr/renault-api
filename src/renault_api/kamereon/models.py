@@ -364,7 +364,7 @@ class ChargeSchedule(BaseModel):
             "activated": self.activated,
         }
         for day in helpers.DAYS_OF_WEEK:
-            schedule: ChargeDaySchedule = self.__dict__.get(day)
+            schedule: Optional[ChargeDaySchedule] = self.__dict__.get(day)
             if schedule:  # pragma: no branch
                 result[day] = schedule.for_json()
         return result
