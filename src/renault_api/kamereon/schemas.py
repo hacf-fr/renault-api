@@ -59,6 +59,9 @@ KamereonVehicleChargingSettingsDataSchema = marshmallow_dataclass.class_schema(
     models.KamereonVehicleChargingSettingsData, base_schema=BaseSchema
 )()
 
+KamereonVehicleHvacSettingsDataSchema = marshmallow_dataclass.class_schema(
+    models.KamereonVehicleHvacSettingsData, base_schema=BaseSchema
+)()
 
 KamereonVehicleNotificationSettingsDataSchema = marshmallow_dataclass.class_schema(
     models.KamereonVehicleNotificationSettingsData, base_schema=BaseSchema
@@ -89,6 +92,9 @@ KamereonVehicleHvacStartActionDataSchema = marshmallow_dataclass.class_schema(
     models.KamereonVehicleHvacStartActionData, base_schema=BaseSchema
 )()
 
+KamereonVehicleHvacScheduleActionDataSchema = marshmallow_dataclass.class_schema(
+    models.KamereonVehicleHvacScheduleActionData, base_schema=BaseSchema
+)()
 
 KamereonVehicleChargeScheduleActionDataSchema = marshmallow_dataclass.class_schema(
     models.KamereonVehicleChargeScheduleActionData, base_schema=BaseSchema

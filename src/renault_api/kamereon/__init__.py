@@ -26,6 +26,7 @@ DATA_ENDPOINTS = {
     "hvac-history": {"version": 1},
     "hvac-sessions": {"version": 1},
     "hvac-status": {"version": 1},
+    "hvac-settings": {"version": 1},
     "lock-status": {"version": 1},
     "notification-settings": {"version": 1},
 }
@@ -34,6 +35,7 @@ ACTION_ENDPOINTS = {
     "charge-schedule": {"version": 2, "type": "ChargeSchedule"},
     "charging-start": {"version": 1, "type": "ChargingStart"},
     "hvac-start": {"version": 1, "type": "HvacStart"},
+    "hvac-schedule": {"version": 2, "type": "HvacSchedule"},
 }
 
 
