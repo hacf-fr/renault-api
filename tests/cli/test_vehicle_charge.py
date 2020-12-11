@@ -41,6 +41,16 @@ EXPECTED_CHARGING_SETTINGS_GET = (
     "Saturday   13:30         14:00       0:30:00\n"
     "Sunday     13:45         14:30       0:45:00\n"
 )
+EXPECTED_CHARGING_SETTINGS_SET = (
+    "{'schedules': [{'id': 1, 'activated': True, "
+    "'monday': {'startTime': 'T12:00Z', 'duration': 15}, "
+    "'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, "
+    "'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, "
+    "'thursday': {'startTime': 'T22:00Z', 'duration': 420}, "
+    "'friday': {'startTime': 'T23:30Z', 'duration': 480}, "
+    "'saturday': {'startTime': 'T18:30Z', 'duration': 120}, "
+    "'sunday': {'startTime': 'T12:45Z', 'duration': 45}}]}\n"
+)
 
 
 def test_charge_history_day(
@@ -119,10 +129,28 @@ def test_charging_settings_get(
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_kamereon_charging_settings(mocked_responses)
 
-    result = cli_runner.invoke(__main__.main, "charging-settings")
+    result = cli_runner.invoke(__main__.main, "charging-settings --id 1")
     assert result.exit_code == 0, result.exception
 
     assert EXPECTED_CHARGING_SETTINGS_GET == result.output
+
+
+def test_charging_settings_set(
+    mocked_responses: aioresponses, cli_runner: CliRunner
+) -> None:
+    """It exits with a status code of zero."""
+    initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_kamereon_charging_settings(mocked_responses)
+    fixtures.inject_kamereon_action_charge_schedule(mocked_responses)
+
+    friday = "--friday T23:30Z,480"
+    saturday = "--saturday 19:30,120"
+    result = cli_runner.invoke(
+        __main__.main, f"charging-settings --id 1 --set {friday} {saturday}"
+    )
+    assert result.exit_code == 0, result.exception
+
+    assert EXPECTED_CHARGING_SETTINGS_SET == result.output
 
 
 def test_charging_start(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:

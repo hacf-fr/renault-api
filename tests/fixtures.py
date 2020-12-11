@@ -226,6 +226,16 @@ def inject_kamereon_action_charge_mode(
     )
 
 
+def inject_kamereon_action_charge_schedule(mocked_responses: aioresponses) -> None:
+    """Inject sample charge-schedule."""
+    urlpath = f"{ADAPTER2_PATH}/actions/charge-schedule?{DEFAULT_QUERY_STRING}"
+    inject_kamereon_action(
+        mocked_responses,
+        urlpath,
+        "vehicle_action/charge-schedule.schedules.json",
+    )
+
+
 def inject_kamereon_action_charging_start(mocked_responses: aioresponses) -> None:
     """Inject sample charge-mode."""
     urlpath = f"{ADAPTER_PATH}/actions/charging-start?{DEFAULT_QUERY_STRING}"
