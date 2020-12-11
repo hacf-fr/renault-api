@@ -97,21 +97,7 @@ async def accounts(
 
 
 @main.command()
-@click.option(
-    "--from", "start", help="Date to start showing history from", required=True
-)
-@click.option(
-    "--to",
-    "end",
-    help="Date to finish showing history at (cannot be in the future)",
-    required=True,
-)
-@click.option(
-    "--period",
-    default="month",
-    help="Period over which to aggregate.",
-    type=click.Choice(["day", "month"], case_sensitive=False),
-)
+@helpers.start_end_option(True)
 @click.pass_obj
 @helpers.coro_with_websession
 async def charge_history(
@@ -169,15 +155,7 @@ async def charging_start(
 
 
 @main.command()
-@click.option(
-    "--from", "start", help="Date to start showing history from", required=True
-)
-@click.option(
-    "--to",
-    "end",
-    help="Date to finish showing history at (cannot be in the future)",
-    required=True,
-)
+@helpers.start_end_option(False)
 @click.pass_obj
 @helpers.coro_with_websession
 async def charges(

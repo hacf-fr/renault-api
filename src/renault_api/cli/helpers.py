@@ -45,13 +45,37 @@ def days_of_week_option(helptext: str) -> Callable[..., Any]:
     """Add day of week string options."""
 
     def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
-        result_func = func
         for day in reversed(DAYS_OF_WEEK):
-            result_func = click.option(
+            func = click.option(
                 f"--{day}",
                 help=helptext.format(day.capitalize()),
-            )(result_func)
-        return result_func
+            )(func)
+        return func
+
+    return decorator
+
+
+def start_end_option(add_period: bool) -> Callable[..., Any]:
+    """Add start/end options."""
+
+    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
+        func = click.option(
+            "--from", "start", help="Date to start showing history from", required=True
+        )(func)
+        func = click.option(
+            "--to",
+            "end",
+            help="Date to finish showing history at (cannot be in the future)",
+            required=True,
+        )(func)
+        if add_period:
+            func = click.option(
+                "--period",
+                default="month",
+                help="Period over which to aggregate.",
+                type=click.Choice(["day", "month"], case_sensitive=False),
+            )(func)
+        return func
 
     return decorator
 
