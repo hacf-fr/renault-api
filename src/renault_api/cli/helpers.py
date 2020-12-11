@@ -14,6 +14,7 @@ import dateparser
 import tzlocal
 
 from renault_api.exceptions import RenaultException
+from renault_api.kamereon.enums import DAYS_OF_WEEK
 
 
 _DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
@@ -38,6 +39,21 @@ def coro_with_websession(func: Callable[..., Any]) -> Callable[..., Any]:
         asyncio.run(run_command(func, *args, **kwargs))
 
     return functools.update_wrapper(wrapper, func)
+
+
+def days_of_week_option(helptext: str) -> Callable[..., Any]:
+    """Add day of week string options."""
+
+    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
+        result_func = func
+        for day in reversed(DAYS_OF_WEEK):
+            result_func = click.option(
+                f"--{day}",
+                help=helptext.format(day.capitalize()),
+            )(result_func)
+        return result_func
+
+    return decorator
 
 
 def create_aiohttp_closed_event(
