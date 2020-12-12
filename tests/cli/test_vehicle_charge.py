@@ -1,7 +1,9 @@
 """Test cases for the __main__ module."""
 from aioresponses import aioresponses
+from aioresponses.core import RequestCall  # type:ignore
 from click.testing import CliRunner
 from tests import fixtures
+from yarl import URL
 
 from . import initialise_credential_store
 from renault_api.cli import __main__
@@ -18,7 +20,10 @@ EXPECTED_CHARGE_HISTORY_MONTH = (
     " 202011                    1  7:59:00                       0\n"
 )
 EXPECTED_CHARGE_MODE_GET = "Charge mode: always\n"
-EXPECTED_CHARGE_MODE_SET = "{'action': 'schedule_mode'}\n"
+EXPECTED_CHARGE_MODE_SET_JSON = {
+    "data": {"attributes": {"action": "schedule_mode"}, "type": "ChargeMode"}
+}
+EXPECTED_CHARGE_MODE_SET_RESULT = "{'action': 'schedule_mode'}\n"
 EXPECTED_CHARGES = (
     "Charge start         Charge end           Duration    Power (kW)  "
     "  Started at    Finished at    Charge gained    Power level    Status\n"
@@ -41,7 +46,27 @@ EXPECTED_CHARGING_SETTINGS_GET = (
     "Saturday   13:30         14:00       0:30:00\n"
     "Sunday     13:45         14:30       0:45:00\n"
 )
-EXPECTED_CHARGING_SETTINGS_SET = (
+EXPECTED_CHARGING_SETTINGS_SET_JSON = {
+    "data": {
+        "attributes": {
+            "schedules": [
+                {
+                    "id": 1,
+                    "activated": True,
+                    "monday": {"duration": 15, "startTime": "T12:00Z"},
+                    "tuesday": {"duration": 420, "startTime": "T04:30Z"},
+                    "wednesday": {"duration": 420, "startTime": "T22:30Z"},
+                    "thursday": {"duration": 420, "startTime": "T22:00Z"},
+                    "friday": {"duration": 480, "startTime": "T23:30Z"},
+                    "saturday": {"duration": 120, "startTime": "T18:30Z"},
+                    "sunday": {"duration": 45, "startTime": "T12:45Z"},
+                }
+            ]
+        },
+        "type": "ChargeSchedule",
+    }
+}
+EXPECTED_CHARGING_SETTINGS_SET_RESULT = (
     "{'schedules': [{'id': 1, 'activated': True, "
     "'monday': {'startTime': 'T12:00Z', 'duration': 15}, "
     "'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, "
@@ -106,7 +131,17 @@ def test_charge_mode_set(mocked_responses: aioresponses, cli_runner: CliRunner) 
     result = cli_runner.invoke(__main__.main, "charge-mode --mode schedule_mode")
     assert result.exit_code == 0, result.exception
 
-    assert EXPECTED_CHARGE_MODE_SET == result.output
+    url = (
+        fixtures.KAMEREON_BASE_URL
+        + "/"
+        + fixtures.ADAPTER_PATH
+        + "/actions/charge-mode?"
+        + fixtures.DEFAULT_QUERY_STRING
+    )
+
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    assert EXPECTED_CHARGE_MODE_SET_JSON == request.kwargs["json"]
+    assert EXPECTED_CHARGE_MODE_SET_RESULT == result.output
 
 
 def test_charges(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
@@ -150,7 +185,16 @@ def test_charging_settings_set(
     )
     assert result.exit_code == 0, result.exception
 
-    assert EXPECTED_CHARGING_SETTINGS_SET == result.output
+    url = (
+        fixtures.KAMEREON_BASE_URL
+        + "/"
+        + fixtures.ADAPTER2_PATH
+        + "/actions/charge-schedule?"
+        + fixtures.DEFAULT_QUERY_STRING
+    )
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    assert EXPECTED_CHARGING_SETTINGS_SET_JSON == request.kwargs["json"]
+    assert EXPECTED_CHARGING_SETTINGS_SET_RESULT == result.output
 
 
 def test_charging_start(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
