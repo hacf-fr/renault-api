@@ -163,18 +163,40 @@ async def test_get_notification_settings(vehicle: RenaultVehicle) -> None:
 
 
 @pytest.mark.asyncio
-async def test_get_charge_history(vehicle: RenaultVehicle) -> None:
+async def test_get_charge_history_month(vehicle: RenaultVehicle) -> None:
     """Test get_charge_history."""
     query_string = f"{QUERY_STRING}&end=202011&start=202010&type=month"
     with aioresponses() as mocked_responses:
         mocked_responses.get(
             f"{TEST_KAMEREON_VEHICLE_URL1}/charge-history?{query_string}",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/charge-history.json"),
+            body=get_file_content(
+                f"{FIXTURE_PATH}/vehicle_data/charge-history.month.json"
+            ),
         )
         assert await vehicle.get_charge_history(
             start=datetime(2020, 10, 1),
             end=datetime(2020, 11, 15),
+            period="month",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_charge_history_day(vehicle: RenaultVehicle) -> None:
+    """Test get_charge_history."""
+    query_string = f"{QUERY_STRING}&end=20201115&start=20201001&type=day"
+    with aioresponses() as mocked_responses:
+        mocked_responses.get(
+            f"{TEST_KAMEREON_VEHICLE_URL1}/charge-history?{query_string}",
+            status=200,
+            body=get_file_content(
+                f"{FIXTURE_PATH}/vehicle_data/charge-history.day.json"
+            ),
+        )
+        assert await vehicle.get_charge_history(
+            start=datetime(2020, 10, 1),
+            end=datetime(2020, 11, 15),
+            period="day",
         )
 
 
@@ -207,6 +229,7 @@ async def test_get_hvac_history(vehicle: RenaultVehicle) -> None:
         assert await vehicle.get_hvac_history(
             start=datetime(2020, 10, 1),
             end=datetime(2020, 11, 15),
+            period="month",
         )
 
 

@@ -29,7 +29,7 @@ from renault_api.gigya import GIGYA_PERSON_ID
 EXPEXTED_BATTERY_STATUS = (
     "--------------------  -------------------------\n"
     "Battery level         50 %\n"
-    "Last updated          2020-11-17 09:06:48+01:00\n"
+    "Last updated          2020-11-17 09:06:48\n"
     "Range estimate        128 km\n"
     "Plug state            PlugState.UNPLUGGED\n"
     "Charging state        ChargeState.NOT_IN_CHARGE\n"
@@ -37,7 +37,7 @@ EXPEXTED_BATTERY_STATUS = (
     "Total mileage         49114.27 km\n"
     "GPS Latitude          48.1234567\n"
     "GPS Longitude         11.1234567\n"
-    "GPS last updated      2020-02-18 16:58:38+00:00\n"
+    "GPS last updated      2020-02-18 17:58:38\n"
     "HVAC status           off\n"
     "External temperature  8.0 °C\n"
     "--------------------  -------------------------\n"

@@ -2,10 +2,12 @@
 import asyncio
 import functools
 import pathlib
+from typing import Any
 from typing import AsyncGenerator
 from typing import Generator
 
 import pytest
+import pytz
 from _pytest.monkeypatch import MonkeyPatch
 from aiohttp.client import ClientSession
 from aioresponses import aioresponses
@@ -38,6 +40,12 @@ def cli_runner(
     runner = CliRunner()
 
     monkeypatch.setattr("os.path.expanduser", lambda x: x.replace("~", str(tmpdir)))
+
+    def get_test_zone() -> Any:
+        # Get a non UTC zone. Let's use Paris.
+        return pytz.timezone("Europe/Paris")
+
+    monkeypatch.setattr("tzlocal.get_localzone", get_test_zone)
 
     yield runner
 

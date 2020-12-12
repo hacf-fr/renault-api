@@ -331,6 +331,17 @@ class ChargeDaySchedule(BaseModel):
             "duration": self.duration,
         }
 
+    def get_end_time(self) -> Optional[str]:
+        """Create dict for json."""
+        if self.startTime is None:  # pragma: no cover
+            return None
+        start_hours = int(self.startTime[1:3])
+        start_minutes = int(self.startTime[4:6])
+        total_minutes = start_hours * 60 + start_minutes + (self.duration or 0)
+        end_hours, end_minutes = divmod(total_minutes, 60)
+        end_hours = end_hours % 24
+        return f"T{end_hours:02g}:{end_minutes:02g}Z"
+
 
 @dataclass
 class ChargeSchedule(BaseModel):
@@ -348,17 +359,15 @@ class ChargeSchedule(BaseModel):
 
     def for_json(self) -> Dict[str, Any]:
         """Create dict for json."""
-        return {
+        result: Dict[str, Any] = {
             "id": self.id,
             "activated": self.activated,
-            "monday": self.monday.for_json() if self.monday else {},
-            "tuesday": self.tuesday.for_json() if self.tuesday else {},
-            "wednesday": self.wednesday.for_json() if self.wednesday else {},
-            "thursday": self.thursday.for_json() if self.thursday else {},
-            "friday": self.friday.for_json() if self.friday else {},
-            "saturday": self.saturday.for_json() if self.saturday else {},
-            "sunday": self.sunday.for_json() if self.sunday else {},
         }
+        for day in helpers.DAYS_OF_WEEK:
+            schedule: Optional[ChargeDaySchedule] = self.__dict__.get(day)
+            if schedule:  # pragma: no branch
+                result[day] = schedule.for_json()
+        return result
 
 
 @dataclass

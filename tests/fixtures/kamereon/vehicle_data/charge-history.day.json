@@ -1,0 +1,22 @@
+{
+  "data": {
+    "type": "Car",
+    "id": "VF1AAAAA555777999",
+    "attributes": {
+      "chargeSummaries": [
+        {
+          "day": "20201208",
+          "totalChargesNumber": 2,
+          "totalChargesDuration": 495,
+          "totalChargesErrors": 0
+        },
+        {
+          "day": "20201205",
+          "totalChargesNumber": 1,
+          "totalChargesDuration": 657,
+          "totalChargesErrors": 0
+        }
+      ]
+    }
+  }
+}

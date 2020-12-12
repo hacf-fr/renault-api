@@ -6,8 +6,7 @@ from typing import Dict
 
 from . import models
 
-
-_DAYS = [
+DAYS_OF_WEEK = [
     "monday",
     "tuesday",
     "wednesday",
@@ -20,7 +19,7 @@ _DAYS = [
 
 def update_schedule(schedule: models.ChargeSchedule, settings: Dict[str, Any]) -> None:
     """Update schedule."""
-    for day in _DAYS:
+    for day in DAYS_OF_WEEK:
         if day in settings.keys():
             day_settings = settings[day]
 
