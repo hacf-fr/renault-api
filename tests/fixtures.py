@@ -30,7 +30,7 @@ def inject_gigya(
     mocked_responses: aioresponses,
     urlpath: str,
     filename: str,
-) -> None:
+) -> str:
     """Inject Gigya data."""
     url = f"{TEST_GIGYA_URL}/{urlpath}"
     body = get_file_content(f"{GIGYA_FIXTURE_PATH}/{filename}")
@@ -42,29 +42,30 @@ def inject_gigya(
         body=body,
         headers={"content-type": "text/javascript"},
     )
+    return url
 
 
-def inject_gigya_login(mocked_responses: aioresponses) -> None:
+def inject_gigya_login(mocked_responses: aioresponses) -> str:
     """Inject Gigya login data."""
-    inject_gigya(
+    return inject_gigya(
         mocked_responses,
         "accounts.login",
         "login.json",
     )
 
 
-def inject_gigya_account_info(mocked_responses: aioresponses) -> None:
+def inject_gigya_account_info(mocked_responses: aioresponses) -> str:
     """Inject Gigya getAccountInfo data."""
-    inject_gigya(
+    return inject_gigya(
         mocked_responses,
         "accounts.getAccountInfo",
         "get_account_info.json",
     )
 
 
-def inject_gigya_jwt(mocked_responses: aioresponses) -> None:
+def inject_gigya_jwt(mocked_responses: aioresponses) -> str:
     """Inject Gigya getJWT data."""
-    inject_gigya(
+    return inject_gigya(
         mocked_responses,
         "accounts.getJWT",
         "get_jwt.json",
@@ -82,7 +83,7 @@ def inject_kamereon(
     mocked_responses: aioresponses,
     urlpath: str,
     filename: str,
-) -> None:
+) -> str:
     """Inject Kamereon data."""
     url = f"{KAMEREON_BASE_URL}/{urlpath}"
     body = get_file_content(f"{KAMEREON_FIXTURE_PATH}/{filename}")
@@ -91,13 +92,14 @@ def inject_kamereon(
         status=200,
         body=body,
     )
+    return url
 
 
 def inject_kamereon_action(
     mocked_responses: aioresponses,
     urlpath: str,
     filename: str,
-) -> None:
+) -> str:
     """Inject Kamereon data."""
     url = f"{KAMEREON_BASE_URL}/{urlpath}"
     body = get_file_content(f"{KAMEREON_FIXTURE_PATH}/{filename}")
@@ -106,62 +108,63 @@ def inject_kamereon_action(
         status=200,
         body=body,
     )
+    return url
 
 
-def inject_kamereon_person(mocked_responses: aioresponses) -> None:
+def inject_kamereon_person(mocked_responses: aioresponses) -> str:
     """Inject sample person."""
     urlpath = f"persons/{TEST_PERSON_ID}?{DEFAULT_QUERY_STRING}"
-    inject_kamereon(
+    return inject_kamereon(
         mocked_responses,
         urlpath,
         "person.json",
     )
 
 
-def inject_kamereon_vehicles(mocked_responses: aioresponses) -> None:
+def inject_kamereon_vehicles(mocked_responses: aioresponses) -> str:
     """Inject sample vehicles."""
     urlpath = f"accounts/{TEST_ACCOUNT_ID}/vehicles?{DEFAULT_QUERY_STRING}"
-    inject_kamereon(
+    return inject_kamereon(
         mocked_responses,
         urlpath,
         "vehicles/zoe_40.1.json",
     )
 
 
-def inject_kamereon_battery_status(mocked_responses: aioresponses) -> None:
+def inject_kamereon_battery_status(mocked_responses: aioresponses) -> str:
     """Inject sample battery-status."""
     urlpath = f"{ADAPTER2_PATH}/battery-status?{DEFAULT_QUERY_STRING}"
-    inject_kamereon(
+    return inject_kamereon(
         mocked_responses,
         urlpath,
         "vehicle_data/battery-status.1.json",
     )
 
 
-def inject_kamereon_location(mocked_responses: aioresponses) -> None:
+def inject_kamereon_location(mocked_responses: aioresponses) -> str:
     """Inject sample location."""
     urlpath = f"{ADAPTER_PATH}/location?{DEFAULT_QUERY_STRING}"
-    inject_kamereon(
+    return inject_kamereon(
         mocked_responses,
         urlpath,
         "vehicle_data/location.json",
     )
 
 
-def inject_kamereon_hvac_status(mocked_responses: aioresponses) -> None:
+def inject_kamereon_hvac_status(mocked_responses: aioresponses) -> str:
     """Inject sample hvac-status."""
     urlpath = f"{ADAPTER_PATH}/hvac-status?{DEFAULT_QUERY_STRING}"
-    inject_kamereon(
+    return inject_kamereon(
         mocked_responses,
         urlpath,
         "vehicle_data/hvac-status.json",
     )
 
 
-def inject_kamereon_charge_mode(mocked_responses: aioresponses) -> None:
+def inject_kamereon_charge_mode(mocked_responses: aioresponses) -> str:
     """Inject sample charge-mode."""
     urlpath = f"{ADAPTER_PATH}/charge-mode?{DEFAULT_QUERY_STRING}"
-    inject_kamereon(
+    return inject_kamereon(
         mocked_responses,
         urlpath,
         "vehicle_data/charge-mode.json",
@@ -170,11 +173,11 @@ def inject_kamereon_charge_mode(mocked_responses: aioresponses) -> None:
 
 def inject_kamereon_charge_history(
     mocked_responses: aioresponses, start: str, end: str, period: str
-) -> None:
+) -> str:
     """Inject sample charge-history."""
     query_string = f"{DEFAULT_QUERY_STRING}&end={end}&start={start}&type={period}"
     urlpath = f"{ADAPTER_PATH}/charge-history?{query_string}"
-    inject_kamereon(
+    return inject_kamereon(
         mocked_responses,
         urlpath,
         f"vehicle_data/charge-history.{period}.json",
@@ -183,31 +186,31 @@ def inject_kamereon_charge_history(
 
 def inject_kamereon_charges(
     mocked_responses: aioresponses, start: str, end: str
-) -> None:
+) -> str:
     """Inject sample charges."""
     query_string = f"{DEFAULT_QUERY_STRING}&end={end}&start={start}"
     urlpath = f"{ADAPTER_PATH}/charges?{query_string}"
-    inject_kamereon(
+    return inject_kamereon(
         mocked_responses,
         urlpath,
         "vehicle_data/charges.json",
     )
 
 
-def inject_kamereon_charging_settings(mocked_responses: aioresponses) -> None:
+def inject_kamereon_charging_settings(mocked_responses: aioresponses) -> str:
     """Inject sample charges."""
     urlpath = f"{ADAPTER_PATH}/charging-settings?{DEFAULT_QUERY_STRING}"
-    inject_kamereon(
+    return inject_kamereon(
         mocked_responses,
         urlpath,
         "vehicle_data/charging-settings.json",
     )
 
 
-def inject_kamereon_cockpit(mocked_responses: aioresponses) -> None:
+def inject_kamereon_cockpit(mocked_responses: aioresponses) -> str:
     """Inject sample cockpit."""
     urlpath = f"{ADAPTER2_PATH}/cockpit?{DEFAULT_QUERY_STRING}"
-    inject_kamereon(
+    return inject_kamereon(
         mocked_responses,
         urlpath,
         "vehicle_data/cockpit.zoe.json",
@@ -216,30 +219,30 @@ def inject_kamereon_cockpit(mocked_responses: aioresponses) -> None:
 
 def inject_kamereon_action_charge_mode(
     mocked_responses: aioresponses, mode: str
-) -> None:
+) -> str:
     """Inject sample charge-mode."""
     urlpath = f"{ADAPTER_PATH}/actions/charge-mode?{DEFAULT_QUERY_STRING}"
-    inject_kamereon_action(
+    return inject_kamereon_action(
         mocked_responses,
         urlpath,
         f"vehicle_action/charge-mode.{mode}.json",
     )
 
 
-def inject_kamereon_action_charge_schedule(mocked_responses: aioresponses) -> None:
+def inject_kamereon_action_charge_schedule(mocked_responses: aioresponses) -> str:
     """Inject sample charge-schedule."""
     urlpath = f"{ADAPTER2_PATH}/actions/charge-schedule?{DEFAULT_QUERY_STRING}"
-    inject_kamereon_action(
+    return inject_kamereon_action(
         mocked_responses,
         urlpath,
         "vehicle_action/charge-schedule.schedules.json",
     )
 
 
-def inject_kamereon_action_charging_start(mocked_responses: aioresponses) -> None:
+def inject_kamereon_action_charging_start(mocked_responses: aioresponses) -> str:
     """Inject sample charge-mode."""
     urlpath = f"{ADAPTER_PATH}/actions/charging-start?{DEFAULT_QUERY_STRING}"
-    inject_kamereon_action(
+    return inject_kamereon_action(
         mocked_responses,
         urlpath,
         "vehicle_action/charging-start.start.json",
