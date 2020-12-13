@@ -9,7 +9,7 @@ from renault_api.kamereon import models
 from renault_api.kamereon import schemas
 
 
-FIXTURE_PATH = "tests/fixtures/kamereon/vehicle_data"
+FIXTURE_PATH = f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data"
 
 
 @pytest.mark.parametrize("filename", fixtures.get_json_files(FIXTURE_PATH))

@@ -7,7 +7,7 @@ from renault_api.gigya import models
 from renault_api.gigya import schemas
 
 
-FIXTURE_PATH = f"{fixtures.GIGYA_FIXTURE_PATH}/errors"
+FIXTURE_PATH = f"{fixtures.GIGYA_FIXTURE_PATH}/error"
 
 
 @pytest.mark.parametrize("filename", fixtures.get_json_files(FIXTURE_PATH))

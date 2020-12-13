@@ -12,7 +12,7 @@ from tests.const import TEST_VIN
 
 from renault_api import kamereon
 
-FIXTURE_PATH = "tests/fixtures/kamereon/"
+FIXTURE_PATH = fixtures.KAMEREON_FIXTURE_PATH
 
 TEST_JWT = fixtures.get_jwt()
 TEST_KAMEREON_BASE_URL = f"{TEST_KAMEREON_URL}/commerce/v1"

@@ -22,8 +22,6 @@ from renault_api.gigya import GIGYA_JWT
 from renault_api.gigya import GIGYA_LOGIN_TOKEN
 from renault_api.renault_session import RenaultSession
 
-FIXTURE_PATH = "tests/fixtures/gigya/"
-
 
 def get_logged_in_session(
     websession: aiohttp.ClientSession,
@@ -168,21 +166,23 @@ async def test_login(session: RenaultSession) -> None:
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.login",
             status=200,
-            body=fixtures.get_file_content(f"{FIXTURE_PATH}/login.json"),
+            body=fixtures.get_file_content(f"{fixtures.GIGYA_FIXTURE_PATH}/login.json"),
             headers={"content-type": "text/javascript"},
         )
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.getAccountInfo",
             status=200,
-            body=fixtures.get_file_content(f"{FIXTURE_PATH}/get_account_info.json"),
+            body=fixtures.get_file_content(
+                f"{fixtures.GIGYA_FIXTURE_PATH}/get_account_info.json"
+            ),
             headers={"content-type": "text/javascript"},
         )
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.getJWT",
             status=200,
-            body=fixtures.get_file_content(f"{FIXTURE_PATH}/get_jwt.json").replace(
-                "sample-jwt-token", fixtures.get_jwt()
-            ),
+            body=fixtures.get_file_content(
+                f"{fixtures.GIGYA_FIXTURE_PATH}/get_jwt.json"
+            ).replace("sample-jwt-token", fixtures.get_jwt()),
             headers={"content-type": "text/javascript"},
         )
 
@@ -212,7 +212,7 @@ async def test_expired_login_token(websession: aiohttp.ClientSession) -> None:
             f"{TEST_GIGYA_URL}/accounts.getJWT",
             status=200,
             body=fixtures.get_file_content(
-                f"{FIXTURE_PATH}/errors/get_jwt.403005.json"
+                f"{fixtures.GIGYA_FIXTURE_PATH}/error/get_jwt.403005.json"
             ),
             headers={"content-type": "text/javascript"},
         )

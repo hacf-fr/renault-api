@@ -15,8 +15,8 @@ from tests.const import TEST_KAMEREON_URL
 from tests.const import TEST_PERSON_ID
 from tests.const import TEST_VIN
 
-GIGYA_FIXTURE_PATH = "tests/fixtures/gigya/"
-KAMEREON_FIXTURE_PATH = "tests/fixtures/kamereon/"
+GIGYA_FIXTURE_PATH = "tests/fixtures/gigya"
+KAMEREON_FIXTURE_PATH = "tests/fixtures/kamereon"
 
 DEFAULT_QUERY_STRING = f"country={TEST_COUNTRY}"
 KAMEREON_BASE_URL = f"{TEST_KAMEREON_URL}/commerce/v1"
