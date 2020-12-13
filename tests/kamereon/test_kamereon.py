@@ -2,8 +2,7 @@
 import aiohttp
 import pytest
 from aioresponses import aioresponses
-from tests import get_file_content
-from tests import get_jwt
+from tests import fixtures
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
 from tests.const import TEST_KAMEREON_APIKEY
@@ -15,7 +14,7 @@ from renault_api import kamereon
 
 FIXTURE_PATH = "tests/fixtures/kamereon/"
 
-TEST_JWT = get_jwt()
+TEST_JWT = fixtures.get_jwt()
 TEST_KAMEREON_BASE_URL = f"{TEST_KAMEREON_URL}/commerce/v1"
 TEST_KAMEREON_ACCOUNT_URL = f"{TEST_KAMEREON_BASE_URL}/accounts/{TEST_ACCOUNT_ID}"
 TEST_KAMEREON_VEHICLE_URL1 = (
@@ -35,7 +34,7 @@ async def test_get_person(websession: aiohttp.ClientSession) -> None:
         mocked_responses.get(
             f"{TEST_KAMEREON_BASE_URL}/persons/{TEST_PERSON_ID}?{QUERY_STRING}",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/person.json"),
+            body=fixtures.get_file_content(f"{FIXTURE_PATH}/person.json"),
         )
         person = await kamereon.get_person(
             websession=websession,
@@ -55,7 +54,7 @@ async def test_get_account_vehicles(websession: aiohttp.ClientSession) -> None:
         mocked_responses.get(
             f"{TEST_KAMEREON_ACCOUNT_URL}/vehicles?{QUERY_STRING}",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicles/zoe_40.1.json"),
+            body=fixtures.get_file_content(f"{FIXTURE_PATH}/vehicles/zoe_40.1.json"),
         )
         await kamereon.get_account_vehicles(
             websession=websession,
@@ -74,7 +73,9 @@ async def test_get_vehicle_data(websession: aiohttp.ClientSession) -> None:
         mocked_responses.get(
             f"{TEST_KAMEREON_VEHICLE_URL2}/battery-status?{QUERY_STRING}",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/battery-status.1.json"),
+            body=fixtures.get_file_content(
+                f"{FIXTURE_PATH}/vehicle_data/battery-status.1.json"
+            ),
         )
         assert await kamereon.get_vehicle_data(
             websession=websession,
@@ -95,7 +96,7 @@ async def test_set_vehicle_action(websession: aiohttp.ClientSession) -> None:
         mocked_responses.post(
             f"{TEST_KAMEREON_VEHICLE_URL1}/actions/hvac-start?{QUERY_STRING}",
             status=200,
-            body=get_file_content(
+            body=fixtures.get_file_content(
                 f"{FIXTURE_PATH}/vehicle_action/hvac-start.cancel.json"
             ),
         )

@@ -2,7 +2,7 @@
 import aiohttp
 import pytest
 from aioresponses import aioresponses
-from tests import get_file_content
+from tests import fixtures
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
 from tests.const import TEST_KAMEREON_URL
@@ -48,7 +48,7 @@ async def test_get_person(client: RenaultClient) -> None:
         mocked_responses.get(
             f"{TEST_KAMEREON_BASE_URL}/persons/{TEST_PERSON_ID}?{QUERY_STRING}",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/person.json"),
+            body=fixtures.get_file_content(f"{FIXTURE_PATH}/person.json"),
         )
         person = await client.get_person()
         assert len(person.accounts) == 2
@@ -61,7 +61,7 @@ async def test_get_api_accounts(client: RenaultClient) -> None:
         mocked_responses.get(
             f"{TEST_KAMEREON_BASE_URL}/persons/{TEST_PERSON_ID}?{QUERY_STRING}",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/person.json"),
+            body=fixtures.get_file_content(f"{FIXTURE_PATH}/person.json"),
         )
         accounts = await client.get_api_accounts()
         assert len(accounts) == 2

@@ -5,7 +5,6 @@ from locale import getdefaultlocale
 from aioresponses import aioresponses
 from click.testing import CliRunner
 from tests import fixtures
-from tests import get_jwt
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_LOCALE
 from tests.const import TEST_LOGIN_TOKEN
@@ -82,7 +81,7 @@ def test_list_vehicles_store(
     credential_store[CONF_ACCOUNT_ID] = Credential(TEST_ACCOUNT_ID)
     credential_store[GIGYA_LOGIN_TOKEN] = Credential(TEST_LOGIN_TOKEN)
     credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
-    credential_store[GIGYA_JWT] = JWTCredential(get_jwt())
+    credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
     fixtures.inject_kamereon_vehicles(mocked_responses)
 
@@ -105,7 +104,7 @@ def test_list_vehicles_no_prompt(
     credential_store[CONF_LOCALE] = Credential(TEST_LOCALE)
     credential_store[GIGYA_LOGIN_TOKEN] = Credential(TEST_LOGIN_TOKEN)
     credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
-    credential_store[GIGYA_JWT] = JWTCredential(get_jwt())
+    credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
     fixtures.inject_kamereon_vehicles(mocked_responses)
 

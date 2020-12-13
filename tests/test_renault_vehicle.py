@@ -7,7 +7,7 @@ import aiohttp
 import pytest
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall  # type:ignore
-from tests import get_file_content
+from tests import fixtures
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
 from tests.const import TEST_KAMEREON_URL
@@ -69,7 +69,9 @@ async def test_get_battery_status(vehicle: RenaultVehicle) -> None:
         mocked_responses.get(
             f"{TEST_KAMEREON_VEHICLE_URL2}/battery-status?{QUERY_STRING}",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/battery-status.1.json"),
+            body=fixtures.get_file_content(
+                f"{FIXTURE_PATH}/vehicle_data/battery-status.1.json"
+            ),
         )
         assert await vehicle.get_battery_status()
 
@@ -81,7 +83,9 @@ async def test_get_location(vehicle: RenaultVehicle) -> None:
         mocked_responses.get(
             f"{TEST_KAMEREON_VEHICLE_URL1}/location?{QUERY_STRING}",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/location.json"),
+            body=fixtures.get_file_content(
+                f"{FIXTURE_PATH}/vehicle_data/location.json"
+            ),
         )
         assert await vehicle.get_location()
 
@@ -93,7 +97,9 @@ async def test_get_hvac_status(vehicle: RenaultVehicle) -> None:
         mocked_responses.get(
             f"{TEST_KAMEREON_VEHICLE_URL1}/hvac-status?{QUERY_STRING}",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/hvac-status.json"),
+            body=fixtures.get_file_content(
+                f"{FIXTURE_PATH}/vehicle_data/hvac-status.json"
+            ),
         )
         assert await vehicle.get_hvac_status()
 
@@ -105,7 +111,9 @@ async def test_get_charge_mode(vehicle: RenaultVehicle) -> None:
         mocked_responses.get(
             f"{TEST_KAMEREON_VEHICLE_URL1}/charge-mode?{QUERY_STRING}",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/charge-mode.json"),
+            body=fixtures.get_file_content(
+                f"{FIXTURE_PATH}/vehicle_data/charge-mode.json"
+            ),
         )
         assert await vehicle.get_charge_mode()
 
@@ -117,7 +125,9 @@ async def test_get_cockpit(vehicle: RenaultVehicle) -> None:
         mocked_responses.get(
             f"{TEST_KAMEREON_VEHICLE_URL2}/cockpit?{QUERY_STRING}",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/cockpit.zoe.json"),
+            body=fixtures.get_file_content(
+                f"{FIXTURE_PATH}/vehicle_data/cockpit.zoe.json"
+            ),
         )
         assert await vehicle.get_cockpit()
 
@@ -129,7 +139,9 @@ async def test_get_lock_status(vehicle: RenaultVehicle) -> None:
         mocked_responses.get(
             f"{TEST_KAMEREON_VEHICLE_URL1}/lock-status?{QUERY_STRING}",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/lock-status.json"),
+            body=fixtures.get_file_content(
+                f"{FIXTURE_PATH}/vehicle_data/lock-status.json"
+            ),
         )
         assert await vehicle.get_lock_status()
 
@@ -141,7 +153,7 @@ async def test_get_charging_settings(vehicle: RenaultVehicle) -> None:
         mocked_responses.get(
             f"{TEST_KAMEREON_VEHICLE_URL1}/charging-settings?{QUERY_STRING}",
             status=200,
-            body=get_file_content(
+            body=fixtures.get_file_content(
                 f"{FIXTURE_PATH}/vehicle_data/charging-settings.json"
             ),
         )
@@ -155,7 +167,7 @@ async def test_get_notification_settings(vehicle: RenaultVehicle) -> None:
         mocked_responses.get(
             f"{TEST_KAMEREON_VEHICLE_URL1}/notification-settings?{QUERY_STRING}",
             status=200,
-            body=get_file_content(
+            body=fixtures.get_file_content(
                 f"{FIXTURE_PATH}/vehicle_data/notification-settings.json"
             ),
         )
@@ -170,7 +182,7 @@ async def test_get_charge_history_month(vehicle: RenaultVehicle) -> None:
         mocked_responses.get(
             f"{TEST_KAMEREON_VEHICLE_URL1}/charge-history?{query_string}",
             status=200,
-            body=get_file_content(
+            body=fixtures.get_file_content(
                 f"{FIXTURE_PATH}/vehicle_data/charge-history.month.json"
             ),
         )
@@ -189,7 +201,7 @@ async def test_get_charge_history_day(vehicle: RenaultVehicle) -> None:
         mocked_responses.get(
             f"{TEST_KAMEREON_VEHICLE_URL1}/charge-history?{query_string}",
             status=200,
-            body=get_file_content(
+            body=fixtures.get_file_content(
                 f"{FIXTURE_PATH}/vehicle_data/charge-history.day.json"
             ),
         )
@@ -208,7 +220,7 @@ async def test_get_charges(vehicle: RenaultVehicle) -> None:
         mocked_responses.get(
             f"{TEST_KAMEREON_VEHICLE_URL1}/charges?{query_string}",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/charges.json"),
+            body=fixtures.get_file_content(f"{FIXTURE_PATH}/vehicle_data/charges.json"),
         )
         assert await vehicle.get_charges(
             start=datetime(2020, 10, 1),
@@ -224,7 +236,9 @@ async def test_get_hvac_history(vehicle: RenaultVehicle) -> None:
         mocked_responses.get(
             f"{TEST_KAMEREON_VEHICLE_URL1}/hvac-history?{query_string}",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/hvac-history.json"),
+            body=fixtures.get_file_content(
+                f"{FIXTURE_PATH}/vehicle_data/hvac-history.json"
+            ),
         )
         assert await vehicle.get_hvac_history(
             start=datetime(2020, 10, 1),
@@ -241,7 +255,9 @@ async def test_get_hvac_sessions(vehicle: RenaultVehicle) -> None:
         mocked_responses.get(
             f"{TEST_KAMEREON_VEHICLE_URL1}/hvac-sessions?{query_string}",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/hvac-sessions.json"),
+            body=fixtures.get_file_content(
+                f"{FIXTURE_PATH}/vehicle_data/hvac-sessions.json"
+            ),
         )
         assert await vehicle.get_hvac_sessions(
             start=datetime(2020, 10, 1),
@@ -257,7 +273,7 @@ async def test_set_ac_start(vehicle: RenaultVehicle) -> None:
         mocked_responses.post(
             url,
             status=200,
-            body=get_file_content(
+            body=fixtures.get_file_content(
                 f"{FIXTURE_PATH}/vehicle_action/hvac-start.start.json"
             ),
         )
@@ -285,7 +301,7 @@ async def test_set_ac_stop(vehicle: RenaultVehicle) -> None:
         mocked_responses.post(
             url,
             status=200,
-            body=get_file_content(
+            body=fixtures.get_file_content(
                 f"{FIXTURE_PATH}/vehicle_action/hvac-start.cancel.json"
             ),
         )
@@ -304,7 +320,7 @@ async def test_set_charge_mode(vehicle: RenaultVehicle) -> None:
         mocked_responses.post(
             url,
             status=200,
-            body=get_file_content(
+            body=fixtures.get_file_content(
                 f"{FIXTURE_PATH}/vehicle_action/charge-mode.schedule_mode.json"
             ),
         )
@@ -324,7 +340,7 @@ async def test_set_charge_schedules(vehicle: RenaultVehicle) -> None:
         mocked_responses.post(
             url,
             status=200,
-            body=get_file_content(
+            body=fixtures.get_file_content(
                 f"{FIXTURE_PATH}/vehicle_action/charge-schedule.schedules.json"
             ),
         )
@@ -343,7 +359,7 @@ async def test_set_charge_start(vehicle: RenaultVehicle) -> None:
         mocked_responses.post(
             url,
             status=200,
-            body=get_file_content(
+            body=fixtures.get_file_content(
                 f"{FIXTURE_PATH}/vehicle_action/charging-start.start.json"
             ),
         )

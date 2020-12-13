@@ -2,7 +2,7 @@
 import aiohttp
 import pytest
 from aioresponses import aioresponses
-from tests import get_file_content
+from tests import fixtures
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
 from tests.const import TEST_KAMEREON_URL
@@ -53,7 +53,7 @@ async def test_get_vehicles(account: RenaultAccount) -> None:
         mocked_responses.get(
             f"{TEST_KAMEREON_ACCOUNT_URL}/vehicles?{QUERY_STRING}",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicles/zoe_40.1.json"),
+            body=fixtures.get_file_content(f"{FIXTURE_PATH}/vehicles/zoe_40.1.json"),
         )
         await account.get_vehicles()
 
@@ -65,7 +65,7 @@ async def test_get_api_vehicles(account: RenaultAccount) -> None:
         mocked_responses.get(
             f"{TEST_KAMEREON_ACCOUNT_URL}/vehicles?{QUERY_STRING}",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicles/zoe_40.1.json"),
+            body=fixtures.get_file_content(f"{FIXTURE_PATH}/vehicles/zoe_40.1.json"),
         )
         await account.get_api_vehicles()
 

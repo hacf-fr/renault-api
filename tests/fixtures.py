@@ -1,6 +1,13 @@
 """Test suite for the renault_api package."""
+import datetime
+from glob import glob
+from typing import Any
+from typing import List
+from typing import Optional
+
+import jwt
 from aioresponses import aioresponses
-from tests import get_jwt
+from marshmallow.schema import Schema
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
 from tests.const import TEST_GIGYA_URL
@@ -19,11 +26,34 @@ ADAPTER_PATH = f"{ACCOUNT_PATH}/kamereon/kca/car-adapter/v1/cars/{TEST_VIN}"
 ADAPTER2_PATH = f"{ACCOUNT_PATH}/kamereon/kca/car-adapter/v2/cars/{TEST_VIN}"
 
 
+def get_jwt(timedelta: Optional[datetime.timedelta] = None) -> str:
+    """Read fixture text file as string."""
+    if not timedelta:
+        timedelta = datetime.timedelta(seconds=900)
+    return jwt.encode(
+        payload={"exp": datetime.datetime.utcnow() + timedelta},
+        key="mock",
+        algorithm="HS256",
+    ).decode("utf-8")
+
+
+def get_json_files(parent_dir: str) -> List[str]:
+    """Read fixture text file as string."""
+    return glob(f"{parent_dir}/*.json")
+
+
 def get_file_content(filename: str) -> str:
     """Read fixture text file as string."""
     with open(filename, "r") as file:
         content = file.read()
     return content
+
+
+def get_file_content_as_schema(filename: str, schema: Schema) -> Any:
+    """Read fixture text file as specified schema."""
+    with open(filename, "r") as file:
+        content = file.read()
+    return schema.loads(content)
 
 
 def inject_gigya(

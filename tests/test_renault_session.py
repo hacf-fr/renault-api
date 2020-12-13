@@ -4,7 +4,7 @@ from typing import cast
 import aiohttp
 import pytest
 from aioresponses import aioresponses
-from tests import get_file_content
+from tests import fixtures
 from tests.const import TEST_COUNTRY
 from tests.const import TEST_GIGYA_URL
 from tests.const import TEST_LOCALE
@@ -168,19 +168,21 @@ async def test_login(session: RenaultSession) -> None:
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.login",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/login.json"),
+            body=fixtures.get_file_content(f"{FIXTURE_PATH}/login.json"),
             headers={"content-type": "text/javascript"},
         )
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.getAccountInfo",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/get_account_info.json"),
+            body=fixtures.get_file_content(f"{FIXTURE_PATH}/get_account_info.json"),
             headers={"content-type": "text/javascript"},
         )
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.getJWT",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/get_jwt.json"),
+            body=fixtures.get_file_content(f"{FIXTURE_PATH}/get_jwt.json").replace(
+                "sample-jwt-token", fixtures.get_jwt()
+            ),
             headers={"content-type": "text/javascript"},
         )
 
@@ -209,7 +211,9 @@ async def test_expired_login_token(websession: aiohttp.ClientSession) -> None:
         mocked_responses.post(
             f"{TEST_GIGYA_URL}/accounts.getJWT",
             status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/errors/get_jwt.403005.json"),
+            body=fixtures.get_file_content(
+                f"{FIXTURE_PATH}/errors/get_jwt.403005.json"
+            ),
             headers={"content-type": "text/javascript"},
         )
 

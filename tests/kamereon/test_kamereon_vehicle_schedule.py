@@ -1,7 +1,7 @@
 """Tests for Kamereon models."""
 from typing import cast
 
-from tests import get_response_content
+from tests import fixtures
 
 from renault_api.kamereon import models
 from renault_api.kamereon import schemas
@@ -17,7 +17,7 @@ TEST_UPDATE = {
 
 def test_for_json() -> None:
     """Test for updating charge settings."""
-    response: models.KamereonVehicleDataResponse = get_response_content(
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
         f"{FIXTURE_PATH}/charging-settings.json",
         schemas.KamereonVehicleDataResponseSchema,
     )

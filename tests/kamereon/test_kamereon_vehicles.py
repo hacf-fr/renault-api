@@ -1,7 +1,6 @@
 """Tests for Kamereon models."""
 import pytest
-from tests import get_json_files
-from tests import get_response_content
+from tests import fixtures
 
 from renault_api.kamereon import models
 from renault_api.kamereon import schemas
@@ -10,10 +9,10 @@ from renault_api.kamereon import schemas
 FIXTURE_PATH = "tests/fixtures/kamereon/vehicles"
 
 
-@pytest.mark.parametrize("filename", get_json_files(FIXTURE_PATH))
+@pytest.mark.parametrize("filename", fixtures.get_json_files(FIXTURE_PATH))
 def test_vehicles_response(filename: str) -> None:
     """Test vehicles list response."""
-    response: models.KamereonVehiclesResponse = get_response_content(
+    response: models.KamereonVehiclesResponse = fixtures.get_file_content_as_schema(
         filename, schemas.KamereonVehiclesResponseSchema
     )
     response.raise_for_error_code()
@@ -40,7 +39,7 @@ def test_vehicles_response(filename: str) -> None:
 
 def test_zoe40_1() -> None:
     """Test vehicle details for zoe_40.1.json."""
-    response: models.KamereonVehiclesResponse = get_response_content(
+    response: models.KamereonVehiclesResponse = fixtures.get_file_content_as_schema(
         f"{FIXTURE_PATH}/zoe_40.1.json", schemas.KamereonVehiclesResponseSchema
     )
     vehicle_details = response.vehicleLinks[0].vehicleDetails
@@ -56,7 +55,7 @@ def test_zoe40_1() -> None:
 
 def test_zoe40_2() -> None:
     """Test vehicle details for zoe_40.2.json."""
-    response: models.KamereonVehiclesResponse = get_response_content(
+    response: models.KamereonVehiclesResponse = fixtures.get_file_content_as_schema(
         f"{FIXTURE_PATH}/zoe_40.2.json", schemas.KamereonVehiclesResponseSchema
     )
     vehicle_details = response.vehicleLinks[0].vehicleDetails
@@ -72,7 +71,7 @@ def test_zoe40_2() -> None:
 
 def test_capturii_1() -> None:
     """Test vehicle details for captur_ii.1.json."""
-    response: models.KamereonVehiclesResponse = get_response_content(
+    response: models.KamereonVehiclesResponse = fixtures.get_file_content_as_schema(
         f"{FIXTURE_PATH}/captur_ii.1.json", schemas.KamereonVehiclesResponseSchema
     )
     vehicle_details = response.vehicleLinks[0].vehicleDetails
