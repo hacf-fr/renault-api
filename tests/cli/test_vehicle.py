@@ -26,7 +26,7 @@ from renault_api.gigya import GIGYA_JWT
 from renault_api.gigya import GIGYA_LOGIN_TOKEN
 from renault_api.gigya import GIGYA_PERSON_ID
 
-EXPEXTED_BATTERY_STATUS = (
+EXPECTED_BATTERY_STATUS = (
     "--------------------  -------------------------\n"
     "Battery level         50 %\n"
     "Last updated          2020-11-17 09:06:48\n"
@@ -93,7 +93,7 @@ def test_vehicle_status_prompt(
         "Please select vehicle [1]: 1\n"
         "Do you want to save the VIN to the credential store? [y/N]: y\n"
         "\n"
-        f"{EXPEXTED_BATTERY_STATUS}"
+        f"{EXPECTED_BATTERY_STATUS}"
     )
     assert expected_output == result.output
 
@@ -115,7 +115,7 @@ def test_vehicle_status_store(
     result = cli_runner.invoke(__main__.main, "status")
     assert result.exit_code == 0, result.exception
 
-    assert EXPEXTED_BATTERY_STATUS == result.output
+    assert EXPECTED_BATTERY_STATUS == result.output
 
 
 def test_vehicle_status_no_prompt(
@@ -135,4 +135,4 @@ def test_vehicle_status_no_prompt(
     )
     assert result.exit_code == 0, result.exception
 
-    assert EXPEXTED_BATTERY_STATUS == result.output
+    assert EXPECTED_BATTERY_STATUS == result.output
