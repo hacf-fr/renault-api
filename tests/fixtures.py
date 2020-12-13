@@ -279,6 +279,16 @@ def inject_kamereon_action_charging_start(mocked_responses: aioresponses) -> str
     )
 
 
+def inject_kamereon_action_hvac_cancel(mocked_responses: aioresponses) -> str:
+    """Inject sample hvac-start(cancel)."""
+    urlpath = f"{ADAPTER_PATH}/actions/hvac-start?{DEFAULT_QUERY_STRING}"
+    return inject_kamereon_action(
+        mocked_responses,
+        urlpath,
+        "vehicle_action/hvac-start.cancel.json",
+    )
+
+
 def inject_vehicle_status(mocked_responses: aioresponses) -> None:
     """Inject Kamereon vehicle status data."""
     inject_kamereon_battery_status(mocked_responses)
