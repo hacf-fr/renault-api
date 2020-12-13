@@ -53,7 +53,9 @@ async def test_preload_force_api_keys(websession: ClientSession, locale: str) ->
 
 
 @pytest.mark.asyncio
-async def test_preload_unknown_api_keys(websession: ClientSession) -> None:
+async def test_preload_unknown_api_keys(
+    websession: ClientSession, mocked_responses: aioresponses
+) -> None:
     """Ensure is able to parse a known known."""
     expected_api_keys = AVAILABLE_LOCALES["fr_FR"]
 
@@ -62,23 +64,23 @@ async def test_preload_unknown_api_keys(websession: ClientSession) -> None:
     with open("tests/fixtures/config_sample.txt", "r") as f:
         fake_body = f.read()
 
-    with aioresponses() as mocked_responses:
-        mocked_responses.get(fake_url, status=200, body=fake_body)
+    mocked_responses.get(fake_url, status=200, body=fake_body)
 
-        api_keys = await get_api_keys(fake_locale, websession=websession)
+    api_keys = await get_api_keys(fake_locale, websession=websession)
 
-        assert api_keys == expected_api_keys
+    assert api_keys == expected_api_keys
 
 
 @pytest.mark.asyncio
-async def test_preload_invalid_api_keys(websession: ClientSession) -> None:
+async def test_preload_invalid_api_keys(
+    websession: ClientSession, mocked_responses: aioresponses
+) -> None:
     """Ensure is able to parse an invalid locale."""
     fake_locale = "fake"
     fake_url = f"{LOCALE_BASE_URL}/configuration/android/config_{fake_locale}.json"
 
-    with aioresponses() as mocked_responses:
-        mocked_responses.get(fake_url, status=404)
+    mocked_responses.get(fake_url, status=404)
 
-        with pytest.raises(RenaultException) as excinfo:
-            await get_api_keys(fake_locale, websession=websession)
-        assert "Locale not found on Renault server" in str(excinfo)
+    with pytest.raises(RenaultException) as excinfo:
+        await get_api_keys(fake_locale, websession=websession)
+    assert "Locale not found on Renault server" in str(excinfo)
