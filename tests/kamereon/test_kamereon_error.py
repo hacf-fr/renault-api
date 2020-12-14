@@ -1,20 +1,18 @@
 """Tests for Kamereon models."""
 import pytest
-from tests import get_json_files
-from tests import get_response_content
+from tests import fixtures
 
 from renault_api.kamereon import exceptions
 from renault_api.kamereon import models
 from renault_api.kamereon import schemas
 
 
-FIXTURE_PATH = "tests/fixtures/kamereon/error"
-
-
-@pytest.mark.parametrize("filename", get_json_files(FIXTURE_PATH))
+@pytest.mark.parametrize(
+    "filename", fixtures.get_json_files(f"{fixtures.KAMEREON_FIXTURE_PATH}/error")
+)
 def test_vehicle_error_response(filename: str) -> None:
     """Test vehicle error response."""
-    response: models.KamereonVehicleDataResponse = get_response_content(
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
         filename, schemas.KamereonVehicleDataResponseSchema
     )
     with pytest.raises(exceptions.KamereonResponseException):
@@ -24,8 +22,8 @@ def test_vehicle_error_response(filename: str) -> None:
 
 def test_vehicle_error_quota_limit() -> None:
     """Test vehicle quota_limit response."""
-    response: models.KamereonVehicleDataResponse = get_response_content(
-        f"{FIXTURE_PATH}/quota_limit.json",
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/error/quota_limit.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     with pytest.raises(exceptions.QuotaLimitException) as excinfo:
@@ -36,8 +34,8 @@ def test_vehicle_error_quota_limit() -> None:
 
 def test_vehicle_error_invalid_date() -> None:
     """Test vehicle invalid_date response."""
-    response: models.KamereonVehicleDataResponse = get_response_content(
-        f"{FIXTURE_PATH}/invalid_date.json",
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/error/invalid_date.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     with pytest.raises(exceptions.InvalidInputException) as excinfo:
@@ -51,8 +49,8 @@ def test_vehicle_error_invalid_date() -> None:
 
 def test_vehicle_error_invalid_upstream() -> None:
     """Test vehicle invalid_upstream response."""
-    response: models.KamereonVehicleDataResponse = get_response_content(
-        f"{FIXTURE_PATH}/invalid_upstream.json",
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/error/invalid_upstream.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     with pytest.raises(exceptions.InvalidUpstreamException) as excinfo:
@@ -67,8 +65,8 @@ def test_vehicle_error_invalid_upstream() -> None:
 
 def test_vehicle_error_not_supported() -> None:
     """Test vehicle not_supported response."""
-    response: models.KamereonVehicleDataResponse = get_response_content(
-        f"{FIXTURE_PATH}/not_supported.json",
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/error/not_supported.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     with pytest.raises(exceptions.NotSupportedException) as excinfo:
@@ -82,8 +80,8 @@ def test_vehicle_error_not_supported() -> None:
 
 def test_vehicle_error_resource_not_found() -> None:
     """Test vehicle resource_not_found response."""
-    response: models.KamereonVehicleDataResponse = get_response_content(
-        f"{FIXTURE_PATH}/resource_not_found.json",
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/error/resource_not_found.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     with pytest.raises(exceptions.ResourceNotFoundException) as excinfo:
@@ -94,8 +92,8 @@ def test_vehicle_error_resource_not_found() -> None:
 
 def test_vehicle_error_access_denied() -> None:
     """Test vehicle access_denied response."""
-    response: models.KamereonVehicleDataResponse = get_response_content(
-        f"{FIXTURE_PATH}/access_denied.json",
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/error/access_denied.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     with pytest.raises(exceptions.AccessDeniedException) as excinfo:

@@ -25,7 +25,7 @@ async def websession() -> AsyncGenerator[ClientSession, None]:
         await closed_event.wait()
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def mocked_responses() -> aioresponses:
     """Fixture for mocking aiohttp responses."""
     with aioresponses() as m:

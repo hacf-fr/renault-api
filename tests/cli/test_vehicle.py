@@ -5,7 +5,6 @@ from locale import getdefaultlocale
 from aioresponses import aioresponses
 from click.testing import CliRunner
 from tests import fixtures
-from tests import get_jwt
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_LOCALE
 from tests.const import TEST_LOGIN_TOKEN
@@ -26,7 +25,7 @@ from renault_api.gigya import GIGYA_JWT
 from renault_api.gigya import GIGYA_LOGIN_TOKEN
 from renault_api.gigya import GIGYA_PERSON_ID
 
-EXPEXTED_BATTERY_STATUS = (
+EXPECTED_BATTERY_STATUS = (
     "--------------------  -------------------------\n"
     "Battery level         50 %\n"
     "Last updated          2020-11-17 09:06:48\n"
@@ -49,19 +48,19 @@ def test_vehicle_status_prompt(
 ) -> None:
     """It exits with a status code of zero."""
     fixtures.inject_gigya_all(mocked_responses)
-    fixtures.inject_kamereon_person(mocked_responses)
+    fixtures.inject_get_person(mocked_responses)
 
     # Injected for account selection
-    fixtures.inject_kamereon_vehicles(mocked_responses)
+    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1")
     vehicle2_urlpath = f"accounts/account-id-2/vehicles?{fixtures.DEFAULT_QUERY_STRING}"
-    fixtures.inject_kamereon(
+    fixtures.inject_data(
         mocked_responses,
         vehicle2_urlpath,
         "vehicles/zoe_40.1.json",
     )
 
     # Injected again for vehicle selection
-    fixtures.inject_kamereon_vehicles(mocked_responses)
+    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1")
     fixtures.inject_vehicle_status(mocked_responses)
 
     result = cli_runner.invoke(
@@ -93,7 +92,7 @@ def test_vehicle_status_prompt(
         "Please select vehicle [1]: 1\n"
         "Do you want to save the VIN to the credential store? [y/N]: y\n"
         "\n"
-        f"{EXPEXTED_BATTERY_STATUS}"
+        f"{EXPECTED_BATTERY_STATUS}"
     )
     assert expected_output == result.output
 
@@ -108,14 +107,14 @@ def test_vehicle_status_store(
     credential_store[CONF_VIN] = Credential(TEST_VIN)
     credential_store[GIGYA_LOGIN_TOKEN] = Credential(TEST_LOGIN_TOKEN)
     credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
-    credential_store[GIGYA_JWT] = JWTCredential(get_jwt())
+    credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
     fixtures.inject_vehicle_status(mocked_responses)
 
     result = cli_runner.invoke(__main__.main, "status")
     assert result.exit_code == 0, result.exception
 
-    assert EXPEXTED_BATTERY_STATUS == result.output
+    assert EXPECTED_BATTERY_STATUS == result.output
 
 
 def test_vehicle_status_no_prompt(
@@ -126,7 +125,7 @@ def test_vehicle_status_no_prompt(
     credential_store[CONF_LOCALE] = Credential(TEST_LOCALE)
     credential_store[GIGYA_LOGIN_TOKEN] = Credential(TEST_LOGIN_TOKEN)
     credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
-    credential_store[GIGYA_JWT] = JWTCredential(get_jwt())
+    credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
     fixtures.inject_vehicle_status(mocked_responses)
 
@@ -135,4 +134,4 @@ def test_vehicle_status_no_prompt(
     )
     assert result.exit_code == 0, result.exception
 
-    assert EXPEXTED_BATTERY_STATUS == result.output
+    assert EXPECTED_BATTERY_STATUS == result.output

@@ -1,17 +1,15 @@
 """Tests for Kamereon models."""
-from tests import get_response_content
+from tests import fixtures
 
 from renault_api.kamereon import models
 from renault_api.kamereon import schemas
 
 
-FIXTURE_PATH = "tests/fixtures/kamereon"
-
-
 def test_person_response() -> None:
     """Test person details response."""
-    response: models.KamereonPersonResponse = get_response_content(
-        f"{FIXTURE_PATH}/person.json", schemas.KamereonPersonResponseSchema
+    response: models.KamereonPersonResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/person.json",
+        schemas.KamereonPersonResponseSchema,
     )
     response.raise_for_error_code()
     assert response.accounts[0].accountId == "account-id-1"

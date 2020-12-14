@@ -7,10 +7,9 @@ import aiohttp
 import pytest
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall  # type:ignore
-from tests import get_file_content
+from tests import fixtures
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
-from tests.const import TEST_KAMEREON_URL
 from tests.const import TEST_LOCALE_DETAILS
 from tests.const import TEST_VIN
 from tests.test_credential_store import get_logged_in_credential_store
@@ -20,18 +19,6 @@ from yarl import URL
 from renault_api.kamereon.enums import ChargeMode
 from renault_api.kamereon.models import ChargeSchedule
 from renault_api.renault_vehicle import RenaultVehicle
-
-
-TEST_KAMEREON_BASE_URL = f"{TEST_KAMEREON_URL}/commerce/v1"
-TEST_KAMEREON_ACCOUNT_URL = f"{TEST_KAMEREON_BASE_URL}/accounts/{TEST_ACCOUNT_ID}"
-TEST_KAMEREON_VEHICLE_URL1 = (
-    f"{TEST_KAMEREON_ACCOUNT_URL}/kamereon/kca/car-adapter/v1/cars/{TEST_VIN}"
-)
-TEST_KAMEREON_VEHICLE_URL2 = (
-    f"{TEST_KAMEREON_ACCOUNT_URL}/kamereon/kca/car-adapter/v2/cars/{TEST_VIN}"
-)
-FIXTURE_PATH = "tests/fixtures/kamereon/"
-QUERY_STRING = f"country={TEST_COUNTRY}"
 
 
 @pytest.fixture
@@ -44,7 +31,7 @@ def vehicle(websession: aiohttp.ClientSession) -> RenaultVehicle:
     )
 
 
-def tests_init(websession: aiohttp.ClientSession) -> None:
+def test_init(websession: aiohttp.ClientSession) -> None:
     """Test RenaultVehicle initialisation."""
     assert RenaultVehicle(
         account_id=TEST_ACCOUNT_ID,
@@ -63,292 +50,224 @@ def tests_init(websession: aiohttp.ClientSession) -> None:
 
 
 @pytest.mark.asyncio
-async def test_get_battery_status(vehicle: RenaultVehicle) -> None:
+async def test_get_battery_status(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
     """Test get_battery_status."""
-    with aioresponses() as mocked_responses:
-        mocked_responses.get(
-            f"{TEST_KAMEREON_VEHICLE_URL2}/battery-status?{QUERY_STRING}",
-            status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/battery-status.1.json"),
-        )
-        assert await vehicle.get_battery_status()
+    fixtures.inject_get_battery_status(mocked_responses)
+    assert await vehicle.get_battery_status()
 
 
 @pytest.mark.asyncio
-async def test_get_location(vehicle: RenaultVehicle) -> None:
+async def test_get_location(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
     """Test get_location."""
-    with aioresponses() as mocked_responses:
-        mocked_responses.get(
-            f"{TEST_KAMEREON_VEHICLE_URL1}/location?{QUERY_STRING}",
-            status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/location.json"),
-        )
-        assert await vehicle.get_location()
+    fixtures.inject_get_location(mocked_responses)
+    assert await vehicle.get_location()
 
 
 @pytest.mark.asyncio
-async def test_get_hvac_status(vehicle: RenaultVehicle) -> None:
+async def test_get_hvac_status(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
     """Test get_hvac_status."""
-    with aioresponses() as mocked_responses:
-        mocked_responses.get(
-            f"{TEST_KAMEREON_VEHICLE_URL1}/hvac-status?{QUERY_STRING}",
-            status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/hvac-status.json"),
-        )
-        assert await vehicle.get_hvac_status()
+    fixtures.inject_get_hvac_status(mocked_responses)
+    assert await vehicle.get_hvac_status()
 
 
 @pytest.mark.asyncio
-async def test_get_charge_mode(vehicle: RenaultVehicle) -> None:
+async def test_get_charge_mode(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
     """Test get_charge_mode."""
-    with aioresponses() as mocked_responses:
-        mocked_responses.get(
-            f"{TEST_KAMEREON_VEHICLE_URL1}/charge-mode?{QUERY_STRING}",
-            status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/charge-mode.json"),
-        )
-        assert await vehicle.get_charge_mode()
+    fixtures.inject_get_charge_mode(mocked_responses)
+    assert await vehicle.get_charge_mode()
 
 
 @pytest.mark.asyncio
-async def test_get_cockpit(vehicle: RenaultVehicle) -> None:
+async def test_get_cockpit(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
     """Test get_cockpit."""
-    with aioresponses() as mocked_responses:
-        mocked_responses.get(
-            f"{TEST_KAMEREON_VEHICLE_URL2}/cockpit?{QUERY_STRING}",
-            status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/cockpit.zoe.json"),
-        )
-        assert await vehicle.get_cockpit()
+    fixtures.inject_get_cockpit(mocked_responses, "zoe")
+    assert await vehicle.get_cockpit()
 
 
 @pytest.mark.asyncio
-async def test_get_lock_status(vehicle: RenaultVehicle) -> None:
+async def test_get_lock_status(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
     """Test get_lock_status."""
-    with aioresponses() as mocked_responses:
-        mocked_responses.get(
-            f"{TEST_KAMEREON_VEHICLE_URL1}/lock-status?{QUERY_STRING}",
-            status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/lock-status.json"),
-        )
-        assert await vehicle.get_lock_status()
+    fixtures.inject_get_lock_status(mocked_responses)
+    assert await vehicle.get_lock_status()
 
 
 @pytest.mark.asyncio
-async def test_get_charging_settings(vehicle: RenaultVehicle) -> None:
+async def test_get_charging_settings(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
     """Test get_charging_settings."""
-    with aioresponses() as mocked_responses:
-        mocked_responses.get(
-            f"{TEST_KAMEREON_VEHICLE_URL1}/charging-settings?{QUERY_STRING}",
-            status=200,
-            body=get_file_content(
-                f"{FIXTURE_PATH}/vehicle_data/charging-settings.json"
-            ),
-        )
-        assert await vehicle.get_charging_settings()
+    fixtures.inject_get_charging_settings(mocked_responses)
+    assert await vehicle.get_charging_settings()
 
 
 @pytest.mark.asyncio
-async def test_get_notification_settings(vehicle: RenaultVehicle) -> None:
+async def test_get_notification_settings(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
     """Test get_notification_settings."""
-    with aioresponses() as mocked_responses:
-        mocked_responses.get(
-            f"{TEST_KAMEREON_VEHICLE_URL1}/notification-settings?{QUERY_STRING}",
-            status=200,
-            body=get_file_content(
-                f"{FIXTURE_PATH}/vehicle_data/notification-settings.json"
-            ),
-        )
-        assert await vehicle.get_notification_settings()
+    fixtures.inject_get_notification_settings(mocked_responses)
+    assert await vehicle.get_notification_settings()
 
 
 @pytest.mark.asyncio
-async def test_get_charge_history_month(vehicle: RenaultVehicle) -> None:
+async def test_get_charge_history_month(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
     """Test get_charge_history."""
-    query_string = f"{QUERY_STRING}&end=202011&start=202010&type=month"
-    with aioresponses() as mocked_responses:
-        mocked_responses.get(
-            f"{TEST_KAMEREON_VEHICLE_URL1}/charge-history?{query_string}",
-            status=200,
-            body=get_file_content(
-                f"{FIXTURE_PATH}/vehicle_data/charge-history.month.json"
-            ),
-        )
-        assert await vehicle.get_charge_history(
-            start=datetime(2020, 10, 1),
-            end=datetime(2020, 11, 15),
-            period="month",
-        )
+    fixtures.inject_get_charge_history(mocked_responses, "202010", "202011", "month")
+    assert await vehicle.get_charge_history(
+        start=datetime(2020, 10, 1),
+        end=datetime(2020, 11, 15),
+        period="month",
+    )
 
 
 @pytest.mark.asyncio
-async def test_get_charge_history_day(vehicle: RenaultVehicle) -> None:
+async def test_get_charge_history_day(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
     """Test get_charge_history."""
-    query_string = f"{QUERY_STRING}&end=20201115&start=20201001&type=day"
-    with aioresponses() as mocked_responses:
-        mocked_responses.get(
-            f"{TEST_KAMEREON_VEHICLE_URL1}/charge-history?{query_string}",
-            status=200,
-            body=get_file_content(
-                f"{FIXTURE_PATH}/vehicle_data/charge-history.day.json"
-            ),
-        )
-        assert await vehicle.get_charge_history(
-            start=datetime(2020, 10, 1),
-            end=datetime(2020, 11, 15),
-            period="day",
-        )
+    fixtures.inject_get_charge_history(mocked_responses, "20201001", "20201115", "day")
+    assert await vehicle.get_charge_history(
+        start=datetime(2020, 10, 1),
+        end=datetime(2020, 11, 15),
+        period="day",
+    )
 
 
 @pytest.mark.asyncio
-async def test_get_charges(vehicle: RenaultVehicle) -> None:
+async def test_get_charges(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
     """Test get_charges."""
-    query_string = f"{QUERY_STRING}&end=20201115&start=20201001"
-    with aioresponses() as mocked_responses:
-        mocked_responses.get(
-            f"{TEST_KAMEREON_VEHICLE_URL1}/charges?{query_string}",
-            status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/charges.json"),
-        )
-        assert await vehicle.get_charges(
-            start=datetime(2020, 10, 1),
-            end=datetime(2020, 11, 15),
-        )
+    fixtures.inject_get_charges(mocked_responses, "20201001", "20201115")
+    assert await vehicle.get_charges(
+        start=datetime(2020, 10, 1),
+        end=datetime(2020, 11, 15),
+    )
 
 
 @pytest.mark.asyncio
-async def test_get_hvac_history(vehicle: RenaultVehicle) -> None:
+async def test_get_hvac_history(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
     """Test get_hvac_history."""
-    query_string = f"{QUERY_STRING}&end=202011&start=202010&type=month"
-    with aioresponses() as mocked_responses:
-        mocked_responses.get(
-            f"{TEST_KAMEREON_VEHICLE_URL1}/hvac-history?{query_string}",
-            status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/hvac-history.json"),
-        )
-        assert await vehicle.get_hvac_history(
-            start=datetime(2020, 10, 1),
-            end=datetime(2020, 11, 15),
-            period="month",
-        )
+    fixtures.inject_get_hvac_history(mocked_responses, "202010", "202011", "month")
+    assert await vehicle.get_hvac_history(
+        start=datetime(2020, 10, 1),
+        end=datetime(2020, 11, 15),
+        period="month",
+    )
 
 
 @pytest.mark.asyncio
-async def test_get_hvac_sessions(vehicle: RenaultVehicle) -> None:
+async def test_get_hvac_sessions(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
     """Test get_hvac_sessions."""
-    query_string = f"{QUERY_STRING}&end=20201115&start=20201001"
-    with aioresponses() as mocked_responses:
-        mocked_responses.get(
-            f"{TEST_KAMEREON_VEHICLE_URL1}/hvac-sessions?{query_string}",
-            status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/vehicle_data/hvac-sessions.json"),
-        )
-        assert await vehicle.get_hvac_sessions(
-            start=datetime(2020, 10, 1),
-            end=datetime(2020, 11, 15),
-        )
+    fixtures.inject_get_hvac_sessions(mocked_responses, "20201001", "20201115")
+    assert await vehicle.get_hvac_sessions(
+        start=datetime(2020, 10, 1),
+        end=datetime(2020, 11, 15),
+    )
 
 
 @pytest.mark.asyncio
-async def test_set_ac_start(vehicle: RenaultVehicle) -> None:
+async def test_set_ac_start(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
     """Test set_ac_start."""
-    with aioresponses() as mocked_responses:
-        url = f"{TEST_KAMEREON_VEHICLE_URL1}/actions/hvac-start?{QUERY_STRING}"
-        mocked_responses.post(
-            url,
-            status=200,
-            body=get_file_content(
-                f"{FIXTURE_PATH}/vehicle_action/hvac-start.start.json"
-            ),
-        )
-        assert await vehicle.set_ac_start(
-            21, datetime(2020, 11, 24, 6, 30, tzinfo=timezone.utc)
-        )
-        request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-        assert request.kwargs["json"] == {
-            "data": {
-                "type": "HvacStart",
-                "attributes": {
-                    "action": "start",
-                    "targetTemperature": 21,
-                    "startDateTime": "2020-11-24T06:30:00Z",
-                },
-            }
+    url = fixtures.inject_set_hvac_start(mocked_responses, "start")
+    assert await vehicle.set_ac_start(
+        21, datetime(2020, 11, 24, 6, 30, tzinfo=timezone.utc)
+    )
+
+    expected_json = {
+        "data": {
+            "type": "HvacStart",
+            "attributes": {
+                "action": "start",
+                "targetTemperature": 21,
+                "startDateTime": "2020-11-24T06:30:00Z",
+            },
         }
+    }
+
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    assert expected_json == request.kwargs["json"]
 
 
 @pytest.mark.asyncio
-async def test_set_ac_stop(vehicle: RenaultVehicle) -> None:
+async def test_set_ac_stop(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
     """Test set_ac_stop."""
-    with aioresponses() as mocked_responses:
-        url = f"{TEST_KAMEREON_VEHICLE_URL1}/actions/hvac-start?{QUERY_STRING}"
-        mocked_responses.post(
-            url,
-            status=200,
-            body=get_file_content(
-                f"{FIXTURE_PATH}/vehicle_action/hvac-start.cancel.json"
-            ),
-        )
-        assert await vehicle.set_ac_stop()
-        request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-        assert request.kwargs["json"] == {
-            "data": {"type": "HvacStart", "attributes": {"action": "cancel"}}
-        }
+    url = fixtures.inject_set_hvac_start(mocked_responses, "cancel")
+    assert await vehicle.set_ac_stop()
+
+    expected_json = {"data": {"type": "HvacStart", "attributes": {"action": "cancel"}}}
+
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    assert expected_json == request.kwargs["json"]
 
 
 @pytest.mark.asyncio
-async def test_set_charge_mode(vehicle: RenaultVehicle) -> None:
+async def test_set_charge_mode(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
     """Test set_charge_mode."""
-    with aioresponses() as mocked_responses:
-        url = f"{TEST_KAMEREON_VEHICLE_URL1}/actions/charge-mode?{QUERY_STRING}"
-        mocked_responses.post(
-            url,
-            status=200,
-            body=get_file_content(
-                f"{FIXTURE_PATH}/vehicle_action/charge-mode.schedule_mode.json"
-            ),
-        )
-        assert await vehicle.set_charge_mode(ChargeMode.SCHEDULE_MODE)
-        request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-        assert request.kwargs["json"] == {
-            "data": {"type": "ChargeMode", "attributes": {"action": "schedule_mode"}}
-        }
+    url = fixtures.inject_set_charge_mode(mocked_responses, "schedule_mode")
+    assert await vehicle.set_charge_mode(ChargeMode.SCHEDULE_MODE)
+
+    expected_json = {
+        "data": {"type": "ChargeMode", "attributes": {"action": "schedule_mode"}}
+    }
+
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    assert expected_json == request.kwargs["json"]
 
 
 @pytest.mark.asyncio
-async def test_set_charge_schedules(vehicle: RenaultVehicle) -> None:
+async def test_set_charge_schedules(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
     """Test set_charge_schedules."""
+    url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
+
     schedules: List[ChargeSchedule] = []
-    with aioresponses() as mocked_responses:
-        url = f"{TEST_KAMEREON_VEHICLE_URL2}/actions/charge-schedule?{QUERY_STRING}"
-        mocked_responses.post(
-            url,
-            status=200,
-            body=get_file_content(
-                f"{FIXTURE_PATH}/vehicle_action/charge-schedule.schedules.json"
-            ),
-        )
-        assert await vehicle.set_charge_schedules(schedules)
-        request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-        assert request.kwargs["json"] == {
-            "data": {"type": "ChargeSchedule", "attributes": {"schedules": []}}
-        }
+    assert await vehicle.set_charge_schedules(schedules)
+
+    expected_json = {
+        "data": {"type": "ChargeSchedule", "attributes": {"schedules": []}}
+    }
+
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    assert expected_json == request.kwargs["json"]
 
 
 @pytest.mark.asyncio
-async def test_set_charge_start(vehicle: RenaultVehicle) -> None:
+async def test_set_charge_start(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
     """Test set_charge_start."""
-    with aioresponses() as mocked_responses:
-        url = f"{TEST_KAMEREON_VEHICLE_URL1}/actions/charging-start?{QUERY_STRING}"
-        mocked_responses.post(
-            url,
-            status=200,
-            body=get_file_content(
-                f"{FIXTURE_PATH}/vehicle_action/charging-start.start.json"
-            ),
-        )
-        assert await vehicle.set_charge_start()
-        request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-        assert request.kwargs["json"] == {
-            "data": {"type": "ChargingStart", "attributes": {"action": "start"}}
-        }
+    url = fixtures.inject_set_charging_start(mocked_responses, "start")
+
+    expected_json = {
+        "data": {"type": "ChargingStart", "attributes": {"action": "start"}}
+    }
+
+    assert await vehicle.set_charge_start()
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    assert expected_json == request.kwargs["json"]

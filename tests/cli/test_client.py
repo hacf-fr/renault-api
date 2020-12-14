@@ -5,7 +5,6 @@ from locale import getdefaultlocale
 from aioresponses import aioresponses
 from click.testing import CliRunner
 from tests import fixtures
-from tests import get_jwt
 from tests.const import TEST_LOCALE
 from tests.const import TEST_LOGIN_TOKEN
 from tests.const import TEST_PASSWORD
@@ -61,7 +60,7 @@ def test_list_accounts_prompt(
 ) -> None:
     """It exits with a status code of zero."""
     fixtures.inject_gigya_all(mocked_responses)
-    fixtures.inject_kamereon_person(mocked_responses)
+    fixtures.inject_get_person(mocked_responses)
 
     result = cli_runner.invoke(
         __main__.main,
@@ -93,9 +92,9 @@ def test_list_accounts_no_prompt(
     credential_store[CONF_LOCALE] = Credential(TEST_LOCALE)
     credential_store[GIGYA_LOGIN_TOKEN] = Credential(TEST_LOGIN_TOKEN)
     credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
-    credential_store[GIGYA_JWT] = JWTCredential(get_jwt())
+    credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
-    fixtures.inject_kamereon_person(mocked_responses)
+    fixtures.inject_get_person(mocked_responses)
 
     result = cli_runner.invoke(__main__.main, "accounts")
     assert result.exit_code == 0, result.exception

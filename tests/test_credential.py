@@ -2,7 +2,7 @@
 import time
 from unittest import mock
 
-from tests import get_jwt
+from tests.fixtures import get_jwt
 
 from renault_api.credential import Credential
 from renault_api.credential import JWTCredential

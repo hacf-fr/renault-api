@@ -1,24 +1,16 @@
 """Tests for Kamereon models."""
 from typing import cast
 
-from tests import get_response_content
+from tests import fixtures
 
 from renault_api.kamereon import models
 from renault_api.kamereon import schemas
 
 
-FIXTURE_PATH = "tests/fixtures/kamereon/vehicle_data"
-
-TEST_UPDATE = {
-    "id": 1,
-    "tuesday": {"startTime": "T12:00Z", "duration": 15},
-}
-
-
 def test_for_json() -> None:
     """Test for updating charge settings."""
-    response: models.KamereonVehicleDataResponse = get_response_content(
-        f"{FIXTURE_PATH}/charging-settings.json",
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/charging-settings.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
@@ -67,10 +59,16 @@ def test_for_json() -> None:
         ]
     }
 
-    vehicle_data.update(TEST_UPDATE)
+    vehicle_data.update(
+        {
+            "id": 1,
+            "tuesday": {"startTime": "T12:00Z", "duration": 15},
+        }
+    )
     assert vehicle_data.schedules[0].tuesday.startTime == "T12:00Z"
     assert vehicle_data.schedules[0].tuesday.duration == 15
 
+    # Check that for_json returns the updated data
     for_json = {
         "schedules": list(schedule.for_json() for schedule in vehicle_data.schedules)
     }

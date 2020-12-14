@@ -4,9 +4,8 @@ from typing import cast
 import aiohttp
 import pytest
 from aioresponses import aioresponses
-from tests import get_file_content
+from tests import fixtures
 from tests.const import TEST_COUNTRY
-from tests.const import TEST_GIGYA_URL
 from tests.const import TEST_LOCALE
 from tests.const import TEST_LOCALE_DETAILS
 from tests.const import TEST_LOGIN_TOKEN
@@ -22,12 +21,8 @@ from renault_api.gigya import GIGYA_JWT
 from renault_api.gigya import GIGYA_LOGIN_TOKEN
 from renault_api.renault_session import RenaultSession
 
-FIXTURE_PATH = "tests/fixtures/gigya/"
 
-
-def get_logged_in_session(
-    websession: aiohttp.ClientSession,
-) -> RenaultSession:
+def get_logged_in_session(websession: aiohttp.ClientSession) -> RenaultSession:
     """Get initialised RenaultSession."""
     return RenaultSession(
         websession=websession,
@@ -48,7 +43,7 @@ def session(websession: aiohttp.ClientSession) -> RenaultSession:
 
 
 @pytest.mark.asyncio
-async def tests_init_locale_only(websession: aiohttp.ClientSession) -> None:
+async def test_init_locale_only(websession: aiohttp.ClientSession) -> None:
     """Test initialisation with locale only."""
     session = RenaultSession(
         websession=websession,
@@ -62,7 +57,7 @@ async def tests_init_locale_only(websession: aiohttp.ClientSession) -> None:
 
 
 @pytest.mark.asyncio
-async def tests_init_country_only(websession: aiohttp.ClientSession) -> None:
+async def test_init_country_only(websession: aiohttp.ClientSession) -> None:
     """Test initialisation with country only."""
     session = RenaultSession(
         websession=websession,
@@ -92,7 +87,7 @@ async def tests_init_country_only(websession: aiohttp.ClientSession) -> None:
 
 
 @pytest.mark.asyncio
-async def tests_init_locale_details_only(websession: aiohttp.ClientSession) -> None:
+async def test_init_locale_details_only(websession: aiohttp.ClientSession) -> None:
     """Test initialisation with locale_details only."""
     session = RenaultSession(
         websession=websession,
@@ -110,7 +105,7 @@ async def tests_init_locale_details_only(websession: aiohttp.ClientSession) -> N
 
 
 @pytest.mark.asyncio
-async def tests_init_locale_and_details(websession: aiohttp.ClientSession) -> None:
+async def test_init_locale_and_details(websession: aiohttp.ClientSession) -> None:
     """Test initialisation with locale and locale_details."""
     session = RenaultSession(
         websession=websession,
@@ -125,7 +120,7 @@ async def tests_init_locale_and_details(websession: aiohttp.ClientSession) -> No
 
 
 @pytest.mark.asyncio
-async def tests_init_locale_country(websession: aiohttp.ClientSession) -> None:
+async def test_init_locale_country(websession: aiohttp.ClientSession) -> None:
     """Test initialisation with locale and country."""
     session = RenaultSession(
         websession=websession,
@@ -162,84 +157,65 @@ async def test_not_logged_in(session: RenaultSession) -> None:
 
 
 @pytest.mark.asyncio
-async def test_login(session: RenaultSession) -> None:
+async def test_login(session: RenaultSession, mocked_responses: aioresponses) -> None:
     """Test login/person/jwt response."""
-    with aioresponses() as mocked_responses:
-        mocked_responses.post(
-            f"{TEST_GIGYA_URL}/accounts.login",
-            status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/login.json"),
-            headers={"content-type": "text/javascript"},
-        )
-        mocked_responses.post(
-            f"{TEST_GIGYA_URL}/accounts.getAccountInfo",
-            status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/get_account_info.json"),
-            headers={"content-type": "text/javascript"},
-        )
-        mocked_responses.post(
-            f"{TEST_GIGYA_URL}/accounts.getJWT",
-            status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/get_jwt.json"),
-            headers={"content-type": "text/javascript"},
-        )
+    fixtures.inject_gigya_all(mocked_responses)
 
-        await session.login(TEST_USERNAME, TEST_PASSWORD)
-        assert await session._get_login_token() == TEST_LOGIN_TOKEN
-        assert len(mocked_responses.requests) == 1
+    await session.login(TEST_USERNAME, TEST_PASSWORD)
+    assert await session._get_login_token() == TEST_LOGIN_TOKEN
+    assert len(mocked_responses.requests) == 1
 
-        assert await session._get_person_id() == TEST_PERSON_ID
-        assert len(mocked_responses.requests) == 2
+    assert await session._get_person_id() == TEST_PERSON_ID
+    assert len(mocked_responses.requests) == 2
 
-        assert await session._get_jwt()
-        assert len(mocked_responses.requests) == 3
+    assert await session._get_jwt()
+    assert len(mocked_responses.requests) == 3
 
-    with aioresponses() as mocked_responses:
-        # Ensure further requests use cache
-        assert await session._get_person_id() == TEST_PERSON_ID
-        assert await session._get_jwt()
-        assert len(mocked_responses.requests) == 0
+    # Ensure further requests use cache
+    assert await session._get_person_id() == TEST_PERSON_ID
+    assert await session._get_jwt()
+    assert len(mocked_responses.requests) == 3
 
 
 @pytest.mark.asyncio
-async def test_expired_login_token(websession: aiohttp.ClientSession) -> None:
+async def test_expired_login_token(
+    websession: aiohttp.ClientSession, mocked_responses: aioresponses
+) -> None:
     """Test _get_jwt response on expired login token."""
     session = get_logged_in_session(websession=websession)
-    with aioresponses() as mocked_responses:
-        mocked_responses.post(
-            f"{TEST_GIGYA_URL}/accounts.getJWT",
-            status=200,
-            body=get_file_content(f"{FIXTURE_PATH}/errors/get_jwt.403005.json"),
-            headers={"content-type": "text/javascript"},
-        )
+    fixtures.inject_gigya(
+        mocked_responses,
+        urlpath="accounts.getJWT",
+        filename="error/get_jwt.403005.json",
+    )
 
-        # First attempt uses cached values
+    # First attempt uses cached values
+    assert await session._get_jwt()
+    assert len(mocked_responses.requests) == 0
+
+    assert GIGYA_JWT in session._credentials
+    assert GIGYA_LOGIN_TOKEN in session._credentials
+
+    # mark JWT as expired
+    jwt_credential = cast(JWTCredential, session._credentials.get(GIGYA_JWT))
+    jwt_credential.expiry = 1
+
+    # first attempt show authentication as expired
+    with pytest.raises(
+        NotAuthenticatedException,
+        match="Authentication expired.",
+    ):
         assert await session._get_jwt()
-        assert len(mocked_responses.requests) == 0
 
-        assert GIGYA_JWT in session._credentials
-        assert GIGYA_LOGIN_TOKEN in session._credentials
+    assert len(mocked_responses.requests) == 1
+    assert GIGYA_JWT not in session._credentials
+    assert GIGYA_LOGIN_TOKEN not in session._credentials
 
-        # mark JWT as expired
-        jwt_credential = cast(JWTCredential, session._credentials.get(GIGYA_JWT))
-        jwt_credential.expiry = 1
+    # subsequent attempts just show not authenticated
+    with pytest.raises(
+        NotAuthenticatedException,
+        match="Gigya login token not available.",
+    ):
+        assert await session._get_jwt()
 
-        # first attempt show authentication as expired
-        with pytest.raises(
-            NotAuthenticatedException,
-            match="Authentication expired.",
-        ):
-            assert await session._get_jwt()
-
-        assert len(mocked_responses.requests) == 1
-        assert GIGYA_JWT not in session._credentials
-        assert GIGYA_LOGIN_TOKEN not in session._credentials
-
-        # subsequent attempts just show not authenticated
-        with pytest.raises(
-            NotAuthenticatedException,
-            match="Gigya login token not available.",
-        ):
-            assert await session._get_jwt()
-
-        assert len(mocked_responses.requests) == 1
+    assert len(mocked_responses.requests) == 1

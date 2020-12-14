@@ -2,12 +2,12 @@
 import os
 from typing import Optional
 
-from tests import get_jwt
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_LOCALE
 from tests.const import TEST_LOGIN_TOKEN
 from tests.const import TEST_PERSON_ID
 from tests.const import TEST_VIN
+from tests.fixtures import get_jwt
 
 from renault_api.cli.renault_settings import CONF_ACCOUNT_ID
 from renault_api.cli.renault_settings import CONF_VIN

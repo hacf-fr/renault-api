@@ -2,21 +2,20 @@
 from typing import cast
 
 import pytest
-from tests import get_json_files
-from tests import get_response_content
+from tests import fixtures
 
 from renault_api.kamereon import enums
 from renault_api.kamereon import models
 from renault_api.kamereon import schemas
 
 
-FIXTURE_PATH = "tests/fixtures/kamereon/vehicle_data"
-
-
-@pytest.mark.parametrize("filename", get_json_files(FIXTURE_PATH))
+@pytest.mark.parametrize(
+    "filename",
+    fixtures.get_json_files(f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data"),
+)
 def test_vehicle_data_response(filename: str) -> None:
     """Test vehicle data response."""
-    response: models.KamereonVehicleDataResponse = get_response_content(
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
         filename, schemas.KamereonVehicleDataResponseSchema
     )
     response.raise_for_error_code()
@@ -26,8 +25,8 @@ def test_vehicle_data_response(filename: str) -> None:
 
 def test_battery_status_1() -> None:
     """Test vehicle data for battery-status.1.json."""
-    response: models.KamereonVehicleDataResponse = get_response_content(
-        f"{FIXTURE_PATH}/battery-status.1.json",
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/battery-status.1.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
@@ -62,8 +61,8 @@ def test_battery_status_1() -> None:
 
 def test_battery_status_2() -> None:
     """Test vehicle data for battery-status.2.json."""
-    response: models.KamereonVehicleDataResponse = get_response_content(
-        f"{FIXTURE_PATH}/battery-status.2.json",
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/battery-status.2.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
@@ -101,8 +100,8 @@ def test_battery_status_2() -> None:
 
 def test_cockpit_zoe() -> None:
     """Test vehicle data for cockpit.zoe.json."""
-    response: models.KamereonVehicleDataResponse = get_response_content(
-        f"{FIXTURE_PATH}/cockpit.zoe.json",
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/cockpit.zoe.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
@@ -120,8 +119,8 @@ def test_cockpit_zoe() -> None:
 
 def test_cockpit_captur_ii() -> None:
     """Test vehicle data for cockpit.captur_ii.json."""
-    response: models.KamereonVehicleDataResponse = get_response_content(
-        f"{FIXTURE_PATH}/cockpit.captur_ii.json",
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/cockpit.captur_ii.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
@@ -143,8 +142,8 @@ def test_cockpit_captur_ii() -> None:
 
 def test_charging_settings() -> None:
     """Test vehicle data for charging-settings.json."""
-    response: models.KamereonVehicleDataResponse = get_response_content(
-        f"{FIXTURE_PATH}/charging-settings.json",
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/charging-settings.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
@@ -194,8 +193,8 @@ def test_charging_settings() -> None:
 
 def test_location() -> None:
     """Test vehicle data for location.json."""
-    response: models.KamereonVehicleDataResponse = get_response_content(
-        f"{FIXTURE_PATH}/location.json",
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/location.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
@@ -217,8 +216,8 @@ def test_location() -> None:
 
 def test_charge_mode() -> None:
     """Test vehicle data for charge-mode.json."""
-    response: models.KamereonVehicleDataResponse = get_response_content(
-        f"{FIXTURE_PATH}/charge-mode.json",
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/charge-mode.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
