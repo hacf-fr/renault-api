@@ -11,7 +11,6 @@ import aiohttp
 
 from .credential_store import CredentialStore
 from .exceptions import RenaultException
-from .kamereon import enums
 from .kamereon import models
 from .kamereon import schemas
 from .renault_session import RenaultSession
@@ -382,16 +381,10 @@ class RenaultVehicle:
         )
 
     async def set_charge_mode(
-        self, charge_mode: enums.ChargeMode
+        self, charge_mode: str
     ) -> models.KamereonVehicleChargeModeActionData:
         """Set vehicle charge mode."""
-        if not isinstance(charge_mode, enums.ChargeMode):  # pragma: no cover
-            raise TypeError(
-                "`charge_mode` should be an instance of ChargeMode, not {}".format(
-                    charge_mode.__class__
-                )
-            )
-        attributes = {"action": charge_mode.value}
+        attributes = {"action": charge_mode}
 
         response = await self.session.set_vehicle_action(
             account_id=self.account_id,

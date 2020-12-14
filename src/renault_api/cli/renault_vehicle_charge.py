@@ -12,7 +12,6 @@ from tabulate import tabulate
 
 from . import helpers
 from . import renault_vehicle
-from renault_api.kamereon.enums import ChargeMode
 from renault_api.kamereon.helpers import DAYS_OF_WEEK
 from renault_api.kamereon.models import ChargeDaySchedule
 from renault_api.kamereon.models import ChargeSchedule
@@ -132,8 +131,7 @@ async def mode(
         websession=websession, ctx_data=ctx_data
     )
     if mode:
-        charge_mode = ChargeMode(mode)
-        write_response = await vehicle.set_charge_mode(charge_mode)
+        write_response = await vehicle.set_charge_mode(mode)
         click.echo(write_response.raw_data)
     else:
         read_response = await vehicle.get_charge_mode()

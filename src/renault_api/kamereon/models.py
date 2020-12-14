@@ -289,19 +289,6 @@ class KamereonVehicleChargeModeData(KamereonVehicleDataAttributes):
 
     chargeMode: Optional[str]  # noqa: N815
 
-    def get_charge_mode(self) -> Optional[enums.ChargeMode]:
-        """Return charge mode."""
-        try:
-            return (
-                enums.ChargeMode(self.chargeMode)
-                if self.chargeMode is not None
-                else None
-            )
-        except ValueError:  # pragma: no cover
-            raise exceptions.KamereonException(
-                f"Unable to convert `{self.chargeMode}` to ChargeMode."
-            )
-
 
 @dataclass
 class KamereonVehicleCockpitData(KamereonVehicleDataAttributes):
