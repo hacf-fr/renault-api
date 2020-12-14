@@ -194,6 +194,10 @@ async def settings(
                 )
             )
 
+            # separate items by additional newline if not last item in list
+            if schedule != response.schedules[-1]:
+                click.echo("\n")
+
 
 def _format_charge_schedule(schedule: ChargeSchedule, key: str) -> List[str]:
     details: Optional[ChargeDaySchedule] = getattr(schedule, key)
