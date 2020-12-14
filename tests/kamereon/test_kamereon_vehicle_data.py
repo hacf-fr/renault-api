@@ -229,4 +229,3 @@ def test_charge_mode() -> None:
     )
 
     assert vehicle_data.chargeMode == "always"
-    assert vehicle_data.get_charge_mode() == enums.ChargeMode.ALWAYS
