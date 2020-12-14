@@ -16,7 +16,6 @@ from tests.test_credential_store import get_logged_in_credential_store
 from tests.test_renault_session import get_logged_in_session
 from yarl import URL
 
-from renault_api.kamereon.enums import ChargeMode
 from renault_api.kamereon.models import ChargeSchedule
 from renault_api.renault_vehicle import RenaultVehicle
 
@@ -229,7 +228,7 @@ async def test_set_charge_mode(
 ) -> None:
     """Test set_charge_mode."""
     url = fixtures.inject_set_charge_mode(mocked_responses, "schedule_mode")
-    assert await vehicle.set_charge_mode(ChargeMode.SCHEDULE_MODE)
+    assert await vehicle.set_charge_mode("schedule_mode")
 
     expected_json = {
         "data": {"type": "ChargeMode", "attributes": {"action": "schedule_mode"}}
