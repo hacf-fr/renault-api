@@ -42,11 +42,10 @@ Features
 Requirements
 ------------
 
-* TODO
+* Python (>= 3.7.1)
 
-
-Installation
-------------
+API Usage
+---------
 
 You can install *Renault API* via pip_ from PyPI_:
 
@@ -54,15 +53,49 @@ You can install *Renault API* via pip_ from PyPI_:
 
    $ pip install renault-api
 
+.. code:: python
+
+   import aiohttp
+   import asyncio
+
+   from renault_api.renault_client import RenaultClient
+
+   async def main():
+      async with aiohttp.ClientSession() as websession:
+         client = RenaultClient(websession=websession, locale="fr_FR")
+         await client.session.login('email', 'password')
+         print(f"Accounts: {await client.get_person()}") # List available accounts, make a note of kamereon account id
+
+         account_id = "Your Kamereon account id"
+         account = await client.get_api_account(account_id)
+         print(f"Vehicles: {await account.get_vehicles()}") # List available vehicles, make a note of vehicle VIN
+
+         vin = "Your vehicle VIN"
+         vehicle = await account.get_api_vehicle(vin)
+         print(f"Cockpit information: {await vehicle.get_cockpit()}")
+         print(f"Battery status information: {await vehicle.battery_status()}")
+
+   loop = asyncio.get_event_loop()
+   loop.run_until_complete(main())
 
 CLI Usage
 ---------
 
-Quickstart, prompts for credentials, settings and generates traces:
+The renault-api is also available through a CLI, which requires additional dependencies.
+For the added dependencies, you can install *Renault API* via pip_ from PyPI_:
+
+.. code:: console
+
+   $ pip install renault-api[cli]
+
+Once installed, the following command prompts for credentials and settings, displays basic vehicle status information, and generates traces:
 
 .. code:: console
 
    $ renault-api --log status
+
+* Credentials will automatically be stored in the user home directory (~/.credentials/renault-api.json)
+* Logs will automatically be generated in `logs` subfolder
 
 Please see the `Command-line Reference <Usage_>`_ for full details.
 
@@ -81,6 +114,12 @@ Distributed under the terms of the MIT_ license,
 *Renault API* is free and open source software.
 
 
+Disclaimer
+----------
+
+This project is not affiliated with, endorsed by, or connected to Renault. I accept no responsibility for any consequences, intended or accidental, as a as a result of interacting with Renault's API using this project.
+
+
 Issues
 ------
 
@@ -92,10 +131,13 @@ Credits
 -------
 
 This project was generated from `@cjolowicz`_'s `Hypermodern Python Cookiecutter`_ template.
+This project was heavily based on `@jamesremuscat`_'s `PyZE`_ python client for the Renault ZE API.
 
 
 .. _@cjolowicz: https://github.com/cjolowicz
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
+.. _@jamesremuscat: https://github.com/jamesremuscat
+.. _PyZE: https://github.com/jamesremuscat/pyze
 .. _MIT: http://opensource.org/licenses/MIT
 .. _PyPI: https://pypi.org/
 .. _Hypermodern Python Cookiecutter: https://github.com/cjolowicz/cookiecutter-hypermodern-python
