@@ -11,7 +11,6 @@ import aiohttp
 
 from .credential_store import CredentialStore
 from .exceptions import RenaultException
-from .kamereon import enums
 from .kamereon import models
 from .kamereon import schemas
 from .renault_session import RenaultSession
