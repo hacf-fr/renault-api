@@ -6,7 +6,6 @@ import pytest
 from aioresponses import aioresponses
 from tests import fixtures
 from tests.const import TEST_COUNTRY
-from tests.const import TEST_GIGYA_URL
 from tests.const import TEST_LOCALE
 from tests.const import TEST_LOCALE_DETAILS
 from tests.const import TEST_LOGIN_TOKEN
@@ -34,9 +33,7 @@ def get_logged_in_session(websession: aiohttp.ClientSession) -> RenaultSession:
 
 
 @pytest.fixture
-def session(
-    websession: aiohttp.ClientSession, mocked_responses: aioresponses
-) -> RenaultSession:
+def session(websession: aiohttp.ClientSession) -> RenaultSession:
     """Fixture for testing RenaultSession."""
     return RenaultSession(
         websession=websession,
@@ -46,9 +43,7 @@ def session(
 
 
 @pytest.mark.asyncio
-async def tests_init_locale_only(
-    websession: aiohttp.ClientSession, mocked_responses: aioresponses
-) -> None:
+async def test_init_locale_only(websession: aiohttp.ClientSession) -> None:
     """Test initialisation with locale only."""
     session = RenaultSession(
         websession=websession,
@@ -62,9 +57,7 @@ async def tests_init_locale_only(
 
 
 @pytest.mark.asyncio
-async def tests_init_country_only(
-    websession: aiohttp.ClientSession, mocked_responses: aioresponses
-) -> None:
+async def test_init_country_only(websession: aiohttp.ClientSession) -> None:
     """Test initialisation with country only."""
     session = RenaultSession(
         websession=websession,
@@ -94,9 +87,7 @@ async def tests_init_country_only(
 
 
 @pytest.mark.asyncio
-async def tests_init_locale_details_only(
-    websession: aiohttp.ClientSession, mocked_responses: aioresponses
-) -> None:
+async def test_init_locale_details_only(websession: aiohttp.ClientSession) -> None:
     """Test initialisation with locale_details only."""
     session = RenaultSession(
         websession=websession,
@@ -114,9 +105,7 @@ async def tests_init_locale_details_only(
 
 
 @pytest.mark.asyncio
-async def tests_init_locale_and_details(
-    websession: aiohttp.ClientSession, mocked_responses: aioresponses
-) -> None:
+async def test_init_locale_and_details(websession: aiohttp.ClientSession) -> None:
     """Test initialisation with locale and locale_details."""
     session = RenaultSession(
         websession=websession,
@@ -131,9 +120,7 @@ async def tests_init_locale_and_details(
 
 
 @pytest.mark.asyncio
-async def tests_init_locale_country(
-    websession: aiohttp.ClientSession, mocked_responses: aioresponses
-) -> None:
+async def test_init_locale_country(websession: aiohttp.ClientSession) -> None:
     """Test initialisation with locale and country."""
     session = RenaultSession(
         websession=websession,
@@ -172,28 +159,7 @@ async def test_not_logged_in(session: RenaultSession) -> None:
 @pytest.mark.asyncio
 async def test_login(session: RenaultSession, mocked_responses: aioresponses) -> None:
     """Test login/person/jwt response."""
-    mocked_responses.post(
-        f"{TEST_GIGYA_URL}/accounts.login",
-        status=200,
-        body=fixtures.get_file_content(f"{fixtures.GIGYA_FIXTURE_PATH}/login.json"),
-        headers={"content-type": "text/javascript"},
-    )
-    mocked_responses.post(
-        f"{TEST_GIGYA_URL}/accounts.getAccountInfo",
-        status=200,
-        body=fixtures.get_file_content(
-            f"{fixtures.GIGYA_FIXTURE_PATH}/get_account_info.json"
-        ),
-        headers={"content-type": "text/javascript"},
-    )
-    mocked_responses.post(
-        f"{TEST_GIGYA_URL}/accounts.getJWT",
-        status=200,
-        body=fixtures.get_file_content(
-            f"{fixtures.GIGYA_FIXTURE_PATH}/get_jwt.json"
-        ).replace("sample-jwt-token", fixtures.get_jwt()),
-        headers={"content-type": "text/javascript"},
-    )
+    fixtures.inject_gigya_all(mocked_responses)
 
     await session.login(TEST_USERNAME, TEST_PASSWORD)
     assert await session._get_login_token() == TEST_LOGIN_TOKEN
@@ -217,13 +183,10 @@ async def test_expired_login_token(
 ) -> None:
     """Test _get_jwt response on expired login token."""
     session = get_logged_in_session(websession=websession)
-    mocked_responses.post(
-        f"{TEST_GIGYA_URL}/accounts.getJWT",
-        status=200,
-        body=fixtures.get_file_content(
-            f"{fixtures.GIGYA_FIXTURE_PATH}/error/get_jwt.403005.json"
-        ),
-        headers={"content-type": "text/javascript"},
+    fixtures.inject_gigya(
+        mocked_responses,
+        urlpath="accounts.getJWT",
+        filename="error/get_jwt.403005.json",
     )
 
     # First attempt uses cached values

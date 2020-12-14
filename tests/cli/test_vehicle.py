@@ -48,19 +48,19 @@ def test_vehicle_status_prompt(
 ) -> None:
     """It exits with a status code of zero."""
     fixtures.inject_gigya_all(mocked_responses)
-    fixtures.inject_kamereon_person(mocked_responses)
+    fixtures.inject_get_person(mocked_responses)
 
     # Injected for account selection
-    fixtures.inject_kamereon_vehicles(mocked_responses)
+    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1")
     vehicle2_urlpath = f"accounts/account-id-2/vehicles?{fixtures.DEFAULT_QUERY_STRING}"
-    fixtures.inject_kamereon(
+    fixtures.inject_data(
         mocked_responses,
         vehicle2_urlpath,
         "vehicles/zoe_40.1.json",
     )
 
     # Injected again for vehicle selection
-    fixtures.inject_kamereon_vehicles(mocked_responses)
+    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1")
     fixtures.inject_vehicle_status(mocked_responses)
 
     result = cli_runner.invoke(

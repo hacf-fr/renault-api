@@ -7,10 +7,9 @@ from renault_api.gigya import models
 from renault_api.gigya import schemas
 
 
-FIXTURE_PATH = f"{fixtures.GIGYA_FIXTURE_PATH}/error"
-
-
-@pytest.mark.parametrize("filename", fixtures.get_json_files(FIXTURE_PATH))
+@pytest.mark.parametrize(
+    "filename", fixtures.get_json_files(f"{fixtures.GIGYA_FIXTURE_PATH}/error")
+)
 def test_error_response(filename: str) -> None:
     """Test all error responses."""
     response: models.GigyaResponse = fixtures.get_file_content_as_schema(
@@ -23,7 +22,8 @@ def test_error_response(filename: str) -> None:
 def test_get_jwt_403005_response() -> None:
     """Test get_jwt.403005 response."""
     response: models.GigyaGetJWTResponse = fixtures.get_file_content_as_schema(
-        f"{FIXTURE_PATH}/get_jwt.403005.json", schemas.GigyaGetJWTResponseSchema
+        f"{fixtures.GIGYA_FIXTURE_PATH}/error/get_jwt.403005.json",
+        schemas.GigyaGetJWTResponseSchema,
     )
     with pytest.raises(exceptions.GigyaResponseException) as excinfo:
         response.raise_for_error_code()
@@ -34,7 +34,8 @@ def test_get_jwt_403005_response() -> None:
 def test_get_jwt_403013_response() -> None:
     """Test get_jwt.403013 response."""
     response: models.GigyaGetJWTResponse = fixtures.get_file_content_as_schema(
-        f"{FIXTURE_PATH}/get_jwt.403013.json", schemas.GigyaGetJWTResponseSchema
+        f"{fixtures.GIGYA_FIXTURE_PATH}/error/get_jwt.403013.json",
+        schemas.GigyaGetJWTResponseSchema,
     )
     with pytest.raises(exceptions.GigyaResponseException) as excinfo:
         response.raise_for_error_code()
@@ -45,7 +46,8 @@ def test_get_jwt_403013_response() -> None:
 def test_login_403042_response() -> None:
     """Test login.403042 response."""
     response: models.GigyaLoginResponse = fixtures.get_file_content_as_schema(
-        f"{FIXTURE_PATH}/login.403042.json", schemas.GigyaLoginResponseSchema
+        f"{fixtures.GIGYA_FIXTURE_PATH}/error/login.403042.json",
+        schemas.GigyaLoginResponseSchema,
     )
     with pytest.raises(exceptions.InvalidCredentialsException) as excinfo:
         response.raise_for_error_code()

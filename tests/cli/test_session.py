@@ -1,7 +1,6 @@
 """Test cases for the __main__ module."""
 import os
 
-from aioresponses import aioresponses
 from click.testing import CliRunner
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_LOCALE
@@ -20,7 +19,7 @@ from renault_api.const import CONF_LOCALE
 from renault_api.credential_store import FileCredentialStore
 
 
-def test_set_locale(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_set_locale(cli_runner: CliRunner) -> None:
     """Test set locale."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
     for key in [
@@ -48,7 +47,7 @@ def test_set_locale(mocked_responses: aioresponses, cli_runner: CliRunner) -> No
     assert "" == result.output
 
 
-def test_set_account(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_set_account(cli_runner: CliRunner) -> None:
     """Test set locale."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
     for key in [
@@ -68,7 +67,7 @@ def test_set_account(mocked_responses: aioresponses, cli_runner: CliRunner) -> N
     assert "" == result.output
 
 
-def test_set_vin(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_set_vin(cli_runner: CliRunner) -> None:
     """Test set vin."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
     for key in [
@@ -88,9 +87,7 @@ def test_set_vin(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
     assert "" == result.output
 
 
-def test_get_keys_succeeds(
-    mocked_responses: aioresponses, cli_runner: CliRunner
-) -> None:
+def test_get_keys_succeeds(cli_runner: CliRunner) -> None:
     """It exits with a status code of zero."""
     result = cli_runner.invoke(__main__.main, f"set --locale {TEST_LOCALE}")
     assert result.exit_code == 0
@@ -110,7 +107,7 @@ def test_get_keys_succeeds(
     assert expected_output == result.output
 
 
-def test_reset(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_reset(cli_runner: CliRunner) -> None:
     """Test set vin."""
     assert not os.path.exists(os.path.expanduser(CREDENTIAL_PATH))
 

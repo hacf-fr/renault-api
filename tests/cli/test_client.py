@@ -60,7 +60,7 @@ def test_list_accounts_prompt(
 ) -> None:
     """It exits with a status code of zero."""
     fixtures.inject_gigya_all(mocked_responses)
-    fixtures.inject_kamereon_person(mocked_responses)
+    fixtures.inject_get_person(mocked_responses)
 
     result = cli_runner.invoke(
         __main__.main,
@@ -94,7 +94,7 @@ def test_list_accounts_no_prompt(
     credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
     credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
-    fixtures.inject_kamereon_person(mocked_responses)
+    fixtures.inject_get_person(mocked_responses)
 
     result = cli_runner.invoke(__main__.main, "accounts")
     assert result.exit_code == 0, result.exception

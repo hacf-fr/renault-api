@@ -14,7 +14,7 @@ def test_charge_history_day(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_kamereon_charge_history(
+    fixtures.inject_get_charge_history(
         mocked_responses, start="20201101", end="20201130", period="day"
     )
 
@@ -37,7 +37,7 @@ def test_charge_history_month(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_kamereon_charge_history(
+    fixtures.inject_get_charge_history(
         mocked_responses, start="202011", end="202011", period="month"
     )
 
@@ -57,7 +57,7 @@ def test_charge_history_month(
 def test_charge_mode_get(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_kamereon_charge_mode(mocked_responses)
+    fixtures.inject_get_charge_mode(mocked_responses)
 
     result = cli_runner.invoke(__main__.main, "charge-mode")
     assert result.exit_code == 0, result.exception
@@ -69,9 +69,7 @@ def test_charge_mode_get(mocked_responses: aioresponses, cli_runner: CliRunner) 
 def test_charge_mode_set(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
-    url = fixtures.inject_kamereon_action_charge_mode(
-        mocked_responses, mode="schedule_mode"
-    )
+    url = fixtures.inject_set_charge_mode(mocked_responses, mode="schedule_mode")
 
     result = cli_runner.invoke(__main__.main, "charge-mode --mode schedule_mode")
     assert result.exit_code == 0, result.exception
@@ -89,7 +87,7 @@ def test_charge_mode_set(mocked_responses: aioresponses, cli_runner: CliRunner) 
 def test_charges(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_kamereon_charges(mocked_responses, start="20201101", end="20201130")
+    fixtures.inject_get_charges(mocked_responses, start="20201101", end="20201130")
 
     result = cli_runner.invoke(
         __main__.main, "charges --from 2020-11-01 --to 2020-11-30"
@@ -112,7 +110,7 @@ def test_charging_settings_get(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_kamereon_charging_settings(mocked_responses)
+    fixtures.inject_get_charging_settings(mocked_responses)
 
     result = cli_runner.invoke(__main__.main, "charging-settings --id 1")
     assert result.exit_code == 0, result.exception
@@ -138,8 +136,8 @@ def test_charging_settings_set(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_kamereon_charging_settings(mocked_responses)
-    url = fixtures.inject_kamereon_action_charge_schedule(mocked_responses)
+    fixtures.inject_get_charging_settings(mocked_responses)
+    url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
 
     friday = "--friday T23:30Z,480"
     saturday = "--saturday 19:30,120"
@@ -186,7 +184,7 @@ def test_charging_settings_set(
 def test_charging_start(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
-    url = fixtures.inject_kamereon_action_charging_start(mocked_responses)
+    url = fixtures.inject_set_charging_start(mocked_responses, "start")
 
     result = cli_runner.invoke(__main__.main, "charging-start")
     assert result.exit_code == 0, result.exception

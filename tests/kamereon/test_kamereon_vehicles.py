@@ -6,10 +6,9 @@ from renault_api.kamereon import models
 from renault_api.kamereon import schemas
 
 
-FIXTURE_PATH = f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicles"
-
-
-@pytest.mark.parametrize("filename", fixtures.get_json_files(FIXTURE_PATH))
+@pytest.mark.parametrize(
+    "filename", fixtures.get_json_files(f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicles")
+)
 def test_vehicles_response(filename: str) -> None:
     """Test vehicles list response."""
     response: models.KamereonVehiclesResponse = fixtures.get_file_content_as_schema(
@@ -40,7 +39,8 @@ def test_vehicles_response(filename: str) -> None:
 def test_zoe40_1() -> None:
     """Test vehicle details for zoe_40.1.json."""
     response: models.KamereonVehiclesResponse = fixtures.get_file_content_as_schema(
-        f"{FIXTURE_PATH}/zoe_40.1.json", schemas.KamereonVehiclesResponseSchema
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicles/zoe_40.1.json",
+        schemas.KamereonVehiclesResponseSchema,
     )
     vehicle_details = response.vehicleLinks[0].vehicleDetails
     assert vehicle_details
@@ -56,7 +56,8 @@ def test_zoe40_1() -> None:
 def test_zoe40_2() -> None:
     """Test vehicle details for zoe_40.2.json."""
     response: models.KamereonVehiclesResponse = fixtures.get_file_content_as_schema(
-        f"{FIXTURE_PATH}/zoe_40.2.json", schemas.KamereonVehiclesResponseSchema
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicles/zoe_40.2.json",
+        schemas.KamereonVehiclesResponseSchema,
     )
     vehicle_details = response.vehicleLinks[0].vehicleDetails
     assert vehicle_details
@@ -72,7 +73,8 @@ def test_zoe40_2() -> None:
 def test_capturii_1() -> None:
     """Test vehicle details for captur_ii.1.json."""
     response: models.KamereonVehiclesResponse = fixtures.get_file_content_as_schema(
-        f"{FIXTURE_PATH}/captur_ii.1.json", schemas.KamereonVehiclesResponseSchema
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicles/captur_ii.1.json",
+        schemas.KamereonVehiclesResponseSchema,
     )
     vehicle_details = response.vehicleLinks[0].vehicleDetails
     assert vehicle_details

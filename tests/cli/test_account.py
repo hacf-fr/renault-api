@@ -30,18 +30,18 @@ def test_list_vehicles_prompt(
     """It exits with a status code of zero."""
     fixtures.inject_gigya_all(mocked_responses)
 
-    fixtures.inject_kamereon_person(mocked_responses)
+    fixtures.inject_get_person(mocked_responses)
     # Injected for account selection
-    fixtures.inject_kamereon_vehicles(mocked_responses)
+    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1")
     vehicle2_urlpath = f"accounts/account-id-2/vehicles?{fixtures.DEFAULT_QUERY_STRING}"
-    fixtures.inject_kamereon(
+    fixtures.inject_data(
         mocked_responses,
         vehicle2_urlpath,
         "vehicles/zoe_40.1.json",
     )
 
     # Injected again for vehicle listing
-    fixtures.inject_kamereon_vehicles(mocked_responses)
+    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1")
 
     result = cli_runner.invoke(
         __main__.main,
@@ -83,7 +83,7 @@ def test_list_vehicles_store(
     credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
     credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
-    fixtures.inject_kamereon_vehicles(mocked_responses)
+    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1")
 
     result = cli_runner.invoke(__main__.main, "vehicles")
     assert result.exit_code == 0, result.exception
@@ -106,7 +106,7 @@ def test_list_vehicles_no_prompt(
     credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
     credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
-    fixtures.inject_kamereon_vehicles(mocked_responses)
+    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1")
 
     result = cli_runner.invoke(__main__.main, f"--account {TEST_ACCOUNT_ID} vehicles")
     assert result.exit_code == 0, result.exception
