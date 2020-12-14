@@ -1,6 +1,7 @@
 """Test cases for the __main__ module."""
 import os
 import pathlib
+from typing import Generator
 
 import pytest
 from click.testing import CliRunner
@@ -10,7 +11,7 @@ from renault_api.cli import __main__
 
 
 @pytest.fixture(scope="function")
-def temp_root(tmpdir: pathlib.Path) -> str:
+def temp_root(tmpdir: pathlib.Path) -> Generator[pathlib.Path, None, None]:
     """Update current directory to test log folder."""
     root_dir = os.getcwd()
     os.chdir(tmpdir)
