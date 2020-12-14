@@ -1,4 +1,5 @@
 """Command-line interface."""
+import errno
 import logging
 import os
 from datetime import datetime
@@ -19,34 +20,40 @@ from . import renault_vehicle_charge
 from renault_api.credential_store import FileCredentialStore
 
 
-def _set_debug(debug: bool, log: bool) -> None:  # pragma: no cover
+def _set_debug(debug: bool, log: bool) -> None:
     """Renault CLI."""
-    if debug or log:
-        renault_log = logging.getLogger("renault_api")
-        renault_log.setLevel(logging.DEBUG)
+    renault_log = logging.getLogger("renault_api")
+    renault_log.setLevel(logging.DEBUG)
 
-        if log:  # pragma: no cover
-            # create formatter and add it to the handlers
-            formatter = logging.Formatter(
-                "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-            )
+    if log:
+        # create directory
+        try:
+            os.makedirs("logs")
+        except OSError as e:  # pragma: no cover
+            if e.errno != errno.EEXIST:
+                raise
 
-            # create file handler which logs even debug messages
-            fh = logging.FileHandler(f"logs/{datetime.today():%Y-%m-%d}.log")
-            fh.setLevel(logging.DEBUG)
-            fh.setFormatter(formatter)
-
-            # And enable our own debug logging
-            renault_log.addHandler(fh)
-
-        if debug:
-            logging.basicConfig()
-
-        renault_log.warning(
-            "Debug output enabled. Logs may contain personally identifiable "
-            "information and account credentials! Be sure to sanitise these logs "
-            "before sending them to a third party or posting them online."
+        # create formatter and add it to the handlers
+        formatter = logging.Formatter(
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
         )
+
+        # create file handler which logs even debug messages
+        fh = logging.FileHandler(f"logs/{datetime.today():%Y-%m-%d}.log")
+        fh.setLevel(logging.DEBUG)
+        fh.setFormatter(formatter)
+
+        # And enable our own debug logging
+        renault_log.addHandler(fh)
+
+    if debug:
+        logging.basicConfig()
+
+    renault_log.warning(
+        "Debug output enabled. Logs may contain personally identifiable "
+        "information and account credentials! Be sure to sanitise these logs "
+        "before sending them to a third party or posting them online."
+    )
 
 
 @click.group()
