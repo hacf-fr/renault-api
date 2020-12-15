@@ -17,12 +17,6 @@ from renault_api.exceptions import RenaultException
 from renault_api.kamereon.helpers import DAYS_OF_WEEK
 
 
-_WARNING_DEBUG_ENABLED = (
-    "Debug output enabled. Logs may contain personally identifiable "
-    "information and account credentials! Be sure to sanitise these logs "
-    "before sending them to a third party or posting them online."
-)
-
 _DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 

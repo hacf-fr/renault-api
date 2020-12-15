@@ -11,7 +11,6 @@ from click.testing import CliRunner
 from tests.const import TEST_LOCALE
 
 from renault_api.cli import __main__
-from renault_api.cli import helpers
 
 
 PATCH_TODAY = datetime(2018, 12, 25)
@@ -50,7 +49,7 @@ def test_debug(cli_runner: CliRunner, caplog: Any) -> None:
     """Test enable debug."""
     result = cli_runner.invoke(__main__.main, f"--debug set --locale {TEST_LOCALE}")
     assert result.exit_code == 0
-    assert helpers._WARNING_DEBUG_ENABLED in caplog.text
+    assert __main__._WARNING_DEBUG_ENABLED in caplog.text
 
 
 def test_log_no_folder(
@@ -64,7 +63,7 @@ def test_log_no_folder(
     assert result.exit_code == 0
 
     with open("logs/2018-12-25.log") as myfile:
-        assert helpers._WARNING_DEBUG_ENABLED in myfile.read()
+        assert __main__._WARNING_DEBUG_ENABLED in myfile.read()
 
 
 def test_log_existing_folder(
@@ -76,4 +75,4 @@ def test_log_existing_folder(
     assert result.exit_code == 0
 
     with open("logs/2018-12-25.log") as myfile:
-        assert helpers._WARNING_DEBUG_ENABLED in myfile.read()
+        assert __main__._WARNING_DEBUG_ENABLED in myfile.read()
