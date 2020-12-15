@@ -160,7 +160,18 @@ def test_charging_settings() -> None:
                 "friday": {"startTime": "T12:15Z", "duration": 15},
                 "saturday": {"startTime": "T12:30Z", "duration": 30},
                 "sunday": {"startTime": "T12:45Z", "duration": 45},
-            }
+            },
+            {
+                "id": 2,
+                "activated": False,
+                "monday": {"startTime": "T01:00Z", "duration": 15},
+                "tuesday": {"startTime": "T02:00Z", "duration": 30},
+                "wednesday": {"startTime": "T03:00Z", "duration": 45},
+                "thursday": {"startTime": "T04:00Z", "duration": 60},
+                "friday": {"startTime": "T05:00Z", "duration": 75},
+                "saturday": {"startTime": "T06:00Z", "duration": 90},
+                "sunday": {"startTime": "T07:00Z", "duration": 105},
+            },
         ],
     }
 
@@ -170,7 +181,7 @@ def test_charging_settings() -> None:
     )
 
     assert vehicle_data.mode == "scheduled"
-    assert len(vehicle_data.schedules) == 1
+    assert len(vehicle_data.schedules) == 2
 
     schedule_data = vehicle_data.schedules[0]
     assert schedule_data.id == 1

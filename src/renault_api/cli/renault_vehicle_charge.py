@@ -156,11 +156,16 @@ async def settings(
         if not response.schedules:  # pragma: no cover
             click.echo("No schedules found.")
             return
+
+        id_found = False
         for schedule in response.schedules:
             if id == schedule.id:  # pragma: no cover
                 update_settings(schedule, **kwargs)
+                id_found = True
                 break
+        if not id_found:
             raise IndexError(f"Schedule id {id} not found.")  # pragma: no cover
+
         write_response = await vehicle.set_charge_schedules(response.schedules)
         click.echo(write_response.raw_data)
     else:
@@ -188,6 +193,10 @@ async def settings(
                     headers=headers,
                 )
             )
+
+            # separate items by additional newline if not last item in list
+            if schedule != response.schedules[-1]:
+                click.echo("\n")
 
 
 def _format_charge_schedule(schedule: ChargeSchedule, key: str) -> List[str]:

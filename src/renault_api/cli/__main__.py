@@ -121,7 +121,7 @@ async def charge_history(
 @main.command()
 @click.option(
     "--mode",
-    help="Target charge mode (schedule_mode/alway/always_schedule)",
+    help="Target charge mode (schedule_mode/always/always_schedule)",
 )
 @click.pass_obj
 @helpers.coro_with_websession

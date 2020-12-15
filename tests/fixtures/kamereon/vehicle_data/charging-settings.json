@@ -36,6 +36,38 @@
             "startTime": "T12:45Z",
             "duration": 45
           }
+        },
+        {
+          "id": 2,
+          "activated": false,
+          "monday": {
+            "startTime": "T01:00Z",
+            "duration": 15
+          },
+          "tuesday": {
+            "startTime": "T02:00Z",
+            "duration": 30
+          },
+          "wednesday": {
+            "startTime": "T03:00Z",
+            "duration": 45
+          },
+          "thursday": {
+            "startTime": "T04:00Z",
+            "duration": 60
+          },
+          "friday": {
+            "startTime": "T05:00Z",
+            "duration": 75
+          },
+          "saturday": {
+            "startTime": "T06:00Z",
+            "duration": 90
+          },
+          "sunday": {
+            "startTime": "T07:00Z",
+            "duration": 105
+          }
         }
       ]
     }
