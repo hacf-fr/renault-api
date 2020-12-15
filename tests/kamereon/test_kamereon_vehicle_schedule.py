@@ -35,27 +35,18 @@ def test_for_json() -> None:
                 "friday": {"startTime": "T12:15Z", "duration": 15},
                 "saturday": {"startTime": "T12:30Z", "duration": 30},
                 "sunday": {"startTime": "T12:45Z", "duration": 45},
-            }
-        ]
-    }
-
-    # Check that for_json returns the same as the original data
-    for_json = {
-        "schedules": list(schedule.for_json() for schedule in vehicle_data.schedules)
-    }
-    assert for_json == {
-        "schedules": [
+            },
             {
-                "id": 1,
-                "activated": True,
-                "monday": {"startTime": "T12:00Z", "duration": 15},
-                "tuesday": {"startTime": "T04:30Z", "duration": 420},
-                "wednesday": {"startTime": "T22:30Z", "duration": 420},
-                "thursday": {"startTime": "T22:00Z", "duration": 420},
-                "friday": {"startTime": "T12:15Z", "duration": 15},
-                "saturday": {"startTime": "T12:30Z", "duration": 30},
-                "sunday": {"startTime": "T12:45Z", "duration": 45},
-            }
+                "id": 2,
+                "activated": False,
+                "monday": {"startTime": "T01:00Z", "duration": 15},
+                "tuesday": {"startTime": "T02:00Z", "duration": 30},
+                "wednesday": {"startTime": "T03:00Z", "duration": 45},
+                "thursday": {"startTime": "T04:00Z", "duration": 60},
+                "friday": {"startTime": "T05:00Z", "duration": 75},
+                "saturday": {"startTime": "T06:00Z", "duration": 90},
+                "sunday": {"startTime": "T07:00Z", "duration": 105},
+            },
         ]
     }
 
@@ -84,6 +75,17 @@ def test_for_json() -> None:
                 "friday": {"startTime": "T12:15Z", "duration": 15},
                 "saturday": {"startTime": "T12:30Z", "duration": 30},
                 "sunday": {"startTime": "T12:45Z", "duration": 45},
-            }
+            },
+            {
+                "id": 2,
+                "activated": False,
+                "monday": {"startTime": "T01:00Z", "duration": 15},
+                "tuesday": {"startTime": "T02:00Z", "duration": 30},
+                "wednesday": {"startTime": "T03:00Z", "duration": 45},
+                "thursday": {"startTime": "T04:00Z", "duration": 60},
+                "friday": {"startTime": "T05:00Z", "duration": 75},
+                "saturday": {"startTime": "T06:00Z", "duration": 90},
+                "sunday": {"startTime": "T07:00Z", "duration": 105},
+            },
         ]
     }

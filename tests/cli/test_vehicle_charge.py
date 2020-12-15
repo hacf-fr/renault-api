@@ -112,7 +112,7 @@ def test_charging_settings_get(
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_get_charging_settings(mocked_responses)
 
-    result = cli_runner.invoke(__main__.main, "charging-settings --id 1")
+    result = cli_runner.invoke(__main__.main, "charging-settings")
     assert result.exit_code == 0, result.exception
 
     expected_output = (
@@ -127,6 +127,17 @@ def test_charging_settings_get(
         "Friday     13:15         13:30       0:15:00\n"
         "Saturday   13:30         14:00       0:30:00\n"
         "Sunday     13:45         14:30       0:45:00\n"
+        "\n\n"
+        "Schedule ID: 2\n"
+        "Day        Start time    End time    Duration\n"
+        "---------  ------------  ----------  ----------\n"
+        "Monday     02:00         02:15       0:15:00\n"
+        "Tuesday    03:00         03:30       0:30:00\n"
+        "Wednesday  04:00         04:45       0:45:00\n"
+        "Thursday   05:00         06:00       1:00:00\n"
+        "Friday     06:00         07:15       1:15:00\n"
+        "Saturday   07:00         08:30       1:30:00\n"
+        "Sunday     08:00         09:45       1:45:00\n"
     )
     assert expected_output == result.output
 
@@ -160,7 +171,18 @@ def test_charging_settings_set(
                         "friday": {"duration": 480, "startTime": "T23:30Z"},
                         "saturday": {"duration": 120, "startTime": "T18:30Z"},
                         "sunday": {"duration": 45, "startTime": "T12:45Z"},
-                    }
+                    },
+                    {
+                        "id": 2,
+                        "activated": False,
+                        "monday": {"startTime": "T01:00Z", "duration": 15},
+                        "tuesday": {"startTime": "T02:00Z", "duration": 30},
+                        "wednesday": {"startTime": "T03:00Z", "duration": 45},
+                        "thursday": {"startTime": "T04:00Z", "duration": 60},
+                        "friday": {"startTime": "T05:00Z", "duration": 75},
+                        "saturday": {"startTime": "T06:00Z", "duration": 90},
+                        "sunday": {"startTime": "T07:00Z", "duration": 105},
+                    },
                 ]
             },
             "type": "ChargeSchedule",
