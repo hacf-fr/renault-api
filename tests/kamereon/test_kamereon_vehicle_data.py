@@ -7,6 +7,7 @@ from tests import fixtures
 from renault_api.kamereon import enums
 from renault_api.kamereon import models
 from renault_api.kamereon import schemas
+from renault_api.kamereon.helpers import DAYS_OF_WEEK
 
 
 @pytest.mark.parametrize(
@@ -240,3 +241,44 @@ def test_charge_mode() -> None:
     )
 
     assert vehicle_data.chargeMode == "always"
+
+
+def test_hvac_settings_mode() -> None:
+    """Test vehicle data with hvac settings for mode."""
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/hvac-settings.json",
+        schemas.KamereonVehicleDataResponseSchema,
+    )
+    response.raise_for_error_code()
+
+    vehicle_data = cast(
+        models.KamereonVehicleHvacSettingsData,
+        response.get_attributes(schemas.KamereonVehicleHvacSettingsDataSchema),
+    )
+
+    assert vehicle_data.mode == "scheduled"
+
+
+def test_hvac_settings_schedule() -> None:
+    """Test vehicle data with hvac schedule entries."""
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/hvac-settings.json",
+        schemas.KamereonVehicleDataResponseSchema,
+    )
+    response.raise_for_error_code()
+
+    vehicle_data = cast(
+        models.KamereonVehicleHvacSettingsData,
+        response.get_attributes(schemas.KamereonVehicleHvacSettingsDataSchema),
+    )
+
+    assert vehicle_data.mode == "scheduled"
+    assert vehicle_data.schedules[1].id == 2
+    assert vehicle_data.schedules[1].wednesday.readyAtTime == "T15:15Z"
+    assert vehicle_data.schedules[1].friday.readyAtTime == "T15:15Z"
+    assert vehicle_data.schedules[1].monday is None
+
+    for i in [0, 2, 3, 4]:
+        assert vehicle_data.schedules[i].id == i + 1
+        for day in DAYS_OF_WEEK:
+            assert vehicle_data.schedules[i].__dict__.get(day) is None

@@ -111,6 +111,18 @@ class RenaultVehicle:
             response.get_attributes(schemas.KamereonVehicleHvacStatusDataSchema),
         )
 
+    async def get_hvac_settings(self) -> models.KamereonVehicleHvacSettingsData:
+        """Get vehicle hvac settings (schedule+mode)."""
+        response = await self.session.get_vehicle_data(
+            account_id=self.account_id,
+            vin=self.vin,
+            endpoint="hvac-settings",
+        )
+        return cast(
+            models.KamereonVehicleHvacSettingsData,
+            response.get_attributes(schemas.KamereonVehicleHvacSettingsDataSchema),
+        )
+
     async def get_charge_mode(self) -> models.KamereonVehicleChargeModeData:
         """Get vehicle charge mode."""
         response = await self.session.get_vehicle_data(
@@ -352,6 +364,32 @@ class RenaultVehicle:
         return cast(
             models.KamereonVehicleHvacStartActionData,
             response.get_attributes(schemas.KamereonVehicleHvacStartActionDataSchema),
+        )
+
+    async def set_hvac_schedules(
+        self, schedules: List[models.HvacSchedule]
+    ) -> models.KamereonVehicleHvacScheduleActionData:
+        """Set vehicle charge schedules."""
+        for schedule in schedules:
+            if not isinstance(schedule, models.HvacSchedule):  # pragma: no cover
+                raise TypeError(
+                    "`schedules` should be a list of HvacSchedule, not {}".format(
+                        schedules.__class__
+                    )
+                )
+        attributes = {"schedules": list(schedule.for_json() for schedule in schedules)}
+
+        response = await self.session.set_vehicle_action(
+            account_id=self.account_id,
+            vin=self.vin,
+            endpoint="hvac-schedule",
+            attributes=attributes,
+        )
+        return cast(
+            models.KamereonVehicleHvacScheduleActionData,
+            response.get_attributes(
+                schemas.KamereonVehicleHvacScheduleActionDataSchema
+            ),
         )
 
     async def set_charge_schedules(

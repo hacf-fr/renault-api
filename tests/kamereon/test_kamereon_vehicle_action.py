@@ -1,4 +1,6 @@
 """Tests for Kamereon models."""
+from typing import cast
+
 import pytest
 from tests import fixtures
 
@@ -30,4 +32,148 @@ def test_vehicle_action_response_attributes() -> None:
     assert response.data.raw_data["attributes"] == {
         "action": "start",
         "targetTemperature": 21.0,
+    }
+
+
+def test_charge_mode_for_json() -> None:
+    """Test for updating charge settings."""
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/charging-settings.json",
+        schemas.KamereonVehicleDataResponseSchema,
+    )
+    response.raise_for_error_code()
+    vehicle_data = cast(
+        models.KamereonVehicleChargingSettingsData,
+        response.get_attributes(schemas.KamereonVehicleChargingSettingsDataSchema),
+    )
+
+    # Check that for_json returns the same as the original data
+    for_json = {
+        "schedules": list(schedule.for_json() for schedule in vehicle_data.schedules)
+    }
+    assert for_json == {
+        "schedules": [
+            {
+                "id": 1,
+                "activated": True,
+                "monday": {"startTime": "T12:00Z", "duration": 15},
+                "tuesday": {"startTime": "T04:30Z", "duration": 420},
+                "wednesday": {"startTime": "T22:30Z", "duration": 420},
+                "thursday": {"startTime": "T22:00Z", "duration": 420},
+                "friday": {"startTime": "T12:15Z", "duration": 15},
+                "saturday": {"startTime": "T12:30Z", "duration": 30},
+                "sunday": {"startTime": "T12:45Z", "duration": 45},
+            },
+            {
+                "id": 2,
+                "activated": False,
+                "monday": {"startTime": "T01:00Z", "duration": 15},
+                "tuesday": {"startTime": "T02:00Z", "duration": 30},
+                "wednesday": {"startTime": "T03:00Z", "duration": 45},
+                "thursday": {"startTime": "T04:00Z", "duration": 60},
+                "friday": {"startTime": "T05:00Z", "duration": 75},
+                "saturday": {"startTime": "T06:00Z", "duration": 90},
+                "sunday": {"startTime": "T07:00Z", "duration": 105},
+            },
+        ]
+    }
+
+    vehicle_data.update(
+        {
+            "id": 1,
+            "tuesday": {"startTime": "T12:00Z", "duration": 15},
+        }
+    )
+    assert vehicle_data.schedules[0].tuesday.startTime == "T12:00Z"
+    assert vehicle_data.schedules[0].tuesday.duration == 15
+
+    # Check that for_json returns the updated data
+    for_json = {
+        "schedules": list(schedule.for_json() for schedule in vehicle_data.schedules)
+    }
+    assert for_json == {
+        "schedules": [
+            {
+                "id": 1,
+                "activated": True,
+                "monday": {"startTime": "T12:00Z", "duration": 15},
+                "tuesday": {"startTime": "T12:00Z", "duration": 15},
+                "wednesday": {"startTime": "T22:30Z", "duration": 420},
+                "thursday": {"startTime": "T22:00Z", "duration": 420},
+                "friday": {"startTime": "T12:15Z", "duration": 15},
+                "saturday": {"startTime": "T12:30Z", "duration": 30},
+                "sunday": {"startTime": "T12:45Z", "duration": 45},
+            },
+            {
+                "id": 2,
+                "activated": False,
+                "monday": {"startTime": "T01:00Z", "duration": 15},
+                "tuesday": {"startTime": "T02:00Z", "duration": 30},
+                "wednesday": {"startTime": "T03:00Z", "duration": 45},
+                "thursday": {"startTime": "T04:00Z", "duration": 60},
+                "friday": {"startTime": "T05:00Z", "duration": 75},
+                "saturday": {"startTime": "T06:00Z", "duration": 90},
+                "sunday": {"startTime": "T07:00Z", "duration": 105},
+            },
+        ]
+    }
+
+
+def test_hvac_schedule_for_json() -> None:
+    """Test for parsing and serializing settings."""
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/hvac-settings.json",
+        schemas.KamereonVehicleDataResponseSchema,
+    )
+    response.raise_for_error_code()
+    vehicle_data = cast(
+        models.KamereonVehicleHvacSettingsData,
+        response.get_attributes(schemas.KamereonVehicleHvacSettingsDataSchema),
+    )
+
+    # verify for_json returns proper original data
+    for_json = {
+        "schedules": list(schedule.for_json() for schedule in vehicle_data.schedules)
+    }
+    assert for_json == {
+        "schedules": [
+            {"id": 1, "activated": False},
+            {
+                "id": 2,
+                "activated": True,
+                "wednesday": {"readyAtTime": "T15:15Z"},
+                "friday": {"readyAtTime": "T15:15Z"},
+            },
+            {"id": 3, "activated": False},
+            {"id": 4, "activated": False},
+            {"id": 5, "activated": False},
+        ]
+    }
+
+    # perform an update
+    vehicle_data.schedules[0].activated = True
+    vehicle_data.schedules[0].sunday = models.HvacDaySchedule(
+        raw_data=None, readyAtTime="T20:30Z"
+    )
+
+    for_json = {
+        "schedules": list(schedule.for_json() for schedule in vehicle_data.schedules)
+    }
+    assert for_json == {
+        "schedules": [
+            {
+                "id": 1,
+                "activated": True,
+                "sunday": {"readyAtTime": "T20:30Z"},
+            },
+            {
+                "id": 2,
+                "activated": True,
+                "wednesday": {"readyAtTime": "T15:15Z"},
+                "friday": {"readyAtTime": "T15:15Z"},
+            },
+            {"id": 3, "activated": False},
+            {"id": 4, "activated": False},
+            {"id": 5, "activated": False},
+        ]
     }

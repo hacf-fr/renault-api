@@ -21,7 +21,6 @@ KAMEREON_FIXTURE_PATH = "tests/fixtures/kamereon"
 DEFAULT_QUERY_STRING = f"country={TEST_COUNTRY}"
 KAMEREON_BASE_URL = f"{TEST_KAMEREON_URL}/commerce/v1"
 ACCOUNT_PATH = f"accounts/{TEST_ACCOUNT_ID}"
-ADAPTER_PATH = f"{ACCOUNT_PATH}"
 ADAPTER_PATH = f"{ACCOUNT_PATH}/kamereon/kca/car-adapter/v1/cars/{TEST_VIN}"
 ADAPTER2_PATH = f"{ACCOUNT_PATH}/kamereon/kca/car-adapter/v2/cars/{TEST_VIN}"
 
@@ -191,6 +190,16 @@ def inject_get_hvac_status(mocked_responses: aioresponses) -> str:
     )
 
 
+def inject_get_hvac_settings(mocked_responses: aioresponses) -> str:
+    """Inject sample hvac-settings."""
+    urlpath = f"{ADAPTER_PATH}/hvac-settings?{DEFAULT_QUERY_STRING}"
+    return inject_data(
+        mocked_responses,
+        urlpath,
+        "vehicle_data/hvac-settings.json",
+    )
+
+
 def inject_get_charge_mode(mocked_responses: aioresponses) -> str:
     """Inject sample charge-mode."""
     urlpath = f"{ADAPTER_PATH}/charge-mode?{DEFAULT_QUERY_STRING}"
@@ -328,6 +337,16 @@ def inject_set_hvac_start(mocked_responses: aioresponses, result: str) -> str:
         mocked_responses,
         urlpath,
         f"vehicle_action/hvac-start.{result}.json",
+    )
+
+
+def inject_set_hvac_schedules(mocked_responses: aioresponses) -> str:
+    """Inject sample hvac-schedules."""
+    urlpath = f"{ADAPTER2_PATH}/actions/hvac-schedule?{DEFAULT_QUERY_STRING}"
+    return inject_action(
+        mocked_responses,
+        urlpath,
+        "vehicle_action/hvac-schedule.schedules.json",
     )
 
 
