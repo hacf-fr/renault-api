@@ -28,7 +28,7 @@ def test_login_prompt(mocked_responses: aioresponses, cli_runner: CliRunner) -> 
 
     result = cli_runner.invoke(
         __main__.main,
-        "--debug login",
+        "login",
         input=f"{TEST_USERNAME}\n{TEST_PASSWORD}\n{TEST_LOCALE}\ny",
     )
     assert result.exit_code == 0, result.exception
@@ -48,7 +48,7 @@ def test_login_no_prompt(mocked_responses: aioresponses, cli_runner: CliRunner) 
 
     result = cli_runner.invoke(
         __main__.main,
-        f"--debug --locale {TEST_LOCALE} "
+        f"--locale {TEST_LOCALE} "
         f"login --user {TEST_USERNAME} --password {TEST_PASSWORD}",
     )
     assert result.exit_code == 0, result.exception

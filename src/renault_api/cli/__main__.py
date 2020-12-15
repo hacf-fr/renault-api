@@ -1,4 +1,5 @@
 """Command-line interface."""
+import errno
 import logging
 import os
 from datetime import datetime
@@ -19,13 +20,27 @@ from . import renault_vehicle_charge
 from renault_api.credential_store import FileCredentialStore
 
 
-def _set_debug(debug: bool, log: bool) -> None:  # pragma: no cover
+_WARNING_DEBUG_ENABLED = (
+    "Debug output enabled. Logs may contain personally identifiable "
+    "information and account credentials! Be sure to sanitise these logs "
+    "before sending them to a third party or posting them online."
+)
+
+
+def _check_for_debug(debug: bool, log: bool) -> None:
     """Renault CLI."""
     if debug or log:
         renault_log = logging.getLogger("renault_api")
         renault_log.setLevel(logging.DEBUG)
 
-        if log:  # pragma: no cover
+        if log:
+            # create directory
+            try:
+                os.makedirs("logs")
+            except OSError as e:  # pragma: no cover
+                if e.errno != errno.EEXIST:
+                    raise
+
             # create formatter and add it to the handlers
             formatter = logging.Formatter(
                 "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -42,11 +57,7 @@ def _set_debug(debug: bool, log: bool) -> None:  # pragma: no cover
         if debug:
             logging.basicConfig()
 
-        renault_log.warning(
-            "Debug output enabled. Logs may contain personally identifiable "
-            "information and account credentials! Be sure to sanitise these logs "
-            "before sending them to a third party or posting them online."
-        )
+        renault_log.warning(_WARNING_DEBUG_ENABLED)
 
 
 @click.group()
@@ -74,8 +85,7 @@ def main(
     ctx.obj["credential_store"] = FileCredentialStore(
         os.path.expanduser(renault_settings.CREDENTIAL_PATH)
     )
-    if debug or log:
-        _set_debug(debug, log)
+    _check_for_debug(debug, log)
     if locale:
         ctx.obj["locale"] = locale
     if account:
