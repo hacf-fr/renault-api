@@ -105,7 +105,7 @@ def test_hvac_start_later(
     url = fixtures.inject_set_hvac_start(mocked_responses, "start")
 
     result = cli_runner.invoke(
-        __main__.main, "hvac start --temperature 24 --at '2020-12-25 at 11:50'"
+        __main__.main, "hvac start --temperature 24 --at '2020-12-25T11:50:00+02:00'"
     )
     assert result.exit_code == 0, result.exception
 
@@ -113,7 +113,7 @@ def test_hvac_start_later(
         "data": {
             "attributes": {
                 "action": "start",
-                "startDateTime": "2020-12-25T10:50:00Z",
+                "startDateTime": "2020-12-25T09:50:00Z",
                 "targetTemperature": 24,
             },
             "type": "HvacStart",
