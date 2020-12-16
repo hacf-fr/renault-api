@@ -388,15 +388,17 @@ class HvacSchedule(BaseModel):
 
     def for_json(self) -> Dict[str, Any]:
         """Create dict for json."""
-        ret: Dict[str, Any] = {
+        result: Dict[str, Any] = {
             "id": self.id,
             "activated": self.activated,
         }
         for day in helpers.DAYS_OF_WEEK:
-            schedule: Optional[HvacDaySchedule] = self.__dict__.get(day)
-            if schedule:
-                ret[day] = schedule.for_json()
-        return ret
+            day_spec: Optional[HvacDaySchedule] = getattr(self, day, None)
+            if day_spec is None:
+                result[day] = day_spec
+            else:
+                result[day] = day_spec.for_json()
+        return result
 
 
 @dataclass

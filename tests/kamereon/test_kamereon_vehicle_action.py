@@ -135,20 +135,47 @@ def test_hvac_schedule_for_json() -> None:
     for_json = {
         "schedules": list(schedule.for_json() for schedule in vehicle_data.schedules)
     }
-    assert for_json == {
+    expected_json = {
         "schedules": [
-            {"id": 1, "activated": False},
+            {
+                "id": 1,
+                "activated": False,
+                "monday": None,
+                "tuesday": None,
+                "wednesday": None,
+                "thursday": None,
+                "friday": None,
+                "saturday": None,
+                "sunday": None,
+            },
             {
                 "id": 2,
                 "activated": True,
+                "monday": None,
+                "tuesday": None,
                 "wednesday": {"readyAtTime": "T15:15Z"},
+                "thursday": None,
                 "friday": {"readyAtTime": "T15:15Z"},
+                "saturday": None,
+                "sunday": None,
             },
-            {"id": 3, "activated": False},
-            {"id": 4, "activated": False},
-            {"id": 5, "activated": False},
         ]
     }
+    for i in [3, 4, 5]:
+        expected_json["schedules"].append(
+            {
+                "id": i,
+                "activated": False,
+                "monday": None,
+                "tuesday": None,
+                "wednesday": None,
+                "thursday": None,
+                "friday": None,
+                "saturday": None,
+                "sunday": None,
+            }
+        )
+    assert for_json == expected_json
 
     # perform an update
     vehicle_data.schedules[0].activated = True
@@ -159,21 +186,45 @@ def test_hvac_schedule_for_json() -> None:
     for_json = {
         "schedules": list(schedule.for_json() for schedule in vehicle_data.schedules)
     }
-    assert for_json == {
+    expected_json = {
         "schedules": [
             {
                 "id": 1,
                 "activated": True,
+                "monday": None,
+                "tuesday": None,
+                "wednesday": None,
+                "thursday": None,
+                "friday": None,
+                "saturday": None,
                 "sunday": {"readyAtTime": "T20:30Z"},
             },
             {
                 "id": 2,
                 "activated": True,
+                "monday": None,
+                "tuesday": None,
                 "wednesday": {"readyAtTime": "T15:15Z"},
+                "thursday": None,
                 "friday": {"readyAtTime": "T15:15Z"},
+                "saturday": None,
+                "sunday": None,
             },
-            {"id": 3, "activated": False},
-            {"id": 4, "activated": False},
-            {"id": 5, "activated": False},
         ]
     }
+    for i in [3, 4, 5]:
+        expected_json["schedules"].append(
+            {
+                "id": i,
+                "activated": False,
+                "monday": None,
+                "tuesday": None,
+                "wednesday": None,
+                "thursday": None,
+                "friday": None,
+                "saturday": None,
+                "sunday": None,
+            }
+        )
+
+    assert for_json == expected_json
