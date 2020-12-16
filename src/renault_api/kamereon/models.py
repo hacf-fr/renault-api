@@ -351,9 +351,11 @@ class ChargeSchedule(BaseModel):
             "activated": self.activated,
         }
         for day in helpers.DAYS_OF_WEEK:
-            schedule: Optional[ChargeDaySchedule] = self.__dict__.get(day)
-            if schedule:  # pragma: no branch
-                result[day] = schedule.for_json()
+            day_spec: Optional[ChargeDaySchedule] = getattr(self, day, None)
+            if day_spec is None:
+                result[day] = day_spec
+            else:
+                result[day] = day_spec.for_json()
         return result
 
 

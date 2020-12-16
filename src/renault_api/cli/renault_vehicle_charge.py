@@ -219,7 +219,10 @@ def update_settings(
     for day in DAYS_OF_WEEK:
         if day in kwargs:  # pragma: no branch
             day_value = kwargs.pop(day)
-            if day_value:
+
+            if day_value == "clear":
+                setattr(schedule, day, None)
+            elif day_value:
                 start_time, duration = _parse_day_schedule(str(day_value))
                 setattr(
                     schedule,

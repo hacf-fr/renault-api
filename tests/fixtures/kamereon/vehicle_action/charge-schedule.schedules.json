@@ -7,10 +7,6 @@
         {
           "id": 1,
           "activated": true,
-          "monday": {
-            "startTime": "T12:00Z",
-            "duration": 15
-          },
           "tuesday": {
             "startTime": "T04:30Z",
             "duration": 420

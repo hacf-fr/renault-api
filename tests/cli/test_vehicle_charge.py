@@ -150,10 +150,11 @@ def test_charging_settings_set(
     fixtures.inject_get_charging_settings(mocked_responses)
     url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
 
+    monday = "--monday clear"
     friday = "--friday T23:30Z,480"
     saturday = "--saturday 19:30,120"
     result = cli_runner.invoke(
-        __main__.main, f"charging-settings --id 1 --set {friday} {saturday}"
+        __main__.main, f"charging-settings --id 1 --set {monday} {friday} {saturday}"
     )
     assert result.exit_code == 0, result.exception
 
@@ -164,7 +165,7 @@ def test_charging_settings_set(
                     {
                         "id": 1,
                         "activated": True,
-                        "monday": {"duration": 15, "startTime": "T12:00Z"},
+                        "monday": None,
                         "tuesday": {"duration": 420, "startTime": "T04:30Z"},
                         "wednesday": {"duration": 420, "startTime": "T22:30Z"},
                         "thursday": {"duration": 420, "startTime": "T22:00Z"},
@@ -190,7 +191,6 @@ def test_charging_settings_set(
     }
     expected_output = (
         "{'schedules': [{'id': 1, 'activated': True, "
-        "'monday': {'startTime': 'T12:00Z', 'duration': 15}, "
         "'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, "
         "'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, "
         "'thursday': {'startTime': 'T22:00Z', 'duration': 420}, "
