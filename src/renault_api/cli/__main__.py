@@ -188,7 +188,8 @@ async def charges(
 @click.option("--id", type=int, help="Schedule ID")
 @click.option("--set", is_flag=True, help="Update specified schedule.")
 @helpers.days_of_week_option(
-    helptext="{} schedule in format `HH:MM,DURATION` or `THH:MMZ,DURATION`."
+    helptext="{} schedule in format `HH:MM,DURATION` or `THH:MMZ,DURATION`"
+    "or `clear` to unset."
 )
 @click.pass_obj
 @helpers.coro_with_websession
