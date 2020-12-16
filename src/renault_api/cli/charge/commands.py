@@ -7,7 +7,7 @@ from . import schedule
 
 
 @click.group()
-def charge():
+def charge() -> None:
     """Charge functionnality."""
     pass
 

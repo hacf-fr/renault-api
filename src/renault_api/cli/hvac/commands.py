@@ -6,7 +6,7 @@ from . import history
 
 
 @click.group()
-def hvac():
+def hvac() -> None:
     """HVAC functionnality."""
     pass
 

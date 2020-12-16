@@ -24,6 +24,7 @@ async def history(
 ) -> None:
     """Display air conditioning history."""
     parsed_start, parsed_end = helpers.parse_dates(start, end)
+    period = period or "month"
 
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
