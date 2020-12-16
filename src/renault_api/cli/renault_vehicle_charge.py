@@ -124,14 +124,14 @@ def _format_charge_history_item(item: Dict[str, Any], period: str) -> List[str]:
 async def mode(
     websession: aiohttp.ClientSession,
     ctx_data: Dict[str, Any],
-    mode: Optional[str] = None,
+    set: Optional[str] = None,
 ) -> None:
     """Display or set charge mode."""
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
     )
-    if mode:
-        write_response = await vehicle.set_charge_mode(mode)
+    if set:
+        write_response = await vehicle.set_charge_mode(set)
         click.echo(write_response.raw_data)
     else:
         read_response = await vehicle.get_charge_mode()
