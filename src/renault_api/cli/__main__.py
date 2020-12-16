@@ -155,21 +155,6 @@ async def charge_mode(
     )
 
 
-@charge.command(name="start")
-@click.pass_obj
-@helpers.coro_with_websession
-async def charge_start(
-    ctx_data: Dict[str, Any],
-    *,
-    websession: aiohttp.ClientSession,
-) -> None:
-    """Start charge."""
-    await renault_vehicle_charge.start(
-        websession=websession,
-        ctx_data=ctx_data,
-    )
-
-
 @charge.command(name="sessions")
 @helpers.start_end_option(False)
 @click.pass_obj
@@ -181,7 +166,7 @@ async def charge_sessions(
     end: str,
     websession: aiohttp.ClientSession,
 ) -> None:
-    """Display charges."""
+    """Display charge sessions."""
     await renault_vehicle_charge.charges(
         websession=websession,
         ctx_data=ctx_data,
@@ -194,8 +179,8 @@ async def charge_sessions(
 @click.option("--id", type=int, help="Schedule ID")
 @click.option("--set", is_flag=True, help="Update specified schedule.")
 @helpers.days_of_week_option(
-    helptext="{} schedule in format `HH:MM,DURATION` or `THH:MMZ,DURATION`"
-    "or `clear` to unset."
+    helptext="{} schedule in format `hh:mm,duration` (for local timezone) "
+    "or `Thh:mmZ,duration` (for utc) or `clear` to unset."
 )
 @click.pass_obj
 @helpers.coro_with_websession
@@ -207,13 +192,28 @@ async def charge_settings(
     websession: aiohttp.ClientSession,
     **kwargs: Any,
 ) -> None:
-    """Display or update charging settings."""
+    """Display or update charging schedules."""
     await renault_vehicle_charge.settings(
         websession=websession,
         ctx_data=ctx_data,
         id=id,
         set=set,
         **kwargs,
+    )
+
+
+@charge.command(name="start")
+@click.pass_obj
+@helpers.coro_with_websession
+async def charge_start(
+    ctx_data: Dict[str, Any],
+    *,
+    websession: aiohttp.ClientSession,
+) -> None:
+    """Start charge."""
+    await renault_vehicle_charge.start(
+        websession=websession,
+        ctx_data=ctx_data,
     )
 
 
