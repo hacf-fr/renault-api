@@ -47,7 +47,7 @@ Providing samples for more vehicles helps us improve the library. If you have a 
 do not have the specifications yet, or if you have found a new feature for an existing vehicle, then
 please send us the samples.
 
-- Grab a trace.
+- Generate a trace.
 - Add the json file to the correct `test/fixtures/kamereon` subfolder.
 - Ensure that `vin` starts with `VF1AAAA` _(we do not want the real VIN)_
 - Ensure that `vehicleDetails.vin` also starts with `VF1AAAA` _(we do not want the real VIN)_
