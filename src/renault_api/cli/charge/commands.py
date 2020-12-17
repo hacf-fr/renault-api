@@ -8,7 +8,7 @@ from . import schedule
 
 @click.group()
 def charge() -> None:
-    """Charge functionnality."""
+    """Charge functionality."""
     pass
 
 

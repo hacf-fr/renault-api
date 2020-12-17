@@ -105,7 +105,7 @@ def test_sessions(mocked_responses: aioresponses, cli_runner: CliRunner) -> None
     assert expected_output == result.output
 
 
-def test_charge_schedule_show_all(
+def test_charge_schedule_show(
     mocked_responses: aioresponses, cli_runner: CliRunner
 ) -> None:
     """It exits with a status code of zero."""
@@ -143,33 +143,6 @@ def test_charge_schedule_show_all(
     assert expected_output == result.output
 
 
-def test_charge_schedule_show_single(
-    mocked_responses: aioresponses, cli_runner: CliRunner
-) -> None:
-    """It exits with a status code of zero."""
-    initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_get_charging_settings(mocked_responses)
-
-    result = cli_runner.invoke(__main__.main, "charge schedule show --id 2")
-    assert result.exit_code == 0, result.exception
-
-    expected_output = (
-        "Mode: scheduled\n"
-        "\n"
-        "Schedule ID: 2\n"
-        "Day        Start time    End time    Duration\n"
-        "---------  ------------  ----------  ----------\n"
-        "Monday     02:00         02:15       0:15:00\n"
-        "Tuesday    03:00         03:30       0:30:00\n"
-        "Wednesday  04:00         04:45       0:45:00\n"
-        "Thursday   05:00         06:00       1:00:00\n"
-        "Friday     06:00         07:15       1:15:00\n"
-        "Saturday   07:00         08:30       1:30:00\n"
-        "Sunday     08:00         09:45       1:45:00\n"
-    )
-    assert expected_output == result.output
-
-
 def test_charging_settings_set(
     mocked_responses: aioresponses, cli_runner: CliRunner
 ) -> None:
@@ -182,7 +155,7 @@ def test_charging_settings_set(
     friday = "--friday T23:30Z,480"
     saturday = "--saturday 19:30,120"
     result = cli_runner.invoke(
-        __main__.main, f"charge schedule set --id 1 {monday} {friday} {saturday}"
+        __main__.main, f"charge schedule set 1 {monday} {friday} {saturday}"
     )
     assert result.exit_code == 0, result.exception
 

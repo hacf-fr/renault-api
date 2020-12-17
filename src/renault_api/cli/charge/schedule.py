@@ -30,22 +30,19 @@ _DAY_SCHEDULE_REGEX = re.compile(
 
 @click.group()
 def schedule() -> None:
-    """Display or update charging schedules."""
+    """Display or update charge schedules."""
     pass
 
 
 @schedule.command()
-@click.option("--id", type=int, help="Schedule ID")
 @click.pass_obj
 @helpers.coro_with_websession
 async def show(
     ctx_data: Dict[str, Any],
     *,
-    id: Optional[int] = None,
     websession: aiohttp.ClientSession,
-    **kwargs: Any,
 ) -> None:
-    """Display charging settings."""
+    """Display charge schedules."""
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
     )
@@ -54,12 +51,10 @@ async def show(
     # Display mode
     click.echo(f"Mode: {response.mode}")
     if not response.schedules:  # pragma: no cover
-        click.echo("No schedules found.")
+        click.echo("\nNo schedules found.")
         return
 
     for schedule in response.schedules:
-        if id and id != schedule.id:
-            continue
         click.echo(
             f"\nSchedule ID: {schedule.id}{' [Active]' if schedule.activated else ''}"
         )
@@ -91,7 +86,7 @@ def _format_charge_schedule(schedule: ChargeSchedule, key: str) -> List[str]:
 
 
 @schedule.command()
-@click.option("--id", type=int, help="Schedule ID")
+@click.argument("id", type=int)
 @helpers.days_of_week_option(
     helptext="{} schedule in format `hh:mm,duration` (for local timezone) "
     "or `Thh:mmZ,duration` (for utc) or `clear` to unset."
@@ -101,17 +96,16 @@ def _format_charge_schedule(schedule: ChargeSchedule, key: str) -> List[str]:
 async def set(
     ctx_data: Dict[str, Any],
     *,
-    id: Optional[int] = None,
+    id: int,
     websession: aiohttp.ClientSession,
     **kwargs: Any,
 ) -> None:
-    """Display charging settings."""
+    """Update charging schedule {ID}."""
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
     )
     response = await vehicle.get_charging_settings()
 
-    id = id or 1
     if not response.schedules:  # pragma: no cover
         click.echo("No schedules found.")
         return
