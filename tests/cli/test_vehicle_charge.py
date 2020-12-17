@@ -19,7 +19,7 @@ def test_charge_history_day(
     )
 
     result = cli_runner.invoke(
-        __main__.main, "charge-history --from 2020-11-01 --to 2020-11-30 --period day"
+        __main__.main, "charge history --from 2020-11-01 --to 2020-11-30 --period day"
     )
     assert result.exit_code == 0, result.exception
 
@@ -42,7 +42,7 @@ def test_charge_history_month(
     )
 
     result = cli_runner.invoke(
-        __main__.main, "charge-history --from 2020-11-01 --to 2020-11-30"
+        __main__.main, "charge history --from 2020-11-01 --to 2020-11-30"
     )
     assert result.exit_code == 0, result.exception
 
@@ -59,7 +59,7 @@ def test_charge_mode_get(mocked_responses: aioresponses, cli_runner: CliRunner) 
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_get_charge_mode(mocked_responses)
 
-    result = cli_runner.invoke(__main__.main, "charge-mode")
+    result = cli_runner.invoke(__main__.main, "charge mode")
     assert result.exit_code == 0, result.exception
 
     expected_output = "Charge mode: always\n"
@@ -71,7 +71,7 @@ def test_charge_mode_set(mocked_responses: aioresponses, cli_runner: CliRunner) 
     initialise_credential_store(include_account_id=True, include_vin=True)
     url = fixtures.inject_set_charge_mode(mocked_responses, mode="schedule_mode")
 
-    result = cli_runner.invoke(__main__.main, "charge-mode --mode schedule_mode")
+    result = cli_runner.invoke(__main__.main, "charge mode --set schedule_mode")
     assert result.exit_code == 0, result.exception
 
     expected_json = {
@@ -84,13 +84,13 @@ def test_charge_mode_set(mocked_responses: aioresponses, cli_runner: CliRunner) 
     assert expected_output == result.output
 
 
-def test_charges(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_sessions(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_get_charges(mocked_responses, start="20201101", end="20201130")
 
     result = cli_runner.invoke(
-        __main__.main, "charges --from 2020-11-01 --to 2020-11-30"
+        __main__.main, "charge sessions --from 2020-11-01 --to 2020-11-30"
     )
     assert result.exit_code == 0, result.exception
 
@@ -105,18 +105,19 @@ def test_charges(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
     assert expected_output == result.output
 
 
-def test_charging_settings_get(
+def test_charge_schedule_show(
     mocked_responses: aioresponses, cli_runner: CliRunner
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_get_charging_settings(mocked_responses)
 
-    result = cli_runner.invoke(__main__.main, "charging-settings")
+    result = cli_runner.invoke(__main__.main, "charge schedule show")
     assert result.exit_code == 0, result.exception
 
     expected_output = (
         "Mode: scheduled\n"
+        "\n"
         "Schedule ID: 1 [Active]\n"
         "Day        Start time    End time    Duration\n"
         "---------  ------------  ----------  ----------\n"
@@ -127,7 +128,7 @@ def test_charging_settings_get(
         "Friday     13:15         13:30       0:15:00\n"
         "Saturday   13:30         14:00       0:30:00\n"
         "Sunday     13:45         14:30       0:45:00\n"
-        "\n\n"
+        "\n"
         "Schedule ID: 2\n"
         "Day        Start time    End time    Duration\n"
         "---------  ------------  ----------  ----------\n"
@@ -154,7 +155,7 @@ def test_charging_settings_set(
     friday = "--friday T23:30Z,480"
     saturday = "--saturday 19:30,120"
     result = cli_runner.invoke(
-        __main__.main, f"charging-settings --id 1 --set {monday} {friday} {saturday}"
+        __main__.main, f"charge schedule set 1 {monday} {friday} {saturday}"
     )
     assert result.exit_code == 0, result.exception
 
@@ -208,7 +209,7 @@ def test_charging_start(mocked_responses: aioresponses, cli_runner: CliRunner) -
     initialise_credential_store(include_account_id=True, include_vin=True)
     url = fixtures.inject_set_charging_start(mocked_responses, "start")
 
-    result = cli_runner.invoke(__main__.main, "charging-start")
+    result = cli_runner.invoke(__main__.main, "charge start")
     assert result.exit_code == 0, result.exception
 
     expected_json = {
