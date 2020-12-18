@@ -123,6 +123,63 @@ async def set(
     click.echo(write_response.raw_data)
 
 
+async def _set_schedule_activated(
+    ctx_data: Dict[str, Any],
+    websession: aiohttp.ClientSession,
+    id: int,
+    activated_state: bool,
+) -> None:
+    """Set the given schedules activated-flag to given state."""
+    vehicle = await renault_vehicle.get_vehicle(
+        websession=websession, ctx_data=ctx_data
+    )
+    response = await vehicle.get_charging_settings()
+
+    if not response.schedules:  # pragma: no cover
+        click.echo("No schedules found.")
+        return
+
+    id_found = False
+    for schedule in response.schedules:
+        if id == schedule.id:  # pragma: no cover
+            schedule.activated = activated_state
+            id_found = True
+            break
+    if not id_found:
+        raise IndexError(f"Schedule id {id} not found.")  # pragma: no cover
+
+    write_response = await vehicle.set_charge_schedules(response.schedules)
+    click.echo(write_response.raw_data)
+
+
+@schedule.command()
+@click.argument("id", type=int)
+@click.pass_obj
+@helpers.coro_with_websession
+async def activate(
+    ctx_data: Dict[str, Any],
+    *,
+    id: int,
+    websession: aiohttp.ClientSession,
+) -> None:
+    """Activate charging schedule {ID}."""
+    await _set_schedule_activated(ctx_data, websession, id, True)
+
+
+@schedule.command()
+@click.argument("id", type=int)
+@click.pass_obj
+@helpers.coro_with_websession
+async def deactivate(
+    ctx_data: Dict[str, Any],
+    *,
+    id: int,
+    websession: aiohttp.ClientSession,
+) -> None:
+    """Deactivate charging schedule {ID}."""
+    await _set_schedule_activated(ctx_data, websession, id, False)
+
+
 def update_settings(
     schedule: ChargeSchedule,
     **kwargs: Any,

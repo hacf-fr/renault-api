@@ -204,6 +204,140 @@ def test_charging_settings_set(
     assert expected_output == result.output
 
 
+def test_charging_settings_activate(
+    mocked_responses: aioresponses, cli_runner: CliRunner
+) -> None:
+    """It exits with a status code of zero."""
+    initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_charging_settings(mocked_responses)
+    url = fixtures.inject_set_charge_schedule(mocked_responses, "activate")
+
+    result = cli_runner.invoke(__main__.main, "charge schedule activate 2")
+    assert result.exit_code == 0, result.exception
+
+    expected_json = {
+        "data": {
+            "attributes": {
+                "schedules": [
+                    {
+                        "id": 1,
+                        "activated": True,
+                        "monday": {"duration": 15, "startTime": "T12:00Z"},
+                        "tuesday": {"duration": 420, "startTime": "T04:30Z"},
+                        "wednesday": {"duration": 420, "startTime": "T22:30Z"},
+                        "thursday": {"duration": 420, "startTime": "T22:00Z"},
+                        "friday": {"duration": 15, "startTime": "T12:15Z"},
+                        "saturday": {"duration": 30, "startTime": "T12:30Z"},
+                        "sunday": {"duration": 45, "startTime": "T12:45Z"},
+                    },
+                    {
+                        "id": 2,
+                        "activated": True,
+                        "monday": {"startTime": "T01:00Z", "duration": 15},
+                        "tuesday": {"startTime": "T02:00Z", "duration": 30},
+                        "wednesday": {"startTime": "T03:00Z", "duration": 45},
+                        "thursday": {"startTime": "T04:00Z", "duration": 60},
+                        "friday": {"startTime": "T05:00Z", "duration": 75},
+                        "saturday": {"startTime": "T06:00Z", "duration": 90},
+                        "sunday": {"startTime": "T07:00Z", "duration": 105},
+                    },
+                ]
+            },
+            "type": "ChargeSchedule",
+        }
+    }
+    expected_output = (
+        "{'schedules': ["
+        "{'id': 1, 'activated': True, "
+        "'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, "
+        "'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, "
+        "'thursday': {'startTime': 'T22:00Z', 'duration': 420}, "
+        "'friday': {'startTime': 'T23:30Z', 'duration': 480}, "
+        "'saturday': {'startTime': 'T18:30Z', 'duration': 120}, "
+        "'sunday': {'startTime': 'T12:45Z', 'duration': 45}}, "
+        "{'id': 2, 'activated': True, "
+        "'monday': {'startTime': 'T01:00Z', 'duration': 15}, "
+        "'tuesday': {'startTime': 'T02:00Z', 'duration': 30}, "
+        "'wednesday': {'startTime': 'T03:00Z', 'duration': 45}, "
+        "'thursday': {'startTime': 'T04:00Z', 'duration': 60}, "
+        "'friday': {'startTime': 'T05:00Z', 'duration': 75}, "
+        "'saturday': {'startTime': 'T06:00Z', 'duration': 90}, "
+        "'sunday': {'startTime': 'T07:00Z', 'duration': 105}}]}\n"
+    )
+
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+
+    assert expected_json == request.kwargs["json"]
+    assert expected_output == result.output
+
+
+def test_charging_settings_deactivate(
+    mocked_responses: aioresponses, cli_runner: CliRunner
+) -> None:
+    """It exits with a status code of zero."""
+    initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_charging_settings(mocked_responses)
+    url = fixtures.inject_set_charge_schedule(mocked_responses, "deactivate")
+
+    result = cli_runner.invoke(__main__.main, "charge schedule deactivate 1")
+    assert result.exit_code == 0, result.exception
+
+    expected_json = {
+        "data": {
+            "attributes": {
+                "schedules": [
+                    {
+                        "id": 1,
+                        "activated": False,
+                        "monday": {"duration": 15, "startTime": "T12:00Z"},
+                        "tuesday": {"duration": 420, "startTime": "T04:30Z"},
+                        "wednesday": {"duration": 420, "startTime": "T22:30Z"},
+                        "thursday": {"duration": 420, "startTime": "T22:00Z"},
+                        "friday": {"duration": 15, "startTime": "T12:15Z"},
+                        "saturday": {"duration": 30, "startTime": "T12:30Z"},
+                        "sunday": {"duration": 45, "startTime": "T12:45Z"},
+                    },
+                    {
+                        "id": 2,
+                        "activated": False,
+                        "monday": {"startTime": "T01:00Z", "duration": 15},
+                        "tuesday": {"startTime": "T02:00Z", "duration": 30},
+                        "wednesday": {"startTime": "T03:00Z", "duration": 45},
+                        "thursday": {"startTime": "T04:00Z", "duration": 60},
+                        "friday": {"startTime": "T05:00Z", "duration": 75},
+                        "saturday": {"startTime": "T06:00Z", "duration": 90},
+                        "sunday": {"startTime": "T07:00Z", "duration": 105},
+                    },
+                ]
+            },
+            "type": "ChargeSchedule",
+        }
+    }
+    expected_output = (
+        "{'schedules': ["
+        "{'id': 1, 'activated': False, "
+        "'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, "
+        "'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, "
+        "'thursday': {'startTime': 'T22:00Z', 'duration': 420}, "
+        "'friday': {'startTime': 'T23:30Z', 'duration': 480}, "
+        "'saturday': {'startTime': 'T18:30Z', 'duration': 120}, "
+        "'sunday': {'startTime': 'T12:45Z', 'duration': 45}}, "
+        "{'id': 2, 'activated': False, "
+        "'monday': {'startTime': 'T01:00Z', 'duration': 15}, "
+        "'tuesday': {'startTime': 'T02:00Z', 'duration': 30}, "
+        "'wednesday': {'startTime': 'T03:00Z', 'duration': 45}, "
+        "'thursday': {'startTime': 'T04:00Z', 'duration': 60}, "
+        "'friday': {'startTime': 'T05:00Z', 'duration': 75}, "
+        "'saturday': {'startTime': 'T06:00Z', 'duration': 90}, "
+        "'sunday': {'startTime': 'T07:00Z', 'duration': 105}}]}\n"
+    )
+
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+
+    assert expected_json == request.kwargs["json"]
+    assert expected_output == result.output
+
+
 def test_charging_start(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
