@@ -98,11 +98,11 @@ async def _get_schedule(
     response = await vehicle.get_charging_settings()
 
     if not response.schedules:  # pragma: no cover
-        click.echo("No schedules found.")
-        return
+        raise ValueError(f"No schedules found.")
 
-    if any(id == schedule.id for schedule in response.schedules):
-        return (vehicle, response.schedules, schedule)
+    for schedule in response.schedules:
+        if id == schedule.id:  # pragma: no branch
+            return (vehicle, response.schedules, schedule)
 
     raise IndexError(f"Schedule id {id} not found.")  # pragma: no cover
 
