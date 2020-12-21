@@ -15,6 +15,7 @@ from renault_api.cli import renault_vehicle
 from renault_api.kamereon.helpers import DAYS_OF_WEEK
 from renault_api.kamereon.models import ChargeDaySchedule
 from renault_api.kamereon.models import ChargeSchedule
+from renault_api.renault_vehicle import RenaultVehicle
 
 
 _DAY_SCHEDULE_REGEX = re.compile(
@@ -85,6 +86,27 @@ def _format_charge_schedule(schedule: ChargeSchedule, key: str) -> List[str]:
     ]
 
 
+async def _get_schedule(
+    ctx_data: Dict[str, Any],
+    websession: aiohttp.ClientSession,
+    id: int,
+) -> Tuple[RenaultVehicle, List[ChargeSchedule], ChargeSchedule]:
+    """Get the given schedules activated-flag to given state."""
+    vehicle = await renault_vehicle.get_vehicle(
+        websession=websession, ctx_data=ctx_data
+    )
+    response = await vehicle.get_charging_settings()
+
+    if not response.schedules:  # pragma: no cover
+        click.echo("No schedules found.")
+        return
+
+    if any(id == schedule.id for schedule in response.schedules):
+        return (vehicle, response.schedules, schedule)
+
+    raise IndexError(f"Schedule id {id} not found.")  # pragma: no cover
+
+
 @schedule.command()
 @click.argument("id", type=int)
 @helpers.days_of_week_option(
@@ -101,54 +123,13 @@ async def set(
     **kwargs: Any,
 ) -> None:
     """Update charging schedule {ID}."""
-    vehicle = await renault_vehicle.get_vehicle(
-        websession=websession, ctx_data=ctx_data
+    vehicle, schedules, schedule = await _get_schedule(
+        websession=websession, ctx_data=ctx_data, id=id
     )
-    response = await vehicle.get_charging_settings()
 
-    if not response.schedules:  # pragma: no cover
-        click.echo("No schedules found.")
-        return
+    update_settings(schedule, **kwargs)
 
-    id_found = False
-    for schedule in response.schedules:
-        if id == schedule.id:  # pragma: no cover
-            update_settings(schedule, **kwargs)
-            id_found = True
-            break
-    if not id_found:
-        raise IndexError(f"Schedule id {id} not found.")  # pragma: no cover
-
-    write_response = await vehicle.set_charge_schedules(response.schedules)
-    click.echo(write_response.raw_data)
-
-
-async def _set_schedule_activated(
-    ctx_data: Dict[str, Any],
-    websession: aiohttp.ClientSession,
-    id: int,
-    activated_state: bool,
-) -> None:
-    """Set the given schedules activated-flag to given state."""
-    vehicle = await renault_vehicle.get_vehicle(
-        websession=websession, ctx_data=ctx_data
-    )
-    response = await vehicle.get_charging_settings()
-
-    if not response.schedules:  # pragma: no cover
-        click.echo("No schedules found.")
-        return
-
-    id_found = False
-    for schedule in response.schedules:
-        if id == schedule.id:  # pragma: no cover
-            schedule.activated = activated_state
-            id_found = True
-            break
-    if not id_found:
-        raise IndexError(f"Schedule id {id} not found.")  # pragma: no cover
-
-    write_response = await vehicle.set_charge_schedules(response.schedules)
+    write_response = await vehicle.set_charge_schedules(schedules)
     click.echo(write_response.raw_data)
 
 
@@ -163,7 +144,14 @@ async def activate(
     websession: aiohttp.ClientSession,
 ) -> None:
     """Activate charging schedule {ID}."""
-    await _set_schedule_activated(ctx_data, websession, id, True)
+    vehicle, schedules, schedule = await _get_schedule(
+        websession=websession, ctx_data=ctx_data, id=id
+    )
+
+    schedule.activated = True
+
+    write_response = await vehicle.set_charge_schedules(schedules)
+    click.echo(write_response.raw_data)
 
 
 @schedule.command()
@@ -177,7 +165,14 @@ async def deactivate(
     websession: aiohttp.ClientSession,
 ) -> None:
     """Deactivate charging schedule {ID}."""
-    await _set_schedule_activated(ctx_data, websession, id, False)
+    vehicle, schedules, schedule = await _get_schedule(
+        websession=websession, ctx_data=ctx_data, id=id
+    )
+
+    schedule.activated = False
+
+    write_response = await vehicle.set_charge_schedules(schedules)
+    click.echo(write_response.raw_data)
 
 
 def update_settings(
