@@ -15,6 +15,7 @@ from renault_api.cli import renault_vehicle
 from renault_api.kamereon.helpers import DAYS_OF_WEEK
 from renault_api.kamereon.models import ChargeDaySchedule
 from renault_api.kamereon.models import ChargeSchedule
+from renault_api.renault_vehicle import RenaultVehicle
 
 
 _DAY_SCHEDULE_REGEX = re.compile(
@@ -85,6 +86,29 @@ def _format_charge_schedule(schedule: ChargeSchedule, key: str) -> List[str]:
     ]
 
 
+async def _get_schedule(
+    ctx_data: Dict[str, Any],
+    websession: aiohttp.ClientSession,
+    id: int,
+) -> Tuple[RenaultVehicle, List[ChargeSchedule], ChargeSchedule]:
+    """Get the given schedules activated-flag to given state."""
+    vehicle = await renault_vehicle.get_vehicle(
+        websession=websession, ctx_data=ctx_data
+    )
+    response = await vehicle.get_charging_settings()
+
+    if not response.schedules:  # pragma: no cover
+        raise ValueError("No schedules found.")
+
+    schedule = next(  # pragma: no branch
+        (schedule for schedule in response.schedules if id == schedule.id), None
+    )
+    if schedule:
+        return (vehicle, response.schedules, schedule)
+
+    raise IndexError(f"Schedule id {id} not found.")  # pragma: no cover
+
+
 @schedule.command()
 @click.argument("id", type=int)
 @helpers.days_of_week_option(
@@ -101,25 +125,55 @@ async def set(
     **kwargs: Any,
 ) -> None:
     """Update charging schedule {ID}."""
-    vehicle = await renault_vehicle.get_vehicle(
-        websession=websession, ctx_data=ctx_data
+    vehicle, schedules, schedule = await _get_schedule(
+        websession=websession, ctx_data=ctx_data, id=id
     )
-    response = await vehicle.get_charging_settings()
 
-    if not response.schedules:  # pragma: no cover
-        click.echo("No schedules found.")
-        return
+    update_settings(schedule, **kwargs)
 
-    id_found = False
-    for schedule in response.schedules:
-        if id == schedule.id:  # pragma: no cover
-            update_settings(schedule, **kwargs)
-            id_found = True
-            break
-    if not id_found:
-        raise IndexError(f"Schedule id {id} not found.")  # pragma: no cover
+    write_response = await vehicle.set_charge_schedules(schedules)
+    click.echo(write_response.raw_data)
 
-    write_response = await vehicle.set_charge_schedules(response.schedules)
+
+@schedule.command()
+@click.argument("id", type=int)
+@click.pass_obj
+@helpers.coro_with_websession
+async def activate(
+    ctx_data: Dict[str, Any],
+    *,
+    id: int,
+    websession: aiohttp.ClientSession,
+) -> None:
+    """Activate charging schedule {ID}."""
+    vehicle, schedules, schedule = await _get_schedule(
+        websession=websession, ctx_data=ctx_data, id=id
+    )
+
+    schedule.activated = True
+
+    write_response = await vehicle.set_charge_schedules(schedules)
+    click.echo(write_response.raw_data)
+
+
+@schedule.command()
+@click.argument("id", type=int)
+@click.pass_obj
+@helpers.coro_with_websession
+async def deactivate(
+    ctx_data: Dict[str, Any],
+    *,
+    id: int,
+    websession: aiohttp.ClientSession,
+) -> None:
+    """Deactivate charging schedule {ID}."""
+    vehicle, schedules, schedule = await _get_schedule(
+        websession=websession, ctx_data=ctx_data, id=id
+    )
+
+    schedule.activated = False
+
+    write_response = await vehicle.set_charge_schedules(schedules)
     click.echo(write_response.raw_data)
 
 
