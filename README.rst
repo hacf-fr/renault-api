@@ -22,7 +22,7 @@ Renault API
 .. |Tests| image:: https://github.com/hacf-fr/renault-api/workflows/Tests/badge.svg
    :target: https://github.com/hacf-fr/renault-api/actions?workflow=Tests
    :alt: Tests
-.. |Codecov| image:: https://codecov.io/gh/hacf-fr/renault-api/branch/master/graph/badge.svg
+.. |Codecov| image:: https://codecov.io/gh/hacf-fr/renault-api/branch/main/graph/badge.svg
    :target: https://codecov.io/gh/hacf-fr/renault-api
    :alt: Codecov
 .. |pre-commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white
