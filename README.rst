@@ -39,12 +39,14 @@ Features
 This Python package manages the communication with the private Renault API used by the official MyRenault application.
 
 The client is able to read various vehicle attributes, such as:
+
 * mileage
 * GPS location
 * fuel autonomy (for fuel vehicles)
 * battery autonomy (for electric vehicles)
 
 For some vehicles, it is also possible to manage:
+
 * hvac/pre-conditionning of the vehicle
 * charge schedule
 
