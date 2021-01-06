@@ -112,7 +112,7 @@
         },
         "yearsOfMaintenance": 12,
         "rlinkStore": false,
-        "radioCode": "",
+        "radioCode": "1234",
         "registrationNumber": "REG-NUMBER",
         "modelSCR": "ZOE",
         "easyConnectStore": false,

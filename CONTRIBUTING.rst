@@ -52,6 +52,7 @@ please send us the samples.
 - Ensure that `vin` starts with `VF1AAAA` _(we do not want the real VIN)_
 - Ensure that `vehicleDetails.vin` also starts with `VF1AAAA` _(we do not want the real VIN)_
 - Ensure that `vehicleDetails.registrationNumber` starts with `REG-` _(we do not want the real registration number)_
+- Ensure that `vehicleDetails.radioCode` is equal to `1234` _(we do not want the real radio code)_
 - Ensure that the json file passes pre-commit (can be parsed online via https://codebeautify.org/jsonviewer)
 - Create a pull request
 

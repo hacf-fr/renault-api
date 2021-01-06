@@ -128,6 +128,7 @@ class KamereonVehiclesDetails(BaseModel):
 
     vin: Optional[str]
     registrationNumber: Optional[str]  # noqa: N815
+    radioCode: Optional[str]  # noqa: N815
     brand: Optional[KamereonVehiclesDetailsGroup]
     model: Optional[KamereonVehiclesDetailsGroup]
     energy: Optional[KamereonVehiclesDetailsGroup]
