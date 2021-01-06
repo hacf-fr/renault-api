@@ -28,6 +28,7 @@ def test_vehicles_response(filename: str) -> None:
         assert vehicle_details.vin.startswith("VF1AAAA")
         assert vehicle_details.registrationNumber
         assert vehicle_details.registrationNumber.startswith("REG-")
+        assert vehicle_details.radioCode == "1234"
 
         # Ensure the methods work
         assert vehicle_details.get_brand_label()

@@ -102,7 +102,7 @@
         "deliveryDate": "2020-12-04",
         "retrievedFromDhs": false,
         "engineEnergyType": "ELEC",
-        "radioCode": ""
+        "radioCode": "1234"
       }
     }
   ]
