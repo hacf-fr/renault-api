@@ -1,9 +1,69 @@
 """Tests for Kamereon models."""
+import os
+
 import pytest
 from tests import fixtures
 
 from renault_api.kamereon import models
 from renault_api.kamereon import schemas
+
+EXPECTED_SPECS = {
+    "captur_ii.1.json": {
+        "get_brand_label": "RENAULT",
+        "get_energy_code": "ESS",
+        "get_model_code": "XJB1SU",
+        "get_model_label": "CAPTUR II",
+        "reports_charging_power_in_watts": False,
+        "uses_electricity": False,
+        "uses_fuel": True,
+        "supports-hvac-status": False,
+        "supports-location": True,
+    },
+    "twingo_ze.1.json": {
+        "get_brand_label": "RENAULT",
+        "get_energy_code": "ELEC",
+        "get_model_code": "X071VE",
+        "get_model_label": "TWINGO III",
+        "reports_charging_power_in_watts": False,
+        "uses_electricity": True,
+        "uses_fuel": False,
+        "supports-hvac-status": False,
+        "supports-location": True,
+    },
+    "zoe_40.1.json": {
+        "get_brand_label": "RENAULT",
+        "get_energy_code": "ELEC",
+        "get_model_code": "X101VE",
+        "get_model_label": "ZOE",
+        "reports_charging_power_in_watts": True,
+        "uses_electricity": True,
+        "uses_fuel": False,
+        "supports-hvac-status": True,
+        "supports-location": False,
+    },
+    "zoe_40.2.json": {
+        "get_brand_label": "RENAULT",
+        "get_energy_code": "ELEC",
+        "get_model_code": "X101VE",
+        "get_model_label": "ZOE",
+        "reports_charging_power_in_watts": True,
+        "uses_electricity": True,
+        "uses_fuel": False,
+        "supports-hvac-status": True,
+        "supports-location": False,
+    },
+    "zoe_50.1.json": {
+        "get_brand_label": "RENAULT",
+        "get_energy_code": "ELEC",
+        "get_model_code": "X102VE",
+        "get_model_label": "ZOE",
+        "reports_charging_power_in_watts": False,
+        "uses_electricity": True,
+        "uses_fuel": False,
+        "supports-hvac-status": False,
+        "supports-location": True,
+    },
+}
 
 
 @pytest.mark.parametrize(
@@ -30,59 +90,15 @@ def test_vehicles_response(filename: str) -> None:
         assert vehicle_details.registrationNumber.startswith("REG-")
         assert vehicle_details.radioCode == "1234"
 
-        # Ensure the methods work
-        assert vehicle_details.get_brand_label()
-        assert vehicle_details.get_energy_code()
-        assert vehicle_details.get_model_code()
-        assert vehicle_details.get_model_label()
-
-
-def test_zoe40_1() -> None:
-    """Test vehicle details for zoe_40.1.json."""
-    response: models.KamereonVehiclesResponse = fixtures.get_file_content_as_schema(
-        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicles/zoe_40.1.json",
-        schemas.KamereonVehiclesResponseSchema,
-    )
-    vehicle_details = response.vehicleLinks[0].vehicleDetails
-    assert vehicle_details
-    assert vehicle_details.get_brand_label() == "RENAULT"
-    assert vehicle_details.get_energy_code() == "ELEC"
-    assert vehicle_details.get_model_code() == "X101VE"
-    assert vehicle_details.get_model_label() == "ZOE"
-    assert vehicle_details.reports_charging_power_in_watts()
-    assert vehicle_details.uses_electricity()
-    assert not vehicle_details.uses_fuel()
-
-
-def test_zoe40_2() -> None:
-    """Test vehicle details for zoe_40.2.json."""
-    response: models.KamereonVehiclesResponse = fixtures.get_file_content_as_schema(
-        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicles/zoe_40.2.json",
-        schemas.KamereonVehiclesResponseSchema,
-    )
-    vehicle_details = response.vehicleLinks[0].vehicleDetails
-    assert vehicle_details
-    assert vehicle_details.get_brand_label() == "RENAULT"
-    assert vehicle_details.get_energy_code() == "ELEC"
-    assert vehicle_details.get_model_code() == "X101VE"
-    assert vehicle_details.get_model_label() == "ZOE"
-    assert vehicle_details.reports_charging_power_in_watts()
-    assert vehicle_details.uses_electricity()
-    assert not vehicle_details.uses_fuel()
-
-
-def test_capturii_1() -> None:
-    """Test vehicle details for captur_ii.1.json."""
-    response: models.KamereonVehiclesResponse = fixtures.get_file_content_as_schema(
-        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicles/captur_ii.1.json",
-        schemas.KamereonVehiclesResponseSchema,
-    )
-    vehicle_details = response.vehicleLinks[0].vehicleDetails
-    assert vehicle_details
-    assert vehicle_details.get_brand_label() == "RENAULT"
-    assert vehicle_details.get_energy_code() == "ESS"
-    assert vehicle_details.get_model_code() == "XJB1SU"
-    assert vehicle_details.get_model_label() == "CAPTUR II"
-    assert not vehicle_details.reports_charging_power_in_watts()
-    assert not vehicle_details.uses_electricity()
-    assert vehicle_details.uses_fuel()
+        generated_specs = {
+            "get_brand_label": vehicle_details.get_brand_label(),
+            "get_energy_code": vehicle_details.get_energy_code(),
+            "get_model_code": vehicle_details.get_model_code(),
+            "get_model_label": vehicle_details.get_model_label(),
+            "reports_charging_power_in_watts": vehicle_details.reports_charging_power_in_watts(),  # noqa: B950
+            "uses_electricity": vehicle_details.uses_electricity(),
+            "uses_fuel": vehicle_details.uses_fuel(),
+            "supports-hvac-status": vehicle_details.supports_endpoint("hvac-status"),
+            "supports-location": vehicle_details.supports_endpoint("location"),
+        }
+        assert EXPECTED_SPECS[os.path.basename(filename)] == generated_specs
