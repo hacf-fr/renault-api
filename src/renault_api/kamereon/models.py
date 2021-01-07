@@ -41,6 +41,22 @@ COMMON_ERRRORS: List[Dict[str, Any]] = [
     },
 ]
 
+VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
+    "X071VE": {  # TWINGO III
+        "support-endpoint-hvac-status": False,
+    },
+    "X101VE": {  # ZOE phase 1
+        "reports-in-watts": True,
+        "support-endpoint-location": False,
+    },
+    "X102VE": {  # ZOE phase 2
+        "support-endpoint-hvac-status": False,
+    },
+    "XJB1SU": {  # CAPTUR II
+        "support-endpoint-hvac-status": False,
+    },
+}
+
 
 @dataclass
 class KamereonResponseError(BaseModel):
@@ -169,11 +185,21 @@ class KamereonVehicleDetails(BaseModel):
 
     def reports_charging_power_in_watts(self) -> bool:
         """Return True if model reports chargingInstantaneousPower in watts."""
-        if self.get_model_code() in [
-            "X101VE",  # ZOE 40
-        ]:
-            return True
-        return False
+        # Default to False for unknown vehicles
+        if self.model and self.model.code:
+            return VEHICLE_SPECIFICATIONS.get(self.model.code, {}).get(
+                "reports-in-watts", False
+            )
+        return False  # pragma: no cover
+
+    def supports_endpoint(self, endpoint: str) -> bool:
+        """Return True if model supports specified endpoint."""
+        # Default to True for unknown vehicles
+        if self.model and self.model.code:
+            return VEHICLE_SPECIFICATIONS.get(self.model.code, {}).get(
+                f"support-endpoint-{endpoint}", True
+            )
+        return True  # pragma: no cover
 
 
 @dataclass
