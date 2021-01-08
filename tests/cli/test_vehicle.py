@@ -84,7 +84,6 @@ def test_vehicle_status_prompt(
 
     # Injected again for vehicle selection
     fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1")
-    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1")
     fixtures.inject_vehicle_status(mocked_responses)
 
     result = cli_runner.invoke(
@@ -133,7 +132,6 @@ def test_vehicle_status_store(
     credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
     credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
-    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1")
     fixtures.inject_vehicle_status(mocked_responses)
 
     result = cli_runner.invoke(__main__.main, "status")
@@ -152,7 +150,6 @@ def test_vehicle_status_no_prompt(
     credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
     credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
-    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1")
     fixtures.inject_vehicle_status(mocked_responses)
 
     result = cli_runner.invoke(
