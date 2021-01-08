@@ -43,7 +43,7 @@ async def test_get_vehicles(
     account: RenaultAccount, mocked_responses: aioresponses
 ) -> None:
     """Test get_vehicles."""
-    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1")
+    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1.json")
     await account.get_vehicles()
 
 
@@ -52,7 +52,7 @@ async def test_get_api_vehicles(
     account: RenaultAccount, mocked_responses: aioresponses
 ) -> None:
     """Test get_api_vehicles."""
-    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1")
+    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1.json")
     await account.get_api_vehicles()
 
 

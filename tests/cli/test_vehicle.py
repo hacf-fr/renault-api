@@ -4,6 +4,7 @@ from locale import getdefaultlocale
 
 from aioresponses import aioresponses
 from click.testing import CliRunner
+import pytest
 from tests import fixtures
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_LOCALE
@@ -25,22 +26,70 @@ from renault_api.gigya import GIGYA_JWT
 from renault_api.gigya import GIGYA_LOGIN_TOKEN
 from renault_api.gigya import GIGYA_PERSON_ID
 
-EXPECTED_BATTERY_STATUS = (
-    "--------------------  -------------------------\n"
-    "Battery level         50 %\n"
-    "Last updated          2020-11-17 09:06:48\n"
-    "Range estimate        128 km\n"
-    "Plug state            PlugState.UNPLUGGED\n"
-    "Charging state        ChargeState.NOT_IN_CHARGE\n"
-    "Charge mode           always\n"
-    "Total mileage         49114.27 km\n"
-    "GPS Latitude          48.1234567\n"
-    "GPS Longitude         11.1234567\n"
-    "GPS last updated      2020-02-18 17:58:38\n"
-    "HVAC status           off\n"
-    "External temperature  8.0 °C\n"
-    "--------------------  -------------------------\n"
-)
+EXPECTED_STATUS = {
+    "captur_ii.1.json": (
+        "----------------  -------------------\n"
+        "Total mileage     49114.27 km\n"
+        "GPS Latitude      48.1234567\n"
+        "GPS Longitude     11.1234567\n"
+        "GPS last updated  2020-02-18 17:58:38\n"
+        "----------------  -------------------\n"
+    ),
+    "twingo_ze.1.json": (
+        "----------------  -------------------------\n"
+        "Battery level     50 %\n"
+        "Last updated      2020-11-17 09:06:48\n"
+        "Range estimate    128 km\n"
+        "Plug state        PlugState.UNPLUGGED\n"
+        "Charging state    ChargeState.NOT_IN_CHARGE\n"
+        "Charge mode       always\n"
+        "Total mileage     49114.27 km\n"
+        "GPS Latitude      48.1234567\n"
+        "GPS Longitude     11.1234567\n"
+        "GPS last updated  2020-02-18 17:58:38\n"
+        "----------------  -------------------------\n"
+    ),
+    "zoe_40.1.json": (
+        "--------------------  -------------------------\n"
+        "Battery level         50 %\n"
+        "Last updated          2020-11-17 09:06:48\n"
+        "Range estimate        128 km\n"
+        "Plug state            PlugState.UNPLUGGED\n"
+        "Charging state        ChargeState.NOT_IN_CHARGE\n"
+        "Charge mode           always\n"
+        "Total mileage         49114.27 km\n"
+        "HVAC status           off\n"
+        "External temperature  8.0 °C\n"
+        "--------------------  -------------------------\n"
+    ),
+    "zoe_40.2.json": (
+        "--------------------  -------------------------\n"
+        "Battery level         50 %\n"
+        "Last updated          2020-11-17 09:06:48\n"
+        "Range estimate        128 km\n"
+        "Plug state            PlugState.UNPLUGGED\n"
+        "Charging state        ChargeState.NOT_IN_CHARGE\n"
+        "Charge mode           always\n"
+        "Total mileage         49114.27 km\n"
+        "HVAC status           off\n"
+        "External temperature  8.0 °C\n"
+        "--------------------  -------------------------\n"
+    ),
+    "zoe_50.1.json": (
+        "----------------  -------------------------\n"
+        "Battery level     50 %\n"
+        "Last updated      2020-11-17 09:06:48\n"
+        "Range estimate    128 km\n"
+        "Plug state        PlugState.UNPLUGGED\n"
+        "Charging state    ChargeState.NOT_IN_CHARGE\n"
+        "Charge mode       always\n"
+        "Total mileage     49114.27 km\n"
+        "GPS Latitude      48.1234567\n"
+        "GPS Longitude     11.1234567\n"
+        "GPS last updated  2020-02-18 17:58:38\n"
+        "----------------  -------------------------\n"
+    ),
+}
 
 
 def test_vehicle_details(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
@@ -53,7 +102,7 @@ def test_vehicle_details(mocked_responses: aioresponses, cli_runner: CliRunner) 
     credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
     credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
-    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1")
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
 
     result = cli_runner.invoke(__main__.main, "vehicle")
     assert result.exit_code == 0, result.exception
@@ -66,6 +115,31 @@ def test_vehicle_details(mocked_responses: aioresponses, cli_runner: CliRunner) 
     assert expected_output == result.output
 
 
+@pytest.mark.parametrize(
+    "filename", fixtures.get_json_files(f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicles")
+)
+def test_vehicle_status(
+    mocked_responses: aioresponses, cli_runner: CliRunner, filename: str
+) -> None:
+    """It exits with a status code of zero."""
+    filename = os.path.basename(filename)
+    credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
+    credential_store[CONF_LOCALE] = Credential(TEST_LOCALE)
+    credential_store[CONF_ACCOUNT_ID] = Credential(TEST_ACCOUNT_ID)
+    credential_store[CONF_VIN] = Credential(TEST_VIN)
+    credential_store[GIGYA_LOGIN_TOKEN] = Credential(TEST_LOGIN_TOKEN)
+    credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
+    credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
+
+    fixtures.inject_get_vehicle_details(mocked_responses, filename)
+    fixtures.inject_vehicle_status(mocked_responses)
+
+    result = cli_runner.invoke(__main__.main, "status")
+    assert result.exit_code == 0, result.exception
+
+    assert EXPECTED_STATUS[filename] == result.output
+
+
 def test_vehicle_status_prompt(
     mocked_responses: aioresponses, cli_runner: CliRunner
 ) -> None:
@@ -74,7 +148,7 @@ def test_vehicle_status_prompt(
     fixtures.inject_get_person(mocked_responses)
 
     # Injected for account selection
-    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1")
+    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1.json")
     vehicle2_urlpath = f"accounts/account-id-2/vehicles?{fixtures.DEFAULT_QUERY_STRING}"
     fixtures.inject_data(
         mocked_responses,
@@ -83,7 +157,9 @@ def test_vehicle_status_prompt(
     )
 
     # Injected again for vehicle selection
-    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1")
+    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1.json")
+
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     fixtures.inject_vehicle_status(mocked_responses)
 
     result = cli_runner.invoke(
@@ -115,29 +191,9 @@ def test_vehicle_status_prompt(
         "Please select vehicle [1]: 1\n"
         "Do you want to save the VIN to the credential store? [y/N]: y\n"
         "\n"
-        f"{EXPECTED_BATTERY_STATUS}"
+        f"{EXPECTED_STATUS['zoe_40.1.json']}"
     )
     assert expected_output == result.output
-
-
-def test_vehicle_status_store(
-    mocked_responses: aioresponses, cli_runner: CliRunner
-) -> None:
-    """It exits with a status code of zero."""
-    credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
-    credential_store[CONF_LOCALE] = Credential(TEST_LOCALE)
-    credential_store[CONF_ACCOUNT_ID] = Credential(TEST_ACCOUNT_ID)
-    credential_store[CONF_VIN] = Credential(TEST_VIN)
-    credential_store[GIGYA_LOGIN_TOKEN] = Credential(TEST_LOGIN_TOKEN)
-    credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
-    credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
-
-    fixtures.inject_vehicle_status(mocked_responses)
-
-    result = cli_runner.invoke(__main__.main, "status")
-    assert result.exit_code == 0, result.exception
-
-    assert EXPECTED_BATTERY_STATUS == result.output
 
 
 def test_vehicle_status_no_prompt(
@@ -150,6 +206,7 @@ def test_vehicle_status_no_prompt(
     credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
     credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     fixtures.inject_vehicle_status(mocked_responses)
 
     result = cli_runner.invoke(
@@ -157,4 +214,4 @@ def test_vehicle_status_no_prompt(
     )
     assert result.exit_code == 0, result.exception
 
-    assert EXPECTED_BATTERY_STATUS == result.output
+    assert EXPECTED_STATUS["zoe_40.1.json"] == result.output
