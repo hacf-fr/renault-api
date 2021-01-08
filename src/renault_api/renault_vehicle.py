@@ -84,6 +84,7 @@ class RenaultVehicle:
             account_id=self.account_id,
             vin=self.vin,
         )
+        self._vehicle_details = response
         return cast(
             models.KamereonVehicleDetails,
             response,

@@ -111,11 +111,13 @@ def inject_gigya_all(mocked_responses: aioresponses) -> None:
 def inject_data(
     mocked_responses: aioresponses,
     urlpath: str,
-    filename: str,
+    filename: Optional[str] = None,
+    *,
+    body: Optional[str] = None,
 ) -> str:
     """Inject Kamereon data."""
     url = f"{KAMEREON_BASE_URL}/{urlpath}"
-    body = get_file_content(f"{KAMEREON_FIXTURE_PATH}/{filename}")
+    body = body or get_file_content(f"{KAMEREON_FIXTURE_PATH}/{filename}")
     mocked_responses.get(
         url,
         status=200,
@@ -157,6 +159,20 @@ def inject_get_vehicles(mocked_responses: aioresponses, vehicle: str) -> str:
         mocked_responses,
         urlpath,
         f"vehicles/{vehicle}.json",
+    )
+
+
+def inject_get_vehicle_details(mocked_responses: aioresponses, vehicle: str) -> str:
+    """Inject sample vehicles."""
+    urlpath = (
+        f"accounts/{TEST_ACCOUNT_ID}/vehicles/{TEST_VIN}/details?{DEFAULT_QUERY_STRING}"
+    )
+    filename = f"vehicles/{vehicle}.json"
+    body = get_file_content(f"{KAMEREON_FIXTURE_PATH}/{filename}")
+    return inject_data(
+        mocked_responses,
+        urlpath,
+        body=body,
     )
 
 
