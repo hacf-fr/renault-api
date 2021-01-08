@@ -75,6 +75,20 @@ class RenaultVehicle:
         """Get vin."""
         return self._vin
 
+    async def get_details(self) -> models.KamereonVehicleDetails:
+        """Get vehicle battery status."""
+        if self._vehicle_details:
+            return self._vehicle_details
+
+        response = await self.session.get_vehicle_details(
+            account_id=self.account_id,
+            vin=self.vin,
+        )
+        return cast(
+            models.KamereonVehicleDetails,
+            response,
+        )
+
     async def get_battery_status(self) -> models.KamereonVehicleBatteryStatusData:
         """Get vehicle battery status."""
         response = await self.session.get_vehicle_data(
