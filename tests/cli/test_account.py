@@ -32,7 +32,7 @@ def test_list_vehicles_prompt(
 
     fixtures.inject_get_person(mocked_responses)
     # Injected for account selection
-    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1")
+    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1.json")
     vehicle2_urlpath = f"accounts/account-id-2/vehicles?{fixtures.DEFAULT_QUERY_STRING}"
     fixtures.inject_data(
         mocked_responses,
@@ -41,7 +41,7 @@ def test_list_vehicles_prompt(
     )
 
     # Injected again for vehicle listing
-    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1")
+    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1.json")
 
     result = cli_runner.invoke(
         __main__.main,
@@ -83,7 +83,7 @@ def test_list_vehicles_store(
     credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
     credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
-    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1")
+    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1.json")
 
     result = cli_runner.invoke(__main__.main, "vehicles")
     assert result.exit_code == 0, result.exception
@@ -106,7 +106,7 @@ def test_list_vehicles_no_prompt(
     credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
     credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
-    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1")
+    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1.json")
 
     result = cli_runner.invoke(__main__.main, f"--account {TEST_ACCOUNT_ID} vehicles")
     assert result.exit_code == 0, result.exception

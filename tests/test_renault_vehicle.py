@@ -55,7 +55,7 @@ async def test_get_details(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_battery_status."""
-    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1")
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     assert await vehicle.get_details()
 
     # Ensure second call still works (ie. use cached value)

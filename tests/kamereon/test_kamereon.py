@@ -38,7 +38,7 @@ async def test_get_account_vehicles(
     websession: aiohttp.ClientSession, mocked_responses: aioresponses
 ) -> None:
     """Test get_account_vehicles."""
-    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1")
+    fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1.json")
 
     await kamereon.get_account_vehicles(
         websession=websession,
