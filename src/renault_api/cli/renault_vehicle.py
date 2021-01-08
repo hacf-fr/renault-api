@@ -102,6 +102,25 @@ async def get_vehicle(
     return await account.get_api_vehicle(vin)
 
 
+async def display_vehicle(
+    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
+) -> None:
+    """Display vehicle status."""
+    vehicle = await get_vehicle(websession, ctx_data)
+    response = await vehicle.get_details()
+
+    vehicles = [
+        [
+            response.raw_data["registrationNumber"],
+            response.raw_data["brand"]["label"],
+            response.raw_data["model"]["label"],
+            response.vin,
+        ]
+    ]
+
+    click.echo(tabulate(vehicles, headers=["Registration", "Brand", "Model", "VIN"]))
+
+
 async def display_status(
     websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
 ) -> None:

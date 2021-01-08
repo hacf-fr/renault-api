@@ -194,6 +194,11 @@ class KamereonVehiclesResponse(KamereonResponse):
 
 
 @dataclass
+class KamereonVehicleDetailsResponse(KamereonResponse, KamereonVehicleDetails):
+    """Kamereon response to GET on /accounts/{account_id}/vehicles/{vin}/details."""
+
+
+@dataclass
 class KamereonVehicleDataAttributes(BaseModel):
     """Kamereon vehicle data attributes."""
 

@@ -51,6 +51,18 @@ def test_init(websession: aiohttp.ClientSession) -> None:
 
 
 @pytest.mark.asyncio
+async def test_get_details(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
+    """Test get_battery_status."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1")
+    assert await vehicle.get_details()
+
+    # Ensure second call still works (ie. use cached value)
+    assert await vehicle.get_details()
+
+
+@pytest.mark.asyncio
 async def test_get_battery_status(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
