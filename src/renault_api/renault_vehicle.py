@@ -38,7 +38,7 @@ class RenaultVehicle:
         country: Optional[str] = None,
         locale_details: Optional[Dict[str, str]] = None,
         credential_store: Optional[CredentialStore] = None,
-        vehicle_details: Optional[models.KamereonVehiclesDetails] = None,
+        vehicle_details: Optional[models.KamereonVehicleDetails] = None,
     ) -> None:
         """Initialise Renault vehicle."""
         self._account_id = account_id
