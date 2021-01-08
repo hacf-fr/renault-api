@@ -1,5 +1,6 @@
 """Test suite for the renault_api package."""
 import datetime
+import json
 from glob import glob
 from typing import Any
 from typing import List
@@ -168,11 +169,11 @@ def inject_get_vehicle_details(mocked_responses: aioresponses, vehicle: str) -> 
         f"accounts/{TEST_ACCOUNT_ID}/vehicles/{TEST_VIN}/details?{DEFAULT_QUERY_STRING}"
     )
     filename = f"vehicles/{vehicle}.json"
-    body = get_file_content(f"{KAMEREON_FIXTURE_PATH}/{filename}")
+    body = json.loads(get_file_content(f"{KAMEREON_FIXTURE_PATH}/{filename}"))
     return inject_data(
         mocked_responses,
         urlpath,
-        body=body,
+        body=json.dumps(body["vehicleLinks"][0]["vehicleDetails"]),
     )
 
 

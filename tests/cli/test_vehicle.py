@@ -43,6 +43,29 @@ EXPECTED_BATTERY_STATUS = (
 )
 
 
+def test_vehicle_details(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+    """It exits with a status code of zero."""
+    credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
+    credential_store[CONF_LOCALE] = Credential(TEST_LOCALE)
+    credential_store[CONF_ACCOUNT_ID] = Credential(TEST_ACCOUNT_ID)
+    credential_store[CONF_VIN] = Credential(TEST_VIN)
+    credential_store[GIGYA_LOGIN_TOKEN] = Credential(TEST_LOGIN_TOKEN)
+    credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
+    credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
+
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1")
+
+    result = cli_runner.invoke(__main__.main, "vehicle")
+    assert result.exit_code == 0, result.exception
+
+    expected_output = (
+        "Registration    Brand    Model    VIN\n"
+        "--------------  -------  -------  -----------------\n"
+        "REG-NUMBER      RENAULT  ZOE      VF1AAAAA555777999\n"
+    )
+    assert expected_output == result.output
+
+
 def test_vehicle_status_prompt(
     mocked_responses: aioresponses, cli_runner: CliRunner
 ) -> None:
@@ -61,6 +84,7 @@ def test_vehicle_status_prompt(
 
     # Injected again for vehicle selection
     fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1")
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1")
     fixtures.inject_vehicle_status(mocked_responses)
 
     result = cli_runner.invoke(
@@ -109,6 +133,7 @@ def test_vehicle_status_store(
     credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
     credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1")
     fixtures.inject_vehicle_status(mocked_responses)
 
     result = cli_runner.invoke(__main__.main, "status")
@@ -127,6 +152,7 @@ def test_vehicle_status_no_prompt(
     credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
     credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1")
     fixtures.inject_vehicle_status(mocked_responses)
 
     result = cli_runner.invoke(

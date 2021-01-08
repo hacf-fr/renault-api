@@ -129,7 +129,7 @@ async def display_status(
     vehicle_details = await vehicle.get_details()
     status_table: Dict[str, Any] = {}
 
-    if vehicle_details.uses_electricity:
+    if vehicle_details.uses_electricity():  # pragma: no branch
         await update_battery_status(vehicle, status_table)
         await update_charge_mode(vehicle, status_table)
     await update_cockpit(vehicle, status_table)
