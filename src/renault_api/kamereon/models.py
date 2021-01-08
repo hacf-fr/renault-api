@@ -114,7 +114,7 @@ class KamereonPersonResponse(KamereonResponse):
 
 
 @dataclass
-class KamereonVehiclesDetailsGroup(BaseModel):
+class KamereonVehicleDetailsGroup(BaseModel):
     """Kamereon vehicle details group data."""
 
     code: Optional[str]
@@ -123,15 +123,15 @@ class KamereonVehiclesDetailsGroup(BaseModel):
 
 
 @dataclass
-class KamereonVehiclesDetails(BaseModel):
+class KamereonVehicleDetails(BaseModel):
     """Kamereon vehicle details."""
 
     vin: Optional[str]
     registrationNumber: Optional[str]  # noqa: N815
     radioCode: Optional[str]  # noqa: N815
-    brand: Optional[KamereonVehiclesDetailsGroup]
-    model: Optional[KamereonVehiclesDetailsGroup]
-    energy: Optional[KamereonVehiclesDetailsGroup]
+    brand: Optional[KamereonVehicleDetailsGroup]
+    model: Optional[KamereonVehicleDetailsGroup]
+    energy: Optional[KamereonVehicleDetailsGroup]
 
     def get_energy_code(self) -> Optional[str]:
         """Return vehicle energy code."""
@@ -181,7 +181,7 @@ class KamereonVehiclesLink(BaseModel):
     """Kamereon vehicles link data."""
 
     vin: Optional[str]
-    vehicleDetails: Optional[KamereonVehiclesDetails]  # noqa: N815
+    vehicleDetails: Optional[KamereonVehicleDetails]  # noqa: N815
 
 
 @dataclass
