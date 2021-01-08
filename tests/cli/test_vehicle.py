@@ -2,9 +2,9 @@
 import os
 from locale import getdefaultlocale
 
+import pytest
 from aioresponses import aioresponses
 from click.testing import CliRunner
-import pytest
 from tests import fixtures
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_LOCALE
