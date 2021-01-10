@@ -238,6 +238,8 @@ class KameronContract(BaseModel):
     description: Optional[str]
     status: Optional[str]
     statusLabel: Optional[str]  # noqa: N815
+    startDate: Optional[str]  # noqa: N815
+    endDate: Optional[str]  # noqa: N815
 
 
 @dataclass
