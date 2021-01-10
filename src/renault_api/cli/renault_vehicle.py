@@ -121,6 +121,18 @@ async def display_vehicle(
     click.echo(tabulate(vehicles, headers=["Registration", "Brand", "Model", "VIN"]))
 
 
+async def display_contracts(
+    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
+) -> None:
+    """Display vehicle contracts."""
+    vehicle = await get_vehicle(websession, ctx_data)
+    response = await vehicle.get_contracts()
+
+    contracts = response
+
+    click.echo(contracts)
+
+
 async def display_status(
     websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
 ) -> None:

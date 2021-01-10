@@ -60,6 +60,22 @@ def get_car_adapter_url(root_url: str, account_id: str, version: int, vin: str) 
     return f"{account_url}/kamereon/kca/car-adapter/v{version}/cars/{vin}"
 
 
+# /commerce/v1/accounts/{accountId}/vehicles/{vin}/contracts
+#   ?connectedServicesContracts=true
+#   &warranty=true
+#   &warrantyMaintenanceContracts=true
+def get_contracts_url(root_url: str, account_id: str, vin: str) -> str:
+    """Get the url to the car contracts."""
+    account_url = get_account_url(root_url, account_id)
+    params = (
+        "brand=RENAULT"
+        "&connectedServicesContracts=true"
+        "&warranty=true"
+        "&warrantyMaintenanceContracts=true"
+    )
+    return f"{account_url}/vehicles/{vin}/contracts?{params}"
+
+
 async def request(
     websession: aiohttp.ClientSession,
     method: str,
@@ -124,6 +140,29 @@ async def get_person(
             params=params,
             schema=schemas.KamereonPersonResponseSchema,
         ),
+    )
+
+
+async def get_vehicle_contracts(
+    websession: aiohttp.ClientSession,
+    root_url: str,
+    api_key: str,
+    gigya_jwt: str,
+    country: str,
+    account_id: str,
+    vin: str,
+):
+    """GET to /accounts/{accountId}/vehicles/{vin}/contracts."""
+    url = get_contracts_url(root_url, account_id, vin)
+    params = {"country": country}
+    return await request(
+        websession,
+        "GET",
+        url,
+        api_key,
+        gigya_jwt,
+        params=params,
+        schema=None,
     )
 
 

@@ -336,6 +336,14 @@ class RenaultVehicle:
             response.get_attributes(schemas.KamereonVehicleHvacSessionsDataSchema),
         )
 
+    async def get_contracts(self):
+        """Get vehicle charging settings."""
+        response = await self.session.get_vehicle_contracts(
+            account_id=self.account_id,
+            vin=self.vin,
+        )
+        return response
+
     async def set_ac_start(
         self, temperature: float, when: Optional[datetime] = None
     ) -> models.KamereonVehicleHvacStartActionData:
