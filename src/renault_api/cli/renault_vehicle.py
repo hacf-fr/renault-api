@@ -128,9 +128,15 @@ async def display_contracts(
     vehicle = await get_vehicle(websession, ctx_data)
     response = await vehicle.get_contracts()
 
-    contracts = response
-
-    click.echo(contracts)
+    contracts = [
+        [
+            contract.type,
+            contract.code,
+            contract.status,
+        ]
+        for contract in response.contractList
+    ]
+    click.echo(tabulate(contracts, headers=["Type", "Code", "Status"]))
 
 
 async def display_status(
