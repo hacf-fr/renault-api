@@ -1,0 +1,139 @@
+[
+  {
+    "type": "WARRANTY_MAINTENANCE_CONTRACTS",
+    "contractId": "12345",
+    "code": "40",
+    "subCode": "34",
+    "group": "EXT",
+    "durationMonths": 47,
+    "startDate": "2018-04-04",
+    "endDate": "2022-04-03",
+    "status": "ACTIVE",
+    "statusLabel": "Actif",
+    "description": "CONTRAT LOSANGE",
+    "conditions": [
+      {
+        "startDate": "2018-04-04",
+        "endDate": "2022-04-03",
+        "unlimitedMileage": false,
+        "maximumMileage": 80000,
+        "mileageUnit": "Km"
+      }
+    ],
+    "extendable": false
+  },
+  {
+    "type": "CONNECTED_SERVICES",
+    "contractId": "FR12345",
+    "code": "ZECONNECTP",
+    "group": "Z",
+    "durationMonths": 36,
+    "startDate": "2018-08-23",
+    "endDate": "2021-08-23",
+    "status": "ACTIVE",
+    "statusLabel": "Actif",
+    "description": "My Z.E. Connect en série 36 mois",
+    "conditions": [
+      {
+        "startDate": "2018-08-23",
+        "endDate": "2021-08-23"
+      }
+    ]
+  },
+  {
+    "type": "CONNECTED_SERVICES",
+    "contractId": "FR12345",
+    "code": "GBA",
+    "group": "T",
+    "durationMonths": 0,
+    "startDate": "2018-03-23",
+    "status": "REJECTED",
+    "statusLabel": "Echec d’activation",
+    "description": "Battery Services",
+    "conditions": [
+      {
+        "startDate": "2018-03-23"
+      }
+    ]
+  },
+  {
+    "type": "WARRANTY",
+    "code": "ManufacturerWarranty",
+    "durationMonths": 24,
+    "endDate": "2020-04-03",
+    "status": "ENDED",
+    "statusLabel": "Expiré",
+    "description": "Garantie fabricant",
+    "conditions": [
+      {
+        "endDate": "2020-04-03",
+        "unlimitedMileage": true,
+        "mileageUnit": "km"
+      }
+    ]
+  },
+  {
+    "type": "WARRANTY",
+    "code": "PaintingWarranty",
+    "durationMonths": 36,
+    "endDate": "2021-04-03",
+    "status": "ACTIVE",
+    "statusLabel": "Actif",
+    "description": "Garantie peinture",
+    "conditions": [
+      {
+        "endDate": "2021-04-03",
+        "unlimitedMileage": true,
+        "mileageUnit": "km"
+      }
+    ]
+  },
+  {
+    "type": "WARRANTY",
+    "code": "CorrosionWarranty",
+    "durationMonths": 144,
+    "endDate": "2030-04-03",
+    "status": "ACTIVE",
+    "statusLabel": "Actif",
+    "description": "Garantie corrosion",
+    "conditions": [
+      {
+        "endDate": "2030-04-03",
+        "unlimitedMileage": true,
+        "mileageUnit": "km"
+      }
+    ]
+  },
+  {
+    "type": "WARRANTY",
+    "code": "GMPeWarranty",
+    "durationMonths": 24,
+    "endDate": "2020-04-03",
+    "status": "ENDED",
+    "statusLabel": "Expiré",
+    "description": "Garantie GMPe",
+    "conditions": [
+      {
+        "endDate": "2020-04-03",
+        "unlimitedMileage": true,
+        "mileageUnit": "km"
+      }
+    ]
+  },
+  {
+    "type": "WARRANTY",
+    "code": "AssistanceWarranty",
+    "durationMonths": 24,
+    "endDate": "2020-04-03",
+    "status": "ENDED",
+    "statusLabel": "Expiré",
+    "description": "Garantie assistance",
+    "conditions": [
+      {
+        "endDate": "2020-04-03",
+        "unlimitedMileage": true,
+        "mileageUnit": "km"
+      }
+    ]
+  }
+]
