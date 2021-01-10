@@ -162,7 +162,7 @@ async def get_vehicle_contracts(
             api_key,
             gigya_jwt,
             params=params,
-            schema=None,
+            schema=schemas.KameronVehicleContractsReponseSchema,
         ),
     )
 
