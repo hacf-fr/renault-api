@@ -217,7 +217,7 @@ class RenaultSession:
         account_id: str,
         vin: str,
         params: Optional[Dict[str, str]] = None,
-    ):
+    ) -> models.KameronVehicleContractsReponse:
         """GET to /v{endpoint_version}/cars/{vin}/contracts."""
         return await kamereon.get_vehicle_contracts(
             websession=self._websession,

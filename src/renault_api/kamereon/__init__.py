@@ -141,7 +141,7 @@ async def get_vehicle_contracts(
     country: str,
     account_id: str,
     vin: str,
-):
+) -> models.KameronVehicleContractsReponse:
     """GET to /accounts/{accountId}/vehicles/{vin}/contracts."""
     url = get_contracts_url(root_url, account_id, vin)
     params = {
@@ -153,14 +153,17 @@ async def get_vehicle_contracts(
         "warrantyMaintenanceContracts": "true",
     }
 
-    return await request(
-        websession,
-        "GET",
-        url,
-        api_key,
-        gigya_jwt,
-        params=params,
-        schema=None,
+    return cast(
+        models.KameronVehicleContractsReponse,
+        await request(
+            websession,
+            "GET",
+            url,
+            api_key,
+            gigya_jwt,
+            params=params,
+            schema=None,
+        ),
     )
 
 

@@ -230,6 +230,22 @@ class KamereonVehicleDataAttributes(BaseModel):
 
 
 @dataclass
+class KameronContract(BaseModel):
+    """Kameron contract attributes."""
+
+    type: Optional[str]
+    code: Optional[str]
+    status: Optional[str]
+
+
+@dataclass
+class KameronVehicleContractsReponse(BaseModel):
+    """Kamereon response to GET on /accounts/{accountId}/vehicles/{vin}/contracts."""
+
+    contractList: List[KameronContract]  # noqa: N815
+
+
+@dataclass
 class KamereonVehicleData(BaseModel):
     """Kamereon vehicle data."""
 
