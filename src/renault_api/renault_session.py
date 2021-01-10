@@ -227,6 +227,7 @@ class RenaultSession:
             country=await self._get_country(),
             account_id=account_id,
             vin=vin,
+            locale=await self._get_credential(CONF_LOCALE),
         )
 
     async def set_vehicle_action(

@@ -336,7 +336,7 @@ class RenaultVehicle:
             response.get_attributes(schemas.KamereonVehicleHvacSessionsDataSchema),
         )
 
-    async def get_contracts(self) -> List[KameronContract]:
+    async def get_contracts(self) -> List[models.KameronContract]:
         """Get vehicle contracts."""
         response = await self.session.get_vehicle_contracts(
             account_id=self.account_id,
