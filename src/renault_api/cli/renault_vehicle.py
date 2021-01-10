@@ -134,7 +134,7 @@ async def display_contracts(
             contract.code,
             contract.status,
         ]
-        for contract in response.contractList
+        for contract in response
     ]
     click.echo(tabulate(contracts, headers=["Type", "Code", "Status"]))
 

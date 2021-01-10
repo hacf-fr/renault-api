@@ -239,7 +239,7 @@ class KameronContract(BaseModel):
 
 
 @dataclass
-class KameronVehicleContractsReponse(BaseModel):
+class KameronVehicleContractsReponse(KamereonResponse):
     """Kamereon response to GET on /accounts/{accountId}/vehicles/{vin}/contracts."""
 
     contractList: List[KameronContract]  # noqa: N815
