@@ -139,6 +139,7 @@ async def get_vehicle_contracts(
     api_key: str,
     gigya_jwt: str,
     country: str,
+    locale: str,
     account_id: str,
     vin: str,
 ) -> models.KameronVehicleContractsReponse:
@@ -146,7 +147,7 @@ async def get_vehicle_contracts(
     url = get_contracts_url(root_url, account_id, vin)
     params = {
         "country": country,
-        "locale": "fr_FR",
+        "locale": locale,
         "brand": "RENAULT",
         "connectedServicesContracts": "true",
         "warranty": "true",
