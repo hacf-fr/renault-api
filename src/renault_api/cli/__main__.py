@@ -204,7 +204,7 @@ async def contracts(
     *,
     websession: aiohttp.ClientSession,
 ) -> None:
-    """Display contracts details."""
+    """Display vehicle contracts."""
     await renault_vehicle.display_contracts(websession, ctx_data)
 
 
