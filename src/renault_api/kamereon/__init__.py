@@ -75,6 +75,8 @@ async def request(
     params: Dict[str, str],
     json: Optional[Dict[str, Any]] = None,
     schema: Optional[Schema] = None,
+    *,
+    wrap_array_in: Optional[str] = None,
 ) -> models.KamereonResponse:
     """Process Kamereon HTTP request."""
     schema = schema or schemas.KamereonResponseSchema
@@ -99,6 +101,9 @@ async def request(
             response_text,
             json,
         )
+        # Some endpoints return arrays instead of objects. These need to be wrapped in an object.
+        if response_text.startswith("[") and wrap_array_in:
+            response_text = f'{{"{wrap_array_in}": {response_text}}}'
         kamereon_response: models.KamereonResponse = schema.loads(response_text)
         # Check for Kamereon error
         kamereon_response.raise_for_error_code()
@@ -164,6 +169,7 @@ async def get_vehicle_contracts(
             gigya_jwt,
             params=params,
             schema=schemas.KameronVehicleContractsReponseSchema,
+            wrap_array_in="contractList",
         ),
     )
 
