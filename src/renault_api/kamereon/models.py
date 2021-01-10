@@ -235,7 +235,9 @@ class KameronContract(BaseModel):
 
     type: Optional[str]
     code: Optional[str]
+    description: Optional[str]
     status: Optional[str]
+    statusLabel: Optional[str]  # noqa: N815
 
 
 @dataclass
