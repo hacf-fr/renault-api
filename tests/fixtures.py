@@ -187,6 +187,24 @@ def inject_get_vehicle_details(mocked_responses: aioresponses, vehicle: str) -> 
     )
 
 
+def inject_get_vehicle_contracts(mocked_responses: aioresponses) -> str:
+    """Inject sample contracts."""
+    query_string = (
+        "brand=RENAULT&"
+        "connectedServicesContracts=true&"
+        "country=FR&"
+        "locale=fr_FR&"
+        "warranty=true&"
+        "warrantyMaintenanceContracts=true"
+    )
+    urlpath = f"accounts/{TEST_ACCOUNT_ID}/vehicles/{TEST_VIN}/contracts?{query_string}"
+    return inject_data(
+        mocked_responses,
+        urlpath,
+        "contracts/fr_FR.1.json",
+    )
+
+
 def inject_get_battery_status(mocked_responses: aioresponses) -> str:
     """Inject sample battery-status."""
     urlpath = f"{ADAPTER2_PATH}/battery-status?{DEFAULT_QUERY_STRING}"
