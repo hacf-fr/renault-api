@@ -44,14 +44,14 @@ def get_json_files(parent_dir: str) -> List[str]:
 
 def get_file_content(filename: str) -> str:
     """Read fixture text file as string."""
-    with open(filename, "r") as file:
+    with open(filename, mode="r", encoding="utf-8") as file:
         content = file.read()
     return content
 
 
 def get_file_content_as_schema(filename: str, schema: Schema) -> Any:
     """Read fixture text file as specified schema."""
-    with open(filename, "r") as file:
+    with open(filename, "r", encoding="utf-8") as file:
         content = file.read()
     return schema.loads(content)
 

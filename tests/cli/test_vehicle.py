@@ -215,3 +215,47 @@ def test_vehicle_status_no_prompt(
     assert result.exit_code == 0, result.exception
 
     assert EXPECTED_STATUS["zoe_40.1.json"] == result.output
+
+
+def test_vehicle_contracts(
+    mocked_responses: aioresponses, cli_runner: CliRunner
+) -> None:
+    """It exits with a status code of zero."""
+    credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
+    credential_store[CONF_LOCALE] = Credential(TEST_LOCALE)
+    credential_store[CONF_ACCOUNT_ID] = Credential(TEST_ACCOUNT_ID)
+    credential_store[CONF_VIN] = Credential(TEST_VIN)
+    credential_store[GIGYA_LOGIN_TOKEN] = Credential(TEST_LOGIN_TOKEN)
+    credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
+    credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
+
+    fixtures.inject_get_vehicle_contracts(mocked_responses)
+
+    result = cli_runner.invoke(__main__.main, "contracts")
+    assert result.exit_code == 0, result.exception
+
+    expected_output = (
+        "Type                            Code                  "
+        "Description                       Start       End         Status\n"
+        "------------------------------  --------------------  "
+        "--------------------------------  ----------  ----------  "
+        "------------------\n"
+        "WARRANTY_MAINTENANCE_CONTRACTS  40                    "
+        "CONTRAT LOSANGE                   2018-04-04  2022-04-03  Actif\n"
+        "CONNECTED_SERVICES              ZECONNECTP            "
+        "My Z.E. Connect en série 36 mois  2018-08-23  2021-08-23  Actif\n"
+        "CONNECTED_SERVICES              GBA                   "
+        "Battery Services                  2018-03-23              "
+        "Echec d’activation\n"
+        "WARRANTY                        ManufacturerWarranty  "
+        "Garantie fabricant                            2020-04-03  Expiré\n"
+        "WARRANTY                        PaintingWarranty      "
+        "Garantie peinture                             2021-04-03  Actif\n"
+        "WARRANTY                        CorrosionWarranty     "
+        "Garantie corrosion                            2030-04-03  Actif\n"
+        "WARRANTY                        GMPeWarranty          "
+        "Garantie GMPe                                 2020-04-03  Expiré\n"
+        "WARRANTY                        AssistanceWarranty    "
+        "Garantie assistance                           2020-04-03  Expiré\n"
+    )
+    assert expected_output == result.output
