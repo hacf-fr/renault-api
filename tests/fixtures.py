@@ -56,6 +56,16 @@ def get_file_content_as_schema(filename: str, schema: Schema) -> Any:
     return schema.loads(content)
 
 
+def get_file_content_as_wrapped_schema(
+    filename: str, schema: Schema, wrap_in: str
+) -> Any:
+    """Read fixture text file as specified schema."""
+    with open(filename, "r") as file:
+        content = file.read()
+    content = f'{{"{wrap_in}": {content}}}'
+    return schema.loads(content)
+
+
 def inject_gigya(
     mocked_responses: aioresponses,
     urlpath: str,

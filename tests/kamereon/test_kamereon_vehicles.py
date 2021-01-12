@@ -102,3 +102,18 @@ def test_vehicles_response(filename: str) -> None:
             "supports-location": vehicle_details.supports_endpoint("location"),
         }
         assert EXPECTED_SPECS[os.path.basename(filename)] == generated_specs
+
+
+@pytest.mark.parametrize(
+    "filename",
+    fixtures.get_json_files(f"{fixtures.KAMEREON_FIXTURE_PATH}/contracts"),
+)
+def test_vehicle_data_response(filename: str) -> None:
+    """Test vehicle data response."""
+    response: models.KameronVehicleContractsReponse = (
+        fixtures.get_file_content_as_wrapped_schema(
+            filename, schemas.KameronVehicleContractsReponseSchema, "contractList"
+        )
+    )
+    response.raise_for_error_code()
+    assert response.contractList
