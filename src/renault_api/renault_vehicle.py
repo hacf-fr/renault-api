@@ -44,6 +44,7 @@ class RenaultVehicle:
         self._account_id = account_id
         self._vin = vin
         self._vehicle_details = vehicle_details
+        self._contracts: Optional[List[models.KameronVehicleContract]] = None
 
         if session:
             self._session = session
@@ -84,11 +85,23 @@ class RenaultVehicle:
             account_id=self.account_id,
             vin=self.vin,
         )
-        self._vehicle_details = response
-        return cast(
+        self._vehicle_details = cast(
             models.KamereonVehicleDetails,
             response,
         )
+        return self._vehicle_details
+
+    async def get_contracts(self) -> List[models.KameronVehicleContract]:
+        """Get vehicle contracts."""
+        if self._contracts:
+            return self._contracts
+
+        response = await self.session.get_vehicle_contracts(
+            account_id=self.account_id,
+            vin=self.vin,
+        )
+        self._contracts = response.contractList
+        return self._contracts
 
     async def get_battery_status(self) -> models.KamereonVehicleBatteryStatusData:
         """Get vehicle battery status."""
@@ -335,14 +348,6 @@ class RenaultVehicle:
             models.KamereonVehicleHvacSessionsData,
             response.get_attributes(schemas.KamereonVehicleHvacSessionsDataSchema),
         )
-
-    async def get_contracts(self) -> List[models.KameronContract]:
-        """Get vehicle contracts."""
-        response = await self.session.get_vehicle_contracts(
-            account_id=self.account_id,
-            vin=self.vin,
-        )
-        return response.contractList
 
     async def set_ac_start(
         self, temperature: float, when: Optional[datetime] = None

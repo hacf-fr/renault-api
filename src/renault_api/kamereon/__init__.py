@@ -15,7 +15,7 @@ from . import schemas
 _LOGGER = logging.getLogger(__name__)
 
 
-DATA_ENDPOINTS = {
+DATA_ENDPOINTS: Dict[str, Any] = {
     "battery-status": {"version": 2},
     "charge-history": {"version": 1},
     "charge-mode": {"version": 1},
@@ -30,7 +30,7 @@ DATA_ENDPOINTS = {
     "lock-status": {"version": 1},
     "notification-settings": {"version": 1},
 }
-ACTION_ENDPOINTS = {
+ACTION_ENDPOINTS: Dict[str, Any] = {
     "charge-mode": {"version": 1, "type": "ChargeMode"},
     "charge-schedule": {"version": 2, "type": "ChargeSchedule"},
     "charging-start": {"version": 1, "type": "ChargingStart"},

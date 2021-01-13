@@ -70,6 +70,9 @@ async def test_get_contracts(
     fixtures.inject_get_vehicle_contracts(mocked_responses)
     assert await vehicle.get_contracts()
 
+    # Ensure second call still works (ie. use cached value)
+    assert await vehicle.get_contracts()
+
 
 @pytest.mark.asyncio
 async def test_get_battery_status(
