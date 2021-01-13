@@ -132,6 +132,7 @@ def test_vehicle_status(
     credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
     fixtures.inject_get_vehicle_details(mocked_responses, filename)
+    fixtures.inject_get_vehicle_contracts(mocked_responses, "fr_FR.2.json")
     fixtures.inject_vehicle_status(mocked_responses)
 
     result = cli_runner.invoke(__main__.main, "status")
@@ -160,6 +161,7 @@ def test_vehicle_status_prompt(
     fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1.json")
 
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
+    fixtures.inject_get_vehicle_contracts(mocked_responses, "fr_FR.2.json")
     fixtures.inject_vehicle_status(mocked_responses)
 
     result = cli_runner.invoke(
@@ -207,6 +209,7 @@ def test_vehicle_status_no_prompt(
     credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
+    fixtures.inject_get_vehicle_contracts(mocked_responses, "fr_FR.2.json")
     fixtures.inject_vehicle_status(mocked_responses)
 
     result = cli_runner.invoke(
@@ -229,7 +232,7 @@ def test_vehicle_contracts(
     credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
     credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
-    fixtures.inject_get_vehicle_contracts(mocked_responses)
+    fixtures.inject_get_vehicle_contracts(mocked_responses, "fr_FR.1.json")
 
     result = cli_runner.invoke(__main__.main, "contracts")
     assert result.exit_code == 0, result.exception

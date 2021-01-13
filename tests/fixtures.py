@@ -187,7 +187,7 @@ def inject_get_vehicle_details(mocked_responses: aioresponses, vehicle: str) -> 
     )
 
 
-def inject_get_vehicle_contracts(mocked_responses: aioresponses) -> str:
+def inject_get_vehicle_contracts(mocked_responses: aioresponses, filename: str) -> str:
     """Inject sample contracts."""
     query_string = (
         "brand=RENAULT&"
@@ -201,7 +201,7 @@ def inject_get_vehicle_contracts(mocked_responses: aioresponses) -> str:
     return inject_data(
         mocked_responses,
         urlpath,
-        "vehicle_contract/fr_FR.1.json",
+        f"vehicle_contract/{filename}",
     )
 
 

@@ -11,6 +11,8 @@ import aiohttp
 
 from .credential_store import CredentialStore
 from .exceptions import RenaultException
+from .kamereon import get_required_contracts
+from .kamereon import has_required_contracts
 from .kamereon import models
 from .kamereon import schemas
 from .renault_session import RenaultSession
@@ -479,3 +481,17 @@ class RenaultVehicle:
                 schemas.KamereonVehicleChargingStartActionDataSchema
             ),
         )
+
+    async def supports_endpoint(self, endpoint: str) -> bool:
+        """Check if vehicle supports endpoint."""
+        details = await self.get_details()
+        return details.supports_endpoint(endpoint)
+
+    async def has_contract_for_endpoint(self, endpoint: str) -> bool:
+        """Check if vehicle has contract for endpoint."""
+        required_contracts = get_required_contracts(endpoint)
+        if not required_contracts:
+            return True
+
+        contracts = await self.get_contracts()
+        return has_required_contracts(contracts, endpoint)

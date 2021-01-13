@@ -3,6 +3,7 @@ import logging
 from typing import Any
 from typing import cast
 from typing import Dict
+from typing import List
 from typing import Optional
 
 import aiohttp
@@ -18,14 +19,14 @@ _LOGGER = logging.getLogger(__name__)
 DATA_ENDPOINTS: Dict[str, Any] = {
     "battery-status": {"version": 2},
     "charge-history": {"version": 1},
-    "charge-mode": {"version": 1},
+    "charge-mode": {"version": 1, "requires-contracts": "ZEINTER"},
     "charges": {"version": 1},
     "charging-settings": {"version": 1},
     "cockpit": {"version": 2},
     "location": {"version": 1},
     "hvac-history": {"version": 1},
     "hvac-sessions": {"version": 1},
-    "hvac-status": {"version": 1},
+    "hvac-status": {"version": 1, "requires-contracts": "ZEINTER"},
     "hvac-settings": {"version": 1},
     "lock-status": {"version": 1},
     "notification-settings": {"version": 1},
@@ -64,6 +65,30 @@ def get_contracts_url(root_url: str, account_id: str, vin: str) -> str:
     """Get the url to the car contracts."""
     account_url = get_account_url(root_url, account_id)
     return f"{account_url}/vehicles/{vin}/contracts"
+
+
+def get_required_contracts(endpoint: str) -> str:
+    """Get the required contracts for the specified endpoint."""
+    endpoints = ACTION_ENDPOINTS if endpoint.startswith("action") else DATA_ENDPOINTS
+    return str(endpoints.get(endpoint, {}).get("requires-contracts", ""))
+
+
+def has_required_contracts(
+    contracts: List[models.KameronVehicleContract], endpoint: str
+) -> bool:
+    """Check if vehicle has contract for endpoint."""
+    required_contracts = get_required_contracts(endpoint)
+    if not required_contracts:
+        return True
+
+    for required_contract in required_contracts.split(","):
+        if required_contract and not any(
+            contract.code == required_contract and contract.status == "ACTIVE"
+            for contract in contracts
+        ):
+            return False
+
+    return True
 
 
 async def request(
