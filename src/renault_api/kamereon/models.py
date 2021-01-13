@@ -234,12 +234,15 @@ class KameronContract(BaseModel):
     """Kameron contract attributes."""
 
     type: Optional[str]
+    contractId: Optional[str]  # noqa: N815
     code: Optional[str]
-    description: Optional[str]
-    status: Optional[str]
-    statusLabel: Optional[str]  # noqa: N815
+    group: Optional[str]
+    durationMonths: Optional[int]  # noqa: N815
     startDate: Optional[str]  # noqa: N815
     endDate: Optional[str]  # noqa: N815
+    status: Optional[str]
+    statusLabel: Optional[str]  # noqa: N815
+    description: Optional[str]
 
 
 @dataclass

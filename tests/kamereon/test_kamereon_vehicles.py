@@ -80,15 +80,17 @@ def test_vehicles_response(filename: str) -> None:
     for vehicle_link in response.vehicleLinks:
         # Ensure the VIN and RegistrationNumber are hidden
         assert vehicle_link.vin
-        assert vehicle_link.vin.startswith("VF1AAAA")
+        assert vehicle_link.vin.startswith("VF1AAAA"), "Ensure vin is obfuscated."
 
         vehicle_details = vehicle_link.vehicleDetails
         assert vehicle_details
         assert vehicle_details.vin
-        assert vehicle_details.vin.startswith("VF1AAAA")
+        assert vehicle_details.vin.startswith("VF1AAAA"), "Ensure vin is obfuscated."
         assert vehicle_details.registrationNumber
-        assert vehicle_details.registrationNumber.startswith("REG-")
-        assert vehicle_details.radioCode == "1234"
+        assert vehicle_details.registrationNumber.startswith(
+            "REG-"
+        ), "Ensure registrationNumber is obfuscated."
+        assert vehicle_details.radioCode == "1234", "Ensure radioCode is obfuscated."
 
         generated_specs = {
             "get_brand_label": vehicle_details.get_brand_label(),
@@ -102,18 +104,3 @@ def test_vehicles_response(filename: str) -> None:
             "supports-location": vehicle_details.supports_endpoint("location"),
         }
         assert EXPECTED_SPECS[os.path.basename(filename)] == generated_specs
-
-
-@pytest.mark.parametrize(
-    "filename",
-    fixtures.get_json_files(f"{fixtures.KAMEREON_FIXTURE_PATH}/contracts"),
-)
-def test_vehicle_data_response(filename: str) -> None:
-    """Test vehicle data response."""
-    response: models.KameronVehicleContractsReponse = (
-        fixtures.get_file_content_as_wrapped_schema(
-            filename, schemas.KameronVehicleContractsReponseSchema, "contractList"
-        )
-    )
-    response.raise_for_error_code()
-    assert response.contractList

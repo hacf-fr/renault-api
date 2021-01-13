@@ -1,7 +1,7 @@
 [
   {
     "type": "WARRANTY_MAINTENANCE_CONTRACTS",
-    "contractId": "12345",
+    "contractId": "AB12345",
     "code": "40",
     "subCode": "34",
     "group": "EXT",
@@ -24,7 +24,7 @@
   },
   {
     "type": "CONNECTED_SERVICES",
-    "contractId": "FR12345",
+    "contractId": "AB12345",
     "code": "ZECONNECTP",
     "group": "Z",
     "durationMonths": 36,
@@ -42,7 +42,7 @@
   },
   {
     "type": "CONNECTED_SERVICES",
-    "contractId": "FR12345",
+    "contractId": "AB12345",
     "code": "GBA",
     "group": "T",
     "durationMonths": 0,

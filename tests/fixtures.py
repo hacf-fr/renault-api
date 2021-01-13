@@ -201,7 +201,7 @@ def inject_get_vehicle_contracts(mocked_responses: aioresponses) -> str:
     return inject_data(
         mocked_responses,
         urlpath,
-        "contracts/fr_FR.1.json",
+        "vehicle_contract/fr_FR.1.json",
     )
 
 

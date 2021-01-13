@@ -1,0 +1,178 @@
+[
+  {
+    "type": "CONNECTED_SERVICES",
+    "contractId": "AB12345",
+    "code": "ZEINTER",
+    "group": "Z",
+    "durationMonths": 12,
+    "startDate": "2020-09-13",
+    "endDate": "2021-09-13",
+    "status": "ACTIVE",
+    "statusLabel": "Actif",
+    "description": "My Z.E Inter@ctive",
+    "conditions": [{ "startDate": "2020-09-13", "endDate": "2021-09-13" }]
+  },
+  {
+    "type": "CONNECTED_SERVICES",
+    "contractId": "AB12345",
+    "code": "MMCOYOTE",
+    "group": "N",
+    "durationMonths": 3,
+    "startDate": "2017-08-07",
+    "endDate": "2017-11-07",
+    "status": "ENDED",
+    "statusLabel": "Expiré",
+    "description": "Coyote Series 3 mois en série",
+    "conditions": [{ "startDate": "2017-08-07", "endDate": "2017-11-07" }]
+  },
+  {
+    "type": "CONNECTED_SERVICES",
+    "contractId": "AB12345",
+    "code": "MMLIVE",
+    "group": "N",
+    "durationMonths": 36,
+    "startDate": "2023-08-07",
+    "endDate": "2026-08-07",
+    "status": "ACTIVE",
+    "statusLabel": "Actif",
+    "description": "TomTom Traffic & Connectivité 36 Mois en série",
+    "conditions": [{ "startDate": "2023-08-07", "endDate": "2026-08-07" }]
+  },
+  {
+    "type": "CONNECTED_SERVICES",
+    "contractId": "AB12345",
+    "code": "MUSEUMM12",
+    "group": "L",
+    "durationMonths": 36,
+    "startDate": "2017-08-05",
+    "endDate": "2020-08-05",
+    "status": "ENDED",
+    "statusLabel": "Expiré",
+    "description": "TomTom - Map update Europe RL 1 Inclusion 36 mois",
+    "conditions": [{ "startDate": "2017-08-05", "endDate": "2020-08-05" }]
+  },
+  {
+    "type": "CONNECTED_SERVICES",
+    "contractId": "AB12345",
+    "code": "ZECONNECTP",
+    "group": "Z",
+    "durationMonths": 12,
+    "startDate": "2020-08-16",
+    "endDate": "2021-08-16",
+    "status": "ACTIVE",
+    "statusLabel": "Actif",
+    "description": "My Z.E. Connect with Navigation",
+    "conditions": [{ "startDate": "2020-08-16", "endDate": "2021-08-16" }]
+  },
+  {
+    "type": "CONNECTED_SERVICES",
+    "contractId": "AB12345",
+    "code": "ZECONNECTP",
+    "group": "Z",
+    "durationMonths": 36,
+    "startDate": "2017-08-05",
+    "endDate": "2020-08-05",
+    "status": "ENDED",
+    "statusLabel": "Expiré",
+    "description": "My Z.E. Connect en série 36 mois",
+    "conditions": [{ "startDate": "2017-08-05", "endDate": "2020-08-05" }]
+  },
+  {
+    "type": "CONNECTED_SERVICES",
+    "contractId": "AB12345",
+    "code": "ZETRIP",
+    "group": "L",
+    "durationMonths": 36,
+    "startDate": "2017-08-07",
+    "endDate": "2020-08-07",
+    "status": "ENDED",
+    "statusLabel": "Expiré",
+    "description": "My ZE Trip 36 Mois",
+    "conditions": [{ "startDate": "2017-08-07", "endDate": "2020-08-07" }]
+  },
+  {
+    "type": "CONNECTED_SERVICES",
+    "contractId": "AB12345",
+    "code": "ZEINTER",
+    "group": "Z",
+    "durationMonths": 36,
+    "startDate": "2017-08-08",
+    "endDate": "2020-08-08",
+    "status": "ENDED",
+    "statusLabel": "Expiré",
+    "description": "My ZE Interactive en série 36 Mois",
+    "conditions": [{ "startDate": "2017-08-08", "endDate": "2020-08-08" }]
+  },
+  {
+    "type": "CONNECTED_SERVICES",
+    "contractId": "AB12345",
+    "code": "GBA",
+    "group": "T",
+    "durationMonths": 0,
+    "startDate": "2017-07-06",
+    "status": "ACTIVE",
+    "statusLabel": "Actif",
+    "description": "Battery Services",
+    "conditions": [{ "startDate": "2017-07-06" }]
+  },
+  {
+    "type": "WARRANTY",
+    "code": "GMPeWarranty",
+    "durationMonths": 24,
+    "endDate": "2019-08-10",
+    "status": "ENDED",
+    "statusLabel": "Expiré",
+    "description": "Garantie GMPe",
+    "conditions": [
+      { "endDate": "2019-08-10", "unlimitedMileage": true, "mileageUnit": "km" }
+    ]
+  },
+  {
+    "type": "WARRANTY",
+    "code": "AssistanceWarranty",
+    "durationMonths": 24,
+    "endDate": "2019-08-10",
+    "status": "ENDED",
+    "statusLabel": "Expiré",
+    "description": "Garantie assistance",
+    "conditions": [
+      { "endDate": "2019-08-10", "unlimitedMileage": true, "mileageUnit": "km" }
+    ]
+  },
+  {
+    "type": "WARRANTY",
+    "code": "ManufacturerWarranty",
+    "durationMonths": 24,
+    "endDate": "2019-08-10",
+    "status": "ENDED",
+    "statusLabel": "Expiré",
+    "description": "Garantie fabricant",
+    "conditions": [
+      { "endDate": "2019-08-10", "unlimitedMileage": true, "mileageUnit": "km" }
+    ]
+  },
+  {
+    "type": "WARRANTY",
+    "code": "PaintingWarranty",
+    "durationMonths": 36,
+    "endDate": "2020-08-10",
+    "status": "ENDED",
+    "statusLabel": "Expiré",
+    "description": "Garantie peinture",
+    "conditions": [
+      { "endDate": "2020-08-10", "unlimitedMileage": true, "mileageUnit": "km" }
+    ]
+  },
+  {
+    "type": "WARRANTY",
+    "code": "CorrosionWarranty",
+    "durationMonths": 144,
+    "endDate": "2029-08-10",
+    "status": "ACTIVE",
+    "statusLabel": "Actif",
+    "description": "Garantie corrosion",
+    "conditions": [
+      { "endDate": "2029-08-10", "unlimitedMileage": true, "mileageUnit": "km" }
+    ]
+  }
+]
