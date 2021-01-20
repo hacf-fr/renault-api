@@ -7,7 +7,9 @@ from tests import fixtures
 from renault_api.kamereon import enums
 from renault_api.kamereon import models
 from renault_api.kamereon import schemas
+from renault_api.kamereon.exceptions import ModelValidationException
 from renault_api.kamereon.helpers import DAYS_OF_WEEK
+from renault_api.kamereon.helpers import validate_charge_schedule
 
 
 @pytest.mark.parametrize(
@@ -255,6 +257,37 @@ def test_charging_settings_multi() -> None:
     assert schedule_data.saturday.duration == 450
     assert schedule_data.sunday.startTime == "T00:00Z"
     assert schedule_data.sunday.duration == 450
+
+
+def test_validate_schedule() -> None:
+    """Test vehicle data for location.json."""
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/charging-settings.json",
+        schemas.KamereonVehicleDataResponseSchema,
+    )
+    response.raise_for_error_code()
+
+    vehicle_data = cast(
+        models.KamereonVehicleChargingSettingsData,
+        response.get_attributes(schemas.KamereonVehicleChargingSettingsDataSchema),
+    )
+
+    schedule = vehicle_data.schedules[0]
+    # Initial should validate fine
+    validate_charge_schedule(schedule)
+
+    # Invalid start time
+    schedule.monday.startTime = "12:00"
+    with pytest.raises(ModelValidationException) as excinfo:
+        validate_charge_schedule(schedule)
+    assert "is not a valid charge start time" in str(excinfo.value)
+
+    # Invalid duration
+    schedule.monday.startTime = "T12:00Z"
+    schedule.monday.duration = "14"
+    with pytest.raises(ModelValidationException) as excinfo:
+        validate_charge_schedule(schedule)
+    assert "is not a valid charge duration" in str(excinfo.value)
 
 
 def test_location() -> None:
