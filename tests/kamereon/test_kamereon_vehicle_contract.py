@@ -27,7 +27,7 @@ def test_vehicle_contract_response(filename: str) -> None:
             ), "Ensure contractId is obfuscated."
 
 
-def test_has_required_contract() -> None:
+def test_has_required_contract_1() -> None:
     """Test has_required_contract."""
     response: models.KameronVehicleContractsReponse = (
         fixtures.get_file_content_as_wrapped_schema(
@@ -40,4 +40,28 @@ def test_has_required_contract() -> None:
     assert response.contractList
 
     assert has_required_contracts(response.contractList, "battery-status")
+    assert not has_required_contracts(response.contractList, "charge-mode")
+    assert not has_required_contracts(response.contractList, "charging-settings")
+    assert not has_required_contracts(response.contractList, "hvac-history")
+    assert not has_required_contracts(response.contractList, "hvac-sessions")
     assert not has_required_contracts(response.contractList, "hvac-status")
+
+
+def test_has_required_contract_2() -> None:
+    """Test has_required_contract."""
+    response: models.KameronVehicleContractsReponse = (
+        fixtures.get_file_content_as_wrapped_schema(
+            f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_contract/fr_FR.2.json",
+            schemas.KameronVehicleContractsReponseSchema,
+            "contractList",
+        )
+    )
+    response.raise_for_error_code()
+    assert response.contractList
+
+    assert has_required_contracts(response.contractList, "battery-status")
+    assert has_required_contracts(response.contractList, "charge-mode")
+    assert has_required_contracts(response.contractList, "charging-settings")
+    assert has_required_contracts(response.contractList, "hvac-history")
+    assert has_required_contracts(response.contractList, "hvac-sessions")
+    assert has_required_contracts(response.contractList, "hvac-status")
