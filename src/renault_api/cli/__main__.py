@@ -196,5 +196,17 @@ async def vehicle(
     await renault_vehicle.display_vehicle(websession, ctx_data)
 
 
+@main.command()
+@click.pass_obj
+@helpers.coro_with_websession
+async def contracts(
+    ctx_data: Dict[str, Any],
+    *,
+    websession: aiohttp.ClientSession,
+) -> None:
+    """Display vehicle contracts."""
+    await renault_vehicle.display_contracts(websession, ctx_data)
+
+
 if __name__ == "__main__":  # pragma: no cover
     main(prog_name="renault-api")

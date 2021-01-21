@@ -121,22 +121,43 @@ async def display_vehicle(
     click.echo(tabulate(vehicles, headers=["Registration", "Brand", "Model", "VIN"]))
 
 
+async def display_contracts(
+    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
+) -> None:
+    """Display vehicle contracts."""
+    vehicle = await get_vehicle(websession, ctx_data)
+    response = await vehicle.get_contracts()
+
+    contracts = [
+        [
+            contract.type,
+            contract.code,
+            contract.description,
+            contract.startDate,
+            contract.endDate,
+            contract.statusLabel,
+        ]
+        for contract in response
+    ]
+    click.echo(
+        tabulate(
+            contracts, headers=["Type", "Code", "Description", "Start", "End", "Status"]
+        )
+    )
+
+
 async def display_status(
     websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
 ) -> None:
     """Display vehicle status."""
     vehicle = await get_vehicle(websession, ctx_data)
-    vehicle_details = await vehicle.get_details()
     status_table: Dict[str, Any] = {}
 
-    if vehicle_details.uses_electricity():
-        await update_battery_status(vehicle, status_table)
-        await update_charge_mode(vehicle, status_table)
+    await update_battery_status(vehicle, status_table)
+    await update_charge_mode(vehicle, status_table)
     await update_cockpit(vehicle, status_table)
-    if vehicle_details.supports_endpoint("location"):
-        await update_location(vehicle, status_table)
-    if vehicle_details.supports_endpoint("hvac-status"):
-        await update_hvac_status(vehicle, status_table)
+    await update_location(vehicle, status_table)
+    await update_hvac_status(vehicle, status_table)
 
     click.echo(tabulate(status_table.items()))
 
@@ -158,6 +179,15 @@ async def update_battery_status(
 ) -> None:
     """Update status table from get_vehicle_battery_status."""
     try:
+        if not (await vehicle.get_details()).uses_electricity():
+            return
+        if not await vehicle.supports_endpoint("battery-status"):  # pragma: no cover
+            return
+        if not await vehicle.has_contract_for_endpoint(
+            "battery-status"
+        ):  # pragma: no cover
+            update_status_table(status_table, "Battery status", "No contract.", None)
+            return
         response = await vehicle.get_battery_status()
     except QuotaLimitException as exc:  # pragma: no cover
         raise click.ClickException(repr(exc)) from exc
@@ -191,6 +221,15 @@ async def update_charge_mode(
 ) -> None:
     """Update status table from get_vehicle_charge_mode."""
     try:
+        if not (await vehicle.get_details()).uses_electricity():
+            return
+        if not await vehicle.supports_endpoint("charge-mode"):  # pragma: no cover
+            return
+        if not await vehicle.has_contract_for_endpoint(
+            "charge-mode"
+        ):  # pragma: no cover
+            update_status_table(status_table, "Charge mode", "No contract.", None)
+            return
         response = await vehicle.get_charge_mode()
     except QuotaLimitException as exc:  # pragma: no cover
         raise click.ClickException(repr(exc)) from exc
@@ -206,6 +245,11 @@ async def update_charge_mode(
 async def update_cockpit(vehicle: RenaultVehicle, status_table: Dict[str, Any]) -> None:
     """Update status table from get_vehicle_cockpit."""
     try:
+        if not await vehicle.supports_endpoint("cockpit"):  # pragma: no cover
+            return
+        if not await vehicle.has_contract_for_endpoint("cockpit"):  # pragma: no cover
+            update_status_table(status_table, "Cockpit", "No contract.", None)
+            return
         response = await vehicle.get_cockpit()
     except QuotaLimitException as exc:  # pragma: no cover
         raise click.ClickException(repr(exc)) from exc
@@ -227,6 +271,11 @@ async def update_location(
 ) -> None:
     """Update status table from get_vehicle_location."""
     try:
+        if not await vehicle.supports_endpoint("location"):
+            return
+        if not await vehicle.has_contract_for_endpoint("location"):  # pragma: no cover
+            update_status_table(status_table, "Location", "No contract.", None)
+            return
         response = await vehicle.get_location()
     except QuotaLimitException as exc:  # pragma: no cover
         raise click.ClickException(repr(exc)) from exc
@@ -248,6 +297,13 @@ async def update_hvac_status(
 ) -> None:
     """Update status table from get_vehicle_hvac_status."""
     try:
+        if not await vehicle.supports_endpoint("hvac-status"):
+            return
+        if not await vehicle.has_contract_for_endpoint(
+            "hvac-status"
+        ):  # pragma: no cover
+            update_status_table(status_table, "HVAC status", "No contract.", None)
+            return
         response = await vehicle.get_hvac_status()
     except QuotaLimitException as exc:  # pragma: no cover
         raise click.ClickException(repr(exc)) from exc

@@ -44,15 +44,25 @@ def get_json_files(parent_dir: str) -> List[str]:
 
 def get_file_content(filename: str) -> str:
     """Read fixture text file as string."""
-    with open(filename, "r") as file:
+    with open(filename, mode="r", encoding="utf-8") as file:
         content = file.read()
     return content
 
 
 def get_file_content_as_schema(filename: str, schema: Schema) -> Any:
     """Read fixture text file as specified schema."""
+    with open(filename, "r", encoding="utf-8") as file:
+        content = file.read()
+    return schema.loads(content)
+
+
+def get_file_content_as_wrapped_schema(
+    filename: str, schema: Schema, wrap_in: str
+) -> Any:
+    """Read fixture text file as specified schema."""
     with open(filename, "r") as file:
         content = file.read()
+    content = f'{{"{wrap_in}": {content}}}'
     return schema.loads(content)
 
 
@@ -174,6 +184,24 @@ def inject_get_vehicle_details(mocked_responses: aioresponses, vehicle: str) -> 
         mocked_responses,
         urlpath,
         body=json.dumps(body["vehicleLinks"][0]["vehicleDetails"]),
+    )
+
+
+def inject_get_vehicle_contracts(mocked_responses: aioresponses, filename: str) -> str:
+    """Inject sample contracts."""
+    query_string = (
+        "brand=RENAULT&"
+        "connectedServicesContracts=true&"
+        "country=FR&"
+        "locale=fr_FR&"
+        "warranty=true&"
+        "warrantyMaintenanceContracts=true"
+    )
+    urlpath = f"accounts/{TEST_ACCOUNT_ID}/vehicles/{TEST_VIN}/contracts?{query_string}"
+    return inject_data(
+        mocked_responses,
+        urlpath,
+        f"vehicle_contract/{filename}",
     )
 
 
