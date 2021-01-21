@@ -2,10 +2,11 @@
 import json
 import os
 from locale import getdefaultlocale
-from aioresponses.core import RequestCall
+from typing import Any
 
 import pytest
 from aioresponses import aioresponses
+from aioresponses.core import RequestCall  # type:ignore
 from click.testing import CliRunner
 from tests import fixtures
 from tests.const import TEST_ACCOUNT_ID
@@ -279,7 +280,11 @@ def test_http_get(mocked_responses: aioresponses, cli_runner: CliRunner) -> None
 
     fixtures.inject_get_charging_settings(mocked_responses)
 
-    endpoint = "/commerce/v1/accounts/{account_id}/kamereon/kca/car-adapter/v1/cars/{vin}/charging-settings"
+    endpoint = (
+        "/commerce/v1/accounts/{account_id}"
+        "/kamereon/kca/car-adapter"
+        "/v1/cars/{vin}/charging-settings"
+    )
     result = cli_runner.invoke(
         __main__.main,
         f"http get {endpoint}",
@@ -322,7 +327,11 @@ def test_http_post(mocked_responses: aioresponses, cli_runner: CliRunner) -> Non
 
     url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
 
-    endpoint = "/commerce/v1/accounts/{account_id}/kamereon/kca/car-adapter/v2/cars/{vin}/actions/charge-schedule"
+    endpoint = (
+        "/commerce/v1/accounts/{account_id}"
+        "/kamereon/kca/car-adapter"
+        "/v2/cars/{vin}/actions/charge-schedule"
+    )
     body = {"data": {"type": "ChargeSchedule", "attributes": {"schedules": []}}}
     json_body = json.dumps(body)
     result = cli_runner.invoke(
@@ -332,7 +341,8 @@ def test_http_post(mocked_responses: aioresponses, cli_runner: CliRunner) -> Non
     assert result.exit_code == 0, result.exception
 
     expected_output = (
-        "{'data': {'type': 'ChargeSchedule', 'id': 'guid', 'attributes': {'schedules': ["
+        "{'data': {'type': 'ChargeSchedule', 'id': 'guid', "
+        "'attributes': {'schedules': ["
         "{'id': 1, 'activated': True, "
         "'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, "
         "'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, "
@@ -352,7 +362,7 @@ def test_http_post(mocked_responses: aioresponses, cli_runner: CliRunner) -> Non
 
 
 def test_http_post_file(
-    tmpdir, mocked_responses: aioresponses, cli_runner: CliRunner
+    tmpdir: Any, mocked_responses: aioresponses, cli_runner: CliRunner
 ) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
@@ -365,9 +375,12 @@ def test_http_post_file(
 
     url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
 
-    endpoint = "/commerce/v1/accounts/{account_id}/kamereon/kca/car-adapter/v2/cars/{vin}/actions/charge-schedule"
+    endpoint = (
+        "/commerce/v1/accounts/{account_id}"
+        "/kamereon/kca/car-adapter"
+        "/v2/cars/{vin}/actions/charge-schedule"
+    )
     body = {"data": {"type": "ChargeSchedule", "attributes": {"schedules": []}}}
-    json_body = json.dumps(body)
 
     json_file = tmpdir.mkdir("json").join("sample.json")
     json_file.write(json.dumps(body))
@@ -379,7 +392,8 @@ def test_http_post_file(
     assert result.exit_code == 0, result.exception
 
     expected_output = (
-        "{'data': {'type': 'ChargeSchedule', 'id': 'guid', 'attributes': {'schedules': ["
+        "{'data': {'type': 'ChargeSchedule', 'id': 'guid', "
+        "'attributes': {'schedules': ["
         "{'id': 1, 'activated': True, "
         "'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, "
         "'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, "

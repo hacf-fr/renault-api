@@ -3,6 +3,7 @@ import json
 from locale import getdefaultlocale
 from typing import Any
 from typing import Dict
+from typing import Optional
 
 import aiohttp
 import click
@@ -141,32 +142,18 @@ async def http_get_endpoint(
     return endpoint
 
 
-async def http_get(
-    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any], endpoint: str
-) -> None:
-    """Run HTTP GET request."""
-    endpoint = await http_get_endpoint(websession, ctx_data, endpoint)
-
-    session = await _get_logged_in_session(websession=websession, ctx_data=ctx_data)
-    response = await session.http_get(endpoint)
-
-    if ctx_data["json"]:  # pragma: no cover
-        click.echo(json.dumps(response.raw_data))
-    else:
-        click.echo(response.raw_data)
-
-
-async def http_post(
+async def http_request(
     websession: aiohttp.ClientSession,
     ctx_data: Dict[str, Any],
+    method: str,
     endpoint: str,
-    json_body: Dict[str, Any],
+    json_body: Optional[Dict[str, Any]] = None,
 ) -> None:
-    """Run HTTP POST request."""
+    """Run HTTP request."""
     endpoint = await http_get_endpoint(websession, ctx_data, endpoint)
 
     session = await _get_logged_in_session(websession=websession, ctx_data=ctx_data)
-    response = await session.http_post(endpoint, json_body)
+    response = await session.http_request(method, endpoint, json_body)
 
     if ctx_data["json"]:  # pragma: no cover
         click.echo(json.dumps(response.raw_data))

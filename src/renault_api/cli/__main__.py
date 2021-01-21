@@ -231,7 +231,7 @@ async def http_get(
     websession: aiohttp.ClientSession,
 ) -> None:
     """Process HTTP GET request on endpoint."""
-    await renault_client.http_get(websession, ctx_data, endpoint)
+    await renault_client.http_request(websession, ctx_data, "GET", endpoint)
 
 
 @http.command(name="post-file")
@@ -247,7 +247,9 @@ async def http_post_file(
     websession: aiohttp.ClientSession,
 ) -> None:
     """Process HTTP POST request on endpoint."""
-    await renault_client.http_post(websession, ctx_data, endpoint, json.load(json_body))
+    await renault_client.http_request(
+        websession, ctx_data, "POST", endpoint, json.load(json_body)
+    )
 
 
 @http.command(name="post")
@@ -263,8 +265,8 @@ async def http_post(
     websession: aiohttp.ClientSession,
 ) -> None:
     """Process HTTP POST request on endpoint."""
-    await renault_client.http_post(
-        websession, ctx_data, endpoint, json.loads(json_body)
+    await renault_client.http_request(
+        websession, ctx_data, "POST", endpoint, json.loads(json_body)
     )
 
 
