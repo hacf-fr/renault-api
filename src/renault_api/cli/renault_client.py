@@ -7,9 +7,9 @@ from typing import Dict
 import aiohttp
 import click
 from tabulate import tabulate
+
 from renault_api.cli import renault_account
 from renault_api.cli import renault_vehicle
-
 from renault_api.const import CONF_LOCALE
 from renault_api.credential import Credential
 from renault_api.credential_store import CredentialStore
@@ -141,6 +141,33 @@ async def http_get(
 
     session = await _get_logged_in_session(websession=websession, ctx_data=ctx_data)
     response = await session.http_get(endpoint)
+
+    if ctx_data["json"]:
+        click.echo(json.dumps(response.raw_data))
+    else:
+        click.echo(response.raw_data)
+
+
+async def http_post(
+    websession: aiohttp.ClientSession,
+    ctx_data: Dict[str, Any],
+    endpoint: str,
+    json_body: Dict[str, Any],
+) -> None:
+    """Run HTTP POST request."""
+    if "{account_id}" in endpoint:
+        account = await renault_account.get_account(
+            websession=websession, ctx_data=ctx_data
+        )
+        endpoint = endpoint.replace("{account_id}", account.account_id)
+    if "{vin}" in endpoint:
+        vehicle = await renault_vehicle.get_vehicle(
+            websession=websession, ctx_data=ctx_data
+        )
+        endpoint = endpoint.replace("{vin}", vehicle.vin)
+
+    session = await _get_logged_in_session(websession=websession, ctx_data=ctx_data)
+    response = await session.http_post(endpoint, json_body)
 
     if ctx_data["json"]:
         click.echo(json.dumps(response.raw_data))

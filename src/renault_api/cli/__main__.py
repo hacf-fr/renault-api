@@ -1,8 +1,10 @@
 """Command-line interface."""
 import errno
+import json
 import logging
 import os
 from datetime import datetime
+from io import TextIOWrapper
 from typing import Any
 from typing import Dict
 from typing import Optional
@@ -230,6 +232,40 @@ async def http_get(
 ) -> None:
     """Process HTTP GET request on endpoint."""
     await renault_client.http_get(websession, ctx_data, endpoint)
+
+
+@http.command(name="post-file")
+@click.argument("endpoint")
+@click.argument("json-body", type=click.File("rb"))
+@click.pass_obj
+@helpers.coro_with_websession
+async def http_post_file(
+    ctx_data: Dict[str, Any],
+    *,
+    endpoint: str,
+    json_body: TextIOWrapper,
+    websession: aiohttp.ClientSession,
+) -> None:
+    """Process HTTP POST request on endpoint."""
+    await renault_client.http_post(websession, ctx_data, endpoint, json.load(json_body))
+
+
+@http.command(name="post")
+@click.argument("endpoint")
+@click.argument("json-body")
+@click.pass_obj
+@helpers.coro_with_websession
+async def http_post(
+    ctx_data: Dict[str, Any],
+    *,
+    endpoint: str,
+    json_body: str,
+    websession: aiohttp.ClientSession,
+) -> None:
+    """Process HTTP POST request on endpoint."""
+    await renault_client.http_post(
+        websession, ctx_data, endpoint, json.loads(json_body)
+    )
 
 
 if __name__ == "__main__":  # pragma: no cover

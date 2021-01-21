@@ -154,7 +154,7 @@ class RenaultSession:
                 self._credentials[gigya.GIGYA_JWT] = JWTCredential(jwt)
                 return jwt
 
-    async def http_get(self, endpoint: str) -> models.KamereonPersonResponse:
+    async def http_get(self, endpoint: str) -> models.KamereonResponse:
         """GET to specified endpoint."""
         if not endpoint.startswith("/"):
             endpoint = f"/{endpoint}"
@@ -167,6 +167,24 @@ class RenaultSession:
             api_key=await self._get_kamereon_api_key(),
             gigya_jwt=await self._get_jwt(),
             params=params,
+        )
+
+    async def http_post(
+        self, endpoint: str, json: Dict[str, Any]
+    ) -> models.KamereonResponse:
+        """POST to specified endpoint."""
+        if not endpoint.startswith("/"):
+            endpoint = f"/{endpoint}"
+        url = (await self._get_kamereon_root_url()) + endpoint
+        params = {"country": await self._get_country()}
+        return await kamereon.request(
+            websession=self._websession,
+            method="POST",
+            url=url,
+            api_key=await self._get_kamereon_api_key(),
+            gigya_jwt=await self._get_jwt(),
+            params=params,
+            json=json,
         )
 
     async def get_person(self) -> models.KamereonPersonResponse:
