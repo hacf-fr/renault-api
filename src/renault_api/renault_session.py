@@ -156,8 +156,6 @@ class RenaultSession:
 
     async def http_get(self, endpoint: str) -> models.KamereonResponse:
         """GET to specified endpoint."""
-        if not endpoint.startswith("/"):
-            endpoint = f"/{endpoint}"
         url = (await self._get_kamereon_root_url()) + endpoint
         params = {"country": await self._get_country()}
         return await kamereon.request(
@@ -173,8 +171,6 @@ class RenaultSession:
         self, endpoint: str, json: Dict[str, Any]
     ) -> models.KamereonResponse:
         """POST to specified endpoint."""
-        if not endpoint.startswith("/"):
-            endpoint = f"/{endpoint}"
         url = (await self._get_kamereon_root_url()) + endpoint
         params = {"country": await self._get_country()}
         return await kamereon.request(

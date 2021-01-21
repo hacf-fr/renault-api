@@ -124,25 +124,33 @@ async def display_accounts(
     click.echo(tabulate(accounts.items(), headers=["Type", "ID"]))
 
 
-async def http_get(
+async def http_get_endpoint(
     websession: aiohttp.ClientSession, ctx_data: Dict[str, Any], endpoint: str
-) -> None:
+) -> str:
     """Run HTTP GET request."""
-    if "{account_id}" in endpoint:
+    if "{account_id}" in endpoint:  # pragma: no branch
         account = await renault_account.get_account(
             websession=websession, ctx_data=ctx_data
         )
         endpoint = endpoint.replace("{account_id}", account.account_id)
-    if "{vin}" in endpoint:
+    if "{vin}" in endpoint:  # pragma: no branch
         vehicle = await renault_vehicle.get_vehicle(
             websession=websession, ctx_data=ctx_data
         )
         endpoint = endpoint.replace("{vin}", vehicle.vin)
+    return endpoint
+
+
+async def http_get(
+    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any], endpoint: str
+) -> None:
+    """Run HTTP GET request."""
+    endpoint = await http_get_endpoint(websession, ctx_data, endpoint)
 
     session = await _get_logged_in_session(websession=websession, ctx_data=ctx_data)
     response = await session.http_get(endpoint)
 
-    if ctx_data["json"]:
+    if ctx_data["json"]:  # pragma: no cover
         click.echo(json.dumps(response.raw_data))
     else:
         click.echo(response.raw_data)
@@ -155,21 +163,12 @@ async def http_post(
     json_body: Dict[str, Any],
 ) -> None:
     """Run HTTP POST request."""
-    if "{account_id}" in endpoint:
-        account = await renault_account.get_account(
-            websession=websession, ctx_data=ctx_data
-        )
-        endpoint = endpoint.replace("{account_id}", account.account_id)
-    if "{vin}" in endpoint:
-        vehicle = await renault_vehicle.get_vehicle(
-            websession=websession, ctx_data=ctx_data
-        )
-        endpoint = endpoint.replace("{vin}", vehicle.vin)
+    endpoint = await http_get_endpoint(websession, ctx_data, endpoint)
 
     session = await _get_logged_in_session(websession=websession, ctx_data=ctx_data)
     response = await session.http_post(endpoint, json_body)
 
-    if ctx_data["json"]:
+    if ctx_data["json"]:  # pragma: no cover
         click.echo(json.dumps(response.raw_data))
     else:
         click.echo(response.raw_data)
