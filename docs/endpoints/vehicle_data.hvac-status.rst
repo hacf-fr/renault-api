@@ -9,3 +9,10 @@ Base url:
 Sample return:
    .. literalinclude:: /../tests/fixtures/kamereon/vehicle_data/hvac-status.json
       :language: JSON
+
+.. note::
+   On Zoe40 (model code X101VE):
+      ``hvacStatus`` seems to always report ``off``, even when preconditioning is in progress.
+
+   On Zoe50 (model code X102VE):
+      This endpoint seem to be unavailable and returns an error ``'err.func.403': 'Operation not supported Operation not supported for this can (C1A)'``.
