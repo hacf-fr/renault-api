@@ -9,4 +9,3 @@ Base url:
 Sample return:
    .. literalinclude:: /../tests/fixtures/kamereon/vehicle_data/hvac-settings.json
       :language: JSON
-
