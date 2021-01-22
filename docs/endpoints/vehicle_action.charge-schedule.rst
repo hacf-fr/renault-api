@@ -1,10 +1,10 @@
-battery-status
-''''''''''''''
+actions/charge-schedule
+'''''''''''''''''''''''
 
 .. rst-class:: endpoint
 
 Base url:
-   ``/commerce/v1/accounts/{account_id}/kamereon/kca/car-adapter/v2/cars/{vin}/battery-status``
+   ``/commerce/v1/accounts/{account_id}/kamereon/kca/car-adapter/v2/cars/{vin}/actions/charge-schedule``
 
 Sample return:
    .. literalinclude:: /../tests/fixtures/kamereon/vehicle_data/battery-status.2.json
@@ -20,6 +20,6 @@ Sample return:
    * ``chargingStatus`` uses only a subset of `ChargeStatus`_ enum (NOT_IN_CHARGE = 0.0, CHARGE_IN_PROGRESS = 1.0, CHARGE_ERROR = -1.0)
 
    On Zoe50 (model code X102VE)
-
+   
    * ``batteryTemperature`` appears completely wrong.
    * ``chargingInstantaneousPower`` seems to return values in kilowatts, but the values still appear completely wrong.

@@ -35,8 +35,8 @@ ACTION_ENDPOINTS: Dict[str, Any] = {
     "charge-mode": {"version": 1, "type": "ChargeMode"},
     "charge-schedule": {"version": 2, "type": "ChargeSchedule"},
     "charging-start": {"version": 1, "type": "ChargingStart"},
-    "hvac-start": {"version": 1, "type": "HvacStart"},
     "hvac-schedule": {"version": 2, "type": "HvacSchedule"},
+    "hvac-start": {"version": 1, "type": "HvacStart"},
 }
 
 
