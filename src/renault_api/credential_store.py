@@ -112,7 +112,7 @@ class FileCredentialStore(CredentialStore):
                 if key == "gigya_jwt":
                     try:
                         self[key] = JWTCredential(value)
-                    except jwt.ExpiredSignatureError:
+                    except jwt.ExpiredSignatureError:  # pragma: no cover
                         pass
                 else:
                     self[key] = Credential(value)
