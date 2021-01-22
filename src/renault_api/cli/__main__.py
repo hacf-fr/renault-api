@@ -1,8 +1,10 @@
 """Command-line interface."""
 import errno
+import json
 import logging
 import os
 from datetime import datetime
+from io import TextIOWrapper
 from typing import Any
 from typing import Dict
 from typing import Optional
@@ -65,6 +67,7 @@ def _check_for_debug(debug: bool, log: bool) -> None:
 @click.version_option()
 @click.option("--debug", is_flag=True, help="Display debug traces.")
 @click.option("--log", is_flag=True, help="Log debug traces to file.")
+@click.option("--json", is_flag=True, help="Return data as JSON")
 @click.option("--locale", default=None, help="API locale (eg. fr_FR)")
 @click.option(
     "--account",
@@ -75,8 +78,10 @@ def _check_for_debug(debug: bool, log: bool) -> None:
 @click.pass_context
 def main(
     ctx: Context,
+    *,
     debug: bool,
     log: bool,
+    json: bool,
     locale: Optional[str] = None,
     account: Optional[str] = None,
     vin: Optional[str] = None,
@@ -87,6 +92,7 @@ def main(
         os.path.expanduser(renault_settings.CREDENTIAL_PATH)
     )
     _check_for_debug(debug, log)
+    ctx.obj["json"] = json
     if locale:
         ctx.obj["locale"] = locale
     if account:
@@ -206,6 +212,62 @@ async def contracts(
 ) -> None:
     """Display vehicle contracts."""
     await renault_vehicle.display_contracts(websession, ctx_data)
+
+
+@main.group()
+def http() -> None:
+    """Raw HTTP."""
+    pass
+
+
+@http.command(name="get")
+@click.argument("endpoint")
+@click.pass_obj
+@helpers.coro_with_websession
+async def http_get(
+    ctx_data: Dict[str, Any],
+    *,
+    endpoint: str,
+    websession: aiohttp.ClientSession,
+) -> None:
+    """Process HTTP GET request on endpoint."""
+    await renault_client.http_request(websession, ctx_data, "GET", endpoint)
+
+
+@http.command(name="post-file")
+@click.argument("endpoint")
+@click.argument("json-body", type=click.File("rb"))
+@click.pass_obj
+@helpers.coro_with_websession
+async def http_post_file(
+    ctx_data: Dict[str, Any],
+    *,
+    endpoint: str,
+    json_body: TextIOWrapper,
+    websession: aiohttp.ClientSession,
+) -> None:
+    """Process HTTP POST request on endpoint."""
+    await renault_client.http_request(
+        websession, ctx_data, "POST", endpoint, json.load(json_body)
+    )
+
+
+@http.command(name="post")
+@click.argument("endpoint")
+@click.argument("json-body")
+@click.pass_obj
+@helpers.coro_with_websession
+async def http_post(
+    ctx_data: Dict[str, Any],
+    *,
+    endpoint: str,
+    json_body: str,
+    websession: aiohttp.ClientSession,
+) -> None:
+    """Process HTTP POST request on endpoint."""
+    await renault_client.http_request(
+        websession, ctx_data, "POST", endpoint, json.loads(json_body)
+    )
 
 
 if __name__ == "__main__":  # pragma: no cover

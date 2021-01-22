@@ -28,12 +28,13 @@ async def request(
     """Send request to Gigya."""
     async with websession.request(method, url, data=data) as http_response:
         response_text = await http_response.text()
-        _LOGGER.debug(
-            "Received Gigya response %s on %s: %s",
-            http_response.status,
-            url,
-            response_text,
-        )
+        # Disable logging on Gigya, to avoid unnecessary exposure.
+        # _LOGGER.debug(
+        #    "Received Gigya response %s on %s: %s",
+        #    http_response.status,
+        #    url,
+        #    response_text,
+        # )
         gigya_response: models.GigyaResponse = schema.loads(response_text)
         # Check for Gigya error
         gigya_response.raise_for_error_code()

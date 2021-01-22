@@ -1,9 +1,12 @@
 """Test cases for the __main__ module."""
+import json
 import os
 from locale import getdefaultlocale
+from typing import Any
 
 import pytest
 from aioresponses import aioresponses
+from aioresponses.core import RequestCall  # type:ignore
 from click.testing import CliRunner
 from tests import fixtures
 from tests.const import TEST_ACCOUNT_ID
@@ -13,6 +16,7 @@ from tests.const import TEST_PASSWORD
 from tests.const import TEST_PERSON_ID
 from tests.const import TEST_USERNAME
 from tests.const import TEST_VIN
+from yarl import URL
 
 from renault_api.cli import __main__
 from renault_api.cli.renault_settings import CONF_ACCOUNT_ID
@@ -262,3 +266,147 @@ def test_vehicle_contracts(
         "Garantie assistance                           2020-04-03  Expiré\n"
     )
     assert expected_output == result.output
+
+
+def test_http_get(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+    """It exits with a status code of zero."""
+    credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
+    credential_store[CONF_LOCALE] = Credential(TEST_LOCALE)
+    credential_store[CONF_ACCOUNT_ID] = Credential(TEST_ACCOUNT_ID)
+    credential_store[CONF_VIN] = Credential(TEST_VIN)
+    credential_store[GIGYA_LOGIN_TOKEN] = Credential(TEST_LOGIN_TOKEN)
+    credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
+    credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
+
+    fixtures.inject_get_charging_settings(mocked_responses)
+
+    endpoint = (
+        "/commerce/v1/accounts/{account_id}"
+        "/kamereon/kca/car-adapter"
+        "/v1/cars/{vin}/charging-settings"
+    )
+    result = cli_runner.invoke(
+        __main__.main,
+        f"http get {endpoint}",
+    )
+    assert result.exit_code == 0, result.exception
+
+    expected_output = (
+        "{'data': {'type': 'Car', 'id': 'VF1AAAAA555777999', 'attributes': {"
+        "'mode': 'scheduled', 'schedules': ["
+        "{'id': 1, 'activated': True, "
+        "'monday': {'startTime': 'T12:00Z', 'duration': 15}, "
+        "'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, "
+        "'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, "
+        "'thursday': {'startTime': 'T22:00Z', 'duration': 420}, "
+        "'friday': {'startTime': 'T12:15Z', 'duration': 15}, "
+        "'saturday': {'startTime': 'T12:30Z', 'duration': 30}, "
+        "'sunday': {'startTime': 'T12:45Z', 'duration': 45}}, "
+        "{'id': 2, 'activated': False, "
+        "'monday': {'startTime': 'T01:00Z', 'duration': 15}, "
+        "'tuesday': {'startTime': 'T02:00Z', 'duration': 30}, "
+        "'wednesday': {'startTime': 'T03:00Z', 'duration': 45}, "
+        "'thursday': {'startTime': 'T04:00Z', 'duration': 60}, "
+        "'friday': {'startTime': 'T05:00Z', 'duration': 75}, "
+        "'saturday': {'startTime': 'T06:00Z', 'duration': 90}, "
+        "'sunday': {'startTime': 'T07:00Z', 'duration': 105}}"
+        "]}}}\n"
+    )
+    assert expected_output == result.output
+
+
+def test_http_post(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+    """It exits with a status code of zero."""
+    credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
+    credential_store[CONF_LOCALE] = Credential(TEST_LOCALE)
+    credential_store[CONF_ACCOUNT_ID] = Credential(TEST_ACCOUNT_ID)
+    credential_store[CONF_VIN] = Credential(TEST_VIN)
+    credential_store[GIGYA_LOGIN_TOKEN] = Credential(TEST_LOGIN_TOKEN)
+    credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
+    credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
+
+    url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
+
+    endpoint = (
+        "/commerce/v1/accounts/{account_id}"
+        "/kamereon/kca/car-adapter"
+        "/v2/cars/{vin}/actions/charge-schedule"
+    )
+    body = {"data": {"type": "ChargeSchedule", "attributes": {"schedules": []}}}
+    json_body = json.dumps(body)
+    result = cli_runner.invoke(
+        __main__.main,
+        f"http post {endpoint} '{json_body}'",
+    )
+    assert result.exit_code == 0, result.exception
+
+    expected_output = (
+        "{'data': {'type': 'ChargeSchedule', 'id': 'guid', "
+        "'attributes': {'schedules': ["
+        "{'id': 1, 'activated': True, "
+        "'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, "
+        "'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, "
+        "'thursday': {'startTime': 'T22:00Z', 'duration': 420}, "
+        "'friday': {'startTime': 'T23:30Z', 'duration': 480}, "
+        "'saturday': {'startTime': 'T18:30Z', 'duration': 120}, "
+        "'sunday': {'startTime': 'T12:45Z', 'duration': 45}}]}}}\n"
+    )
+    assert expected_output == result.output
+
+    expected_json = {
+        "data": {"type": "ChargeSchedule", "attributes": {"schedules": []}}
+    }
+
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    assert expected_json == request.kwargs["json"]
+
+
+def test_http_post_file(
+    tmpdir: Any, mocked_responses: aioresponses, cli_runner: CliRunner
+) -> None:
+    """It exits with a status code of zero."""
+    credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
+    credential_store[CONF_LOCALE] = Credential(TEST_LOCALE)
+    credential_store[CONF_ACCOUNT_ID] = Credential(TEST_ACCOUNT_ID)
+    credential_store[CONF_VIN] = Credential(TEST_VIN)
+    credential_store[GIGYA_LOGIN_TOKEN] = Credential(TEST_LOGIN_TOKEN)
+    credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
+    credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
+
+    url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
+
+    endpoint = (
+        "/commerce/v1/accounts/{account_id}"
+        "/kamereon/kca/car-adapter"
+        "/v2/cars/{vin}/actions/charge-schedule"
+    )
+    body = {"data": {"type": "ChargeSchedule", "attributes": {"schedules": []}}}
+
+    json_file = tmpdir.mkdir("json").join("sample.json")
+    json_file.write(json.dumps(body))
+
+    result = cli_runner.invoke(
+        __main__.main,
+        f"http post-file {endpoint} '{json_file}'",
+    )
+    assert result.exit_code == 0, result.exception
+
+    expected_output = (
+        "{'data': {'type': 'ChargeSchedule', 'id': 'guid', "
+        "'attributes': {'schedules': ["
+        "{'id': 1, 'activated': True, "
+        "'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, "
+        "'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, "
+        "'thursday': {'startTime': 'T22:00Z', 'duration': 420}, "
+        "'friday': {'startTime': 'T23:30Z', 'duration': 480}, "
+        "'saturday': {'startTime': 'T18:30Z', 'duration': 120}, "
+        "'sunday': {'startTime': 'T12:45Z', 'duration': 45}}]}}}\n"
+    )
+    assert expected_output == result.output
+
+    expected_json = {
+        "data": {"type": "ChargeSchedule", "attributes": {"schedules": []}}
+    }
+
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    assert expected_json == request.kwargs["json"]

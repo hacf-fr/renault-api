@@ -1,5 +1,6 @@
 """Kamereon API."""
 import logging
+from json import dumps as json_dumps
 from typing import Any
 from typing import cast
 from typing import Dict
@@ -118,14 +119,21 @@ async def request(
         json=json,
     ) as http_response:
         response_text = await http_response.text()
+        if json:
+            _LOGGER.debug(
+                "Send Kamereon %s request to %s with body: %s",
+                method,
+                http_response.url,
+                json_dumps(json),
+            )
         _LOGGER.debug(
-            "Received Kamereon response %s on %s %s: %s (with body data %s)",
+            "Received Kamereon response %s on %s to %s: %s",
             http_response.status,
             method,
             http_response.url,
             response_text,
-            json,
         )
+
         # Some endpoints return arrays instead of objects.
         # These need to be wrapped in an object.
         if response_text.startswith("[") and wrap_array_in:

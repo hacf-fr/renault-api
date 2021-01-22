@@ -1,12 +1,16 @@
 """Singletons for the CLI."""
+import json
 from locale import getdefaultlocale
 from typing import Any
 from typing import Dict
+from typing import Optional
 
 import aiohttp
 import click
 from tabulate import tabulate
 
+from renault_api.cli import renault_account
+from renault_api.cli import renault_vehicle
 from renault_api.const import CONF_LOCALE
 from renault_api.credential import Credential
 from renault_api.credential_store import CredentialStore
@@ -65,15 +69,23 @@ async def _create_renault_session(
     )
 
 
-async def get_logged_in_client(
+async def _get_logged_in_session(
     websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
-) -> RenaultClient:
-    """Get RenaultClient for use by CLI."""
+) -> RenaultSession:
+    """Get RenaultSession for use by CLI."""
     session = await _create_renault_session(websession=websession, ctx_data=ctx_data)
 
     credential_store: CredentialStore = ctx_data["credential_store"]
     if GIGYA_LOGIN_TOKEN not in credential_store:
         await _prompt_login(session)
+    return session
+
+
+async def get_logged_in_client(
+    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
+) -> RenaultClient:
+    """Get RenaultClient for use by CLI."""
+    session = await _get_logged_in_session(websession=websession, ctx_data=ctx_data)
     return RenaultClient(session=session)
 
 
@@ -111,3 +123,39 @@ async def display_accounts(
     response = await client.get_person()
     accounts = {account.accountType: account.accountId for account in response.accounts}
     click.echo(tabulate(accounts.items(), headers=["Type", "ID"]))
+
+
+async def http_get_endpoint(
+    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any], endpoint: str
+) -> str:
+    """Run HTTP GET request."""
+    if "{account_id}" in endpoint:  # pragma: no branch
+        account = await renault_account.get_account(
+            websession=websession, ctx_data=ctx_data
+        )
+        endpoint = endpoint.replace("{account_id}", account.account_id)
+    if "{vin}" in endpoint:  # pragma: no branch
+        vehicle = await renault_vehicle.get_vehicle(
+            websession=websession, ctx_data=ctx_data
+        )
+        endpoint = endpoint.replace("{vin}", vehicle.vin)
+    return endpoint
+
+
+async def http_request(
+    websession: aiohttp.ClientSession,
+    ctx_data: Dict[str, Any],
+    method: str,
+    endpoint: str,
+    json_body: Optional[Dict[str, Any]] = None,
+) -> None:
+    """Run HTTP request."""
+    endpoint = await http_get_endpoint(websession, ctx_data, endpoint)
+
+    session = await _get_logged_in_session(websession=websession, ctx_data=ctx_data)
+    response = await session.http_request(method, endpoint, json_body)
+
+    if ctx_data["json"]:  # pragma: no cover
+        click.echo(json.dumps(response.raw_data))
+    else:
+        click.echo(response.raw_data)
