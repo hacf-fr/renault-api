@@ -460,7 +460,7 @@ tests = ["pytest", "pytz", "simplejson"]
 
 [[package]]
 name = "marshmallow-dataclass"
-version = "8.3.0"
+version = "8.3.1"
 description = "Python library to convert dataclasses into marshmallow schemas."
 category = "main"
 optional = false
@@ -1452,8 +1452,8 @@ marshmallow = [
     {file = "marshmallow-3.9.1.tar.gz", hash = "sha256:73facc37462dfc0b27f571bdaffbef7709e19f7a616beb3802ea425b07843f4e"},
 ]
 marshmallow-dataclass = [
-    {file = "marshmallow_dataclass-8.3.0-py3-none-any.whl", hash = "sha256:08b69ce7504b96a6f382dfc08976d03865aeb296687a5bf3855a1eb2c555d0a9"},
-    {file = "marshmallow_dataclass-8.3.0.tar.gz", hash = "sha256:d64446f3c307796001cea0f0154ab9ded817b1dc273d610bf6e47483d04414e6"},
+    {file = "marshmallow_dataclass-8.3.1-py3-none-any.whl", hash = "sha256:4d07a0829882c99343d0be216e808d6075b2d6cd94211c9f345df9aaed7d4b20"},
+    {file = "marshmallow_dataclass-8.3.1.tar.gz", hash = "sha256:835e6aef758f9b107ab9623d37e0ebbd6e586fb8f4172281a47dd90a69ceda38"},
 ]
 mccabe = [
     {file = "mccabe-0.6.1-py2.py3-none-any.whl", hash = "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42"},
