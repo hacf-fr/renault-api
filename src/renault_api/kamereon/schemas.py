@@ -15,6 +15,10 @@ KamereonPersonResponseSchema = marshmallow_dataclass.class_schema(
 )()
 
 
+KameronVehicleContractsReponseSchema = marshmallow_dataclass.class_schema(
+    models.KameronVehicleContractsReponse, base_schema=BaseSchema
+)()
+
 KamereonVehiclesResponseSchema = marshmallow_dataclass.class_schema(
     models.KamereonVehiclesResponse, base_schema=BaseSchema
 )()

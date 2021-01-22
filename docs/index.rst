@@ -9,7 +9,10 @@
    :maxdepth: 1
 
    usage
-   reference
+   reference/renault_api
+   reference/kamereon
+   reference/gigya
+   endpoints
    contributing
    Code of Conduct <codeofconduct>
    License <license>

@@ -27,6 +27,7 @@ def get_logged_in_session(websession: aiohttp.ClientSession) -> RenaultSession:
     return RenaultSession(
         websession=websession,
         country=TEST_COUNTRY,
+        locale=TEST_LOCALE,
         locale_details=TEST_LOCALE_DETAILS,
         credential_store=get_logged_in_credential_store(),
     )

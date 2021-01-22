@@ -44,6 +44,7 @@ The client is able to read various vehicle attributes, such as:
 * GPS location
 * fuel autonomy (for fuel vehicles)
 * battery autonomy (for electric vehicles)
+* contracts associated to the vehicle (warranty and connected services)
 
 For some vehicles, it is also possible to manage:
 

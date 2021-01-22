@@ -80,15 +80,17 @@ def test_vehicles_response(filename: str) -> None:
     for vehicle_link in response.vehicleLinks:
         # Ensure the VIN and RegistrationNumber are hidden
         assert vehicle_link.vin
-        assert vehicle_link.vin.startswith("VF1AAAA")
+        assert vehicle_link.vin.startswith("VF1AAAA"), "Ensure vin is obfuscated."
 
         vehicle_details = vehicle_link.vehicleDetails
         assert vehicle_details
         assert vehicle_details.vin
-        assert vehicle_details.vin.startswith("VF1AAAA")
+        assert vehicle_details.vin.startswith("VF1AAAA"), "Ensure vin is obfuscated."
         assert vehicle_details.registrationNumber
-        assert vehicle_details.registrationNumber.startswith("REG-")
-        assert vehicle_details.radioCode == "1234"
+        assert vehicle_details.registrationNumber.startswith(
+            "REG-"
+        ), "Ensure registrationNumber is obfuscated."
+        assert vehicle_details.radioCode == "1234", "Ensure radioCode is obfuscated."
 
         generated_specs = {
             "get_brand_label": vehicle_details.get_brand_label(),

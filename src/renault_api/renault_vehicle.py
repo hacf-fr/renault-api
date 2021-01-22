@@ -11,6 +11,8 @@ import aiohttp
 
 from .credential_store import CredentialStore
 from .exceptions import RenaultException
+from .kamereon import get_required_contracts
+from .kamereon import has_required_contracts
 from .kamereon import models
 from .kamereon import schemas
 from .renault_session import RenaultSession
@@ -44,6 +46,7 @@ class RenaultVehicle:
         self._account_id = account_id
         self._vin = vin
         self._vehicle_details = vehicle_details
+        self._contracts: Optional[List[models.KameronVehicleContract]] = None
 
         if session:
             self._session = session
@@ -84,11 +87,23 @@ class RenaultVehicle:
             account_id=self.account_id,
             vin=self.vin,
         )
-        self._vehicle_details = response
-        return cast(
+        self._vehicle_details = cast(
             models.KamereonVehicleDetails,
             response,
         )
+        return self._vehicle_details
+
+    async def get_contracts(self) -> List[models.KameronVehicleContract]:
+        """Get vehicle contracts."""
+        if self._contracts:
+            return self._contracts
+
+        response = await self.session.get_vehicle_contracts(
+            account_id=self.account_id,
+            vin=self.vin,
+        )
+        self._contracts = response.contractList
+        return self._contracts
 
     async def get_battery_status(self) -> models.KamereonVehicleBatteryStatusData:
         """Get vehicle battery status."""
@@ -466,3 +481,17 @@ class RenaultVehicle:
                 schemas.KamereonVehicleChargingStartActionDataSchema
             ),
         )
+
+    async def supports_endpoint(self, endpoint: str) -> bool:
+        """Check if vehicle supports endpoint."""
+        details = await self.get_details()
+        return details.supports_endpoint(endpoint)
+
+    async def has_contract_for_endpoint(self, endpoint: str) -> bool:
+        """Check if vehicle has contract for endpoint."""
+        required_contracts = get_required_contracts(endpoint)
+        if not required_contracts:
+            return True
+
+        contracts = await self.get_contracts()
+        return has_required_contracts(contracts, endpoint)
