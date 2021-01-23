@@ -278,7 +278,7 @@ def test_http_get(mocked_responses: aioresponses, cli_runner: CliRunner) -> None
     credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
     credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
-    fixtures.inject_get_charging_settings(mocked_responses)
+    fixtures.inject_get_charging_settings(mocked_responses, "single")
 
     endpoint = (
         "/commerce/v1/accounts/{account_id}"
@@ -301,15 +301,7 @@ def test_http_get(mocked_responses: aioresponses, cli_runner: CliRunner) -> None
         "'thursday': {'startTime': 'T22:00Z', 'duration': 420}, "
         "'friday': {'startTime': 'T12:15Z', 'duration': 15}, "
         "'saturday': {'startTime': 'T12:30Z', 'duration': 30}, "
-        "'sunday': {'startTime': 'T12:45Z', 'duration': 45}}, "
-        "{'id': 2, 'activated': False, "
-        "'monday': {'startTime': 'T01:00Z', 'duration': 15}, "
-        "'tuesday': {'startTime': 'T02:00Z', 'duration': 30}, "
-        "'wednesday': {'startTime': 'T03:00Z', 'duration': 45}, "
-        "'thursday': {'startTime': 'T04:00Z', 'duration': 60}, "
-        "'friday': {'startTime': 'T05:00Z', 'duration': 75}, "
-        "'saturday': {'startTime': 'T06:00Z', 'duration': 90}, "
-        "'sunday': {'startTime': 'T07:00Z', 'duration': 105}}"
+        "'sunday': {'startTime': 'T12:45Z', 'duration': 45}}"
         "]}}}\n"
     )
     assert expected_output == result.output
