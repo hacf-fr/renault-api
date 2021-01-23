@@ -74,11 +74,6 @@ def validate_charge_schedules(schedules: List[models.ChargeSchedule]) -> None:
     for schedule in schedules:
         validate_charge_schedule(schedule)
 
-    # Is this really forbidden?
-    # or can multiple schedules be activated as long as there is no overlap?
-    if sum(1 for schedule in schedules if schedule.activated) > 1:
-        raise ModelValidationException("Found multiple activated schedules.")
-
 
 def validate_charge_schedule(schedule: models.ChargeSchedule) -> None:
     """Validate a ChargeSchedule."""
@@ -138,7 +133,7 @@ def prevent_overlap(
     end_time = end_time % MINUTES_PER_DAY
     if isinstance(next_start_time, models.ChargeDaySchedule):  # pragma: no branch
         next_start_time = get_total_minutes(next_start_time.startTime)
-    if end_time >= next_start_time:
+    if end_time >= next_start_time:  # pragma: no branch
         raise ModelValidationException(
             f"`{format_time(end_time)}` end time overlaps with next day schedule."
         )
