@@ -121,24 +121,57 @@ def test_charge_schedule_show(
         "Schedule ID: 1 [Active]\n"
         "Day        Start time    End time    Duration\n"
         "---------  ------------  ----------  ----------\n"
-        "Monday     13:00         13:15       0:15:00\n"
-        "Tuesday    05:30         12:30       7:00:00\n"
-        "Wednesday  23:30         06:30       7:00:00\n"
-        "Thursday   23:00         06:00       7:00:00\n"
-        "Friday     13:15         13:30       0:15:00\n"
-        "Saturday   13:30         14:00       0:30:00\n"
-        "Sunday     13:45         14:30       0:45:00\n"
+        "Monday     01:00         08:30       7:30:00\n"
+        "Tuesday    01:00         08:30       7:30:00\n"
+        "Wednesday  01:00         08:30       7:30:00\n"
+        "Thursday   01:00         08:30       7:30:00\n"
+        "Friday     01:00         08:30       7:30:00\n"
+        "Saturday   01:00         08:30       7:30:00\n"
+        "Sunday     01:00         08:30       7:30:00\n"
         "\n"
-        "Schedule ID: 2\n"
+        "Schedule ID: 2 [Active]\n"
         "Day        Start time    End time    Duration\n"
         "---------  ------------  ----------  ----------\n"
-        "Monday     02:00         02:15       0:15:00\n"
-        "Tuesday    03:00         03:30       0:30:00\n"
-        "Wednesday  04:00         04:45       0:45:00\n"
-        "Thursday   05:00         06:00       1:00:00\n"
-        "Friday     06:00         07:15       1:15:00\n"
-        "Saturday   07:00         08:30       1:30:00\n"
-        "Sunday     08:00         09:45       1:45:00\n"
+        "Monday     00:30         00:45       0:15:00\n"
+        "Tuesday    00:30         00:45       0:15:00\n"
+        "Wednesday  00:30         00:45       0:15:00\n"
+        "Thursday   00:30         00:45       0:15:00\n"
+        "Friday     00:30         00:45       0:15:00\n"
+        "Saturday   00:30         00:45       0:15:00\n"
+        "Sunday     00:30         00:45       0:15:00\n"
+        "\n"
+        "Schedule ID: 3\n"
+        "Day        Start time    End time    Duration\n"
+        "---------  ------------  ----------  ----------\n"
+        "Monday     -             -           -\n"
+        "Tuesday    -             -           -\n"
+        "Wednesday  -             -           -\n"
+        "Thursday   -             -           -\n"
+        "Friday     -             -           -\n"
+        "Saturday   -             -           -\n"
+        "Sunday     -             -           -\n"
+        "\n"
+        "Schedule ID: 4\n"
+        "Day        Start time    End time    Duration\n"
+        "---------  ------------  ----------  ----------\n"
+        "Monday     -             -           -\n"
+        "Tuesday    -             -           -\n"
+        "Wednesday  -             -           -\n"
+        "Thursday   -             -           -\n"
+        "Friday     -             -           -\n"
+        "Saturday   -             -           -\n"
+        "Sunday     -             -           -\n"
+        "\n"
+        "Schedule ID: 5\n"
+        "Day        Start time    End time    Duration\n"
+        "---------  ------------  ----------  ----------\n"
+        "Monday     -             -           -\n"
+        "Tuesday    -             -           -\n"
+        "Wednesday  -             -           -\n"
+        "Thursday   -             -           -\n"
+        "Friday     -             -           -\n"
+        "Saturday   -             -           -\n"
+        "Sunday     -             -           -\n"
     )
     assert expected_output == result.output
 
@@ -167,25 +200,58 @@ def test_charging_settings_set(
                         "id": 1,
                         "activated": True,
                         "monday": None,
-                        "tuesday": {"duration": 420, "startTime": "T04:30Z"},
-                        "wednesday": {"duration": 420, "startTime": "T22:30Z"},
-                        "thursday": {"duration": 420, "startTime": "T22:00Z"},
-                        "friday": {"duration": 480, "startTime": "T23:30Z"},
-                        "saturday": {"duration": 120, "startTime": "T18:30Z"},
-                        "sunday": {"duration": 45, "startTime": "T12:45Z"},
+                        "tuesday": {"startTime": "T00:00Z", "duration": 450},
+                        "wednesday": {"startTime": "T00:00Z", "duration": 450},
+                        "thursday": {"startTime": "T00:00Z", "duration": 450},
+                        "friday": {"startTime": "T23:30Z", "duration": 480},
+                        "saturday": {"startTime": "T18:30Z", "duration": 120},
+                        "sunday": {"startTime": "T00:00Z", "duration": 450},
                     },
                     {
                         "id": 2,
-                        "activated": False,
-                        "monday": {"startTime": "T01:00Z", "duration": 15},
-                        "tuesday": {"startTime": "T02:00Z", "duration": 30},
-                        "wednesday": {"startTime": "T03:00Z", "duration": 45},
-                        "thursday": {"startTime": "T04:00Z", "duration": 60},
-                        "friday": {"startTime": "T05:00Z", "duration": 75},
-                        "saturday": {"startTime": "T06:00Z", "duration": 90},
-                        "sunday": {"startTime": "T07:00Z", "duration": 105},
+                        "activated": True,
+                        "monday": {"startTime": "T23:30Z", "duration": 15},
+                        "tuesday": {"startTime": "T23:30Z", "duration": 15},
+                        "wednesday": {"startTime": "T23:30Z", "duration": 15},
+                        "thursday": {"startTime": "T23:30Z", "duration": 15},
+                        "friday": {"startTime": "T23:30Z", "duration": 15},
+                        "saturday": {"startTime": "T23:30Z", "duration": 15},
+                        "sunday": {"startTime": "T23:30Z", "duration": 15},
                     },
-                ]
+                    {
+                        "id": 3,
+                        "activated": False,
+                        "monday": None,
+                        "tuesday": None,
+                        "wednesday": None,
+                        "thursday": None,
+                        "friday": None,
+                        "saturday": None,
+                        "sunday": None,
+                    },
+                    {
+                        "id": 4,
+                        "activated": False,
+                        "monday": None,
+                        "tuesday": None,
+                        "wednesday": None,
+                        "thursday": None,
+                        "friday": None,
+                        "saturday": None,
+                        "sunday": None,
+                    },
+                    {
+                        "id": 5,
+                        "activated": False,
+                        "monday": None,
+                        "tuesday": None,
+                        "wednesday": None,
+                        "thursday": None,
+                        "friday": None,
+                        "saturday": None,
+                        "sunday": None,
+                    },
+                ],
             },
             "type": "ChargeSchedule",
         }
@@ -204,7 +270,7 @@ def test_charging_settings_activate(
     fixtures.inject_get_charging_settings(mocked_responses, "multi")
     url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
 
-    result = cli_runner.invoke(__main__.main, "charge schedule activate 2")
+    result = cli_runner.invoke(__main__.main, "charge schedule activate 3")
     assert result.exit_code == 0, result.exception
 
     expected_json = {
@@ -214,24 +280,57 @@ def test_charging_settings_activate(
                     {
                         "id": 1,
                         "activated": True,
-                        "monday": {"duration": 15, "startTime": "T12:00Z"},
-                        "tuesday": {"duration": 420, "startTime": "T04:30Z"},
-                        "wednesday": {"duration": 420, "startTime": "T22:30Z"},
-                        "thursday": {"duration": 420, "startTime": "T22:00Z"},
-                        "friday": {"duration": 15, "startTime": "T12:15Z"},
-                        "saturday": {"duration": 30, "startTime": "T12:30Z"},
-                        "sunday": {"duration": 45, "startTime": "T12:45Z"},
+                        "monday": {"startTime": "T00:00Z", "duration": 450},
+                        "tuesday": {"startTime": "T00:00Z", "duration": 450},
+                        "wednesday": {"startTime": "T00:00Z", "duration": 450},
+                        "thursday": {"startTime": "T00:00Z", "duration": 450},
+                        "friday": {"startTime": "T00:00Z", "duration": 450},
+                        "saturday": {"startTime": "T00:00Z", "duration": 450},
+                        "sunday": {"startTime": "T00:00Z", "duration": 450},
                     },
                     {
                         "id": 2,
                         "activated": True,
-                        "monday": {"startTime": "T01:00Z", "duration": 15},
-                        "tuesday": {"startTime": "T02:00Z", "duration": 30},
-                        "wednesday": {"startTime": "T03:00Z", "duration": 45},
-                        "thursday": {"startTime": "T04:00Z", "duration": 60},
-                        "friday": {"startTime": "T05:00Z", "duration": 75},
-                        "saturday": {"startTime": "T06:00Z", "duration": 90},
-                        "sunday": {"startTime": "T07:00Z", "duration": 105},
+                        "monday": {"startTime": "T23:30Z", "duration": 15},
+                        "tuesday": {"startTime": "T23:30Z", "duration": 15},
+                        "wednesday": {"startTime": "T23:30Z", "duration": 15},
+                        "thursday": {"startTime": "T23:30Z", "duration": 15},
+                        "friday": {"startTime": "T23:30Z", "duration": 15},
+                        "saturday": {"startTime": "T23:30Z", "duration": 15},
+                        "sunday": {"startTime": "T23:30Z", "duration": 15},
+                    },
+                    {
+                        "id": 3,
+                        "activated": True,
+                        "monday": None,
+                        "tuesday": None,
+                        "wednesday": None,
+                        "thursday": None,
+                        "friday": None,
+                        "saturday": None,
+                        "sunday": None,
+                    },
+                    {
+                        "id": 4,
+                        "activated": False,
+                        "monday": None,
+                        "tuesday": None,
+                        "wednesday": None,
+                        "thursday": None,
+                        "friday": None,
+                        "saturday": None,
+                        "sunday": None,
+                    },
+                    {
+                        "id": 5,
+                        "activated": False,
+                        "monday": None,
+                        "tuesday": None,
+                        "wednesday": None,
+                        "thursday": None,
+                        "friday": None,
+                        "saturday": None,
+                        "sunday": None,
                     },
                 ]
             },
@@ -264,24 +363,57 @@ def test_charging_settings_deactivate(
                     {
                         "id": 1,
                         "activated": False,
-                        "monday": {"duration": 15, "startTime": "T12:00Z"},
-                        "tuesday": {"duration": 420, "startTime": "T04:30Z"},
-                        "wednesday": {"duration": 420, "startTime": "T22:30Z"},
-                        "thursday": {"duration": 420, "startTime": "T22:00Z"},
-                        "friday": {"duration": 15, "startTime": "T12:15Z"},
-                        "saturday": {"duration": 30, "startTime": "T12:30Z"},
-                        "sunday": {"duration": 45, "startTime": "T12:45Z"},
+                        "monday": {"startTime": "T00:00Z", "duration": 450},
+                        "tuesday": {"startTime": "T00:00Z", "duration": 450},
+                        "wednesday": {"startTime": "T00:00Z", "duration": 450},
+                        "thursday": {"startTime": "T00:00Z", "duration": 450},
+                        "friday": {"startTime": "T00:00Z", "duration": 450},
+                        "saturday": {"startTime": "T00:00Z", "duration": 450},
+                        "sunday": {"startTime": "T00:00Z", "duration": 450},
                     },
                     {
                         "id": 2,
+                        "activated": True,
+                        "monday": {"startTime": "T23:30Z", "duration": 15},
+                        "tuesday": {"startTime": "T23:30Z", "duration": 15},
+                        "wednesday": {"startTime": "T23:30Z", "duration": 15},
+                        "thursday": {"startTime": "T23:30Z", "duration": 15},
+                        "friday": {"startTime": "T23:30Z", "duration": 15},
+                        "saturday": {"startTime": "T23:30Z", "duration": 15},
+                        "sunday": {"startTime": "T23:30Z", "duration": 15},
+                    },
+                    {
+                        "id": 3,
                         "activated": False,
-                        "monday": {"startTime": "T01:00Z", "duration": 15},
-                        "tuesday": {"startTime": "T02:00Z", "duration": 30},
-                        "wednesday": {"startTime": "T03:00Z", "duration": 45},
-                        "thursday": {"startTime": "T04:00Z", "duration": 60},
-                        "friday": {"startTime": "T05:00Z", "duration": 75},
-                        "saturday": {"startTime": "T06:00Z", "duration": 90},
-                        "sunday": {"startTime": "T07:00Z", "duration": 105},
+                        "monday": None,
+                        "tuesday": None,
+                        "wednesday": None,
+                        "thursday": None,
+                        "friday": None,
+                        "saturday": None,
+                        "sunday": None,
+                    },
+                    {
+                        "id": 4,
+                        "activated": False,
+                        "monday": None,
+                        "tuesday": None,
+                        "wednesday": None,
+                        "thursday": None,
+                        "friday": None,
+                        "saturday": None,
+                        "sunday": None,
+                    },
+                    {
+                        "id": 5,
+                        "activated": False,
+                        "monday": None,
+                        "tuesday": None,
+                        "wednesday": None,
+                        "thursday": None,
+                        "friday": None,
+                        "saturday": None,
+                        "sunday": None,
                     },
                 ]
             },

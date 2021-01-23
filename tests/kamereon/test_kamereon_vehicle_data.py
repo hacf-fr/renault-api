@@ -141,10 +141,10 @@ def test_cockpit_captur_ii() -> None:
     assert vehicle_data.fuelQuantity == 3.0
 
 
-def test_charging_settings() -> None:
+def test_charging_settings_single() -> None:
     """Test vehicle data for charging-settings.json."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
-        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/charging-settings.multi.json",
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/charging-settings.single.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
@@ -161,18 +161,7 @@ def test_charging_settings() -> None:
                 "friday": {"startTime": "T12:15Z", "duration": 15},
                 "saturday": {"startTime": "T12:30Z", "duration": 30},
                 "sunday": {"startTime": "T12:45Z", "duration": 45},
-            },
-            {
-                "id": 2,
-                "activated": False,
-                "monday": {"startTime": "T01:00Z", "duration": 15},
-                "tuesday": {"startTime": "T02:00Z", "duration": 30},
-                "wednesday": {"startTime": "T03:00Z", "duration": 45},
-                "thursday": {"startTime": "T04:00Z", "duration": 60},
-                "friday": {"startTime": "T05:00Z", "duration": 75},
-                "saturday": {"startTime": "T06:00Z", "duration": 90},
-                "sunday": {"startTime": "T07:00Z", "duration": 105},
-            },
+            }
         ],
     }
 
@@ -182,7 +171,7 @@ def test_charging_settings() -> None:
     )
 
     assert vehicle_data.mode == "scheduled"
-    assert len(vehicle_data.schedules) == 2
+    assert len(vehicle_data.schedules) == 1
 
     schedule_data = vehicle_data.schedules[0]
     assert schedule_data.id == 1
@@ -201,6 +190,71 @@ def test_charging_settings() -> None:
     assert schedule_data.saturday.duration == 30
     assert schedule_data.sunday.startTime == "T12:45Z"
     assert schedule_data.sunday.duration == 45
+
+
+def test_charging_settings_multi() -> None:
+    """Test vehicle data for charging-settings.json."""
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/charging-settings.multi.json",
+        schemas.KamereonVehicleDataResponseSchema,
+    )
+    response.raise_for_error_code()
+    assert response.data.raw_data["attributes"] == {
+        "mode": "scheduled",
+        "schedules": [
+            {
+                "id": 1,
+                "activated": True,
+                "monday": {"startTime": "T00:00Z", "duration": 450},
+                "tuesday": {"startTime": "T00:00Z", "duration": 450},
+                "wednesday": {"startTime": "T00:00Z", "duration": 450},
+                "thursday": {"startTime": "T00:00Z", "duration": 450},
+                "friday": {"startTime": "T00:00Z", "duration": 450},
+                "saturday": {"startTime": "T00:00Z", "duration": 450},
+                "sunday": {"startTime": "T00:00Z", "duration": 450},
+            },
+            {
+                "id": 2,
+                "activated": True,
+                "monday": {"startTime": "T23:30Z", "duration": 15},
+                "tuesday": {"startTime": "T23:30Z", "duration": 15},
+                "wednesday": {"startTime": "T23:30Z", "duration": 15},
+                "thursday": {"startTime": "T23:30Z", "duration": 15},
+                "friday": {"startTime": "T23:30Z", "duration": 15},
+                "saturday": {"startTime": "T23:30Z", "duration": 15},
+                "sunday": {"startTime": "T23:30Z", "duration": 15},
+            },
+            {"id": 3, "activated": False},
+            {"id": 4, "activated": False},
+            {"id": 5, "activated": False},
+        ],
+    }
+
+    vehicle_data = cast(
+        models.KamereonVehicleChargingSettingsData,
+        response.get_attributes(schemas.KamereonVehicleChargingSettingsDataSchema),
+    )
+
+    assert vehicle_data.mode == "scheduled"
+    assert len(vehicle_data.schedules) == 5
+
+    schedule_data = vehicle_data.schedules[0]
+    assert schedule_data.id == 1
+    assert schedule_data.activated is True
+    assert schedule_data.monday.startTime == "T00:00Z"
+    assert schedule_data.monday.duration == 450
+    assert schedule_data.tuesday.startTime == "T00:00Z"
+    assert schedule_data.tuesday.duration == 450
+    assert schedule_data.wednesday.startTime == "T00:00Z"
+    assert schedule_data.wednesday.duration == 450
+    assert schedule_data.thursday.startTime == "T00:00Z"
+    assert schedule_data.thursday.duration == 450
+    assert schedule_data.friday.startTime == "T00:00Z"
+    assert schedule_data.friday.duration == 450
+    assert schedule_data.saturday.startTime == "T00:00Z"
+    assert schedule_data.saturday.duration == 450
+    assert schedule_data.sunday.startTime == "T00:00Z"
+    assert schedule_data.sunday.duration == 450
 
 
 def test_location() -> None:
