@@ -110,7 +110,7 @@ def test_charge_schedule_show(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_get_charging_settings(mocked_responses)
+    fixtures.inject_get_charging_settings(mocked_responses, "multi")
 
     result = cli_runner.invoke(__main__.main, "charge schedule show")
     assert result.exit_code == 0, result.exception
@@ -148,7 +148,7 @@ def test_charging_settings_set(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_get_charging_settings(mocked_responses)
+    fixtures.inject_get_charging_settings(mocked_responses, "multi")
     url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
 
     monday = "--monday clear"
@@ -201,7 +201,7 @@ def test_charging_settings_activate(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_get_charging_settings(mocked_responses)
+    fixtures.inject_get_charging_settings(mocked_responses, "multi")
     url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
 
     result = cli_runner.invoke(__main__.main, "charge schedule activate 2")
@@ -251,7 +251,7 @@ def test_charging_settings_deactivate(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_get_charging_settings(mocked_responses)
+    fixtures.inject_get_charging_settings(mocked_responses, "multi")
     url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
 
     result = cli_runner.invoke(__main__.main, "charge schedule deactivate 1")

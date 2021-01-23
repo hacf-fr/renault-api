@@ -181,7 +181,7 @@ async def test_get_charging_settings(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_charging_settings."""
-    fixtures.inject_get_charging_settings(mocked_responses)
+    fixtures.inject_get_charging_settings(mocked_responses, "multi")
     assert await vehicle.get_charging_settings()
 
 

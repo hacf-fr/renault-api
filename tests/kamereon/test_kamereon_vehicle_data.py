@@ -144,7 +144,7 @@ def test_cockpit_captur_ii() -> None:
 def test_charging_settings() -> None:
     """Test vehicle data for charging-settings.json."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
-        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/charging-settings.json",
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/charging-settings.multi.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()

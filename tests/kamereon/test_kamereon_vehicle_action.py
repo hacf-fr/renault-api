@@ -35,10 +35,10 @@ def test_vehicle_action_response_attributes() -> None:
     }
 
 
-def test_charge_mode_for_json() -> None:
+def test_charge_schedule_for_json() -> None:
     """Test for updating charge settings."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
-        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/charging-settings.json",
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/charging-settings.multi.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()

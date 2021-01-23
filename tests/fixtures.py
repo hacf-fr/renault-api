@@ -315,13 +315,13 @@ def inject_get_charges(mocked_responses: aioresponses, start: str, end: str) -> 
     )
 
 
-def inject_get_charging_settings(mocked_responses: aioresponses) -> str:
+def inject_get_charging_settings(mocked_responses: aioresponses, type: str) -> str:
     """Inject sample charges."""
     urlpath = f"{ADAPTER_PATH}/charging-settings?{DEFAULT_QUERY_STRING}"
     return inject_data(
         mocked_responses,
         urlpath,
-        "vehicle_data/charging-settings.json",
+        f"vehicle_data/charging-settings.{type}.json",
     )
 
 
