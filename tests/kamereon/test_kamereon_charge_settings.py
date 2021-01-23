@@ -64,13 +64,3 @@ def test_validation_overlap(
     with pytest.raises(ModelValidationException) as excinfo:
         helpers.validate_charge_schedules(charge_settings.schedules)
     assert "overlaps with next day schedule" in str(excinfo.value)
-
-
-def test_validation_multiple_active(
-    charge_settings: models.KamereonVehicleChargingSettingsData,
-) -> None:
-    """Test validation of an overlap with the next day."""
-    charge_settings.schedules[1].activated = True
-    with pytest.raises(ModelValidationException) as excinfo:
-        helpers.validate_charge_schedules(charge_settings.schedules)
-    assert "multiple activated schedules" in str(excinfo.value)
