@@ -71,13 +71,13 @@ def get_total_minutes(start_time: Optional[str], duration: Optional[int] = None)
 
 def validate_charge_schedules(schedules: List[models.ChargeSchedule]) -> None:
     """Validate a list of ChargeSchedule."""
-    for schedule in schedules:
+    for schedule in schedules:  # pragma: no branch
         validate_charge_schedule(schedule)
 
 
 def validate_charge_schedule(schedule: models.ChargeSchedule) -> None:
     """Validate a ChargeSchedule."""
-    for day in DAYS_OF_WEEK:
+    for day in DAYS_OF_WEEK:  # pragma: no branch
         day_schedule: models.ChargeDaySchedule = getattr(schedule, day)
         if day_schedule:  # pragma: no branch
             try:
