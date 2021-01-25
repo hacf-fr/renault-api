@@ -374,15 +374,10 @@ class ChargeDaySchedule(BaseModel):
         }
 
     def get_end_time(self) -> Optional[str]:
-        """Create dict for json."""
+        """Get end time."""
         if self.startTime is None:  # pragma: no cover
             return None
-        start_hours = int(self.startTime[1:3])
-        start_minutes = int(self.startTime[4:6])
-        total_minutes = start_hours * 60 + start_minutes + (self.duration or 0)
-        end_hours, end_minutes = divmod(total_minutes, 60)
-        end_hours = end_hours % 24
-        return f"T{end_hours:02g}:{end_minutes:02g}Z"
+        return helpers.get_end_time(self.startTime, self.duration)
 
 
 @dataclass

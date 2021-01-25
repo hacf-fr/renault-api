@@ -77,7 +77,7 @@ async def show(
 def _format_charge_schedule(schedule: ChargeSchedule, key: str) -> List[str]:
     details: Optional[ChargeDaySchedule] = getattr(schedule, key)
     if not details:  # pragma: no cover
-        return [key, "-", "-", "-"]
+        return [key.capitalize(), "-", "-", "-"]
     return [
         key.capitalize(),
         helpers.get_display_value(details.startTime, "tztime"),
