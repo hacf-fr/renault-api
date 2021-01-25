@@ -374,7 +374,7 @@ class ChargeDaySchedule(BaseModel):
         }
 
     def get_end_time(self) -> Optional[str]:
-        """Compute end time."""
+        """Get end time."""
         if self.startTime is None:  # pragma: no cover
             return None
         return helpers.get_end_time(self.startTime, self.duration)
