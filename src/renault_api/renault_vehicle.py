@@ -108,6 +108,7 @@ class RenaultVehicle:
 
     async def get_battery_status(self) -> models.KamereonVehicleBatteryStatusData:
         """Get vehicle battery status."""
+        await self.warn_on_method("get_battery_status")
         response = await self.session.get_vehicle_data(
             account_id=self.account_id,
             vin=self.vin,
@@ -120,6 +121,7 @@ class RenaultVehicle:
 
     async def get_location(self) -> models.KamereonVehicleLocationData:
         """Get vehicle location."""
+        await self.warn_on_method("get_location")
         response = await self.session.get_vehicle_data(
             account_id=self.account_id,
             vin=self.vin,
@@ -132,6 +134,7 @@ class RenaultVehicle:
 
     async def get_hvac_status(self) -> models.KamereonVehicleHvacStatusData:
         """Get vehicle hvac status."""
+        await self.warn_on_method("get_hvac_status")
         response = await self.session.get_vehicle_data(
             account_id=self.account_id,
             vin=self.vin,
@@ -144,6 +147,7 @@ class RenaultVehicle:
 
     async def get_hvac_settings(self) -> models.KamereonVehicleHvacSettingsData:
         """Get vehicle hvac settings (schedule+mode)."""
+        await self.warn_on_method("get_hvac_settings")
         response = await self.session.get_vehicle_data(
             account_id=self.account_id,
             vin=self.vin,
@@ -156,6 +160,7 @@ class RenaultVehicle:
 
     async def get_charge_mode(self) -> models.KamereonVehicleChargeModeData:
         """Get vehicle charge mode."""
+        await self.warn_on_method("get_charge_mode")
         response = await self.session.get_vehicle_data(
             account_id=self.account_id,
             vin=self.vin,
@@ -168,6 +173,7 @@ class RenaultVehicle:
 
     async def get_cockpit(self) -> models.KamereonVehicleCockpitData:
         """Get vehicle cockpit."""
+        await self.warn_on_method("get_cockpit")
         response = await self.session.get_vehicle_data(
             account_id=self.account_id,
             vin=self.vin,
@@ -180,6 +186,7 @@ class RenaultVehicle:
 
     async def get_lock_status(self) -> models.KamereonVehicleLockStatusData:
         """Get vehicle lock status."""
+        await self.warn_on_method("get_lock_status")
         response = await self.session.get_vehicle_data(
             account_id=self.account_id,
             vin=self.vin,
@@ -192,6 +199,7 @@ class RenaultVehicle:
 
     async def get_charging_settings(self) -> models.KamereonVehicleChargingSettingsData:
         """Get vehicle charging settings."""
+        await self.warn_on_method("get_charging_settings")
         response = await self.session.get_vehicle_data(
             account_id=self.account_id,
             vin=self.vin,
@@ -206,6 +214,7 @@ class RenaultVehicle:
         self,
     ) -> models.KamereonVehicleNotificationSettingsData:
         """Get vehicle notification settings."""
+        await self.warn_on_method("get_notification_settings")
         response = await self.session.get_vehicle_data(
             account_id=self.account_id,
             vin=self.vin,
@@ -222,6 +231,7 @@ class RenaultVehicle:
         self, start: datetime, end: datetime, period: str
     ) -> models.KamereonVehicleChargeHistoryData:
         """Get vehicle charge history."""
+        await self.warn_on_method("get_charge_history")
         if not isinstance(start, datetime):  # pragma: no cover
             raise TypeError(
                 "`start` should be an instance of datetime.datetime, not {}".format(
@@ -257,6 +267,7 @@ class RenaultVehicle:
         self, start: datetime, end: datetime
     ) -> models.KamereonVehicleChargesData:
         """Get vehicle charges."""
+        await self.warn_on_method("get_charges")
         if not isinstance(start, datetime):  # pragma: no cover
             raise TypeError(
                 "`start` should be an instance of datetime.datetime, not {}".format(
@@ -289,6 +300,7 @@ class RenaultVehicle:
         self, start: datetime, end: datetime, period: str
     ) -> models.KamereonVehicleHvacHistoryData:
         """Get vehicle hvac history."""
+        await self.warn_on_method("get_hvac_history")
         if not isinstance(start, datetime):  # pragma: no cover
             raise TypeError(
                 "`start` should be an instance of datetime.datetime, not {}".format(
@@ -324,6 +336,7 @@ class RenaultVehicle:
         self, start: datetime, end: datetime
     ) -> models.KamereonVehicleHvacSessionsData:
         """Get vehicle hvac sessions."""
+        await self.warn_on_method("get_hvac_sessions")
         if not isinstance(start, datetime):  # pragma: no cover
             raise TypeError(
                 "`start` should be an instance of datetime.datetime, not {}".format(
@@ -356,6 +369,7 @@ class RenaultVehicle:
         self, temperature: float, when: Optional[datetime] = None
     ) -> models.KamereonVehicleHvacStartActionData:
         """Start vehicle ac."""
+        await self.warn_on_method("set_ac_start")
         attributes = {
             "action": "start",
             "targetTemperature": temperature,
@@ -402,6 +416,7 @@ class RenaultVehicle:
         self, schedules: List[models.HvacSchedule]
     ) -> models.KamereonVehicleHvacScheduleActionData:
         """Set vehicle charge schedules."""
+        await self.warn_on_method("set_hvac_schedules")
         for schedule in schedules:
             if not isinstance(schedule, models.HvacSchedule):  # pragma: no cover
                 raise TypeError(
@@ -428,6 +443,7 @@ class RenaultVehicle:
         self, schedules: List[models.ChargeSchedule]
     ) -> models.KamereonVehicleChargeScheduleActionData:
         """Set vehicle charge schedules."""
+        await self.warn_on_method("set_charge_schedules")
         for schedule in schedules:
             if not isinstance(schedule, models.ChargeSchedule):  # pragma: no cover
                 raise TypeError(
@@ -454,6 +470,7 @@ class RenaultVehicle:
         self, charge_mode: str
     ) -> models.KamereonVehicleChargeModeActionData:
         """Set vehicle charge mode."""
+        await self.warn_on_method("set_charge_mode")
         attributes = {"action": charge_mode}
 
         response = await self.session.set_vehicle_action(
@@ -469,6 +486,7 @@ class RenaultVehicle:
 
     async def set_charge_start(self) -> models.KamereonVehicleChargingStartActionData:
         """Start vehicle charge."""
+        await self.warn_on_method("set_charge_start")
         attributes = {"action": "start"}
 
         response = await self.session.set_vehicle_action(
