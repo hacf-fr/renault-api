@@ -384,6 +384,9 @@ class RenaultVehicle:
     async def set_ac_stop(self) -> models.KamereonVehicleHvacStartActionData:
         """Stop vehicle ac."""
         attributes = {"action": "cancel"}
+        details = await self.get_details()
+        if details.warns_on_method('set_ac_stop') is not None:
+            _LOGGER.warning(details.warns_on_method('set_ac_stop'))
 
         response = await self.session.set_vehicle_action(
             account_id=self.account_id,
