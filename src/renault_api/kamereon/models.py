@@ -51,7 +51,7 @@ VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
     },
     "X102VE": {  # ZOE phase 2
         "support-endpoint-hvac-status": False,
-        "warns-on-method-set_ac_stop": "Action `cancel` on endpoint `hvac-start` may not be supported on this model.",
+        "warns-on-method-set_ac_stop": "Action `cancel` on endpoint `hvac-start` may not be supported on this model.",  # noqa
     },
     "XJB1SU": {  # CAPTUR II
         "support-endpoint-hvac-status": False,
@@ -201,8 +201,8 @@ class KamereonVehicleDetails(BaseModel):
                 f"support-endpoint-{endpoint}", True
             )
         return True  # pragma: no cover
-    
-    def warns_on_method(self, method: str) -> str:
+
+    def warns_on_method(self, method: str) -> Optional[str]:
         """Return warning message if model trigger a warning on the method call."""
         # Default to None for unknown vehicles
         if self.model and self.model.code:
@@ -210,6 +210,7 @@ class KamereonVehicleDetails(BaseModel):
                 f"warns-on-method-{method}", None
             )
         return None  # pragma: no cover
+
 
 @dataclass
 class KamereonVehiclesLink(BaseModel):
