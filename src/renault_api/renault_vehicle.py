@@ -95,7 +95,7 @@ class RenaultVehicle:
 
     async def get_contracts(self) -> List[models.KameronVehicleContract]:
         """Get vehicle contracts."""
-        await self.warn_on_method('set_ac_stop')
+        await self.warn_on_method("get_contracts")
         if self._contracts:
             return self._contracts
 
@@ -384,7 +384,7 @@ class RenaultVehicle:
 
     async def set_ac_stop(self) -> models.KamereonVehicleHvacStartActionData:
         """Stop vehicle ac."""
-        await self.warn_on_method('set_ac_stop')
+        await self.warn_on_method("set_ac_stop")
         attributes = {"action": "cancel"}
         
         response = await self.session.set_vehicle_action(
