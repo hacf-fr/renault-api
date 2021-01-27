@@ -386,7 +386,7 @@ class RenaultVehicle:
         """Stop vehicle ac."""
         await self.warn_on_method("set_ac_stop")
         attributes = {"action": "cancel"}
-        
+
         response = await self.session.set_vehicle_action(
             account_id=self.account_id,
             vin=self.vin,
