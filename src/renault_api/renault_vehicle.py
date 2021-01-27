@@ -95,6 +95,7 @@ class RenaultVehicle:
 
     async def get_contracts(self) -> List[models.KameronVehicleContract]:
         """Get vehicle contracts."""
+        await self.warn_on_method('set_ac_stop')
         if self._contracts:
             return self._contracts
 
@@ -383,11 +384,9 @@ class RenaultVehicle:
 
     async def set_ac_stop(self) -> models.KamereonVehicleHvacStartActionData:
         """Stop vehicle ac."""
+        await self.warn_on_method('set_ac_stop')
         attributes = {"action": "cancel"}
-        details = await self.get_details()
-        if details.warns_on_method('set_ac_stop') is not None:
-            _LOGGER.warning(details.warns_on_method('set_ac_stop'))
-
+        
         response = await self.session.set_vehicle_action(
             account_id=self.account_id,
             vin=self.vin,
@@ -498,3 +497,10 @@ class RenaultVehicle:
 
         contracts = await self.get_contracts()
         return has_required_contracts(contracts, endpoint)
+
+    async def warn_on_method(self, method: str) -> None:
+        """Log a warning if the method requires it."""
+        details = await self.get_details()
+        warning = details.warns_on_method(method)
+        if warning:
+            _LOGGER.warning(warning)
