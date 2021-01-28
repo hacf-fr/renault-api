@@ -68,9 +68,7 @@ async def test_get_contracts(
 ) -> None:
     """Test get_contracts."""
     fixtures.inject_get_vehicle_contracts(mocked_responses, "fr_FR.1.json")
-    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
 
-    assert await vehicle.get_details()
     assert await vehicle.get_contracts()
 
     # Ensure second call still works (ie. use cached value)
@@ -83,7 +81,6 @@ async def test_has_contract_for_endpoint_1(
 ) -> None:
     """Test has_contract_for_endpoint."""
     fixtures.inject_get_vehicle_contracts(mocked_responses, "fr_FR.2.json")
-    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
 
     assert await vehicle.has_contract_for_endpoint("battery-status")
     assert await vehicle.has_contract_for_endpoint("hvac-status")
@@ -96,7 +93,6 @@ async def test_has_contract_for_endpoint_2(
 ) -> None:
     """Test has_contract_for_endpoint."""
     fixtures.inject_get_vehicle_contracts(mocked_responses, "fr_FR.1.json")
-    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     assert await vehicle.has_contract_for_endpoint("battery-status")
     assert not await vehicle.has_contract_for_endpoint("hvac-status")
     assert not await vehicle.has_contract_for_endpoint("charge-mode")
