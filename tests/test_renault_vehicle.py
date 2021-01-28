@@ -288,7 +288,7 @@ async def test_set_ac_stop(
 ) -> None:
     """Test set_ac_stop."""
     url = fixtures.inject_set_hvac_start(mocked_responses, "cancel")
-    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     assert await vehicle.set_ac_stop()
 
     expected_json = {"data": {"type": "HvacStart", "attributes": {"action": "cancel"}}}
