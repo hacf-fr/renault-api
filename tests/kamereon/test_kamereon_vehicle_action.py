@@ -111,6 +111,7 @@ def test_charge_schedule_for_json() -> None:
         ]
     }
 
+    # Test update specific day
     vehicle_data.update(
         {
             "id": 1,
@@ -119,6 +120,16 @@ def test_charge_schedule_for_json() -> None:
     )
     assert vehicle_data.schedules[0].tuesday.startTime == "T12:00Z"
     assert vehicle_data.schedules[0].tuesday.duration == 15
+
+    # Test update activated state
+    assert vehicle_data.schedules[1].activated
+    vehicle_data.update(
+        {
+            "id": 2,
+            "activated": False,
+        }
+    )
+    assert not vehicle_data.schedules[1].activated
 
     # Check that for_json returns the updated data
     for_json = {
@@ -139,7 +150,7 @@ def test_charge_schedule_for_json() -> None:
             },
             {
                 "id": 2,
-                "activated": True,
+                "activated": False,
                 "monday": {"startTime": "T23:30Z", "duration": 15},
                 "tuesday": {"startTime": "T23:30Z", "duration": 15},
                 "wednesday": {"startTime": "T23:30Z", "duration": 15},
