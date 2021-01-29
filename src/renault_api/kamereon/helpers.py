@@ -20,8 +20,10 @@ DAYS_OF_WEEK = [
 
 def update_schedule(schedule: models.ChargeSchedule, settings: Dict[str, Any]) -> None:
     """Update schedule."""
+    if "activated" in settings:
+        schedule.activated = settings["activated"]
     for day in DAYS_OF_WEEK:
-        if day in settings.keys():
+        if day in settings:
             day_settings = settings[day]
 
             if day_settings:  # pragma: no branch
