@@ -49,6 +49,7 @@ def test_hvac_cancel(mocked_responses: aioresponses, cli_runner: CliRunner) -> N
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     url = fixtures.inject_set_hvac_start(mocked_responses, result="cancel")
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
 
     result = cli_runner.invoke(__main__.main, "hvac cancel")
     assert result.exit_code == 0, result.exception
