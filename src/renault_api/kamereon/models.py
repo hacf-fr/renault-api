@@ -127,7 +127,7 @@ class KamereonPersonAccount(BaseModel):
 class KamereonPersonResponse(KamereonResponse):
     """Kamereon response to GET on /persons/{gigya_person_id}."""
 
-    accounts: List[KamereonPersonAccount]
+    accounts: Optional[List[KamereonPersonAccount]]
 
 
 @dataclass
