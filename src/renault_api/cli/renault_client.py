@@ -121,6 +121,8 @@ async def display_accounts(
     """Display accounts."""
     client = await get_logged_in_client(websession=websession, ctx_data=ctx_data)
     response = await client.get_person()
+    if response.accounts is None:  # pragma: no cover
+        raise ValueError("response.accounts is None")
     accounts = {account.accountType: account.accountId for account in response.accounts}
     click.echo(tabulate(accounts.items(), headers=["Type", "ID"]))
 
