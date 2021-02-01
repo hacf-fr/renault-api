@@ -15,7 +15,7 @@ def test_vehicle_contract_response(filename: str) -> None:
     """Test vehicle contract response."""
     response: models.KameronVehicleContractsReponse = (
         fixtures.get_file_content_as_wrapped_schema(
-            filename, schemas.KameronVehicleContractsReponseSchema, "contractList"
+            filename, schemas.KamereonVehicleContractsResponseSchema, "contractList"
         )
     )
     response.raise_for_error_code()
@@ -32,7 +32,7 @@ def test_has_required_contract_1() -> None:
     response: models.KameronVehicleContractsReponse = (
         fixtures.get_file_content_as_wrapped_schema(
             f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_contract/fr_FR.1.json",
-            schemas.KameronVehicleContractsReponseSchema,
+            schemas.KamereonVehicleContractsResponseSchema,
             "contractList",
         )
     )
@@ -52,7 +52,7 @@ def test_has_required_contract_2() -> None:
     response: models.KameronVehicleContractsReponse = (
         fixtures.get_file_content_as_wrapped_schema(
             f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_contract/fr_FR.2.json",
-            schemas.KameronVehicleContractsReponseSchema,
+            schemas.KamereonVehicleContractsResponseSchema,
             "contractList",
         )
     )

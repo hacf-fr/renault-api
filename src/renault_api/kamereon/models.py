@@ -127,7 +127,7 @@ class KamereonPersonAccount(BaseModel):
 class KamereonPersonResponse(KamereonResponse):
     """Kamereon response to GET on /persons/{gigya_person_id}."""
 
-    accounts: List[KamereonPersonAccount]
+    accounts: Optional[List[KamereonPersonAccount]]
 
 
 @dataclass
@@ -226,7 +226,7 @@ class KamereonVehiclesResponse(KamereonResponse):
 
     accountId: Optional[str]  # noqa: N815
     country: Optional[str]
-    vehicleLinks: List[KamereonVehiclesLink]  # noqa: N815
+    vehicleLinks: Optional[List[KamereonVehiclesLink]]  # noqa: N815
 
 
 @dataclass
@@ -240,8 +240,8 @@ class KamereonVehicleDataAttributes(BaseModel):
 
 
 @dataclass
-class KameronVehicleContract(BaseModel):
-    """Kameron vehicle contract."""
+class KamereonVehicleContract(BaseModel):
+    """Kamereon vehicle contract."""
 
     type: Optional[str]
     contractId: Optional[str]  # noqa: N815
@@ -256,10 +256,10 @@ class KameronVehicleContract(BaseModel):
 
 
 @dataclass
-class KameronVehicleContractsReponse(KamereonResponse):
+class KamereonVehicleContractsResponse(KamereonResponse):
     """Kamereon response to GET on /accounts/{accountId}/vehicles/{vin}/contracts."""
 
-    contractList: List[KameronVehicleContract]  # noqa: N815
+    contractList: Optional[List[KamereonVehicleContract]]  # noqa: N815
 
 
 @dataclass

@@ -56,6 +56,8 @@ class RenaultClient:
     async def get_api_accounts(self) -> List[RenaultAccount]:
         """Get account proxies."""
         response = await self.get_person()
+        if response.accounts is None:  # pragma: no cover
+            raise ValueError("response.accounts is None")
         result: List[RenaultAccount] = []
         for account in response.accounts:
             if account.accountId is None:  # pragma: no cover

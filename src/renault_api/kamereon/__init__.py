@@ -75,7 +75,7 @@ def get_required_contracts(endpoint: str) -> str:
 
 
 def has_required_contracts(
-    contracts: List[models.KameronVehicleContract], endpoint: str
+    contracts: List[models.KamereonVehicleContract], endpoint: str
 ) -> bool:
     """Check if vehicle has contract for endpoint."""
     required_contracts = get_required_contracts(endpoint)
@@ -181,7 +181,7 @@ async def get_vehicle_contracts(
     locale: str,
     account_id: str,
     vin: str,
-) -> models.KameronVehicleContractsReponse:
+) -> models.KamereonVehicleContractsResponse:
     """GET to /accounts/{accountId}/vehicles/{vin}/contracts."""
     url = get_contracts_url(root_url, account_id, vin)
     params = {
@@ -194,7 +194,7 @@ async def get_vehicle_contracts(
     }
 
     return cast(
-        models.KameronVehicleContractsReponse,
+        models.KamereonVehicleContractsResponse,
         await request(
             websession,
             "GET",
@@ -202,7 +202,7 @@ async def get_vehicle_contracts(
             api_key,
             gigya_jwt,
             params=params,
-            schema=schemas.KameronVehicleContractsReponseSchema,
+            schema=schemas.KamereonVehicleContractsResponseSchema,
             wrap_array_in="contractList",
         ),
     )

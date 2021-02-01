@@ -41,6 +41,7 @@ async def test_get_person(
     """Test get_person."""
     fixtures.inject_get_person(mocked_responses)
     person = await client.get_person()
+    assert person.accounts is not None
     assert len(person.accounts) == 2
 
 
