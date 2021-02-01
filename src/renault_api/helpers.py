@@ -50,7 +50,7 @@ async def get_api_keys(
             raise RenaultException("aiohttp_session is not set.")
 
         url = f"{LOCALE_BASE_URL}/configuration/android/config_{locale}.json"
-        async with websession.get(url) as response:
+        async with websession.get(url) as response:  # pragma: no cover
             try:
                 response.raise_for_status()
             except aiohttp.ClientResponseError as exc:
