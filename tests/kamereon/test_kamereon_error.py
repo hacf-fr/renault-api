@@ -1,10 +1,20 @@
 """Tests for Kamereon models."""
 import pytest
+from marshmallow.schema import Schema
 from tests import fixtures
 
 from renault_api.kamereon import exceptions
 from renault_api.kamereon import models
 from renault_api.kamereon import schemas
+
+RESPONSE_SCHEMAS = [
+    schemas.KamereonResponseSchema,
+    schemas.KamereonPersonResponseSchema,
+    schemas.KamereonVehiclesResponseSchema,
+    schemas.KamereonVehicleContractsResponseSchema,
+    schemas.KamereonVehicleDetailsResponseSchema,
+    schemas.KamereonVehicleDataResponseSchema,
+]
 
 
 @pytest.mark.parametrize(
@@ -95,6 +105,19 @@ def test_vehicle_error_access_denied() -> None:
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
         f"{fixtures.KAMEREON_FIXTURE_PATH}/error/access_denied.json",
         schemas.KamereonVehicleDataResponseSchema,
+    )
+    with pytest.raises(exceptions.AccessDeniedException) as excinfo:
+        response.raise_for_error_code()
+    assert excinfo.value.error_code == "err.func.403"
+    assert excinfo.value.error_details == "Access is denied for this resource"
+
+
+@pytest.mark.parametrize("target_schema", RESPONSE_SCHEMAS)
+def test_error_on_schema(target_schema: Schema) -> None:
+    """Test vehicle access_denied response."""
+    response: models.KamereonResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/error/access_denied.json",
+        target_schema,
     )
     with pytest.raises(exceptions.AccessDeniedException) as excinfo:
         response.raise_for_error_code()
