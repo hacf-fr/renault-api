@@ -66,6 +66,8 @@ class RenaultAccount:
     async def get_api_vehicles(self) -> List[RenaultVehicle]:
         """Get vehicle proxies."""
         response = await self.get_vehicles()
+        if response.vehicleLinks is None:  # pragma: no cover
+            raise ValueError("response.accounts is None")
         result: List[RenaultVehicle] = []
         for vehicle in response.vehicleLinks:
             if vehicle.vin is None:  # pragma: no cover

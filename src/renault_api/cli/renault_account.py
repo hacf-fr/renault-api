@@ -78,7 +78,12 @@ async def _get_account_prompt(
         if account.accountType == "MYRENAULT":
             default = str(i + 1)
         account_table.append(
-            [i + 1, account.accountId, account.accountType, len(vehicles.vehicleLinks)]
+            [
+                i + 1,
+                account.accountId,
+                account.accountType,
+                0 if vehicles.vehicleLinks is None else len(vehicles.vehicleLinks),
+            ]
         )
 
     menu = tabulate(account_table, headers=["", "ID", "Type", "Vehicles"])
@@ -104,6 +109,8 @@ async def display_vehicles(
     account = await get_account(websession, ctx_data)
 
     response = await account.get_vehicles()
+    if response.vehicleLinks is None:  # pragma: no cover
+        raise ValueError("response.vehicleLinks is None")
     vehicles = [
         [
             vehicle.raw_data["vehicleDetails"]["registrationNumber"],

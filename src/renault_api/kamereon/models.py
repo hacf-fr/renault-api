@@ -226,7 +226,7 @@ class KamereonVehiclesResponse(KamereonResponse):
 
     accountId: Optional[str]  # noqa: N815
     country: Optional[str]
-    vehicleLinks: List[KamereonVehiclesLink]  # noqa: N815
+    vehicleLinks: Optional[List[KamereonVehiclesLink]]  # noqa: N815
 
 
 @dataclass
