@@ -46,7 +46,7 @@ class RenaultVehicle:
         self._account_id = account_id
         self._vin = vin
         self._vehicle_details = vehicle_details
-        self._contracts: Optional[List[models.KameronVehicleContract]] = None
+        self._contracts: Optional[List[models.KamereonVehicleContract]] = None
 
         if session:
             self._session = session
@@ -93,7 +93,7 @@ class RenaultVehicle:
         )
         return self._vehicle_details
 
-    async def get_contracts(self) -> List[models.KameronVehicleContract]:
+    async def get_contracts(self) -> List[models.KamereonVehicleContract]:
         """Get vehicle contracts."""
         # await self.warn_on_method("get_contracts")
         if self._contracts:
@@ -103,6 +103,8 @@ class RenaultVehicle:
             account_id=self.account_id,
             vin=self.vin,
         )
+        if response.contractList is None:  # pragma: no cover
+            raise ValueError("response.contractList is None")
         self._contracts = response.contractList
         return self._contracts
 
