@@ -580,7 +580,7 @@ dev = ["pre-commit", "tox"]
 
 [[package]]
 name = "pre-commit"
-version = "2.9.3"
+version = "2.10.1"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
 category = "dev"
 optional = false
@@ -1175,7 +1175,7 @@ cli = ["click", "tabulate", "dateparser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.1"
-content-hash = "4a2bd1bf574d8eb8d35cf8ebf6ddd57dfb24190966411548aff23e82ab3de4df"
+content-hash = "09c0d00f0a60eebf8e6d80adc53e62dcbabd84552d03e029c859b8f659c6c9d4"
 
 [metadata.files]
 aiohttp = [
@@ -1562,8 +1562,8 @@ pluggy = [
     {file = "pluggy-0.13.1.tar.gz", hash = "sha256:15b2acde666561e1298d71b523007ed7364de07029219b604cf808bfa1c765b0"},
 ]
 pre-commit = [
-    {file = "pre_commit-2.9.3-py2.py3-none-any.whl", hash = "sha256:6c86d977d00ddc8a60d68eec19f51ef212d9462937acf3ea37c7adec32284ac0"},
-    {file = "pre_commit-2.9.3.tar.gz", hash = "sha256:ee784c11953e6d8badb97d19bc46b997a3a9eded849881ec587accd8608d74a4"},
+    {file = "pre_commit-2.10.1-py2.py3-none-any.whl", hash = "sha256:16212d1fde2bed88159287da88ff03796863854b04dc9f838a55979325a3d20e"},
+    {file = "pre_commit-2.10.1.tar.gz", hash = "sha256:399baf78f13f4de82a29b649afd74bef2c4e28eb4f021661fc7f29246e8c7a3a"},
 ]
 pre-commit-hooks = [
     {file = "pre_commit_hooks-3.4.0-py2.py3-none-any.whl", hash = "sha256:b1d329fc712f53f56af7c4a0ac08c414a7fcfd634dbd829c3a03f39cfb9c3574"},
