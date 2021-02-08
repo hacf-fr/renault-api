@@ -6,7 +6,7 @@ from typing import Any
 
 import pytest
 from aioresponses import aioresponses
-from aioresponses.core import RequestCall  # type:ignore
+from aioresponses.core import RequestCall
 from click.testing import CliRunner
 from tests import fixtures
 from tests.const import TEST_ACCOUNT_ID

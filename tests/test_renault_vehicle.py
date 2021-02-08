@@ -6,7 +6,7 @@ from typing import List
 import aiohttp
 import pytest
 from aioresponses import aioresponses
-from aioresponses.core import RequestCall  # type:ignore
+from aioresponses.core import RequestCall
 from tests import fixtures
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
