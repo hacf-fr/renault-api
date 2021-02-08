@@ -12,6 +12,7 @@ def test_person_response() -> None:
         schemas.KamereonPersonResponseSchema,
     )
     response.raise_for_error_code()
+    assert response.accounts is not None
     assert response.accounts[0].accountId == "account-id-1"
     assert response.accounts[0].accountType == "MYRENAULT"
     assert response.accounts[0].accountStatus == "ACTIVE"

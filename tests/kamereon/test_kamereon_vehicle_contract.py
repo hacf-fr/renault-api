@@ -13,13 +13,13 @@ from renault_api.kamereon import schemas
 )
 def test_vehicle_contract_response(filename: str) -> None:
     """Test vehicle contract response."""
-    response: models.KameronVehicleContractsReponse = (
+    response: models.KamereonVehicleContractsResponse = (
         fixtures.get_file_content_as_wrapped_schema(
             filename, schemas.KamereonVehicleContractsResponseSchema, "contractList"
         )
     )
     response.raise_for_error_code()
-    assert response.contractList
+    assert response.contractList is not None
     for contract in response.contractList:
         if contract.contractId:
             assert contract.contractId.startswith(
@@ -29,7 +29,7 @@ def test_vehicle_contract_response(filename: str) -> None:
 
 def test_has_required_contract_1() -> None:
     """Test has_required_contract."""
-    response: models.KameronVehicleContractsReponse = (
+    response: models.KamereonVehicleContractsResponse = (
         fixtures.get_file_content_as_wrapped_schema(
             f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_contract/fr_FR.1.json",
             schemas.KamereonVehicleContractsResponseSchema,
@@ -37,7 +37,7 @@ def test_has_required_contract_1() -> None:
         )
     )
     response.raise_for_error_code()
-    assert response.contractList
+    assert response.contractList is not None
 
     assert has_required_contracts(response.contractList, "battery-status")
     assert not has_required_contracts(response.contractList, "charge-mode")
@@ -49,7 +49,7 @@ def test_has_required_contract_1() -> None:
 
 def test_has_required_contract_2() -> None:
     """Test has_required_contract."""
-    response: models.KameronVehicleContractsReponse = (
+    response: models.KamereonVehicleContractsResponse = (
         fixtures.get_file_content_as_wrapped_schema(
             f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_contract/fr_FR.2.json",
             schemas.KamereonVehicleContractsResponseSchema,
@@ -57,7 +57,7 @@ def test_has_required_contract_2() -> None:
         )
     )
     response.raise_for_error_code()
-    assert response.contractList
+    assert response.contractList is not None
 
     assert has_required_contracts(response.contractList, "battery-status")
     assert has_required_contracts(response.contractList, "charge-mode")

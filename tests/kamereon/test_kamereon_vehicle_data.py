@@ -21,6 +21,8 @@ def test_vehicle_data_response(filename: str) -> None:
     )
     response.raise_for_error_code()
     # Ensure the VIN is hidden
+    assert response.data is not None
+    assert response.data.id is not None
     assert response.data.id.startswith("VF1AAAA")
 
 
@@ -31,6 +33,7 @@ def test_battery_status_1() -> None:
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
+    assert response.data is not None
     assert response.data.raw_data["attributes"] == {
         "timestamp": "2020-11-17T09:06:48+01:00",
         "batteryLevel": 50,
@@ -67,6 +70,7 @@ def test_battery_status_2() -> None:
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
+    assert response.data is not None
     assert response.data.raw_data["attributes"] == {
         "timestamp": "2020-01-12T21:40:16Z",
         "batteryLevel": 60,
@@ -106,6 +110,7 @@ def test_cockpit_zoe() -> None:
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
+    assert response.data is not None
     assert response.data.raw_data["attributes"] == {"totalMileage": 49114.27}
 
     vehicle_data = cast(
@@ -125,6 +130,7 @@ def test_cockpit_captur_ii() -> None:
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
+    assert response.data is not None
     assert response.data.raw_data["attributes"] == {
         "fuelAutonomy": 35.0,
         "fuelQuantity": 3.0,
@@ -148,6 +154,7 @@ def test_charging_settings_single() -> None:
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
+    assert response.data is not None
     assert response.data.raw_data["attributes"] == {
         "mode": "scheduled",
         "schedules": [
@@ -171,23 +178,31 @@ def test_charging_settings_single() -> None:
     )
 
     assert vehicle_data.mode == "scheduled"
+    assert vehicle_data.schedules is not None
     assert len(vehicle_data.schedules) == 1
 
     schedule_data = vehicle_data.schedules[0]
     assert schedule_data.id == 1
     assert schedule_data.activated is True
+    assert schedule_data.monday is not None
     assert schedule_data.monday.startTime == "T12:00Z"
     assert schedule_data.monday.duration == 15
+    assert schedule_data.tuesday is not None
     assert schedule_data.tuesday.startTime == "T04:30Z"
     assert schedule_data.tuesday.duration == 420
+    assert schedule_data.wednesday is not None
     assert schedule_data.wednesday.startTime == "T22:30Z"
     assert schedule_data.wednesday.duration == 420
+    assert schedule_data.thursday is not None
     assert schedule_data.thursday.startTime == "T22:00Z"
     assert schedule_data.thursday.duration == 420
+    assert schedule_data.friday is not None
     assert schedule_data.friday.startTime == "T12:15Z"
     assert schedule_data.friday.duration == 15
+    assert schedule_data.saturday is not None
     assert schedule_data.saturday.startTime == "T12:30Z"
     assert schedule_data.saturday.duration == 30
+    assert schedule_data.sunday is not None
     assert schedule_data.sunday.startTime == "T12:45Z"
     assert schedule_data.sunday.duration == 45
 
@@ -199,6 +214,7 @@ def test_charging_settings_multi() -> None:
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
+    assert response.data is not None
     assert response.data.raw_data["attributes"] == {
         "mode": "scheduled",
         "schedules": [
@@ -236,23 +252,31 @@ def test_charging_settings_multi() -> None:
     )
 
     assert vehicle_data.mode == "scheduled"
+    assert vehicle_data.schedules is not None
     assert len(vehicle_data.schedules) == 5
 
     schedule_data = vehicle_data.schedules[0]
     assert schedule_data.id == 1
     assert schedule_data.activated is True
+    assert schedule_data.monday is not None
     assert schedule_data.monday.startTime == "T00:00Z"
     assert schedule_data.monday.duration == 450
+    assert schedule_data.tuesday is not None
     assert schedule_data.tuesday.startTime == "T00:00Z"
     assert schedule_data.tuesday.duration == 450
+    assert schedule_data.wednesday is not None
     assert schedule_data.wednesday.startTime == "T00:00Z"
     assert schedule_data.wednesday.duration == 450
+    assert schedule_data.thursday is not None
     assert schedule_data.thursday.startTime == "T00:00Z"
     assert schedule_data.thursday.duration == 450
+    assert schedule_data.friday is not None
     assert schedule_data.friday.startTime == "T00:00Z"
     assert schedule_data.friday.duration == 450
+    assert schedule_data.saturday is not None
     assert schedule_data.saturday.startTime == "T00:00Z"
     assert schedule_data.saturday.duration == 450
+    assert schedule_data.sunday is not None
     assert schedule_data.sunday.startTime == "T00:00Z"
     assert schedule_data.sunday.duration == 450
 
@@ -264,6 +288,7 @@ def test_location() -> None:
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
+    assert response.data is not None
     assert response.data.raw_data["attributes"] == {
         "gpsLatitude": 48.1234567,
         "gpsLongitude": 11.1234567,
@@ -287,6 +312,7 @@ def test_charge_mode() -> None:
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
+    assert response.data is not None
     assert response.data.raw_data["attributes"] == {"chargeMode": "always"}
 
     vehicle_data = cast(
@@ -327,8 +353,11 @@ def test_hvac_settings_schedule() -> None:
     )
 
     assert vehicle_data.mode == "scheduled"
+    assert vehicle_data.schedules is not None
     assert vehicle_data.schedules[1].id == 2
+    assert vehicle_data.schedules[1].wednesday is not None
     assert vehicle_data.schedules[1].wednesday.readyAtTime == "T15:15Z"
+    assert vehicle_data.schedules[1].friday is not None
     assert vehicle_data.schedules[1].friday.readyAtTime == "T15:15Z"
     assert vehicle_data.schedules[1].monday is None
 

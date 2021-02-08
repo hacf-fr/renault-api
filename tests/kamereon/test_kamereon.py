@@ -30,6 +30,7 @@ async def test_get_person(
         country=TEST_COUNTRY,
         person_id=TEST_PERSON_ID,
     )
+    assert person.accounts is not None
     assert len(person.accounts) == 2
 
 

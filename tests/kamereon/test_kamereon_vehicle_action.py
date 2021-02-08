@@ -19,6 +19,7 @@ def test_vehicle_action_response(filename: str) -> None:
     )
     response.raise_for_error_code()
     # Ensure the guid is hidden
+    assert response.data is not None
     assert response.data.id == "guid"
 
 
@@ -29,6 +30,7 @@ def test_vehicle_action_response_attributes() -> None:
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
+    assert response.data is not None
     assert response.data.raw_data["attributes"] == {
         "action": "start",
         "targetTemperature": 21.0,
@@ -48,6 +50,7 @@ def test_charge_schedule_for_json() -> None:
     )
 
     # Check that for_json returns the same as the original data
+    assert vehicle_data.schedules is not None
     for_json = {
         "schedules": list(schedule.for_json() for schedule in vehicle_data.schedules)
     }
@@ -118,6 +121,7 @@ def test_charge_schedule_for_json() -> None:
             "tuesday": {"startTime": "T12:00Z", "duration": 15},
         }
     )
+    assert vehicle_data.schedules[0].tuesday is not None
     assert vehicle_data.schedules[0].tuesday.startTime == "T12:00Z"
     assert vehicle_data.schedules[0].tuesday.duration == 15
 
@@ -209,6 +213,7 @@ def test_hvac_schedule_for_json() -> None:
     )
 
     # verify for_json returns proper original data
+    assert vehicle_data.schedules is not None
     for_json = {
         "schedules": list(schedule.for_json() for schedule in vehicle_data.schedules)
     }
@@ -257,7 +262,7 @@ def test_hvac_schedule_for_json() -> None:
     # perform an update
     vehicle_data.schedules[0].activated = True
     vehicle_data.schedules[0].sunday = models.HvacDaySchedule(
-        raw_data=None, readyAtTime="T20:30Z"
+        raw_data={}, readyAtTime="T20:30Z"
     )
 
     for_json = {

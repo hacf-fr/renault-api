@@ -76,7 +76,9 @@ def test_vehicles_response(filename: str) -> None:
     )
     response.raise_for_error_code()
     # Ensure the account id is hidden
+    assert response.accountId is not None
     assert response.accountId.startswith("account-id")
+    assert response.vehicleLinks is not None
     for vehicle_link in response.vehicleLinks:
         # Ensure the VIN and RegistrationNumber are hidden
         assert vehicle_link.vin
