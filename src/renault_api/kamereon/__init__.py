@@ -20,13 +20,13 @@ _LOGGER = logging.getLogger(__name__)
 DATA_ENDPOINTS: Dict[str, Any] = {
     "battery-status": {"version": 2},
     "charge-history": {"version": 1},
-    "charge-mode": {"version": 1, "requires-contracts": "ZEINTER"},
+    "charge-mode": {"version": 1},
     "charges": {"version": 1},
-    "charging-settings": {"version": 1, "requires-contracts": "ZEINTER"},
+    "charging-settings": {"version": 1},
     "cockpit": {"version": 2},
-    "hvac-history": {"version": 1, "requires-contracts": "ZEINTER"},
-    "hvac-sessions": {"version": 1, "requires-contracts": "ZEINTER"},
-    "hvac-status": {"version": 1, "requires-contracts": "ZEINTER"},
+    "hvac-history": {"version": 1},
+    "hvac-sessions": {"version": 1},
+    "hvac-status": {"version": 1},
     "hvac-settings": {"version": 1},
     "location": {"version": 1},
     "lock-status": {"version": 1},
@@ -70,6 +70,8 @@ def get_contracts_url(root_url: str, account_id: str, vin: str) -> str:
 
 def get_required_contracts(endpoint: str) -> str:
     """Get the required contracts for the specified endpoint."""
+    # Contract codes are country-specific and can't be used to guess requirements.
+    # Implementation was therefore removed in 0.1.3.
     endpoints = ACTION_ENDPOINTS if endpoint.startswith("action") else DATA_ENDPOINTS
     return str(endpoints.get(endpoint, {}).get("requires-contracts", ""))
 
@@ -79,17 +81,17 @@ def has_required_contracts(
 ) -> bool:
     """Check if vehicle has contract for endpoint."""
     required_contracts = get_required_contracts(endpoint)
-    if not required_contracts:
+    if not required_contracts:  # pragma: no branch
         return True
 
-    for required_contract in required_contracts.split(","):
+    for required_contract in required_contracts.split(","):  # pragma: no cover
         if required_contract and not any(
             contract.code == required_contract and contract.status == "ACTIVE"
             for contract in contracts
         ):
             return False
 
-    return True
+    return True  # pragma: no cover
 
 
 async def request(
