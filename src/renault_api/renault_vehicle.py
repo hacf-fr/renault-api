@@ -512,11 +512,11 @@ class RenaultVehicle:
     async def has_contract_for_endpoint(self, endpoint: str) -> bool:
         """Check if vehicle has contract for endpoint."""
         required_contracts = get_required_contracts(endpoint)
-        if not required_contracts:
+        if not required_contracts:  # pragma: no branch
             return True
 
-        contracts = await self.get_contracts()
-        return has_required_contracts(contracts, endpoint)
+        contracts = await self.get_contracts()  # pragma: no cover
+        return has_required_contracts(contracts, endpoint)  # pragma: no cover
 
     async def warn_on_method(self, method: str) -> None:
         """Log a warning if the method requires it."""
