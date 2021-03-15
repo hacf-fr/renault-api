@@ -19,7 +19,7 @@ speedups = ["aiodns", "brotlipy", "cchardet"]
 
 [[package]]
 name = "aioresponses"
-version = "0.7.1"
+version = "0.7.2"
 description = "Mock out requests made by ClientSession from aiohttp package"
 category = "dev"
 optional = false
@@ -1175,7 +1175,7 @@ cli = ["click", "tabulate", "dateparser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.1"
-content-hash = "adc95596467aa88a98f8742a4cf896bb77e8973feb0721d4c255f96855ac6f1b"
+content-hash = "dfc059c0c92e1b55db38d0d2f69d53afe8753169fdc7f9265db5aa5295c7a5b5"
 
 [metadata.files]
 aiohttp = [
@@ -1218,8 +1218,8 @@ aiohttp = [
     {file = "aiohttp-3.7.3.tar.gz", hash = "sha256:9c1a81af067e72261c9cbe33ea792893e83bc6aa987bfbd6fdc1e5e7b22777c4"},
 ]
 aioresponses = [
-    {file = "aioresponses-0.7.1-py2.py3-none-any.whl", hash = "sha256:88eeb32256ef0af57450647277d3118ce8005682f06f27b23c5e2f8fcc0384b9"},
-    {file = "aioresponses-0.7.1.tar.gz", hash = "sha256:f65bba2be1e9a4997ee166bc0161a50be0fef7350ad09e6afdb2adccf74dfefe"},
+    {file = "aioresponses-0.7.2-py2.py3-none-any.whl", hash = "sha256:2f8ff624543066eb465b0238de68d29231e8488f41dc4b5a9dae190982cdae50"},
+    {file = "aioresponses-0.7.2.tar.gz", hash = "sha256:82e495d118b74896aa5b4d47e17effb5e2cc783e510ae395ceade5e87cabe89a"},
 ]
 alabaster = [
     {file = "alabaster-0.7.12-py2.py3-none-any.whl", hash = "sha256:446438bdcca0e05bd45ea2de1668c1d9b032e1a9154c2c259092d77031ddd359"},
