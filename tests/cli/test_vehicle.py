@@ -39,6 +39,20 @@ EXPECTED_STATUS = {
         "GPS last updated  2020-02-18 17:58:38\n"
         "----------------  -------------------\n"
     ),
+    "captur_ii.2.json": (
+        "----------------  -------------------------\n"
+        "Battery level     50 %\n"
+        "Last updated      2020-11-17 09:06:48\n"
+        "Range estimate    128 km\n"
+        "Plug state        PlugState.UNPLUGGED\n"
+        "Charging state    ChargeState.NOT_IN_CHARGE\n"
+        "Charge mode       always\n"
+        "Total mileage     49114.27 km\n"
+        "GPS Latitude      48.1234567\n"
+        "GPS Longitude     11.1234567\n"
+        "GPS last updated  2020-02-18 17:58:38\n"
+        "----------------  -------------------------\n"
+    ),
     "twingo_ze.1.json": (
         "----------------  -------------------------\n"
         "Battery level     50 %\n"
