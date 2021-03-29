@@ -94,15 +94,18 @@ def test_vehicles_response(filename: str) -> None:
         ), "Ensure registrationNumber is obfuscated."
         assert vehicle_details.radioCode == "1234", "Ensure radioCode is obfuscated."
 
-        generated_specs = {
-            "get_brand_label": vehicle_details.get_brand_label(),
-            "get_energy_code": vehicle_details.get_energy_code(),
-            "get_model_code": vehicle_details.get_model_code(),
-            "get_model_label": vehicle_details.get_model_label(),
-            "reports_charging_power_in_watts": vehicle_details.reports_charging_power_in_watts(),  # noqa: B950
-            "uses_electricity": vehicle_details.uses_electricity(),
-            "uses_fuel": vehicle_details.uses_fuel(),
-            "supports-hvac-status": vehicle_details.supports_endpoint("hvac-status"),
-            "supports-location": vehicle_details.supports_endpoint("location"),
-        }
-        assert EXPECTED_SPECS[os.path.basename(filename)] == generated_specs
+        if os.path.basename(filename) in EXPECTED_SPECS:
+            generated_specs = {
+                "get_brand_label": vehicle_details.get_brand_label(),
+                "get_energy_code": vehicle_details.get_energy_code(),
+                "get_model_code": vehicle_details.get_model_code(),
+                "get_model_label": vehicle_details.get_model_label(),
+                "reports_charging_power_in_watts": vehicle_details.reports_charging_power_in_watts(),  # noqa: B950
+                "uses_electricity": vehicle_details.uses_electricity(),
+                "uses_fuel": vehicle_details.uses_fuel(),
+                "supports-hvac-status": vehicle_details.supports_endpoint(
+                    "hvac-status"
+                ),
+                "supports-location": vehicle_details.supports_endpoint("location"),
+            }
+            assert EXPECTED_SPECS[os.path.basename(filename)] == generated_specs

@@ -2,12 +2,15 @@
 import asyncio
 import functools
 import pathlib
+from datetime import datetime
+from datetime import timedelta
+from datetime import tzinfo
 from typing import Any
 from typing import AsyncGenerator
 from typing import Generator
+from typing import Optional
 
 import pytest
-import pytz
 from _pytest.monkeypatch import MonkeyPatch
 from aiohttp.client import ClientSession
 from aioresponses import aioresponses
@@ -41,9 +44,22 @@ def cli_runner(
 
     monkeypatch.setattr("os.path.expanduser", lambda x: x.replace("~", str(tmpdir)))
 
+    class TZ1(tzinfo):
+        def utcoffset(self, dt: Optional[datetime]) -> timedelta:
+            return timedelta(hours=1)
+
+        def dst(self, dt: Optional[datetime]) -> timedelta:
+            return timedelta(0)
+
+        def tzname(self, dt: Optional[datetime]) -> str:
+            return "+01:00"
+
+        def __repr__(self) -> str:
+            return f"{self.__class__.__name__}()"
+
     def get_test_zone() -> Any:
-        # Get a non UTC zone. Let's use Paris.
-        return pytz.timezone("Europe/Paris")
+        # Get a non UTC zone, avoiding DST on standard zones.
+        return TZ1()
 
     monkeypatch.setattr("tzlocal.get_localzone", get_test_zone)
 
