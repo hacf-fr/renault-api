@@ -142,7 +142,8 @@ def test_vehicle_status(
     result = cli_runner.invoke(__main__.main, "status")
     assert result.exit_code == 0, result.exception
 
-    assert EXPECTED_STATUS[filename] == result.output
+    if filename in EXPECTED_STATUS:
+        assert EXPECTED_STATUS[filename] == result.output
 
 
 def test_vehicle_status_prompt(
