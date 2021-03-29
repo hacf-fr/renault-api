@@ -149,6 +149,7 @@ class KamereonVehicleDetails(BaseModel):
     brand: Optional[KamereonVehicleDetailsGroup]
     model: Optional[KamereonVehicleDetailsGroup]
     energy: Optional[KamereonVehicleDetailsGroup]
+    engineEnergyType: Optional[str]  # noqa: N815
 
     def get_energy_code(self) -> Optional[str]:
         """Return vehicle energy code."""
@@ -168,18 +169,18 @@ class KamereonVehicleDetails(BaseModel):
 
     def uses_electricity(self) -> bool:
         """Return True if model uses electricity."""
-        if self.get_energy_code() in [
-            # May need to add hibrid models in the future
+        if self.engineEnergyType in [
             "ELEC",
+            "PHEV",
         ]:
             return True
         return False
 
     def uses_fuel(self) -> bool:
         """Return True if model uses fuel."""
-        if self.get_energy_code() in [
-            # May need to add hibrid models in the future
-            "ESS",
+        if self.engineEnergyType in [
+            "OTHER",
+            "PHEV",
         ]:
             return True
         return False
