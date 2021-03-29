@@ -33,7 +33,9 @@ from renault_api.gigya import GIGYA_PERSON_ID
 EXPECTED_STATUS = {
     "captur_ii.1.json": (
         "----------------  -------------------\n"
-        "Total mileage     49114.27 km\n"
+        "Total mileage     5566.78 km\n"
+        "Fuel autonomy     35.0 km\n"
+        "Fuel quantity     3.0 L\n"
         "GPS Latitude      48.1234567\n"
         "GPS Longitude     11.1234567\n"
         "GPS last updated  2020-02-18 17:58:38\n"
@@ -47,7 +49,9 @@ EXPECTED_STATUS = {
         "Plug state        PlugState.UNPLUGGED\n"
         "Charging state    ChargeState.NOT_IN_CHARGE\n"
         "Charge mode       always\n"
-        "Total mileage     49114.27 km\n"
+        "Total mileage     5566.78 km\n"
+        "Fuel autonomy     35.0 km\n"
+        "Fuel quantity     3.0 L\n"
         "GPS Latitude      48.1234567\n"
         "GPS Longitude     11.1234567\n"
         "GPS last updated  2020-02-18 17:58:38\n"
@@ -150,8 +154,13 @@ def test_vehicle_status(
     credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
     fixtures.inject_get_vehicle_details(mocked_responses, filename)
-    fixtures.inject_get_vehicle_contracts(mocked_responses, "fr_FR.2.json")
-    fixtures.inject_vehicle_status(mocked_responses)
+    if filename in [
+        "captur_ii.1.json",
+        "captur_ii.2.json",
+    ]:
+        fixtures.inject_vehicle_status(mocked_responses, "captur_ii")
+    else:
+        fixtures.inject_vehicle_status(mocked_responses, "zoe")
 
     result = cli_runner.invoke(__main__.main, "status")
     assert result.exit_code == 0, result.exception
@@ -181,7 +190,7 @@ def test_vehicle_status_prompt(
 
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     fixtures.inject_get_vehicle_contracts(mocked_responses, "fr_FR.2.json")
-    fixtures.inject_vehicle_status(mocked_responses)
+    fixtures.inject_vehicle_status(mocked_responses, "zoe")
 
     result = cli_runner.invoke(
         __main__.main,
@@ -229,7 +238,7 @@ def test_vehicle_status_no_prompt(
 
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     fixtures.inject_get_vehicle_contracts(mocked_responses, "fr_FR.2.json")
-    fixtures.inject_vehicle_status(mocked_responses)
+    fixtures.inject_vehicle_status(mocked_responses, "zoe")
 
     result = cli_runner.invoke(
         __main__.main, f"--account {TEST_ACCOUNT_ID} --vin {TEST_VIN} status"
