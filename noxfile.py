@@ -100,9 +100,7 @@ def safety(session: Session) -> None:
     """Scan dependencies for insecure packages."""
     requirements = nox_poetry.export_requirements(session)
     session.install("safety")
-    # Ignore tornado/39462 as there is currently no fix
-    # See https://github.com/tornadoweb/tornado/issues/2981
-    session.run("safety", "check", f"--file={requirements}", "--bare", "-i", "39462")
+    session.run("safety", "check", f"--file={requirements}", "--bare")
 
 
 @nox.session(python=python_versions)
