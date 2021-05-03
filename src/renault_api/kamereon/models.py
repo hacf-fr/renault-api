@@ -36,6 +36,10 @@ COMMON_ERRRORS: List[Dict[str, Any]] = [
         "error_type": exceptions.ResourceNotFoundException,
     },
     {
+        "errorCode": "err.tech.wired.kamereon-proxy",
+        "error_type": exceptions.FailedForwardException,
+    },
+    {
         "errorCode": "err.func.wired.overloaded",
         "error_type": exceptions.QuotaLimitException,
     },

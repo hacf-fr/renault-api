@@ -1,0 +1,16 @@
+{
+  "type": "TECHNICAL",
+  "messages": [
+    {
+      "code": "err.tech.wired.kamereon-proxy",
+      "message": "Failed to forward request to remote service."
+    }
+  ],
+  "errors": [
+    {
+      "errorCode": "err.tech.wired.kamereon-proxy",
+      "errorMessage": "Failed to forward request to remote service."
+    }
+  ],
+  "error_reference": "TECHNICAL"
+}
