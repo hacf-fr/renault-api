@@ -112,6 +112,18 @@ def test_vehicle_error_access_denied() -> None:
     assert excinfo.value.error_details == "Access is denied for this resource"
 
 
+def test_vehicle_error_failed_foward() -> None:
+    """Test vehicle access_denied response."""
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/error/failed_forward.json",
+        schemas.KamereonVehicleDataResponseSchema,
+    )
+    with pytest.raises(exceptions.FailedForwardException) as excinfo:
+        response.raise_for_error_code()
+    assert excinfo.value.error_code == "err.tech.wired.kamereon-proxy"
+    assert excinfo.value.error_details == "Failed to forward request to remote service."
+
+
 @pytest.mark.parametrize("target_schema", RESPONSE_SCHEMAS)
 def test_error_on_schema(target_schema: Schema) -> None:
     """Test vehicle access_denied response."""

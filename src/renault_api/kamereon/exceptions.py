@@ -53,3 +53,9 @@ class ResourceNotFoundException(KamereonResponseException):
     """Resource not found."""
 
     pass
+
+
+class FailedForwardException(KamereonResponseException):
+    """Failed to forward request to remote service."""
+
+    pass
