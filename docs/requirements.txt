@@ -1,6 +1,6 @@
 sphinx==4.0.1
 sphinx-click==2.7.1
 sphinx-rtd-theme==0.5.2
-click==7.1.2
+click==8.0.0
 tabulate==0.8.9
 dateparser==1.0.0
