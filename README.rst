@@ -88,7 +88,7 @@ You can install *Renault API* via pip_ from PyPI_:
          vin = "Your vehicle VIN"
          vehicle = await account.get_api_vehicle(vin)
          print(f"Cockpit information: {await vehicle.get_cockpit()}")
-         print(f"Battery status information: {await vehicle.battery_status()}")
+         print(f"Battery status information: {await vehicle.get_battery_status()}")
 
    loop = asyncio.get_event_loop()
    loop.run_until_complete(main())
