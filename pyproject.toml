@@ -32,7 +32,7 @@ dateparser = {version = "^1.0.0", optional = true}
 pytest = "^6.2.4"
 coverage = {extras = ["toml"], version = "^5.5"}
 safety = "^1.10.3"
-mypy = "^0.812"
+mypy = "^0.901"
 typeguard = "^2.12.1"
 xdoctest = {extras = ["colors"], version = "^0.15.4"}
 sphinx = "^4.0.2"
