@@ -118,7 +118,7 @@ def safety(session: Session) -> None:
 def mypy(session: Session) -> None:
     """Type-check using mypy."""
     args = session.posargs or ["src", "tests", "docs/conf.py"]
-    session.install(".")
+    session.install(".[cli]")
     session.install("mypy", "pytest")
     session.run("mypy", *args)
     if not session.posargs:
