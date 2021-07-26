@@ -43,9 +43,6 @@ def activate_virtualenv_in_precommit_hooks(session: Session) -> None:
     Args:
         session: The Session object.
     """
-    if session.bin is None:
-        return  # type: ignore
-
     virtualenv = session.env.get("VIRTUAL_ENV")
     if virtualenv is None:
         return
@@ -118,8 +115,10 @@ def safety(session: Session) -> None:
 def mypy(session: Session) -> None:
     """Type-check using mypy."""
     args = session.posargs or ["src", "tests", "docs/conf.py"]
-    session.install(".")
-    session.install("mypy", "pytest")
+    session.install(".[cli]")
+    session.install(
+        "mypy", "pytest", "types-dateparser", "types-tabulate", "types-tzlocal"
+    )
     session.run("mypy", *args)
     if not session.posargs:
         session.run("mypy", f"--python-executable={sys.executable}", "noxfile.py")
