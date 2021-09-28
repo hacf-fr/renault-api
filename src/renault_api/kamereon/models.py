@@ -314,11 +314,11 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
                 if self.plugStatus is not None
                 else None
             )
-        except ValueError:  # pragma: no cover
+        except ValueError as err:  # pragma: no cover
             # should we return PlugState.NOT_AVAILABLE?
             raise exceptions.KamereonException(
                 f"Unable to convert `{self.plugStatus}` to PlugState."
-            )
+            ) from err
 
     def get_charging_status(self) -> Optional[enums.ChargeState]:
         """Return charging status."""
@@ -328,11 +328,11 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
                 if self.chargingStatus is not None
                 else None
             )
-        except ValueError:  # pragma: no cover
+        except ValueError as err:  # pragma: no cover
             # should we return ChargeState.NOT_AVAILABLE?
             raise exceptions.KamereonException(
                 f"Unable to convert `{self.chargingStatus}` to ChargeState."
-            )
+            ) from err
 
 
 @dataclass
