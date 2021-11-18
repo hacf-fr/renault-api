@@ -1,5 +1,5 @@
 sphinx==4.2.0
-sphinx-click==3.0.1
+sphinx-click==3.0.2
 sphinx-rtd-theme==1.0.0
 click==8.0.3
 tabulate==0.8.9
