@@ -30,6 +30,17 @@ EXPECTED_SPECS = {
         "supports-hvac-status": False,
         "supports-location": True,
     },
+    "duster.1.json": {
+        "get_brand_label": "RENAULT",
+        "get_energy_code": "ESS",
+        "get_model_code": "XJD1SU",
+        "get_model_label": "NEW DUSTER",
+        "reports_charging_power_in_watts": False,
+        "uses_electricity": False,
+        "uses_fuel": True,
+        "supports-hvac-status": True,
+        "supports-location": True,
+    },
     "twingo_ze.1.json": {
         "get_brand_label": "RENAULT",
         "get_energy_code": "ELEC",
