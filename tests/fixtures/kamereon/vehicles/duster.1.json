@@ -1,0 +1,116 @@
+{
+  "accountId": "account-id-7",
+  "country": "RU",
+  "vehicleLinks": [
+    {
+      "brand": "RENAULT",
+      "vin": "VF1AAAA1234567876",
+      "status": "ACTIVE",
+      "linkType": "USER",
+      "garageBrand": "renault",
+      "mileage": 500,
+      "mileageUnit": "km",
+      "mileageDate": "2021-10-29",
+      "startDate": "2021-03-01",
+      "createdDate": "2021-04-01T11:00:00.648452Z",
+      "lastModifiedDate": "2021-10-29T08:26:03.648452Z",
+      "cancellationReason": {},
+      "preferredDealer": {
+        "dealerId": "51214321_001",
+        "brand": "RENAULT",
+        "createdDate": "2018-01-01T19:27:14.798452",
+        "lastModifiedDate": "8-01-1:27:14.798452"
+      },
+      "connectedDriver": {
+        "role": "MAIN_DRIVER",
+        "createdDate": "2021-03-03T00:01:02.648452Z",
+        "lastModifiedDate": "2021-03-03T00:01:02.648452Z"
+      },
+      "vehicleDetails": {
+        "vin": "VF1AAAA1234567876",
+        "engineType": "H5H",
+        "engineRatio": "460",
+        "modelSCR": "JD1",
+        "deliveryCountry": {
+          "code": "RU",
+          "label": "RUSSIA"
+        },
+        "family": {
+          "code": "XJD",
+          "label": "XJD FAMILY",
+          "group": "007"
+        },
+        "tcu": {
+          "code": "AIVCT",
+          "label": "WITH AIVC CONNECTION UNIT",
+          "group": "E70"
+        },
+        "navigationAssistanceLevel": {
+          "code": "",
+          "label": "",
+          "group": ""
+        },
+        "battery": {
+          "code": "SANBAT",
+          "label": "",
+          "group": "968"
+        },
+        "radioType": {
+          "code": "RA41A",
+          "label": "ENDAFFM (SCREEN ATTACH), AUDIO 7 (2 BO + 2 BI + 2 TWEETER, DOUBLE-MICRO",
+          "group": "425"
+        },
+        "registrationCountry": {
+          "code": "RU"
+        },
+        "brand": {
+          "label": "RENAULT"
+        },
+        "model": {
+          "code": "XJD1SU",
+          "label": "NEW DUSTER",
+          "group": "971"
+        },
+        "gearbox": {
+          "code": "BVM6",
+          "label": "6-SPEED MANUAL GEARBOX",
+          "group": "427"
+        },
+        "version": {
+          "code": "B2 4 M3M 5C"
+        },
+        "energy": {
+          "code": "ESS",
+          "label": "PETROL",
+          "group": "019"
+        },
+        "registrationNumber": "REG-NUMBER",
+        "vcd": "STANDA/XJD/HJD/EA2/M3/ESS/DG/GDFROI/TR4X4/AFURGE/RV/ABS/BARLO2/CA02/PBCH/LAC/VT/CPE/RET03/1RVLG/PROJAB/RALU16/CEAVFX/ADAC/AIRBA2/SERIE/DRA/DRAP07/HARM02/ATAR02/SGAV05/SGAR02/TECNW/BANAL/KM/PTCAV2/TPRM3/AVREPL/SSDECA/ABLAV/ESPDES/ALEVA/SOPC2C/SPRGAZ/STHPLG/KITGRV/VLCUIR/TRGAS/REPNTC/LVCIPE/LVAREL/SASURV/RSEC01/SGACHA/RUS01/APL03/AIRAR/VOLRHP/FSTPO/ALOUCC/CMAR3P/RA41A/BVM6/RDIF03/ISOFIX/ENPB01/HRGM01/SANFLT/CSRBA2/SANACF/SCHSTA/TLRP21/PRODIS/SAN613/SSFAP/AIRBDE/CHC03/E05C/ADFR/SSPTLP/SANCML/SSFLEX/SEXTIN/PE2017/PHAS1/SAN913/THABT1/SSTYAD/SSHYB/SSCABA/SANBAT/VEC654/XJD1SU/SSNBT/H5H/SDLIGM/SOUVCF/RMEGS/KITPOU/KITPGR/DPSEC/SSPREM/FDIU1/SSMAP/RCALL/PROCBO/SDANGM/ECOMOD/AIVCT/AVGSI/ITPK1/PERN02/VOLCHA/R134A/SFSSAC/SSVOLP/TCHA0/SPMIR/RRCAM/TCHC0/HTNZA",
+        "assets": [
+          {
+            "assetType": "PICTURE",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=HJD%2FEA2%2FDG%2FTR4X4%2FRV%2FABS%2FBARLO2%2FCA02%2FPBCH%2FRET03%2FPROJAB%2FRALU16%2FDRA%2FDRAP07%2FHARM02%2FATAR02%2FSGAV05%2FTECNW%2FKM%2FABLAV%2FESPDES%2FALEVA%2FSOPC2C%2FVLCUIR%2FLVCIPE%2FLVAREL%2FSGACHA%2FAPL03%2FVOLRHP%2FCMAR3P%2FRA41A%2FBVM6%2FRDIF03%2FENPB01%2FCSRBA2%2FSANACF%2FSAN913%2FH5H%2FRCALL%2FSDANGM%2FECOMOD%2FITPK1%2FPERN02%2FVOLCHA%2FRRCAM&databaseId=42b2c477-c47a-40c9-8ed2-a6966c244777&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_LARGE"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=HJD%2FEA2%2FDG%2FTR4X4%2FRV%2FABS%2FBARLO2%2FCA02%2FPBCH%2FRET03%2FPROJAB%2FRALU16%2FDRA%2FDRAP07%2FHARM02%2FATAR02%2FSGAV05%2FTECNW%2FKM%2FABLAV%2FESPDES%2FALEVA%2FSOPC2C%2FVLCUIR%2FLVCIPE%2FLVAREL%2FSGACHA%2FAPL03%2FVOLRHP%2FCMAR3P%2FRA41A%2FBVM6%2FRDIF03%2FENPB01%2FCSRBA2%2FSANACF%2FSAN913%2FH5H%2FRCALL%2FSDANGM%2FECOMOD%2FITPK1%2FPERN02%2FVOLCHA%2FRRCAM&databaseId=42b2c477-c47a-40c9-8ed2-a6966c244777&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              }
+            ]
+          }
+        ],
+        "yearsOfMaintenance": 12,
+        "connectivityTechnology": "NONE",
+        "easyConnectStore": false,
+        "electrical": false,
+        "rlinkStore": false,
+        "deliveryDate": "2021-03-01",
+        "retrievedFromDhs": false,
+        "engineEnergyType": "OTHER",
+        "radioCode": "1234"
+      }
+    }
+  ]
+}
