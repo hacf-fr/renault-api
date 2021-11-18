@@ -53,7 +53,7 @@ sphinx-click = "^3.0.1"
 Pygments = "^2.10.0"
 pytest-asyncio = "^0.15.1"
 aioresponses = "^0.7.2"
-pytest-cov = "^2.12.1"
+pytest-cov = "^3.0.0"
 
 [tool.poetry.extras]
 cli = ["click", "tabulate", "dateparser"]
