@@ -51,7 +51,7 @@ pre-commit-hooks = "^4.0.1"
 sphinx-rtd-theme = "^1.0.0"
 sphinx-click = "^3.0.2"
 Pygments = "^2.10.0"
-pytest-asyncio = "^0.15.1"
+pytest-asyncio = "^0.16.0"
 aioresponses = "^0.7.2"
 pytest-cov = "^3.0.0"
 
