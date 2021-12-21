@@ -55,7 +55,7 @@ pytest-asyncio = "^0.16.0"
 aioresponses = "^0.7.2"
 pytest-cov = "^3.0.0"
 #ensure urllib3 is greater than 1.26.5 to account for CVE-2021-33503
-urllib3 = "^1.26.5"
+urllib3 = "^1.26.7"
 
 [tool.poetry.extras]
 cli = ["click", "tabulate", "dateparser"]
