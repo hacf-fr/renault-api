@@ -30,7 +30,7 @@ dateparser = {version = "^1.0.0", optional = true}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
-coverage = {extras = ["toml"], version = "^6.1"}
+coverage = {extras = ["toml"], version = "^6.2"}
 safety = "^1.10.3"
 mypy = "^0.910"
 typeguard = "^2.13.0"
