@@ -135,8 +135,9 @@ def test_charge_schedule_for_json() -> None:
     )
     assert not vehicle_data.schedules[1].activated
 
-    # Check that for_json returns the updated data
-    for_json = {
+    # Activated flag has been updated in 'vehicle_data.update'
+    # Refresh for_json with the updated data
+    for_json = {# type: ignore[unreachable]
         "schedules": list(schedule.for_json() for schedule in vehicle_data.schedules)
     }
     assert for_json == {
