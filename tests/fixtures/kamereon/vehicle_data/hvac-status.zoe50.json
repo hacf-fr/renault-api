@@ -5,7 +5,7 @@
     "attributes": {
       "socThreshold": 40,
       "lastUpdateTime": "2021-12-27T09:37:39Z",
-      "hvacStatus": "off"
+      "hvacStatus": "on"
     }
   }
 }
