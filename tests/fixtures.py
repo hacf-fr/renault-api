@@ -235,13 +235,13 @@ def inject_get_location(mocked_responses: aioresponses) -> str:
     )
 
 
-def inject_get_hvac_status(mocked_responses: aioresponses) -> str:
+def inject_get_hvac_status(mocked_responses: aioresponses, vehicle: str) -> str:
     """Inject sample hvac-status."""
     urlpath = f"{ADAPTER_PATH}/hvac-status?{DEFAULT_QUERY_STRING}"
     return inject_data(
         mocked_responses,
         urlpath,
-        "vehicle_data/hvac-status.zoe.json",
+        "vehicle_data/hvac-status.{vehicle}.json",
     )
 
 
@@ -409,6 +409,6 @@ def inject_vehicle_status(mocked_responses: aioresponses, vehicle: str) -> None:
     """Inject Kamereon vehicle status data."""
     inject_get_battery_status(mocked_responses)
     inject_get_location(mocked_responses)
-    inject_get_hvac_status(mocked_responses)
+    inject_get_hvac_status(mocked_responses, vehicle)
     inject_get_charge_mode(mocked_responses)
     inject_get_cockpit(mocked_responses, vehicle)
