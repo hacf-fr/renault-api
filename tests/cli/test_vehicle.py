@@ -239,7 +239,6 @@ def test_vehicle_status_no_prompt(
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     fixtures.inject_get_vehicle_contracts(mocked_responses, "fr_FR.2.json")
     fixtures.inject_vehicle_status(mocked_responses, "zoe")
-    fixtures.inject_vehicle_status(mocked_responses, "zoe50")
 
     result = cli_runner.invoke(
         __main__.main, f"--account {TEST_ACCOUNT_ID} --vin {TEST_VIN} status"
