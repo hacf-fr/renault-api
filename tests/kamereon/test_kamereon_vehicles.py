@@ -139,7 +139,9 @@ def test_vehicles_response(filename: str) -> None:
                 "reports_charging_power_in_watts": vehicle_details.reports_charging_power_in_watts(),  # noqa: B950
                 "uses_electricity": vehicle_details.uses_electricity(),
                 "uses_fuel": vehicle_details.uses_fuel(),
-                "supports-hvac-status": vehicle_details.supports_endpoint("hvac-status"),
+                "supports-hvac-status": vehicle_details.supports_endpoint(
+                    "hvac-status"
+                ),
                 "supports-location": vehicle_details.supports_endpoint("location"),
             }
             assert EXPECTED_SPECS[os.path.basename(filename)] == generated_specs
