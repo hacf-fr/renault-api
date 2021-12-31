@@ -108,6 +108,7 @@ EXPECTED_STATUS = {
         "Total mileage     49114.27 km\n"
         "GPS Latitude      48.1234567\n"
         "GPS Longitude     11.1234567\n"
+        "HVAC status           on\n"
         "GPS last updated  2020-02-18 17:58:38\n"
         "----------------  -------------------------\n"
     ),
