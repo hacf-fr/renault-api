@@ -110,8 +110,8 @@ EXPECTED_STATUS = {
         "Fuel quantity     0.0 L\n"
         "GPS Latitude      48.1234567\n"
         "GPS Longitude     11.1234567\n"
-        "HVAC status       on\n"
         "GPS last updated  2020-02-18 17:58:38\n"
+        "HVAC status       on\n"
         "----------------  -------------------------\n"
     ),
 }
@@ -171,7 +171,6 @@ def test_vehicle_status(
 
     result = cli_runner.invoke(__main__.main, "status")
     assert result.exit_code == 0, result.exception
-
     if filename in EXPECTED_STATUS:
         assert EXPECTED_STATUS[filename] == result.output
 
