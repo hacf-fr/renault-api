@@ -29,6 +29,7 @@ DEFAULT_QUERY_STRING = f"country={TEST_COUNTRY}"
 KAMEREON_BASE_URL = f"{TEST_KAMEREON_URL}/commerce/v1"
 ACCOUNT_PATH = f"accounts/{TEST_ACCOUNT_ID}"
 ADAPTER_PATH = f"{ACCOUNT_PATH}/kamereon/kca/car-adapter/v1/cars/{TEST_VIN}"
+KCM_ADAPTER_PATH = f"{ACCOUNT_PATH}/kamereon/kcm/v1/vehicles/{TEST_VIN}"
 ADAPTER2_PATH = f"{ACCOUNT_PATH}/kamereon/kca/car-adapter/v2/cars/{TEST_VIN}"
 
 
@@ -406,6 +407,16 @@ def inject_set_charge_schedule(mocked_responses: aioresponses, result: str) -> s
         mocked_responses,
         urlpath,
         f"vehicle_action/charge-schedule.{result}.json",
+    )
+
+
+def inject_set_charge_pause_resume(mocked_responses: aioresponses, result: str) -> str:
+    """Inject sample charge-pause-resume."""
+    urlpath = f"{KCM_ADAPTER_PATH}/charge/pause-resume?{DEFAULT_QUERY_STRING}"
+    return inject_action(
+        mocked_responses,
+        urlpath,
+        f"vehicle_action/charge-pause-resume.{result}.json",
     )
 
 
