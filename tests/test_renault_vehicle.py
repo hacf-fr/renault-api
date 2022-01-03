@@ -334,6 +334,22 @@ async def test_set_charge_schedules(
 
 
 @pytest.mark.asyncio
+async def test_set_charge_resume(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
+    """Test set_charge_resume."""
+    url = fixtures.inject_set_charge_pause_resume(mocked_responses, "resume")
+
+    expected_json = {
+        "data": {"type": "ChargePauseResume", "attributes": {"action": "resume"}}
+    }
+
+    assert await vehicle.set_charge_pause_resume("resume")
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    assert expected_json == request.kwargs["json"]
+
+
+@pytest.mark.asyncio
 async def test_set_charge_start(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:

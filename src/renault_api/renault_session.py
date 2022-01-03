@@ -251,8 +251,9 @@ class RenaultSession:
         vin: str,
         endpoint: str,
         attributes: Dict[str, Any],
+        actions: str = "actions",
     ) -> models.KamereonVehicleDataResponse:
-        """POST to /v{endpoint_version}/cars/{vin}/actions/{endpoint}."""
+        """POST to /v{endpoint_version}/cars/{vin}/{actions}/{endpoint}."""
         return await kamereon.set_vehicle_action(
             websession=self._websession,
             root_url=await self._get_kamereon_root_url(),
@@ -261,6 +262,7 @@ class RenaultSession:
             country=await self._get_country(),
             account_id=account_id,
             vin=vin,
+            actions=actions,
             endpoint=endpoint,
             attributes=attributes,
         )
