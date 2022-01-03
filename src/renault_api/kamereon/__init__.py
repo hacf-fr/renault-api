@@ -68,6 +68,14 @@ def get_car_adapter_url(root_url: str, account_id: str, version: int, vin: str) 
     return f"{account_url}/kamereon/kca/car-adapter/v{version}/cars/{vin}"
 
 
+def get_kcm_car_adapter_url(
+    root_url: str, account_id: str, version: int, vin: str
+) -> str:
+    """Get the url to the kcm car adapter."""
+    account_url = get_account_url(root_url, account_id)
+    return f"{account_url}/kamereon/kcm/v{version}/vehicles/{vin}"
+
+
 def get_contracts_url(root_url: str, account_id: str, vin: str) -> str:
     """Get the url to the car contracts."""
     account_url = get_account_url(root_url, account_id)
@@ -306,6 +314,7 @@ async def set_vehicle_action(
     vin: str,
     endpoint: str,
     attributes: Dict[str, Any],
+    actions: str = "actions",
     endpoint_version: Optional[int] = None,
     data_type: Optional[Dict[str, Any]] = None,
 ) -> models.KamereonVehicleDataResponse:
@@ -326,6 +335,15 @@ async def set_vehicle_action(
         version=endpoint_version or int(endpoint_details["version"]),
         vin=vin,
     )
+
+    if actions == "charge":
+        car_adapter_url = get_kcm_car_adapter_url(
+            root_url=root_url,
+            account_id=account_id,
+            version=endpoint_version or int(endpoint_details["version"]),
+            vin=vin,
+        )
+
     url = f"{car_adapter_url}/{endpoint}"
     params = {"country": country}
     json = {

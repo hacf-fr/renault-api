@@ -506,13 +506,30 @@ class RenaultVehicle:
     async def set_charge_start(self) -> models.KamereonVehicleChargingStartActionData:
         """Start vehicle charge."""
         # await self.warn_on_method("set_charge_start")
-        attributes = {"action": "start"}
-
         response = await self.session.set_vehicle_action(
             account_id=self.account_id,
             vin=self.vin,
             endpoint="actions/charging-start",
-            attributes=attributes,
+            attributes={"action": "start"},
+        )
+        return cast(
+            models.KamereonVehicleChargingStartActionData,
+            response.get_attributes(
+                schemas.KamereonVehicleChargingStartActionDataSchema
+            ),
+        )
+
+    async def set_charge_pause_resume(
+        self, action: str
+    ) -> models.KamereonVehicleChargingStartActionData:
+        """Start vehicle charge."""
+        # await self.warn_on_method("set_charge_start")
+        response = await self.session.set_vehicle_action(
+            account_id=self.account_id,
+            vin=self.vin,
+            endpoint="pause-resume",
+            attributes={"action": action},
+            actions="charge",
         )
         return cast(
             models.KamereonVehicleChargingStartActionData,
