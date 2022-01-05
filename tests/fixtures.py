@@ -231,7 +231,7 @@ def inject_get_location(mocked_responses: aioresponses) -> str:
     return inject_data(
         mocked_responses,
         urlpath,
-        "vehicle_data/location.json",
+        "vehicle_data/location.1.json",
     )
 
 
@@ -241,7 +241,7 @@ def inject_get_hvac_status(mocked_responses: aioresponses) -> str:
     return inject_data(
         mocked_responses,
         urlpath,
-        "vehicle_data/hvac-status.json",
+        "vehicle_data/hvac-status.1.json",
     )
 
 

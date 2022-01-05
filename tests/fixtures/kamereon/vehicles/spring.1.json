@@ -1,0 +1,109 @@
+{
+  "accountId": "account-id-8",
+  "country": "FR",
+  "vehicleLinks": [
+    {
+      "brand": "DACIA",
+      "vin": "UU1AAAA555777999",
+      "status": "ACTIVE",
+      "linkType": "USER",
+      "garageBrand": "DACIA",
+      "startDate": "2021-03-01",
+      "createdDate": "2021-04-01T11:00:00.648452Z",
+      "lastModifiedDate": "2021-10-29T08:26:03.648452Z",
+      "cancellationReason": {},
+      "connectedDriver": {
+        "role": "MAIN_DRIVER",
+        "createdDate": "2021-03-03T00:01:02.648452Z",
+        "lastModifiedDate": "2021-03-03T00:01:02.648452Z"
+      },
+      "vehicleDetails": {
+        "vin": "UU1AAAA555777999",
+        "registrationDate": "2021-11-29",
+        "firstRegistrationDate": "2021-11-29",
+        "engineType": "4DB",
+        "engineRatio": "401",
+        "modelSCR": "",
+        "deliveryCountry": {
+          "code": "FR",
+          "label": "FRANCE"
+        },
+        "family": {
+          "code": "XBG",
+          "label": "KWID EV",
+          "group": "007"
+        },
+        "tcu": {
+          "code": "AIVCT",
+          "label": "WITH AIVC CONNECTION UNIT",
+          "group": "E70"
+        },
+        "navigationAssistanceLevel": {
+          "code": "",
+          "label": "",
+          "group": ""
+        },
+        "battery": {
+          "code": "BTDAN",
+          "label": "BTDAN BATTERY",
+          "group": "968"
+        },
+        "radioType": {
+          "code": "RA43D",
+          "label": "RA43D",
+          "group": "425"
+        },
+        "registrationCountry": {
+          "code": "FR"
+        },
+        "brand": {
+          "label": "DACIA"
+        },
+        "model": {
+          "code": "XBG1VE",
+          "label": "SPRING",
+          "group": "971"
+        },
+        "gearbox": {
+          "code": "BVEL",
+          "label": "ELECTRIC VARIATOR GEARBOX",
+          "group": "427"
+        },
+        "version": {
+          "code": "E2PM1 B4E2R"
+        },
+        "energy": {
+          "code": "ELEC",
+          "label": "ELECTRIC",
+          "group": "019"
+        },
+        "registrationNumber": "REG-NUMBER",
+        "vcd": "STANDA/XBG/BBG/E2/M1/ELEC/DG/TEMP/TR4X2/DA/AFURGE/LIMVIT/ABS/CA01/LAC/VT/ELA/CPE/RET02/2RVLG/SPROJA/NOSDL/RTOL14/CEAVRH/ADAC/AIRBA2/SERIE/DRA/DRAP05/HARM03/ATAR02/SGAV02/SGAR02/OVQPA/BANAL/KM/TPRM2/AVREPL/DECA01/ABLAVI/ESPHSA/SRDPRO/ALAEVM/M3CA0/PRAMBI/SOPC2C/SKTGRV/COPOR/TRSEV1/RETP01/LVAVEL/LVAREL/RSNORT/FRA01/BRA05/HSTPL/SBR05/RA43D/BVEL/RDIF04/ISOFIX/ENPH02/HRGM01/SANFLT/CHARAP/TL01A/SPRODI/SAN613/AIRBDE/ELC1/SSFLEX/SSLVIT/M2019/PHAS1/SAN913/SSTYAD/SSHYB/26K0B/BTDAN/VEC016/XBG1VE/NB024/4DB/NOLK0/SKTPOU/SKTPGR/NOVTS/FDIU1/MAPOST/RCALL/FACBA1/ECOMOD/M2CA0/AIVCT/NOGSI/ITPK2/AVARC2/1234Y/AEB00",
+        "assets": [
+          {
+            "assetType": "PICTURE",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=BBG%2FE2%2FLIMVIT%2FCA01%2FRET02%2FDRAP05%2FSGAR02%2FOVQPA%2FDECA01%2FESPHSA%2FPRAMBI%2FRETP01%2FLVAREL%2FBRA05%2FRA43D%2FRDIF04%2FENPH02%2FM2019%2FSAN913%2FRCALL%2FECOMOD%2FITPK2%2FAEB00&databaseId=8afd6a52-b67b-407d-8469-fddf3d6a68ab&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_LARGE"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=BBG%2FE2%2FLIMVIT%2FCA01%2FRET02%2FDRAP05%2FSGAR02%2FOVQPA%2FDECA01%2FESPHSA%2FPRAMBI%2FRETP01%2FLVAREL%2FBRA05%2FRA43D%2FRDIF04%2FENPH02%2FM2019%2FSAN913%2FRCALL%2FECOMOD%2FITPK2%2FAEB00&databaseId=8afd6a52-b67b-407d-8469-fddf3d6a68ab&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              }
+            ]
+          }
+        ],
+        "yearsOfMaintenance": 12,
+        "connectivityTechnology": "NONE",
+        "easyConnectStore": false,
+        "electrical": true,
+        "rlinkStore": false,
+        "deliveryDate": "2021-03-01",
+        "retrievedFromDhs": false,
+        "engineEnergyType": "ELEC",
+        "radioCode": "1234"
+      }
+    }
+  ]
+}

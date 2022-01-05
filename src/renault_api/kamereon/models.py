@@ -60,6 +60,9 @@ VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
     "XJB1SU": {  # CAPTUR II
         "support-endpoint-hvac-status": False,
     },
+    "XBG1VE": {  # DACIA SPRING
+        "support-endpoint-hvac-status": True,
+    },
 }
 
 
