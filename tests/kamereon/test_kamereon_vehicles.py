@@ -85,6 +85,17 @@ EXPECTED_SPECS = {
         "supports-hvac-status": False,
         "supports-location": True,
     },
+    "spring.1.json": {
+        "get_brand_label": "DACIA",
+        "get_energy_code": "ELEC",
+        "get_model_code": "XBG1VE",
+        "get_model_label": "SPRING",
+        "reports_charging_power_in_watts": False,
+        "uses_electricity": True,
+        "uses_fuel": False,
+        "supports-hvac-status": True,
+        "supports-location": True,
+    },
 }
 
 
@@ -104,18 +115,21 @@ def test_vehicles_response(filename: str) -> None:
     for vehicle_link in response.vehicleLinks:
         # Ensure the VIN and RegistrationNumber are hidden
         assert vehicle_link.vin
-        assert vehicle_link.vin.startswith("VF1AAAA"), "Ensure vin is obfuscated."
+        assert vehicle_link.vin.startswith(
+            ("VF1AAAA", "UU1AAAA")
+        ), "Ensure vin is obfuscated."
 
         vehicle_details = vehicle_link.vehicleDetails
         assert vehicle_details
         assert vehicle_details.vin
-        assert vehicle_details.vin.startswith("VF1AAAA"), "Ensure vin is obfuscated."
+        assert vehicle_details.vin.startswith(
+            ("VF1AAAA", "UU1AAAA")
+        ), "Ensure vin is obfuscated."
         assert vehicle_details.registrationNumber
         assert vehicle_details.registrationNumber.startswith(
             "REG-"
         ), "Ensure registrationNumber is obfuscated."
         assert vehicle_details.radioCode == "1234", "Ensure radioCode is obfuscated."
-
         if os.path.basename(filename) in EXPECTED_SPECS:
             generated_specs = {
                 "get_brand_label": vehicle_details.get_brand_label(),

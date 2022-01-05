@@ -23,7 +23,7 @@ def test_vehicle_data_response(filename: str) -> None:
     # Ensure the VIN is hidden
     assert response.data is not None
     assert response.data.id is not None
-    assert response.data.id.startswith("VF1AAAA")
+    assert response.data.id.startswith(("VF1AAAA", "UU1AAAA"))
 
 
 def test_battery_status_1() -> None:
@@ -281,15 +281,40 @@ def test_charging_settings_multi() -> None:
     assert schedule_data.sunday.duration == 450
 
 
-def test_location() -> None:
-    """Test vehicle data for location.json."""
+def test_location_v1() -> None:
+    """Test vehicle data for location.1.json."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
-        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/location.json",
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/location.1.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
     assert response.data is not None
     assert response.data.raw_data["attributes"] == {
+        "gpsLatitude": 48.1234567,
+        "gpsLongitude": 11.1234567,
+        "lastUpdateTime": "2020-02-18T16:58:38Z",
+    }
+
+    vehicle_data = cast(
+        models.KamereonVehicleLocationData,
+        response.get_attributes(schemas.KamereonVehicleLocationDataSchema),
+    )
+
+    assert vehicle_data.gpsLatitude == 48.1234567
+    assert vehicle_data.gpsLongitude == 11.1234567
+    assert vehicle_data.lastUpdateTime == "2020-02-18T16:58:38Z"
+
+
+def test_location_v2() -> None:
+    """Test vehicle data for location.2.json."""
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/location.2.json",
+        schemas.KamereonVehicleDataResponseSchema,
+    )
+    response.raise_for_error_code()
+    assert response.data is not None
+    assert response.data.raw_data["attributes"] == {
+        "gpsDirection": None,
         "gpsLatitude": 48.1234567,
         "gpsLongitude": 11.1234567,
         "lastUpdateTime": "2020-02-18T16:58:38Z",
