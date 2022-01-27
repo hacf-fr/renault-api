@@ -141,7 +141,7 @@ def test_vehicle_details(mocked_responses: aioresponses, cli_runner: CliRunner) 
 
 
 @pytest.mark.parametrize(
-    "filename", fixtures.get_json_files(f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicles")
+    "filename", fixtures.get_json_files(f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_details")
 )
 def test_vehicle_status(
     mocked_responses: aioresponses, cli_runner: CliRunner, filename: str
