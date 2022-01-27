@@ -82,7 +82,7 @@ EXPECTED_SPECS = {
         "reports_charging_power_in_watts": False,
         "uses_electricity": True,
         "uses_fuel": False,
-        "supports-hvac-status": True,
+        "supports-hvac-status": False,
         "supports-location": True,
     },
     "spring.1.json": {

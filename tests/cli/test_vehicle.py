@@ -111,7 +111,6 @@ EXPECTED_STATUS = {
         "GPS Latitude      48.1234567\n"
         "GPS Longitude     11.1234567\n"
         "GPS last updated  2020-02-18 17:58:38\n"
-        "HVAC status       on\n"
         "----------------  -------------------------\n"
     ),
 }

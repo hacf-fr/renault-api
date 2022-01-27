@@ -238,8 +238,8 @@ def inject_get_location(mocked_responses: aioresponses) -> str:
 def inject_get_hvac_status(mocked_responses: aioresponses, vehicle: str) -> str:
     """Inject sample hvac-status."""
     urlpath = f"{ADAPTER_PATH}/hvac-status?{DEFAULT_QUERY_STRING}"
-    filename = "hvac-status.json"
-    if "zoe" in vehicle:
+    filename = "hvac-status.zoe.json"
+    if vehicle in ["spring", "zoe_50"]:
         filename = f"hvac-status.{vehicle}.json"
     return inject_data(
         mocked_responses,
