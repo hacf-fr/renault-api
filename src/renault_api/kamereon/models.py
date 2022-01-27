@@ -350,10 +350,11 @@ class KamereonVehicleLocationData(KamereonVehicleDataAttributes):
 class KamereonVehicleHvacStatusData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data hvac-status attributes."""
 
-    socThreshold: Optional[float]
+    lastUpdateTime: Optional[str]  # noqa: N815
     externalTemperature: Optional[float]  # noqa: N815
     hvacStatus: Optional[str]  # noqa: N815
     nextHvacStartDate: Optional[str]  # noqa: N815
+    socThreshold: Optional[float]  # noqa: N815
 
 
 @dataclass
