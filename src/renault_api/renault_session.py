@@ -208,6 +208,20 @@ class RenaultSession:
             vin=vin,
         )
 
+    async def get_car_adapter(
+        self, account_id: str, vin: str
+    ) -> models.KamereonVehicleDataResponse:
+        """GET to /accounts/{account_id}/kamereon/kca/car-adapter/v2/cars/{vin}."""
+        return await kamereon.get_car_adapter(
+            websession=self._websession,
+            root_url=await self._get_kamereon_root_url(),
+            api_key=await self._get_kamereon_api_key(),
+            gigya_jwt=await self._get_jwt(),
+            country=await self._get_country(),
+            account_id=account_id,
+            vin=vin,
+        )
+
     async def get_vehicle_data(
         self,
         account_id: str,
