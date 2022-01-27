@@ -61,6 +61,13 @@ VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
     },
 }
 
+GATEWAY_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
+    "GDC": {  # ZOE phase 1
+        "reports-in-watts": True,
+        "support-endpoint-location": False,
+    },
+}
+
 
 @dataclass
 class KamereonResponseError(BaseModel):
@@ -386,7 +393,7 @@ class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
     canGeneration: Optional[str]
     carGateway: Optional[str]
     deliveryCountry: Optional[str]
-    deliveryDate:Optional[str]
+    deliveryDate: Optional[str]
     energy: Optional[str]
     engineType: Optional[str]
     familyCode: Optional[str]
@@ -405,6 +412,40 @@ class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
     privacyModeUpdateDate: Optional[str]
     svtFlag: Optional[bool]
     svtBlockFlag: Optional[bool]
+
+    def uses_electricity(self) -> bool:
+        """Return True if model uses electricity."""
+        if self.energy in [
+            "electric",
+        ]:
+            return True
+        return False
+
+    def uses_fuel(self) -> bool:
+        """Return True if model uses fuel."""
+        if self.energy in [
+            "gasoline",
+        ]:
+            return True
+        return False
+
+    def reports_charging_power_in_watts(self) -> bool:
+        """Return True if model reports chargingInstantaneousPower in watts."""
+        # Default to False for unknown vehicles
+        if self.modelCodeDetail:
+            return GATEWAY_SPECIFICATIONS.get(self.carGateway, {}).get(
+                "reports-in-watts", False
+            )
+        return False  # pragma: no cover
+
+    def supports_endpoint(self, endpoint: str) -> bool:
+        """Return True if model supports specified endpoint."""
+        # Default to True for unknown vehicles
+        if self.modelCodeDetail:
+            return GATEWAY_SPECIFICATIONS.get(self.carGateway, {}).get(
+                f"support-endpoint-{endpoint}", True
+            )
+        return True  # pragma: no cover
 
 
 @dataclass
