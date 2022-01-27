@@ -123,7 +123,7 @@ async def test_get_hvac_status(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_hvac_status."""
-    fixtures.inject_get_hvac_status(mocked_responses)
+    fixtures.inject_get_hvac_status(mocked_responses, "zoe")
     assert await vehicle.get_hvac_status()
 
 

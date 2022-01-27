@@ -54,14 +54,10 @@ VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
         "support-endpoint-location": False,
     },
     "X102VE": {  # ZOE phase 2
-        "support-endpoint-hvac-status": False,
         "warns-on-method-set_ac_stop": "Action `cancel` on endpoint `hvac-start` may not be supported on this model.",  # noqa
     },
     "XJB1SU": {  # CAPTUR II
         "support-endpoint-hvac-status": False,
-    },
-    "XBG1VE": {  # DACIA SPRING
-        "support-endpoint-hvac-status": True,
     },
 }
 
@@ -351,9 +347,11 @@ class KamereonVehicleLocationData(KamereonVehicleDataAttributes):
 class KamereonVehicleHvacStatusData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data hvac-status attributes."""
 
+    lastUpdateTime: Optional[str]  # noqa: N815
     externalTemperature: Optional[float]  # noqa: N815
     hvacStatus: Optional[str]  # noqa: N815
     nextHvacStartDate: Optional[str]  # noqa: N815
+    socThreshold: Optional[float]  # noqa: N815
 
 
 @dataclass

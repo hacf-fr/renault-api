@@ -105,10 +105,13 @@ EXPECTED_STATUS = {
         "Plug state        PlugState.UNPLUGGED\n"
         "Charging state    ChargeState.NOT_IN_CHARGE\n"
         "Charge mode       always\n"
-        "Total mileage     49114.27 km\n"
+        "Total mileage     5785.75 km\n"
+        "Fuel autonomy     0.0 km\n"
+        "Fuel quantity     0.0 L\n"
         "GPS Latitude      48.1234567\n"
         "GPS Longitude     11.1234567\n"
         "GPS last updated  2020-02-18 17:58:38\n"
+        "HVAC status       on\n"
         "----------------  -------------------------\n"
     ),
 }
@@ -159,6 +162,10 @@ def test_vehicle_status(
         "captur_ii.2.json",
     ]:
         fixtures.inject_vehicle_status(mocked_responses, "captur_ii")
+    elif filename in [
+        "zoe_50.1.json",
+    ]:
+        fixtures.inject_vehicle_status(mocked_responses, "zoe_50")
     else:
         fixtures.inject_vehicle_status(mocked_responses, "zoe")
 
