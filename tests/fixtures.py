@@ -5,17 +5,20 @@ from glob import glob
 from os import path
 from typing import Any
 from typing import List
+from typing import Mapping
 from typing import Optional
 
 import jwt
 from aioresponses import aioresponses
 from marshmallow.schema import Schema
+from tests.const import REDACTED
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
 from tests.const import TEST_GIGYA_URL
 from tests.const import TEST_KAMEREON_URL
 from tests.const import TEST_PERSON_ID
 from tests.const import TEST_VIN
+from tests.const import TO_REDACT
 
 GIGYA_FIXTURE_PATH = "tests/fixtures/gigya"
 KAMEREON_FIXTURE_PATH = "tests/fixtures/kamereon"
@@ -416,3 +419,26 @@ def inject_vehicle_status(mocked_responses: aioresponses, vehicle: str) -> None:
     inject_get_hvac_status(mocked_responses, vehicle)
     inject_get_charge_mode(mocked_responses)
     inject_get_cockpit(mocked_responses, vehicle)
+
+
+def ensure_redacted(data: Mapping[str, Any], to_redact: list[str] = TO_REDACT) -> None:
+    """Ensure all PII keys are redacted."""
+    value: str
+    for key in to_redact:
+        if value := data.get(key):
+            assert _is_redacted(key, value), f"Ensure {key} is redacted."
+
+
+def _is_redacted(key: str, value: str) -> bool:
+    """Ensure all PII keys are redacted."""
+    if value == REDACTED:
+        return True
+    if key == "accountId":
+        return value.startswith("account-id")
+    if key == "vin":
+        return value.startswith(("VF1AAAA", "UU1AAAA"))
+    if key == "registrationNumber":
+        return value == "REG-NUMBER"
+    if key == "radioCode":
+        return value == "1234"
+    return False
