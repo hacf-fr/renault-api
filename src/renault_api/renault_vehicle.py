@@ -100,9 +100,10 @@ class RenaultVehicle:
         if self._car_adapter:
             return self._car_adapter
 
-        response = await self.session.get_car_adapter(
+        response = await self.session.get_vehicle_data(
             account_id=self.account_id,
             vin=self.vin,
+            endpoint="",
         )
         self._car_adapter = cast(
             models.KamereonVehicleCarAdapterData,
