@@ -241,7 +241,7 @@ def inject_get_hvac_status(mocked_responses: aioresponses) -> str:
     return inject_data(
         mocked_responses,
         urlpath,
-        "vehicle_data/hvac-status.1.json",
+        "vehicle_data/hvac-status.zoe.json",
     )
 
 
