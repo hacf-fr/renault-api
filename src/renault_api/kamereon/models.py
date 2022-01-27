@@ -66,8 +66,8 @@ VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
 class KamereonResponseError(BaseModel):
     """Kamereon response error."""
 
-    errorCode: Optional[str]  # noqa: N815
-    errorMessage: Optional[str]  # noqa: N815
+    errorCode: Optional[str]
+    errorMessage: Optional[str]
 
     def raise_for_error_code(self) -> None:
         """Raise exception from response error."""
@@ -121,9 +121,9 @@ class KamereonResponse(BaseModel):
 class KamereonPersonAccount(BaseModel):
     """Kamereon person account data."""
 
-    accountId: Optional[str]  # noqa: N815
-    accountType: Optional[str]  # noqa: N815
-    accountStatus: Optional[str]  # noqa: N815
+    accountId: Optional[str]
+    accountType: Optional[str]
+    accountStatus: Optional[str]
 
 
 @dataclass
@@ -147,12 +147,12 @@ class KamereonVehicleDetails(BaseModel):
     """Kamereon vehicle details."""
 
     vin: Optional[str]
-    registrationNumber: Optional[str]  # noqa: N815
-    radioCode: Optional[str]  # noqa: N815
+    registrationNumber: Optional[str]
+    radioCode: Optional[str]
     brand: Optional[KamereonVehicleDetailsGroup]
     model: Optional[KamereonVehicleDetailsGroup]
     energy: Optional[KamereonVehicleDetailsGroup]
-    engineEnergyType: Optional[str]  # noqa: N815
+    engineEnergyType: Optional[str]
 
     def get_energy_code(self) -> Optional[str]:
         """Return vehicle energy code."""
@@ -221,16 +221,16 @@ class KamereonVehiclesLink(BaseModel):
     """Kamereon vehicles link data."""
 
     vin: Optional[str]
-    vehicleDetails: Optional[KamereonVehicleDetails]  # noqa: N815
+    vehicleDetails: Optional[KamereonVehicleDetails]
 
 
 @dataclass
 class KamereonVehiclesResponse(KamereonResponse):
     """Kamereon response to GET on /accounts/{account_id}/vehicles."""
 
-    accountId: Optional[str]  # noqa: N815
+    accountId: Optional[str]
     country: Optional[str]
-    vehicleLinks: Optional[List[KamereonVehiclesLink]]  # noqa: N815
+    vehicleLinks: Optional[List[KamereonVehiclesLink]]
 
 
 @dataclass
@@ -248,14 +248,14 @@ class KamereonVehicleContract(BaseModel):
     """Kamereon vehicle contract."""
 
     type: Optional[str]
-    contractId: Optional[str]  # noqa: N815
+    contractId: Optional[str]
     code: Optional[str]
     group: Optional[str]
-    durationMonths: Optional[int]  # noqa: N815
-    startDate: Optional[str]  # noqa: N815
-    endDate: Optional[str]  # noqa: N815
+    durationMonths: Optional[int]
+    startDate: Optional[str]
+    endDate: Optional[str]
     status: Optional[str]
-    statusLabel: Optional[str]  # noqa: N815
+    statusLabel: Optional[str]
     description: Optional[str]
 
 
@@ -263,7 +263,7 @@ class KamereonVehicleContract(BaseModel):
 class KamereonVehicleContractsResponse(KamereonResponse):
     """Kamereon response to GET on /accounts/{accountId}/vehicles/{vin}/contracts."""
 
-    contractList: Optional[List[KamereonVehicleContract]]  # noqa: N815
+    contractList: Optional[List[KamereonVehicleContract]]
 
 
 @dataclass
@@ -295,15 +295,15 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
     """Kamereon vehicle battery-status data."""
 
     timestamp: Optional[str]
-    batteryLevel: Optional[int]  # noqa: N815
-    batteryTemperature: Optional[int]  # noqa: N815
-    batteryAutonomy: Optional[int]  # noqa: N815
-    batteryCapacity: Optional[int]  # noqa: N815
-    batteryAvailableEnergy: Optional[int]  # noqa: N815
-    plugStatus: Optional[int]  # noqa: N815
-    chargingStatus: Optional[float]  # noqa: N815
-    chargingRemainingTime: Optional[int]  # noqa: N815
-    chargingInstantaneousPower: Optional[float]  # noqa: N815
+    batteryLevel: Optional[int]
+    batteryTemperature: Optional[int]
+    batteryAutonomy: Optional[int]
+    batteryCapacity: Optional[int]
+    batteryAvailableEnergy: Optional[int]
+    plugStatus: Optional[int]
+    chargingStatus: Optional[float]
+    chargingRemainingTime: Optional[int]
+    chargingInstantaneousPower: Optional[float]
 
     def get_plug_status(self) -> Optional[enums.PlugState]:
         """Return plug status."""
@@ -338,36 +338,36 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
 class KamereonVehicleLocationData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data location attributes."""
 
-    lastUpdateTime: Optional[str]  # noqa: N815
-    gpsLatitude: Optional[float]  # noqa: N815
-    gpsLongitude: Optional[float]  # noqa: N815
+    lastUpdateTime: Optional[str]
+    gpsLatitude: Optional[float]
+    gpsLongitude: Optional[float]
 
 
 @dataclass
 class KamereonVehicleHvacStatusData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data hvac-status attributes."""
 
-    lastUpdateTime: Optional[str]  # noqa: N815
-    externalTemperature: Optional[float]  # noqa: N815
-    hvacStatus: Optional[str]  # noqa: N815
-    nextHvacStartDate: Optional[str]  # noqa: N815
-    socThreshold: Optional[float]  # noqa: N815
+    lastUpdateTime: Optional[str]
+    externalTemperature: Optional[float]
+    hvacStatus: Optional[str]
+    nextHvacStartDate: Optional[str]
+    socThreshold: Optional[float]
 
 
 @dataclass
 class KamereonVehicleChargeModeData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data charge-mode attributes."""
 
-    chargeMode: Optional[str]  # noqa: N815
+    chargeMode: Optional[str]
 
 
 @dataclass
 class KamereonVehicleCockpitData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data cockpit attributes."""
 
-    fuelAutonomy: Optional[float]  # noqa: N815
-    fuelQuantity: Optional[float]  # noqa: N815
-    totalMileage: Optional[float]  # noqa: N815
+    fuelAutonomy: Optional[float]
+    fuelQuantity: Optional[float]
+    totalMileage: Optional[float]
 
 
 @dataclass
@@ -379,7 +379,7 @@ class KamereonVehicleLockStatusData(KamereonVehicleDataAttributes):
 class ChargeDaySchedule(BaseModel):
     """Kamereon vehicle charge schedule for day."""
 
-    startTime: Optional[str]  # noqa: N815
+    startTime: Optional[str]
     duration: Optional[int]
 
     def for_json(self) -> Dict[str, Any]:
@@ -429,7 +429,7 @@ class ChargeSchedule(BaseModel):
 class HvacDaySchedule(BaseModel):
     """Kamereon vehicle hvac schedule for day."""
 
-    readyAtTime: Optional[str]  # noqa: N815
+    readyAtTime: Optional[str]
 
     def for_json(self) -> Dict[str, Optional[str]]:
         """Create dict for json."""
