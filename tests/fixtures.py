@@ -236,7 +236,7 @@ def inject_get_location(mocked_responses: aioresponses) -> str:
     )
 
 
-def inject_get_hvac_status(mocked_responses: aioresponses, vehicle: str) -> str:
+def inject_get_hvac_status(mocked_responses: aioresponses, vehicle: str = "zoe") -> str:
     """Inject sample hvac-status."""
     urlpath = f"{ADAPTER_PATH}/hvac-status?{DEFAULT_QUERY_STRING}"
     filename = f"vehicle_data/hvac-status.{vehicle}.json"
