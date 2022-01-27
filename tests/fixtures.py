@@ -2,7 +2,7 @@
 import datetime
 import json
 from glob import glob
-from os.path import exists
+from os import path
 from typing import Any
 from typing import List
 from typing import Optional
@@ -240,7 +240,7 @@ def inject_get_hvac_status(mocked_responses: aioresponses, vehicle: str = "zoe")
     """Inject sample hvac-status."""
     urlpath = f"{ADAPTER_PATH}/hvac-status?{DEFAULT_QUERY_STRING}"
     filename = f"vehicle_data/hvac-status.{vehicle}.json"
-    if not exists(filename):
+    if not path.exists(filename):
         filename = "vehicle_data/hvac-status.zoe.json"
     return inject_data(
         mocked_responses,
