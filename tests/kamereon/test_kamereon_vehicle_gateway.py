@@ -18,4 +18,6 @@ def test_vehicles_response(filename: str) -> None:
     )
     response.raise_for_error_code()
     fixtures.ensure_redacted(response.raw_data, [*TO_REDACT, "id"])
+    assert response.data
+    assert response.data.attributes
     fixtures.ensure_redacted(response.data.attributes)
