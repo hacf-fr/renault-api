@@ -379,6 +379,33 @@ class KamereonVehicleLockStatusData(KamereonVehicleDataAttributes):
 class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data hvac-status attributes."""
 
+    vin: Optional[str]
+    vehicleId: Optional[int]
+    batteryCode: Optional[str]
+    brand: Optional[str]
+    canGeneration: Optional[str]
+    carGateway: Optional[str]
+    deliveryCountry: Optional[str]
+    deliveryDate:Optional[str]
+    energy: Optional[str]
+    engineType: Optional[str]
+    familyCode: Optional[str]
+    firstRegistrationDate: Optional[str]
+    gearbox: Optional[str]
+    modelCode: Optional[str]
+    modelCodeDetail: Optional[str]
+    modelName: Optional[str]
+    radioType: Optional[str]
+    region: Optional[str]
+    registrationCountry: Optional[str]
+    registrationNumber: Optional[str]
+    tcuCode: Optional[str]
+    versionCode: Optional[str]
+    privacyMode: Optional[str]
+    privacyModeUpdateDate: Optional[str]
+    svtFlag: Optional[bool]
+    svtBlockFlag: Optional[bool]
+
 
 @dataclass
 class ChargeDaySchedule(BaseModel):
