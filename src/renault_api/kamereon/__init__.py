@@ -260,6 +260,7 @@ async def get_vehicle_details(
         ),
     )
 
+
 async def get_car_adapter(
     websession: aiohttp.ClientSession,
     root_url: str,
@@ -270,7 +271,10 @@ async def get_car_adapter(
     vin: str,
 ) -> models.KamereonVehicleDataResponse:
     """GET to /accounts/{account_id}/kamereon/kca/car-adapter/v2/cars/{vin}."""
-    url = f"{get_account_url(root_url, account_id)}/kamereon/kca/car-adapter/v2/cars/{vin}"
+    url = (
+        f"{get_account_url(root_url, account_id)}"
+        f"/kamereon/kca/car-adapter/v2/cars/{vin}"
+    )
     params = {"country": country}
     return cast(
         models.KamereonVehicleDataResponse,
@@ -284,6 +288,7 @@ async def get_car_adapter(
             schema=schemas.KamereonVehicleDataResponseSchema,
         ),
     )
+
 
 def _get_endpoint_version(endpoint_details: Dict[str, Any]) -> int:
     return int(endpoint_details["version"])

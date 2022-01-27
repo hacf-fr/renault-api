@@ -103,12 +103,10 @@ class RenaultVehicle:
         response = await self.session.get_car_adapter(
             account_id=self.account_id,
             vin=self.vin,
-        )        
+        )
         self._car_adapter = cast(
             models.KamereonVehicleCarAdapterData,
-            response.get_attributes(
-                schemas.KamereonVehicleCarAdapterDataSchema
-            ),
+            response.get_attributes(schemas.KamereonVehicleCarAdapterDataSchema),
         )
         return self._car_adapter
 

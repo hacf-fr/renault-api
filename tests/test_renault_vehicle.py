@@ -61,6 +61,7 @@ async def test_get_details(
     # Ensure second call still works (ie. use cached value)
     assert await vehicle.get_details()
 
+
 @pytest.mark.asyncio
 async def test_get_car_adapter(
     vehicle: RenaultVehicle, mocked_responses: aioresponses

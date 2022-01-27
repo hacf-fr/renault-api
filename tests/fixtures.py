@@ -202,10 +202,12 @@ def inject_get_vehicle_details(mocked_responses: aioresponses, vehicle: str) -> 
         body=json.dumps(body["vehicleLinks"][0]["vehicleDetails"]),
     )
 
+
 def inject_get_car_adapter(mocked_responses: aioresponses, vehicle: str) -> str:
     """Inject sample vehicles."""
     urlpath = (
-        f"accounts/{TEST_ACCOUNT_ID}/kamereon/kca/car-adapter/v2/cars/{TEST_VIN}?{DEFAULT_QUERY_STRING}"
+        f"accounts/{TEST_ACCOUNT_ID}"
+        f"/kamereon/kca/car-adapter/v2/cars/{TEST_VIN}?{DEFAULT_QUERY_STRING}"
     )
     filename = f"vehicle_gateway/{vehicle}"
     return inject_data(
