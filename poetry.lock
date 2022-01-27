@@ -60,11 +60,11 @@ python-versions = "*"
 
 [[package]]
 name = "aspy.refactor-imports"
-version = "2.1.1"
+version = "2.2.1"
 description = "Utilities for refactoring imports in python-like syntax."
 category = "dev"
 optional = false
-python-versions = ">=3.6.1"
+python-versions = ">=3.7"
 
 [package.dependencies]
 cached-property = "*"
@@ -832,14 +832,14 @@ python-versions = "*"
 
 [[package]]
 name = "reorder-python-imports"
-version = "2.6.0"
+version = "2.7.1"
 description = "Tool for reordering python imports"
 category = "dev"
 optional = false
-python-versions = ">=3.6.1"
+python-versions = ">=3.7"
 
 [package.dependencies]
-"aspy.refactor-imports" = ">=2.1.0"
+"aspy.refactor-imports" = ">=2.2.1"
 
 [[package]]
 name = "requests"
@@ -1258,7 +1258,7 @@ cli = ["click", "tabulate", "dateparser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.1"
-content-hash = "74924b02c1640c3e048282d5b9eb01b10ca6c69221af0351434d323a9ffbfe94"
+content-hash = "da9c4fffc70789b86abc3e1036563d34456a3d7f066598d2d71e664d7cfefd1b"
 
 [metadata.files]
 aiohttp = [
@@ -1352,8 +1352,8 @@ appdirs = [
     {file = "appdirs-1.4.4.tar.gz", hash = "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41"},
 ]
 "aspy.refactor-imports" = [
-    {file = "aspy.refactor_imports-2.1.1-py2.py3-none-any.whl", hash = "sha256:9df76bf19ef81620068b785a386740ab3c8939fcbdcebf20c4a4e0057230d782"},
-    {file = "aspy.refactor_imports-2.1.1.tar.gz", hash = "sha256:eec8d1a73bedf64ffb8b589ad919a030c1fb14acf7d1ce0ab192f6eedae895c5"},
+    {file = "aspy.refactor_imports-2.2.1-py2.py3-none-any.whl", hash = "sha256:ace9ca78abf6cfdd20ea1a321b75b20c8cc2c1af58aecb9dc4ba9d6f70f74645"},
+    {file = "aspy.refactor_imports-2.2.1.tar.gz", hash = "sha256:f5b2fcbf9fd68361168588f14eda64d502d029eefe632d15094cd0683ae12984"},
 ]
 async-timeout = [
     {file = "async-timeout-4.0.1.tar.gz", hash = "sha256:b930cb161a39042f9222f6efb7301399c87eeab394727ec5437924a36d6eef51"},
@@ -1931,8 +1931,8 @@ regex = [
     {file = "regex-2021.11.10.tar.gz", hash = "sha256:f341ee2df0999bfdf7a95e448075effe0db212a59387de1a70690e4acb03d4c6"},
 ]
 reorder-python-imports = [
-    {file = "reorder_python_imports-2.6.0-py2.py3-none-any.whl", hash = "sha256:54a3afd594a3959b10f7eb8b54ef453eb2b5176eb7b01c111cb1893ff9a2c685"},
-    {file = "reorder_python_imports-2.6.0.tar.gz", hash = "sha256:f4dc03142bdb57625e64299aea80e9055ce0f8b719f8f19c217a487c9fa9379e"},
+    {file = "reorder_python_imports-2.7.1-py2.py3-none-any.whl", hash = "sha256:5477c008cd7a5f2dbe32a35e90d74b5a3427468731441f033034310e427143a3"},
+    {file = "reorder_python_imports-2.7.1.tar.gz", hash = "sha256:1ae34422f13f5a4b4669f340774909d721bfc0a8311973c70b3a50540b595bc5"},
 ]
 requests = [
     {file = "requests-2.25.0-py2.py3-none-any.whl", hash = "sha256:e786fa28d8c9154e6a4de5d46a1d921b8749f8b74e28bde23768e5e16eece998"},
