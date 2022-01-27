@@ -109,28 +109,16 @@ def test_vehicles_response(filename: str) -> None:
         filename, schemas.KamereonVehiclesResponseSchema
     )
     response.raise_for_error_code()
-    # Ensure the account id is hidden
-    assert response.accountId is not None
-    assert response.accountId.startswith("account-id")
+    fixtures.ensure_redacted(response.raw_data)
+
     assert response.vehicleLinks is not None
     for vehicle_link in response.vehicleLinks:
-        # Ensure the VIN and RegistrationNumber are hidden
-        assert vehicle_link.vin
-        assert vehicle_link.vin.startswith(
-            ("VF1AAAA", "UU1AAAA")
-        ), "Ensure vin is obfuscated."
+        fixtures.ensure_redacted(vehicle_link.raw_data)
 
         vehicle_details = vehicle_link.vehicleDetails
         assert vehicle_details
-        assert vehicle_details.vin
-        assert vehicle_details.vin.startswith(
-            ("VF1AAAA", "UU1AAAA")
-        ), "Ensure vin is obfuscated."
-        assert vehicle_details.registrationNumber
-        assert vehicle_details.registrationNumber.startswith(
-            "REG-"
-        ), "Ensure registrationNumber is obfuscated."
-        assert vehicle_details.radioCode == "1234", "Ensure radioCode is obfuscated."
+        fixtures.ensure_redacted(vehicle_details.raw_data)
+
         if os.path.basename(filename) in EXPECTED_SPECS:
             generated_specs = {
                 "get_brand_label": vehicle_details.get_brand_label(),
