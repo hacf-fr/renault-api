@@ -240,7 +240,6 @@ def inject_get_hvac_status(mocked_responses: aioresponses, vehicle: str) -> str:
     """Inject sample hvac-status."""
     urlpath = f"{ADAPTER_PATH}/hvac-status?{DEFAULT_QUERY_STRING}"
     filename = f"vehicle_data/hvac-status.{vehicle}.json"
-    print 
     if not path.exists(f"{KAMEREON_FIXTURE_PATH}/{filename}"):
         filename = "vehicle_data/hvac-status.zoe.json"
     return inject_data(
