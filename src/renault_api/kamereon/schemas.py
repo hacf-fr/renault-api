@@ -63,6 +63,11 @@ KamereonVehicleLockStatusDataSchema = marshmallow_dataclass.class_schema(
 )()
 
 
+KamereonVehicleCarAdapterDataSchema = marshmallow_dataclass.class_schema(
+    models.KamereonVehicleCarAdapterData, base_schema=BaseSchema
+)()
+
+
 KamereonVehicleChargingSettingsDataSchema = marshmallow_dataclass.class_schema(
     models.KamereonVehicleChargingSettingsData, base_schema=BaseSchema
 )()
