@@ -429,7 +429,7 @@ class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
     def reports_charging_power_in_watts(self) -> bool:
         """Return True if model reports chargingInstantaneousPower in watts."""
         # Default to False for unknown vehicles
-        if self.modelCodeDetail:
+        if self.carGateway:
             return GATEWAY_SPECIFICATIONS.get(self.carGateway, {}).get(
                 "reports-in-watts", False
             )
@@ -438,7 +438,7 @@ class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
     def supports_endpoint(self, endpoint: str) -> bool:
         """Return True if model supports specified endpoint."""
         # Default to True for unknown vehicles
-        if self.modelCodeDetail:
+        if self.carGateway:
             return GATEWAY_SPECIFICATIONS.get(self.carGateway, {}).get(
                 f"support-endpoint-{endpoint}", True
             )
