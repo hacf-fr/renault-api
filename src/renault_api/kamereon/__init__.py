@@ -18,6 +18,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 DATA_ENDPOINTS: Dict[str, Any] = {
+    "": {"version": 2},
     "battery-status": {"version": 2},
     "charge-history": {"version": 1},
     "charge-mode": {"version": 1},
@@ -261,35 +262,6 @@ async def get_vehicle_details(
     )
 
 
-async def get_car_adapter(
-    websession: aiohttp.ClientSession,
-    root_url: str,
-    api_key: str,
-    gigya_jwt: str,
-    country: str,
-    account_id: str,
-    vin: str,
-) -> models.KamereonVehicleDataResponse:
-    """GET to /accounts/{account_id}/kamereon/kca/car-adapter/v2/cars/{vin}."""
-    url = (
-        f"{get_account_url(root_url, account_id)}"
-        f"/kamereon/kca/car-adapter/v2/cars/{vin}"
-    )
-    params = {"country": country}
-    return cast(
-        models.KamereonVehicleDataResponse,
-        await request(
-            websession,
-            "GET",
-            url,
-            api_key,
-            gigya_jwt,
-            params=params,
-            schema=schemas.KamereonVehicleDataResponseSchema,
-        ),
-    )
-
-
 def _get_endpoint_version(endpoint_details: Dict[str, Any]) -> int:
     return int(endpoint_details["version"])
 
@@ -313,7 +285,7 @@ async def get_vehicle_data(
         version=endpoint_version or _get_endpoint_version(DATA_ENDPOINTS[endpoint]),
         vin=vin,
     )
-    url = f"{car_adapter_url}/{endpoint}"
+    url = f"{car_adapter_url}/{endpoint}" if endpoint else car_adapter_url
     params = params or {}
     params["country"] = country
     return cast(
