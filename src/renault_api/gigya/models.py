@@ -20,8 +20,8 @@ COMMON_ERRRORS: List[Dict[str, Any]] = [
 class GigyaResponse(BaseModel):
     """Gigya response."""
 
-    errorCode: int  # noqa: N815
-    errorDetails: Optional[str]  # noqa: N815
+    errorCode: int
+    errorDetails: Optional[str]
 
     def raise_for_error_code(self) -> None:
         """Checks the response information."""
@@ -37,14 +37,14 @@ class GigyaResponse(BaseModel):
 class GigyaLoginSessionInfo(BaseModel):
     """Gigya Login sessionInfo details."""
 
-    cookieValue: Optional[str]  # noqa: N815
+    cookieValue: Optional[str]
 
 
 @dataclass
 class GigyaLoginResponse(GigyaResponse):
     """Gigya response to POST on /accounts.login."""
 
-    sessionInfo: Optional[GigyaLoginSessionInfo]  # noqa: N815
+    sessionInfo: Optional[GigyaLoginSessionInfo]
 
     def get_session_cookie(self) -> str:
         """Return cookie value from session information."""
@@ -61,7 +61,7 @@ class GigyaLoginResponse(GigyaResponse):
 class GigyaGetAccountInfoData(BaseModel):
     """Gigya GetAccountInfo data details."""
 
-    personId: Optional[str]  # noqa: N815
+    personId: Optional[str]
 
 
 @dataclass
