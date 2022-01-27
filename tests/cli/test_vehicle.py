@@ -69,6 +69,7 @@ EXPECTED_STATUS = {
         "GPS Latitude      48.1234567\n"
         "GPS Longitude     11.1234567\n"
         "GPS last updated  2020-02-18 17:58:38\n"
+        "HVAC status       on\n"
         "----------------  -------------------------\n"
     ),
     "zoe_40.1.json": (
@@ -163,6 +164,10 @@ def test_vehicle_status(
         "captur_ii.2.json",
     ]:
         fixtures.inject_vehicle_status(mocked_responses, "captur_ii")
+    elif filename in [
+        "twingo_ze.1.json",
+    ]:
+        fixtures.inject_vehicle_status(mocked_responses, "twingo_ze")
     elif filename in [
         "zoe_50.1.json",
     ]:
