@@ -46,9 +46,6 @@ COMMON_ERRRORS: List[Dict[str, Any]] = [
 ]
 
 VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
-    "X071VE": {  # TWINGO III
-        "support-endpoint-hvac-status": False,
-    },
     "X101VE": {  # ZOE phase 1
         "reports-in-watts": True,
         "support-endpoint-location": False,

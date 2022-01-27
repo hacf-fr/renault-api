@@ -247,6 +247,8 @@ def inject_get_hvac_status(mocked_responses: aioresponses, vehicle: str) -> str:
     filename = f"vehicle_data/hvac-status.{vehicle}.json"
     if not path.exists(f"{KAMEREON_FIXTURE_PATH}/{filename}"):
         filename = "vehicle_data/hvac-status.zoe.json"
+        if vehicle in ["twingo_ze"]:
+            filename = "vehicle_data/hvac-status.zoe_50.json"
     return inject_data(
         mocked_responses,
         urlpath,
@@ -337,10 +339,13 @@ def inject_get_charging_settings(mocked_responses: aioresponses, type: str) -> s
 def inject_get_cockpit(mocked_responses: aioresponses, vehicle: str) -> str:
     """Inject sample cockpit."""
     urlpath = f"{ADAPTER2_PATH}/cockpit?{DEFAULT_QUERY_STRING}"
+    filename = f"vehicle_data/cockpit.{vehicle}.json"
+    if not path.exists(f"{KAMEREON_FIXTURE_PATH}/{filename}"):
+        filename = "vehicle_data/cockpit.zoe.json"
     return inject_data(
         mocked_responses,
         urlpath,
-        f"vehicle_data/cockpit.{vehicle}.json",
+        filename,
     )
 
 
