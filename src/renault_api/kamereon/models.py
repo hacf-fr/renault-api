@@ -376,6 +376,11 @@ class KamereonVehicleLockStatusData(KamereonVehicleDataAttributes):
 
 
 @dataclass
+class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle data hvac-status attributes."""
+
+
+@dataclass
 class ChargeDaySchedule(BaseModel):
     """Kamereon vehicle charge schedule for day."""
 
