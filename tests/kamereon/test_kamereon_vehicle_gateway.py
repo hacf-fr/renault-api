@@ -38,8 +38,9 @@ def test_vehicles_response(filename: str) -> None:
         del expected_specs["get_energy_code"]
         del expected_specs["get_model_code"]
         del expected_specs["get_model_label"]
+        power_in_watts = vehicle_data.reports_charging_power_in_watts()
         generated_specs = {
-            "reports_charging_power_in_watts": vehicle_data.reports_charging_power_in_watts(),  # noqa: B950
+            "reports_charging_power_in_watts": power_in_watts,
             "uses_electricity": vehicle_data.uses_electricity(),
             "uses_fuel": vehicle_data.uses_fuel(),
             "supports-hvac-status": vehicle_data.supports_endpoint("hvac-status"),
