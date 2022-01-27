@@ -54,6 +54,7 @@ VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
         "support-endpoint-location": False,
     },
     "X102VE": {  # ZOE phase 2
+        "support-endpoint-hvac-status": False,
         "warns-on-method-set_ac_stop": "Action `cancel` on endpoint `hvac-start` may not be supported on this model.",  # noqa
     },
     "XJB1SU": {  # CAPTUR II
