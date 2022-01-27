@@ -261,6 +261,35 @@ async def get_vehicle_details(
     )
 
 
+async def get_car_adapter(
+    websession: aiohttp.ClientSession,
+    root_url: str,
+    api_key: str,
+    gigya_jwt: str,
+    country: str,
+    account_id: str,
+    vin: str,
+) -> models.KamereonVehicleDataResponse:
+    """GET to /accounts/{account_id}/kamereon/kca/car-adapter/v2/cars/{vin}."""
+    url = (
+        f"{get_account_url(root_url, account_id)}"
+        f"/kamereon/kca/car-adapter/v2/cars/{vin}"
+    )
+    params = {"country": country}
+    return cast(
+        models.KamereonVehicleDataResponse,
+        await request(
+            websession,
+            "GET",
+            url,
+            api_key,
+            gigya_jwt,
+            params=params,
+            schema=schemas.KamereonVehicleDataResponseSchema,
+        ),
+    )
+
+
 def _get_endpoint_version(endpoint_details: Dict[str, Any]) -> int:
     return int(endpoint_details["version"])
 

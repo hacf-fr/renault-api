@@ -41,11 +41,13 @@ class RenaultVehicle:
         locale_details: Optional[Dict[str, str]] = None,
         credential_store: Optional[CredentialStore] = None,
         vehicle_details: Optional[models.KamereonVehicleDetails] = None,
+        car_adapter: Optional[models.KamereonVehicleCarAdapterData] = None,
     ) -> None:
         """Initialise Renault vehicle."""
         self._account_id = account_id
         self._vin = vin
         self._vehicle_details = vehicle_details
+        self._car_adapter = car_adapter
         self._contracts: Optional[List[models.KamereonVehicleContract]] = None
 
         if session:
@@ -79,7 +81,7 @@ class RenaultVehicle:
         return self._vin
 
     async def get_details(self) -> models.KamereonVehicleDetails:
-        """Get vehicle battery status."""
+        """Get vehicle details."""
         if self._vehicle_details:
             return self._vehicle_details
 
@@ -92,6 +94,21 @@ class RenaultVehicle:
             response,
         )
         return self._vehicle_details
+
+    async def get_car_adapter(self) -> models.KamereonVehicleCarAdapterData:
+        """Get vehicle car adapter details."""
+        if self._car_adapter:
+            return self._car_adapter
+
+        response = await self.session.get_car_adapter(
+            account_id=self.account_id,
+            vin=self.vin,
+        )
+        self._car_adapter = cast(
+            models.KamereonVehicleCarAdapterData,
+            response.get_attributes(schemas.KamereonVehicleCarAdapterDataSchema),
+        )
+        return self._car_adapter
 
     async def get_contracts(self) -> List[models.KamereonVehicleContract]:
         """Get vehicle contracts."""

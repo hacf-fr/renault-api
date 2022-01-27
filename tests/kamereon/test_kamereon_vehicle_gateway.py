@@ -1,8 +1,13 @@
 """Tests for Kamereon models."""
+import os
+from copy import deepcopy
+from typing import cast
+
 import pytest
 from tests import fixtures
 from tests.const import TO_REDACT
 
+from .test_kamereon_vehicle_details import EXPECTED_SPECS
 from renault_api.kamereon import models
 from renault_api.kamereon import schemas
 
@@ -21,3 +26,24 @@ def test_vehicles_response(filename: str) -> None:
     assert response.data
     assert response.data.attributes
     fixtures.ensure_redacted(response.data.attributes)
+
+    vehicle_data = cast(
+        models.KamereonVehicleCarAdapterData,
+        response.get_attributes(schemas.KamereonVehicleCarAdapterDataSchema),
+    )
+
+    if os.path.basename(filename) in EXPECTED_SPECS:
+        expected_specs = deepcopy(EXPECTED_SPECS[os.path.basename(filename)])
+        del expected_specs["get_brand_label"]
+        del expected_specs["get_energy_code"]
+        del expected_specs["get_model_code"]
+        del expected_specs["get_model_label"]
+        power_in_watts = vehicle_data.reports_charging_power_in_watts()
+        generated_specs = {
+            "reports_charging_power_in_watts": power_in_watts,
+            "uses_electricity": vehicle_data.uses_electricity(),
+            "uses_fuel": vehicle_data.uses_fuel(),
+            "supports-hvac-status": vehicle_data.supports_endpoint("hvac-status"),
+            "supports-location": vehicle_data.supports_endpoint("location"),
+        }
+        assert expected_specs == generated_specs

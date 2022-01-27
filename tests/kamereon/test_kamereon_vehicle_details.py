@@ -120,12 +120,13 @@ def test_vehicles_response(filename: str) -> None:
         fixtures.ensure_redacted(vehicle_details.raw_data)
 
         if os.path.basename(filename) in EXPECTED_SPECS:
+            power_in_watts = vehicle_details.reports_charging_power_in_watts()
             generated_specs = {
                 "get_brand_label": vehicle_details.get_brand_label(),
                 "get_energy_code": vehicle_details.get_energy_code(),
                 "get_model_code": vehicle_details.get_model_code(),
                 "get_model_label": vehicle_details.get_model_label(),
-                "reports_charging_power_in_watts": vehicle_details.reports_charging_power_in_watts(),  # noqa: B950
+                "reports_charging_power_in_watts": power_in_watts,
                 "uses_electricity": vehicle_details.uses_electricity(),
                 "uses_fuel": vehicle_details.uses_fuel(),
                 "supports-hvac-status": vehicle_details.supports_endpoint(

@@ -63,6 +63,18 @@ async def test_get_details(
 
 
 @pytest.mark.asyncio
+async def test_get_car_adapter(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
+    """Test get_details."""
+    fixtures.inject_get_car_adapter(mocked_responses, "zoe_40.1.json")
+    assert await vehicle.get_car_adapter()
+
+    # Ensure second call still works (ie. use cached value)
+    assert await vehicle.get_car_adapter()
+
+
+@pytest.mark.asyncio
 async def test_get_contracts(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
