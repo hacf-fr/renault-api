@@ -123,15 +123,16 @@ async def test_get_hvac_status_zoe(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_hvac_status."""
-    fixtures.inject_get_hvac_status(mocked_responses,"zoe")
+    fixtures.inject_get_hvac_status(mocked_responses, "zoe")
     assert await vehicle.get_hvac_status()
+
 
 @pytest.mark.asyncio
 async def test_get_hvac_status_zoe50(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_hvac_status."""
-    fixtures.inject_get_hvac_status(mocked_responses,"zoe_50")
+    fixtures.inject_get_hvac_status(mocked_responses, "zoe_50")
     assert await vehicle.get_hvac_status()
 
 

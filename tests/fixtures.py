@@ -242,12 +242,10 @@ def inject_get_hvac_status(mocked_responses: aioresponses, vehicle: str) -> str:
     if "zoe" in vehicle:
         filename = f"hvac-status.{vehicle}.json"
     return inject_data(
-            mocked_responses,
-            urlpath,
-            f"vehicle_data/{filename}",
-        )
-    
-        
+        mocked_responses,
+        urlpath,
+        f"vehicle_data/{filename}",
+    )
 
 
 def inject_get_hvac_settings(mocked_responses: aioresponses) -> str:
@@ -414,6 +412,6 @@ def inject_vehicle_status(mocked_responses: aioresponses, vehicle: str) -> None:
     """Inject Kamereon vehicle status data."""
     inject_get_battery_status(mocked_responses)
     inject_get_location(mocked_responses)
-    inject_get_hvac_status(mocked_responses,vehicle)
+    inject_get_hvac_status(mocked_responses, vehicle)
     inject_get_charge_mode(mocked_responses)
     inject_get_cockpit(mocked_responses, vehicle)
