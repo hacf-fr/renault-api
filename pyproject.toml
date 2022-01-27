@@ -51,7 +51,7 @@ pre-commit-hooks = "^4.1.0"
 sphinx-rtd-theme = "^1.0.0"
 sphinx-click = "^3.0.2"
 Pygments = "^2.11.2"
-pytest-asyncio = "^0.16.0"
+pytest-asyncio = "^0.17.2"
 aioresponses = "^0.7.3"
 pytest-cov = "^3.0.0"
 #ensure urllib3 is greater than 1.26.5 to account for CVE-2021-33503
