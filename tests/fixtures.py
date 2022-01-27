@@ -423,9 +423,9 @@ def inject_vehicle_status(mocked_responses: aioresponses, vehicle: str) -> None:
 
 def ensure_redacted(data: Mapping[str, Any], to_redact: list[str] = TO_REDACT) -> None:
     """Ensure all PII keys are redacted."""
-    value: str
     for key in to_redact:
         if value := data.get(key):
+            assert isinstance(value, str)
             assert _is_redacted(key, value), f"Ensure {key} is redacted."
 
 
