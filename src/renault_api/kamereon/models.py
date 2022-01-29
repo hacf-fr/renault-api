@@ -62,6 +62,7 @@ VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
     },
     "XBG1VE": {  # DACIA SPRING
         "support-endpoint-hvac-status": True,
+        "pause-resume-via-kcm": True,  # Pause/Resume is for charging actions
     },
 }
 
@@ -218,6 +219,15 @@ class KamereonVehicleDetails(BaseModel):
                 f"warns-on-method-{method}", None
             )
         return None  # pragma: no cover
+
+    def uses_endpoint_via_kcm(self, endpoint: str) -> bool:
+        """Return True if model uses endpoint via kcm."""
+        # Default to False for unknown vehicles
+        if self.model and self.model.code:
+            return VEHICLE_SPECIFICATIONS.get(self.model.code, {}).get(
+                f"{endpoint}-via-kcm", False
+            )
+        return False  # pragma: no cover
 
 
 @dataclass
