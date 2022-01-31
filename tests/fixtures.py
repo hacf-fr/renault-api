@@ -185,7 +185,7 @@ def inject_get_vehicles(mocked_responses: aioresponses, vehicle: str) -> str:
     return inject_data(
         mocked_responses,
         urlpath,
-        f"vehicle_details/{vehicle}",
+        f"vehicles/{vehicle}",
     )
 
 
@@ -194,7 +194,7 @@ def inject_get_vehicle_details(mocked_responses: aioresponses, vehicle: str) -> 
     urlpath = (
         f"accounts/{TEST_ACCOUNT_ID}/vehicles/{TEST_VIN}/details?{DEFAULT_QUERY_STRING}"
     )
-    filename = f"vehicle_details/{vehicle}"
+    filename = f"vehicles/{vehicle}"
     body = json.loads(get_file_content(f"{KAMEREON_FIXTURE_PATH}/{filename}"))
     return inject_data(
         mocked_responses,

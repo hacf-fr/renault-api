@@ -37,7 +37,7 @@ def test_list_vehicles_prompt(
     fixtures.inject_data(
         mocked_responses,
         vehicle2_urlpath,
-        "vehicle_details/zoe_40.1.json",
+        "vehicles/zoe_40.1.json",
     )
 
     # Injected again for vehicle listing
