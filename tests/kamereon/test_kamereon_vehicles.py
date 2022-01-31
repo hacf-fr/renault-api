@@ -100,8 +100,7 @@ EXPECTED_SPECS = {
 
 
 @pytest.mark.parametrize(
-    "filename",
-    fixtures.get_json_files(f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_details"),
+    "filename", fixtures.get_json_files(f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicles")
 )
 def test_vehicles_response(filename: str) -> None:
     """Test vehicles list response."""
