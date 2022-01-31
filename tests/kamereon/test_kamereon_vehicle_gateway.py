@@ -7,7 +7,7 @@ import pytest
 from tests import fixtures
 from tests.const import TO_REDACT
 
-from .test_kamereon_vehicle_details import EXPECTED_SPECS
+from .test_kamereon_vehicles import EXPECTED_SPECS
 from renault_api.kamereon import models
 from renault_api.kamereon import schemas
 
