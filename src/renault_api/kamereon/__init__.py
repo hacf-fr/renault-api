@@ -310,8 +310,8 @@ async def set_vehicle_action(
     data_type: Optional[Dict[str, Any]] = None,
 ) -> models.KamereonVehicleDataResponse:
     """POST to /v{endpoint_version}/cars/{vin}/{endpoint}."""
-    # Deprecated in 0.1.8
     if "/" not in endpoint:
+        # Deprecated in 0.1.8
         warn(
             f"You should use the full endpoint: actions/{endpoint}.",
             DeprecationWarning,
