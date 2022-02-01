@@ -1,12 +1,8 @@
 """Tests for Kamereon models."""
-import os
-from copy import deepcopy
-
 import pytest
 from tests import fixtures
 from tests.const import TO_REDACT
 
-from .test_kamereon_vehicles import EXPECTED_SPECS
 from renault_api.kamereon import models
 from renault_api.kamereon import schemas
 
