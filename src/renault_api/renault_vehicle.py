@@ -525,7 +525,7 @@ class RenaultVehicle:
     async def set_charge_stop(self) -> models.KamereonVehicleChargingStartActionData:
         """Start vehicle charge."""
         # await self.warn_on_method("set_charge_stop")
-        attributes = {"action": "cancel"}
+        attributes = {"action": "stop"}
 
         response = await self.session.set_vehicle_action(
             account_id=self.account_id,
