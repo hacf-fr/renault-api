@@ -1,6 +1,7 @@
 """Tests for Kamereon models."""
+from os import path
 from copy import deepcopy
-import os
+
 import pytest
 from tests import fixtures
 from tests.const import TO_REDACT
@@ -25,8 +26,8 @@ def test_vehicle_details_response(filename: str) -> None:
     vehicle_details.raise_for_error_code()
     fixtures.ensure_redacted(vehicle_details.raw_data, [*TO_REDACT, "id"])
 
-    if os.path.basename(filename) in EXPECTED_SPECS:
-        expected_specs = deepcopy(EXPECTED_SPECS[os.path.basename(filename)])
+    if path.basename(filename) in EXPECTED_SPECS:
+        expected_specs = deepcopy(EXPECTED_SPECS[path.basename(filename)])
         del expected_specs["get_brand_label"]
         del expected_specs["get_energy_code"]
         del expected_specs["get_model_code"]
