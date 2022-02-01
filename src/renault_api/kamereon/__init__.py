@@ -18,7 +18,7 @@ from . import schemas
 _LOGGER = logging.getLogger(__name__)
 
 
-DATA_ENDPOINTS: Dict[str, Any] = {
+_KCA_GET_ENDPOINTS: Dict[str, Any] = {
     "": {"version": 2},
     "battery-status": {"version": 2},
     "charge-history": {"version": 1},
@@ -34,13 +34,17 @@ DATA_ENDPOINTS: Dict[str, Any] = {
     "lock-status": {"version": 1},
     "notification-settings": {"version": 1},
 }
-ACTION_ENDPOINTS: Dict[str, Any] = {
-    "charge-mode": {"version": 1, "type": "ChargeMode"},
-    "charge-schedule": {"version": 2, "type": "ChargeSchedule"},
-    "charging-start": {"version": 1, "type": "ChargingStart"},
-    "hvac-schedule": {"version": 2, "type": "HvacSchedule"},
-    "hvac-start": {"version": 1, "type": "HvacStart"},
+_KCA_POST_ENDPOINTS: Dict[str, Any] = {
+    "actions/charge-mode": {"version": 1, "type": "ChargeMode"},
+    "actions/charge-schedule": {"version": 2, "type": "ChargeSchedule"},
+    "actions/charging-start": {"version": 1, "type": "ChargingStart"},
+    "actions/hvac-schedule": {"version": 2, "type": "HvacSchedule"},
+    "actions/hvac-start": {"version": 1, "type": "HvacStart"},
 }
+
+# Deprecated from 0.1.8 - kept for compatibility
+DATA_ENDPOINTS = _KCA_GET_ENDPOINTS
+ACTION_ENDPOINTS = _KCA_POST_ENDPOINTS
 
 
 def get_commerce_url(root_url: str) -> str:
@@ -255,10 +259,6 @@ async def get_vehicle_details(
     )
 
 
-def _get_endpoint_version(endpoint_details: Dict[str, Any]) -> int:
-    return int(endpoint_details["version"])
-
-
 async def get_vehicle_data(
     websession: aiohttp.ClientSession,
     root_url: str,
@@ -272,10 +272,11 @@ async def get_vehicle_data(
     params: Optional[Dict[str, str]] = None,
 ) -> models.KamereonVehicleDataResponse:
     """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
+    endpoint_details = _KCA_GET_ENDPOINTS[endpoint]
     car_adapter_url = get_car_adapter_url(
         root_url=root_url,
         account_id=account_id,
-        version=endpoint_version or _get_endpoint_version(DATA_ENDPOINTS[endpoint]),
+        version=endpoint_version or int(endpoint_details["version"]),
         vin=vin,
     )
     url = f"{car_adapter_url}/{endpoint}" if endpoint else car_adapter_url
@@ -308,18 +309,28 @@ async def set_vehicle_action(
     endpoint_version: Optional[int] = None,
     data_type: Optional[Dict[str, Any]] = None,
 ) -> models.KamereonVehicleDataResponse:
-    """POST to /v{endpoint_version}/cars/{vin}/actions/{endpoint}."""
+    """POST to /v{endpoint_version}/cars/{vin}/{endpoint}."""
+    if "/" not in endpoint:
+        # Deprecated in 0.1.8
+        warn(
+            f"You should use the full endpoint: actions/{endpoint}.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        endpoint = f"actions/{endpoint}"
+
+    endpoint_details = _KCA_POST_ENDPOINTS[endpoint]
     car_adapter_url = get_car_adapter_url(
         root_url=root_url,
         account_id=account_id,
-        version=endpoint_version or _get_endpoint_version(ACTION_ENDPOINTS[endpoint]),
+        version=endpoint_version or int(endpoint_details["version"]),
         vin=vin,
     )
-    url = f"{car_adapter_url}/actions/{endpoint}"
+    url = f"{car_adapter_url}/{endpoint}"
     params = {"country": country}
     json = {
         "data": {
-            "type": data_type or ACTION_ENDPOINTS[endpoint]["type"],
+            "type": data_type or endpoint_details["type"],
             "attributes": attributes,
         }
     }
