@@ -446,3 +446,23 @@ def test_charging_start(mocked_responses: aioresponses, cli_runner: CliRunner) -
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
     assert expected_json == request.kwargs["json"]
     assert expected_output == result.output
+
+
+def test_charging_stop(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+    """It exits with a status code of zero."""
+    initialise_credential_store(include_account_id=True, include_vin=True)
+    url = fixtures.inject_set_charging_start(mocked_responses, "stop")
+
+    result = cli_runner.invoke(__main__.main, "charge stop")
+    assert result.exit_code == 0, result.exception
+
+    expected_json = {
+        "data": {
+            "attributes": {"action": "stop"},
+            "type": "ChargingStart",
+        }
+    }
+    expected_output = "{'action': 'stop'}\n"
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    assert expected_json == request.kwargs["json"]
+    assert expected_output == result.output

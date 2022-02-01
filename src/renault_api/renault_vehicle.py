@@ -522,6 +522,24 @@ class RenaultVehicle:
             ),
         )
 
+    async def set_charge_stop(self) -> models.KamereonVehicleChargingStartActionData:
+        """Start vehicle charge."""
+        # await self.warn_on_method("set_charge_stop")
+        attributes = {"action": "stop"}
+
+        response = await self.session.set_vehicle_action(
+            account_id=self.account_id,
+            vin=self.vin,
+            endpoint="charging-start",
+            attributes=attributes,
+        )
+        return cast(
+            models.KamereonVehicleChargingStartActionData,
+            response.get_attributes(
+                schemas.KamereonVehicleChargingStartActionDataSchema
+            ),
+        )
+
     async def supports_endpoint(self, endpoint: str) -> bool:
         """Check if vehicle supports endpoint."""
         details = await self.get_details()

@@ -49,3 +49,19 @@ async def start(
     )
     response = await vehicle.set_charge_start()
     click.echo(response.raw_data)
+
+
+@click.command()
+@click.pass_obj
+@helpers.coro_with_websession
+async def stop(
+    ctx_data: Dict[str, Any],
+    *,
+    websession: aiohttp.ClientSession,
+) -> None:
+    """Stop charge."""
+    vehicle = await renault_vehicle.get_vehicle(
+        websession=websession, ctx_data=ctx_data
+    )
+    response = await vehicle.set_charge_stop()
+    click.echo(response.raw_data)

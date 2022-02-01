@@ -13,6 +13,7 @@ def charge() -> None:
 
 
 charge.add_command(control.start)
+charge.add_command(control.stop)
 charge.add_command(control.mode)
 charge.add_command(history.history)
 charge.add_command(history.sessions)
