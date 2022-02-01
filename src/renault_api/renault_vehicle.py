@@ -505,13 +505,25 @@ class RenaultVehicle:
 
     async def set_charge_start(self) -> models.KamereonVehicleChargingStartActionData:
         """Start vehicle charge."""
-        # await self.warn_on_method("set_charge_start")
-        response = await self.session.set_vehicle_action(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="actions/charging-start",
-            attributes={"action": "start"},
-        )
+        details = await self.get_details()
+
+        if details.uses_endpoint_via_kcm("pause-resume"):
+            attributes = {"action": "resume"}
+            response = response = await self.session.set_vehicle_action(
+                account_id=self.account_id,
+                vin=self.vin,
+                endpoint="pause-resume",
+                attributes=attributes,
+                actions="charge",
+            )
+        else:
+            attributes = {"action": "start"}
+            response = await self.session.set_vehicle_action(
+                account_id=self.account_id,
+                vin=self.vin,
+                endpoint="charging-start",
+                attributes=attributes,
+            )
         return cast(
             models.KamereonVehicleChargingStartActionData,
             response.get_attributes(
@@ -540,15 +552,25 @@ class RenaultVehicle:
 
     async def set_charge_stop(self) -> models.KamereonVehicleChargingStartActionData:
         """Start vehicle charge."""
-        # await self.warn_on_method("set_charge_stop")
-        attributes = {"action": "stop"}
+        details = await self.get_details()
 
-        response = await self.session.set_vehicle_action(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="actions/charging-start",
-            attributes=attributes,
-        )
+        if details.uses_endpoint_via_kcm("pause-resume"):
+            attributes = {"action": "pause"}
+            response = response = await self.session.set_vehicle_action(
+                account_id=self.account_id,
+                vin=self.vin,
+                endpoint="pause-resume",
+                attributes=attributes,
+                actions="charge",
+            )
+        else:
+            attributes = {"action": "stop"}
+            response = await self.session.set_vehicle_action(
+                account_id=self.account_id,
+                vin=self.vin,
+                endpoint="charging-start",
+                attributes=attributes,
+            )
         return cast(
             models.KamereonVehicleChargingStartActionData,
             response.get_attributes(

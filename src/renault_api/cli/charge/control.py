@@ -47,11 +47,7 @@ async def start(
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
     )
-    details = await vehicle.get_details()
-    if details.get_model_code() == "XBG1VE":
-        response = await vehicle.set_charge_pause_resume("resume")
-    else:
-        response = await vehicle.set_charge_start()
+    response = await vehicle.set_charge_start()
     click.echo(response.raw_data)
 
 
@@ -67,9 +63,5 @@ async def stop(
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
     )
-    details = await vehicle.get_details()
-    if details.get_model_code() == "XBG1VE":
-        response = await vehicle.set_charge_pause_resume("pause")
-    else:
-        response = await vehicle.set_charge_stop()
+    response = await vehicle.set_charge_stop()
     click.echo(response.raw_data)

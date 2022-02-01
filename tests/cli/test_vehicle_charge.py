@@ -431,6 +431,7 @@ def test_charging_settings_deactivate(
 def test_charging_start(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     url = fixtures.inject_set_charging_start(mocked_responses, "start")
 
     result = cli_runner.invoke(__main__.main, "charge start")
@@ -451,6 +452,7 @@ def test_charging_start(mocked_responses: aioresponses, cli_runner: CliRunner) -
 def test_charging_stop(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     url = fixtures.inject_set_charging_start(mocked_responses, "stop")
 
     result = cli_runner.invoke(__main__.main, "charge stop")
