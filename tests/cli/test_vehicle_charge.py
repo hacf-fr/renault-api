@@ -457,18 +457,18 @@ def test_charging_stop(mocked_responses: aioresponses, cli_runner: CliRunner) ->
 
     # RENAULT
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
-    url = fixtures.inject_set_charging_start(mocked_responses, "pause")
+    url = fixtures.inject_set_charging_start(mocked_responses, "stop")
 
-    result = cli_runner.invoke(__main__.main, "charge start")
+    result = cli_runner.invoke(__main__.main, "charge stop")
     assert result.exit_code == 0, result.exception
 
     expected_json = {
         "data": {
-            "attributes": {"action": "pause"},
+            "attributes": {"action": "stop"},
             "type": "ChargingStart",
         }
     }
-    expected_output = "{'action': 'pause'}\n"
+    expected_output = "{'action': 'stop'}\n"
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
     assert expected_json == request.kwargs["json"]
     assert expected_output == result.output
