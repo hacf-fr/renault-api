@@ -6,13 +6,12 @@ from typing import cast
 from typing import Dict
 from typing import List
 from typing import Optional
+from warnings import warn
 
 import aiohttp
 
 from .credential_store import CredentialStore
 from .exceptions import RenaultException
-from .kamereon import get_required_contracts
-from .kamereon import has_required_contracts
 from .kamereon import models
 from .kamereon import schemas
 from .renault_session import RenaultSession
@@ -547,12 +546,10 @@ class RenaultVehicle:
 
     async def has_contract_for_endpoint(self, endpoint: str) -> bool:
         """Check if vehicle has contract for endpoint."""
-        required_contracts = get_required_contracts(endpoint)
-        if not required_contracts:  # pragma: no branch
-            return True
-
-        contracts = await self.get_contracts()  # pragma: no cover
-        return has_required_contracts(contracts, endpoint)  # pragma: no cover
+        # "Deprecated in 0.1.3, contract codes are country-specific"
+        # " and can't be used to guess requirements."
+        warn("This method is deprecated.", DeprecationWarning, stacklevel=2)
+        return True  # pragma: no cover
 
     async def warn_on_method(self, method: str) -> None:
         """Log a warning if the method requires it."""
