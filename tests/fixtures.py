@@ -194,6 +194,14 @@ def inject_get_vehicle_details(mocked_responses: aioresponses, vehicle: str) -> 
     urlpath = (
         f"accounts/{TEST_ACCOUNT_ID}/vehicles/{TEST_VIN}/details?{DEFAULT_QUERY_STRING}"
     )
+    filename = f"vehicle_details/{vehicle}"
+    if path.exists(f"{KAMEREON_FIXTURE_PATH}/{filename}"):
+        return inject_data(
+            mocked_responses,
+            urlpath,
+            filename,
+        )
+    # If we do not have a specific fixture, extract it from the vehicle list result
     filename = f"vehicles/{vehicle}"
     body = json.loads(get_file_content(f"{KAMEREON_FIXTURE_PATH}/{filename}"))
     return inject_data(
