@@ -176,8 +176,8 @@ class KamereonVehicleDetails(BaseModel):
 
     def uses_electricity(self) -> bool:
         """Return True if model uses electricity."""
-        energyType = self.engineEnergyType or self.get_energy_code()
-        if energyType in [
+        energy_type = self.engineEnergyType or self.get_energy_code()
+        if energy_type in [
             "ELEC",
             "PHEV",
         ]:
@@ -186,8 +186,8 @@ class KamereonVehicleDetails(BaseModel):
 
     def uses_fuel(self) -> bool:
         """Return True if model uses fuel."""
-        energyType = self.engineEnergyType or self.get_energy_code()
-        if energyType in [
+        energy_type = self.engineEnergyType or self.get_energy_code()
+        if energy_type in [
             "OTHER",
             "PHEV",
         ]:
