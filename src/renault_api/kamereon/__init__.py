@@ -259,10 +259,6 @@ async def get_vehicle_details(
     )
 
 
-def _get_endpoint_version(endpoint_details: Dict[str, Any]) -> int:
-    return int(endpoint_details["version"])
-
-
 async def get_vehicle_data(
     websession: aiohttp.ClientSession,
     root_url: str,
@@ -280,7 +276,7 @@ async def get_vehicle_data(
     car_adapter_url = get_car_adapter_url(
         root_url=root_url,
         account_id=account_id,
-        version=endpoint_version or _get_endpoint_version(endpoint_details),
+        version=endpoint_version or int(endpoint_details["version"]),
         vin=vin,
     )
     url = f"{car_adapter_url}/{endpoint}" if endpoint else car_adapter_url
@@ -327,7 +323,7 @@ async def set_vehicle_action(
     car_adapter_url = get_car_adapter_url(
         root_url=root_url,
         account_id=account_id,
-        version=endpoint_version or _get_endpoint_version(endpoint_details),
+        version=endpoint_version or int(endpoint_details["version"]),
         vin=vin,
     )
     url = f"{car_adapter_url}/{endpoint}"
