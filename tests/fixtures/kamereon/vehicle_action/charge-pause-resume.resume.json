@@ -1,7 +1,0 @@
-{
-  "data": {
-    "type": "ChargePauseResume",
-    "id": "guid",
-    "attributes": { "action": "resume" }
-  }
-}
