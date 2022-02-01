@@ -322,7 +322,6 @@ async def set_vehicle_action(
         version=endpoint_version or _get_endpoint_version(ACTION_ENDPOINTS[endpoint]),
         vin=vin,
     )
-
     url = f"{car_adapter_url}/actions/{endpoint}"
     params = {"country": country}
     json = {
