@@ -407,7 +407,7 @@ class RenaultVehicle:
         response = await self.session.set_vehicle_action(
             account_id=self.account_id,
             vin=self.vin,
-            endpoint="hvac-start",
+            endpoint="actions/hvac-start",
             attributes=attributes,
         )
         return cast(
@@ -423,7 +423,7 @@ class RenaultVehicle:
         response = await self.session.set_vehicle_action(
             account_id=self.account_id,
             vin=self.vin,
-            endpoint="hvac-start",
+            endpoint="actions/hvac-start",
             attributes=attributes,
         )
         return cast(
@@ -448,7 +448,7 @@ class RenaultVehicle:
         response = await self.session.set_vehicle_action(
             account_id=self.account_id,
             vin=self.vin,
-            endpoint="hvac-schedule",
+            endpoint="actions/hvac-schedule",
             attributes=attributes,
         )
         return cast(
@@ -475,7 +475,7 @@ class RenaultVehicle:
         response = await self.session.set_vehicle_action(
             account_id=self.account_id,
             vin=self.vin,
-            endpoint="charge-schedule",
+            endpoint="actions/charge-schedule",
             attributes=attributes,
         )
         return cast(
@@ -495,7 +495,7 @@ class RenaultVehicle:
         response = await self.session.set_vehicle_action(
             account_id=self.account_id,
             vin=self.vin,
-            endpoint="charge-mode",
+            endpoint="actions/charge-mode",
             attributes=attributes,
         )
         return cast(
@@ -511,7 +511,7 @@ class RenaultVehicle:
         response = await self.session.set_vehicle_action(
             account_id=self.account_id,
             vin=self.vin,
-            endpoint="charging-start",
+            endpoint="actions/charging-start",
             attributes=attributes,
         )
         return cast(
@@ -529,7 +529,7 @@ class RenaultVehicle:
         response = await self.session.set_vehicle_action(
             account_id=self.account_id,
             vin=self.vin,
-            endpoint="charging-start",
+            endpoint="actions/charging-start",
             attributes=attributes,
         )
         return cast(
