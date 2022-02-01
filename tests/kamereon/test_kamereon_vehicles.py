@@ -18,7 +18,7 @@ EXPECTED_SPECS = {
         "uses_fuel": True,
         "supports-hvac-status": False,
         "supports-location": True,
-        "charging-endpoints-uses-kcm": False,
+        "charge-uses-kcm": False,
     },
     "captur_ii.2.json": {
         "get_brand_label": "RENAULT",
@@ -30,7 +30,7 @@ EXPECTED_SPECS = {
         "uses_fuel": True,
         "supports-hvac-status": False,
         "supports-location": True,
-        "charging-endpoints-uses-kcm": False,
+        "charge-uses-kcm": False,
     },
     "duster.1.json": {
         "get_brand_label": "RENAULT",
@@ -42,7 +42,7 @@ EXPECTED_SPECS = {
         "uses_fuel": True,
         "supports-hvac-status": True,
         "supports-location": True,
-        "charging-endpoints-uses-kcm": False,
+        "charge-uses-kcm": False,
     },
     "twingo_ze.1.json": {
         "get_brand_label": "RENAULT",
@@ -54,7 +54,7 @@ EXPECTED_SPECS = {
         "uses_fuel": False,
         "supports-hvac-status": True,
         "supports-location": True,
-        "charging-endpoints-uses-kcm": False,
+        "charge-uses-kcm": False,
     },
     "zoe_40.1.json": {
         "get_brand_label": "RENAULT",
@@ -66,7 +66,7 @@ EXPECTED_SPECS = {
         "uses_fuel": False,
         "supports-hvac-status": True,
         "supports-location": False,
-        "charging-endpoints-uses-kcm": False,
+        "charge-uses-kcm": False,
     },
     "zoe_40.2.json": {
         "get_brand_label": "RENAULT",
@@ -78,7 +78,7 @@ EXPECTED_SPECS = {
         "uses_fuel": False,
         "supports-hvac-status": True,
         "supports-location": False,
-        "charging-endpoints-uses-kcm": False,
+        "charge-uses-kcm": False,
     },
     "zoe_50.1.json": {
         "get_brand_label": "RENAULT",
@@ -90,7 +90,7 @@ EXPECTED_SPECS = {
         "uses_fuel": False,
         "supports-hvac-status": True,
         "supports-location": True,
-        "charging-endpoints-uses-kcm": False,
+        "charge-uses-kcm": False,
     },
     "spring.1.json": {
         "get_brand_label": "DACIA",
@@ -102,7 +102,7 @@ EXPECTED_SPECS = {
         "uses_fuel": False,
         "supports-hvac-status": True,
         "supports-location": True,
-        "charging-endpoints-uses-kcm": True,
+        "charge-uses-kcm": True,
     },
 }
 
@@ -140,8 +140,6 @@ def test_vehicles_response(filename: str) -> None:
                     "hvac-status"
                 ),
                 "supports-location": vehicle_details.supports_endpoint("location"),
-                "charging-endpoints-uses-kcm": vehicle_details.uses_endpoint_via_kcm(
-                    "pause-resume"
-                ),
+                "charge-uses-kcm": vehicle_details.controls_action_via_kcm("charge"),
             }
             assert EXPECTED_SPECS[os.path.basename(filename)] == generated_specs

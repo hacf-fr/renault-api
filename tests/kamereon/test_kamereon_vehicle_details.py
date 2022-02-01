@@ -38,8 +38,6 @@ def test_vehicle_details_response(filename: str) -> None:
             "uses_fuel": vehicle_details.uses_fuel(),
             "supports-hvac-status": vehicle_details.supports_endpoint("hvac-status"),
             "supports-location": vehicle_details.supports_endpoint("location"),
-            "charging-endpoints-uses-kcm": vehicle_details.uses_endpoint_via_kcm(
-                "pause-resume"
-            ),
+            "charge-uses-kcm": vehicle_details.controls_action_via_kcm("charge"),
         }
         assert expected_specs == generated_specs
