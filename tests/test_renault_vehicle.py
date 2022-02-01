@@ -346,11 +346,11 @@ async def test_set_charge_schedules(
 
 
 @pytest.mark.asyncio
-async def test_set_charge_resume(
+async def test_set_kcm_charge_resume(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test set_charge_resume."""
-    url = fixtures.inject_set_charge_pause_resume(mocked_responses, "resume")
+    url = fixtures.inject_set_kcm_charge_pause_resume(mocked_responses, "resume")
 
     expected_json = {
         "data": {"type": "ChargePauseResume", "attributes": {"action": "resume"}}

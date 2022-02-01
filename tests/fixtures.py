@@ -410,13 +410,15 @@ def inject_set_charge_schedule(mocked_responses: aioresponses, result: str) -> s
     )
 
 
-def inject_set_charge_pause_resume(mocked_responses: aioresponses, result: str) -> str:
+def inject_set_kcm_charge_pause_resume(
+    mocked_responses: aioresponses, result: str
+) -> str:
     """Inject sample charge-pause-resume."""
     urlpath = f"{KCM_ADAPTER_PATH}/charge/pause-resume?{DEFAULT_QUERY_STRING}"
     return inject_action(
         mocked_responses,
         urlpath,
-        f"vehicle_action/charge-pause-resume.{result}.json",
+        f"vehicle_kcm_action/charge-pause-resume.{result}.json",
     )
 
 

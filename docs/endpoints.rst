@@ -41,7 +41,7 @@ Action endpoints
 .. include:: endpoints/vehicle_action.hvac-schedule.rst
 
 
-Specific Action endpoints
+KCM Action endpoints
 -------------------------
 
-.. include:: endpoints/vehicle_actions.charge-pause-resume.rst
+.. include:: endpoints/vehicle_kcm_actions.charge-pause-resume

@@ -458,6 +458,15 @@ class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
             )
         return True  # pragma: no cover
 
+    def uses_endpoint_via_kcm(self, endpoint: str) -> bool:
+        """Return True if model uses endpoint via kcm."""
+        # Default to False for unknown vehicles
+        if self.modelCodeDetail:
+            return VEHICLE_SPECIFICATIONS.get(self.modelCodeDetail, {}).get(
+                f"{endpoint}-via-kcm", False
+            )
+        return False  # pragma: no cover
+
 
 @dataclass
 class ChargeDaySchedule(BaseModel):
