@@ -512,16 +512,16 @@ class RenaultVehicle:
             response = response = await self.session.set_vehicle_action(
                 account_id=self.account_id,
                 vin=self.vin,
-                endpoint="pause-resume",
+                endpoint="charge/pause-resume",
                 attributes=attributes,
-                actions="charge",
+                adapter_type="kcm",
             )
         else:
             attributes = {"action": "start"}
             response = await self.session.set_vehicle_action(
                 account_id=self.account_id,
                 vin=self.vin,
-                endpoint="charging-start",
+                endpoint="actions/charging-start",
                 attributes=attributes,
             )
         return cast(
@@ -540,16 +540,16 @@ class RenaultVehicle:
             response = response = await self.session.set_vehicle_action(
                 account_id=self.account_id,
                 vin=self.vin,
-                endpoint="pause-resume",
+                endpoint="charge/pause-resume",
                 attributes=attributes,
-                actions="charge",
+                adapter_type="kcm",
             )
         else:
             attributes = {"action": "stop"}
             response = await self.session.set_vehicle_action(
                 account_id=self.account_id,
                 vin=self.vin,
-                endpoint="charging-start",
+                endpoint="actions/charging-start",
                 attributes=attributes,
             )
         return cast(

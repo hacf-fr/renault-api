@@ -84,31 +84,7 @@ async def test_set_vehicle_action(
         country=TEST_COUNTRY,
         account_id=TEST_ACCOUNT_ID,
         vin=TEST_VIN,
-        endpoint="hvac-start",
-        attributes={"action": "cancel"},
-    )
-
-    expected_json = {"data": {"type": "HvacStart", "attributes": {"action": "cancel"}}}
-
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
-
-
-@pytest.mark.asyncio
-async def test_set_vehicle_dacia_action(
-    websession: aiohttp.ClientSession, mocked_responses: aioresponses
-) -> None:
-    """Test set_vehicle_action."""
-    url = fixtures.inject_set_hvac_start(mocked_responses, "cancel")
-    assert await kamereon.set_vehicle_action(
-        websession=websession,
-        root_url=TEST_KAMEREON_URL,
-        api_key=TEST_KAMEREON_APIKEY,
-        gigya_jwt=fixtures.get_jwt(),
-        country=TEST_COUNTRY,
-        account_id=TEST_ACCOUNT_ID,
-        vin=TEST_VIN,
-        endpoint="hvac-start",
+        endpoint="actions/hvac-start",
         attributes={"action": "cancel"},
     )
 
