@@ -1,0 +1,70 @@
+{
+  "vin": "VF1AAAAA555777999",
+  "registrationDate": "2017-08-01",
+  "firstRegistrationDate": "2017-08-01",
+  "engineType": "5AQ",
+  "engineRatio": "601",
+  "modelSCR": "ZOE",
+  "deliveryCountry": { "code": "FR", "label": "FRANCE" },
+  "family": { "code": "X10", "label": "", "group": "007" },
+  "tcu": { "code": "TCU0G2", "label": "TCU VER 0 GEN 2", "group": "E70" },
+  "navigationAssistanceLevel": {
+    "code": "NAV3G5",
+    "label": "LEVEL 3 TYPE 5 NAVIGATION",
+    "group": "408"
+  },
+  "battery": { "code": "BT4AR1", "label": "BT4AR1 BATTERY", "group": "968" },
+  "radioType": { "code": "RAD37A", "label": "RADIO 37A", "group": "425" },
+  "registrationCountry": { "code": "FR" },
+  "brand": { "label": "RENAULT" },
+  "model": { "code": "X101VE", "label": "ZOE", "group": "971" },
+  "gearbox": {
+    "code": "BVEL",
+    "label": "ELECTRIC VARIATOR GEARBOX",
+    "group": "427"
+  },
+  "version": { "code": "INT MB 10R" },
+  "energy": { "code": "ELEC", "label": "ELECTRIC", "group": "019" },
+  "registrationNumber": "REG-NUMBER",
+  "vcd": "STANDA/X10/B10/EA2/MB/ELEC/DG/TEMP/TR4X2/RV/ABS/CAREG/LAC/VT003/CPE/RET03/SPROJA/RALU16/CEAVRH/AIRBA1/SERIE/DRA/DRAP08/HARM02/ATAR/TERQG/SFBANA/KM/DPRPN/AVREPL/SSDECA/ASRESP/RDAR02/ALEVA/CACBL2/SOP02C/CTHAB2/TRNOR/LVAVIP/LVAREL/SASURV/KTGREP/SGSCHA/APL03/ALOUCC/CMAR3P/NAV3G5/RAD37A/BVEL/AUTAUG/RNORM/ISOFIX/EQPEUR/HRGM01/SDPCLV/TLFRAN/SPRODI/SAN613/SSAPEX/GENEV1/ELC1/SANCML/PE2012/PHAS1/SAN913/045KWH/BT4AR1/VEC153/X101VE/NBT017/5AQ/SYTINC/SKTPOU/SAND41/FDIU1/SSESM/MAPSUP/SSCALL/SAND88/SAND90/SQKDRO/SDIFPA/FACBA2/PRLEX1/SSRCAR/CABDO2/TCU0G2/SWALBO/EVTEC1",
+  "assets": [
+    {
+      "assetType": "PICTURE",
+      "renditions": [
+        {
+          "resolutionType": "ONE_MYRENAULT_LARGE",
+          "url": "https://3dv.renault.com/ImageFromBookmark?configuration=STANDA%2FB10%2FEA2%2FDG%2FVT003%2FRET03%2FRALU16%2FDRAP08%2FHARM02%2FTERQG%2FRDAR02%2FALEVA%2FSOP02C%2FTRNOR%2FLVAVIP%2FLVAREL%2FNAV3G5%2FRAD37A%2FSDPCLV%2FTLFRAN%2FGENEV1%2FSAN913%2FBT4AR1%2FNBT017%2FSKTPOU%2FPRLEX1&databaseId=b4572adc-6c81-48ef-b4b1-2aff24ed7550&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_LARGE"
+        },
+        {
+          "resolutionType": "ONE_MYRENAULT_SMALL",
+          "url": "https://3dv.renault.com/ImageFromBookmark?configuration=STANDA%2FB10%2FEA2%2FDG%2FVT003%2FRET03%2FRALU16%2FDRAP08%2FHARM02%2FTERQG%2FRDAR02%2FALEVA%2FSOP02C%2FTRNOR%2FLVAVIP%2FLVAREL%2FNAV3G5%2FRAD37A%2FSDPCLV%2FTLFRAN%2FGENEV1%2FSAN913%2FBT4AR1%2FNBT017%2FSKTPOU%2FPRLEX1&databaseId=b4572adc-6c81-48ef-b4b1-2aff24ed7550&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+        }
+      ]
+    },
+    {
+      "assetType": "URL",
+      "assetRole": "GUIDE",
+      "title": "e-guide",
+      "description": "",
+      "renditions": [{ "url": "https://www.tutos-video.renault.fr/?id=zoe" }]
+    },
+    {
+      "assetType": "VIDEO",
+      "assetRole": "CAR",
+      "title": "Video 1",
+      "description": "",
+      "renditions": [{ "url": "dEjqEJeqTO8" }]
+    },
+    {
+      "assetType": "URL",
+      "assetRole": "CAR",
+      "title": "More videos",
+      "description": "",
+      "renditions": [{ "url": "https://www.tutos-video.renault.fr/?id=zoe" }]
+    }
+  ],
+  "yearsOfMaintenance": 12,
+  "deliveryDate": "2017-08-11",
+  "retrievedFromDhs": false,
+  "radioCode": "*PRIVATE*"
+}
