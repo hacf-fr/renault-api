@@ -6,6 +6,7 @@ from typing import cast
 from typing import Dict
 from typing import List
 from typing import Optional
+from warnings import warn
 
 import aiohttp
 from marshmallow.schema import Schema
@@ -69,29 +70,21 @@ def get_contracts_url(root_url: str, account_id: str, vin: str) -> str:
     return f"{account_url}/vehicles/{vin}/contracts"
 
 
-def get_required_contracts(endpoint: str) -> str:
+def get_required_contracts(endpoint: str) -> str:  # pragma: no cover
     """Get the required contracts for the specified endpoint."""
-    # Contract codes are country-specific and can't be used to guess requirements.
-    # Implementation was therefore removed in 0.1.3.
-    endpoints = ACTION_ENDPOINTS if endpoint.startswith("action") else DATA_ENDPOINTS
-    return str(endpoints.get(endpoint, {}).get("requires-contracts", ""))
+    # "Deprecated in 0.1.3, contract codes are country-specific"
+    # " and can't be used to guess requirements."
+    warn("This method is deprecated.", DeprecationWarning, stacklevel=2)
+    return ""
 
 
 def has_required_contracts(
     contracts: List[models.KamereonVehicleContract], endpoint: str
 ) -> bool:
     """Check if vehicle has contract for endpoint."""
-    required_contracts = get_required_contracts(endpoint)
-    if not required_contracts:  # pragma: no branch
-        return True
-
-    for required_contract in required_contracts.split(","):  # pragma: no cover
-        if required_contract and not any(
-            contract.code == required_contract and contract.status == "ACTIVE"
-            for contract in contracts
-        ):
-            return False
-
+    # "Deprecated in 0.1.3, contract codes are country-specific"
+    # " and can't be used to guess requirements."
+    warn("This method is deprecated.", DeprecationWarning, stacklevel=2)
     return True  # pragma: no cover
 
 
