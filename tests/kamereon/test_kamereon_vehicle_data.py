@@ -360,6 +360,7 @@ def test_lock_status() -> None:
     assert vehicle_data.hatchStatus == "closed"
     assert vehicle_data.lastUpdateTime == "2022-02-02T13:51:13Z"
 
+
 def test_charge_mode() -> None:
     """Test vehicle data for charge-mode.json."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
