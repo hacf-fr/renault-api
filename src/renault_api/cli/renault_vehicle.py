@@ -157,6 +157,7 @@ async def display_status(
     await update_charge_mode(vehicle, status_table)
     await update_cockpit(vehicle, status_table)
     await update_location(vehicle, status_table)
+    await update_lock_status(vehicle, status_table)
     await update_hvac_status(vehicle, status_table)
 
     click.echo(tabulate(status_table.items()))
@@ -286,6 +287,30 @@ async def update_location(
             ("GPS Latitude", response.gpsLatitude, None),
             ("GPS Longitude", response.gpsLongitude, None),
             ("GPS last updated", response.lastUpdateTime, "tzdatetime"),
+        ]
+
+        for key, value, unit in items:
+            update_status_table(status_table, key, value, unit)
+
+
+async def update_lock_status(
+    vehicle: RenaultVehicle, status_table: Dict[str, Any]
+) -> None:
+    """Update status table from get_vehicle_lock_status."""
+    try:
+        if not await vehicle.supports_endpoint("lock-status"):
+            return
+        if not await vehicle.has_contract_for_endpoint("lock-status"):  # pragma: no cover
+            update_status_table(status_table, "Lock status", "No contract.", None)
+            return
+        response = await vehicle.get_lock_status()
+    except QuotaLimitException as exc:  # pragma: no cover
+        raise click.ClickException(repr(exc)) from exc
+    except KamereonResponseException as exc:  # pragma: no cover
+        click.echo(f"lock status: {exc.error_details}", err=True)
+    else:
+        items = [
+            ("Lock status", response.lockStatus, None),
         ]
 
         for key, value, unit in items:
