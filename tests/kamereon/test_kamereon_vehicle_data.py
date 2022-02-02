@@ -329,9 +329,9 @@ def test_lock-status_v1() -> None:
 
     assert vehicle_data.lockStatus == "locked"
     assert vehicle_data.doorStatusRearLeft == "closed"
-	assert vehicle_data.doorStatusRearRight == "closed"
+    assert vehicle_data.doorStatusRearRight == "closed"
     assert vehicle_data.doorStatusDriver == "closed"
-	assert vehicle_data.doorStatusPassenger == "closed"
+    assert vehicle_data.doorStatusPassenger == "closed"
     assert vehicle_data.hatchStatus == "closed"
     assert vehicle_data.lastUpdateTime == "2022-02-02T13:51:13Z"
 
