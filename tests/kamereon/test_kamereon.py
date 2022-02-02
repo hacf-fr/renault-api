@@ -84,7 +84,7 @@ async def test_set_vehicle_action(
         country=TEST_COUNTRY,
         account_id=TEST_ACCOUNT_ID,
         vin=TEST_VIN,
-        endpoint="actions/hvac-start",
+        endpoint="hvac-start",
         attributes={"action": "cancel"},
     )
 
