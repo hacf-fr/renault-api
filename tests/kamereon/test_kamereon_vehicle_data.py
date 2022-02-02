@@ -328,10 +328,10 @@ def test_location_v2() -> None:
     assert vehicle_data.gpsLongitude == 11.1234567
     assert vehicle_data.lastUpdateTime == "2020-02-18T16:58:38Z"
 
-def test_lock_status_v1() -> None:
-    """Test lock-status for lock-status.1.json."""
+def test_lock_status() -> None:
+    """Test lock-status for lock-status.json."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
-        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/lock-status.1.json",
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/lock-status.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
