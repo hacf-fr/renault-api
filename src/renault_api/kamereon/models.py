@@ -387,7 +387,7 @@ class KamereonVehicleLockStatusData(KamereonVehicleDataAttributes):
     doorStatusPassenger: Optional[str]
     hatchStatus: Optional[str]
     lastUpdateTime: Optional[str]
-	
+
 
 @dataclass
 class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
