@@ -343,7 +343,7 @@ def test_lock_status() -> None:
         "doorStatusDriver": "closed",
         "doorStatusPassenger": "closed",
         "hatchStatus": "closed",
-        "lastUpdateTime": "2022-02-02T13:51:13Z"
+        "lastUpdateTime": "2022-02-02T13:51:13Z",
     }
 
     vehicle_data = cast(
