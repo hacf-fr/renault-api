@@ -375,7 +375,7 @@ def inject_get_lock_status(mocked_responses: aioresponses) -> str:
     return inject_data(
         mocked_responses,
         urlpath,
-        "vehicle_data/lock-status.json",
+        "vehicle_data/lock-status.1.json",
     )
 
 

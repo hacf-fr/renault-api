@@ -380,6 +380,14 @@ class KamereonVehicleCockpitData(KamereonVehicleDataAttributes):
 class KamereonVehicleLockStatusData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data lock-status attributes."""
 
+    lockStatus: Optional[str]
+    doorStatusRearLeft: Optional[str]
+    doorStatusRearRight: Optional[str]
+    doorStatusDriver: Optional[str]
+    doorStatusPassenger: Optional[str]
+    hatchStatus: Optional[str]
+    lastUpdateTime: Optional[str]
+
 
 @dataclass
 class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
