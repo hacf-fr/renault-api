@@ -6,7 +6,9 @@ lock-status
 Base url:
    ``/commerce/v1/accounts/{account_id}/kamereon/kca/car-adapter/v1/cars/{vin}/lock-status``
 
-Sample return:
-   Sample data is not yet available for this endpoint.
+Samples return:
+   .. literalinclude:: /../tests/fixtures/kamereon/vehicle_data/lock-status.1.json
+      :language: JSON
 
-   Please check the `Contributor Guide`_ to can provide a sample.
+   .. literalinclude:: /../tests/fixtures/kamereon/vehicle_data/lock-status.2.json
+      :language: JSON
