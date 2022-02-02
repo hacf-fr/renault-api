@@ -330,10 +330,10 @@ def test_location_v2() -> None:
     assert vehicle_data.lastUpdateTime == "2020-02-18T16:58:38Z"
 
 
-def test_lock_status() -> None:
-    """Test lock-status for lock-status.json."""
+def test_lock_status_locked() -> None:
+    """Test lock-status for lock-status.1.json."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
-        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/lock-status.json",
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/lock-status.1.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
@@ -354,6 +354,38 @@ def test_lock_status() -> None:
     )
 
     assert vehicle_data.lockStatus == "locked"
+    assert vehicle_data.doorStatusRearLeft == "closed"
+    assert vehicle_data.doorStatusRearRight == "closed"
+    assert vehicle_data.doorStatusDriver == "closed"
+    assert vehicle_data.doorStatusPassenger == "closed"
+    assert vehicle_data.hatchStatus == "closed"
+    assert vehicle_data.lastUpdateTime == "2022-02-02T13:51:13Z"
+
+
+def test_lock_status_unlocked() -> None:
+    """Test lock-status for lock-status.2.json."""
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/lock-status.2.json",
+        schemas.KamereonVehicleDataResponseSchema,
+    )
+    response.raise_for_error_code()
+    assert response.data is not None
+    assert response.data.raw_data["attributes"] == {
+        "lockStatus": "unlocked",
+        "doorStatusRearLeft": "closed",
+        "doorStatusRearRight": "closed",
+        "doorStatusDriver": "closed",
+        "doorStatusPassenger": "closed",
+        "hatchStatus": "closed",
+        "lastUpdateTime": "2022-02-02T13:51:13Z",
+    }
+
+    vehicle_data = cast(
+        models.KamereonVehicleLockStatusData,
+        response.get_attributes(schemas.KamereonVehicleLockStatusDataSchema),
+    )
+
+    assert vehicle_data.lockStatus == "unlocked"
     assert vehicle_data.doorStatusRearLeft == "closed"
     assert vehicle_data.doorStatusRearRight == "closed"
     assert vehicle_data.doorStatusDriver == "closed"
