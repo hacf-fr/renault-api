@@ -329,6 +329,7 @@ def test_location_v2() -> None:
     assert vehicle_data.gpsLongitude == 11.1234567
     assert vehicle_data.lastUpdateTime == "2020-02-18T16:58:38Z"
 
+
 def test_lock_status() -> None:
     """Test lock-status for lock-status.json."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
@@ -359,6 +360,7 @@ def test_lock_status() -> None:
     assert vehicle_data.doorStatusPassenger == "closed"
     assert vehicle_data.hatchStatus == "closed"
     assert vehicle_data.lastUpdateTime == "2022-02-02T13:51:13Z"
+
 
 def test_charge_mode() -> None:
     """Test vehicle data for charge-mode.json."""
