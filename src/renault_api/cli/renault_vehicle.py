@@ -307,7 +307,7 @@ async def update_lock_status(
         click.echo(f"lock status: {exc.error_details}", err=True)
     else:
         items = [
-            ("Lock status", response.lockStatus, None),
+            ("Lock Status", response.lockStatus, None),
         ]
 
         for key, value, unit in items:
