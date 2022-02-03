@@ -63,6 +63,7 @@ GATEWAY_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
     "GDC": {  # ZOE phase 1
         "reports-in-watts": True,
         "support-endpoint-location": False,
+        "support-endpoint-lock-status": False,
     },
 }
 
