@@ -57,9 +57,6 @@ VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
     "XJB1SU": {  # CAPTUR II
         "support-endpoint-hvac-status": False,
     },
-    "XJD1SU": {  # NEW DUSTER
-        "support-endpoint-hvac-start": False,
-    },
 }
 
 GATEWAY_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
