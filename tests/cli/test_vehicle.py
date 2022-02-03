@@ -39,6 +39,7 @@ EXPECTED_STATUS = {
         "GPS Latitude      48.1234567\n"
         "GPS Longitude     11.1234567\n"
         "GPS last updated  2020-02-18 17:58:38\n"
+        "Lock Status       locked"
         "----------------  -------------------\n"
     ),
     "captur_ii.2.json": (
@@ -55,6 +56,7 @@ EXPECTED_STATUS = {
         "GPS Latitude      48.1234567\n"
         "GPS Longitude     11.1234567\n"
         "GPS last updated  2020-02-18 17:58:38\n"
+        "Lock Status       locked"
         "----------------  -------------------------\n"
     ),
     "twingo_ze.1.json": (
@@ -69,6 +71,7 @@ EXPECTED_STATUS = {
         "GPS Latitude      48.1234567\n"
         "GPS Longitude     11.1234567\n"
         "GPS last updated  2020-02-18 17:58:38\n"
+        "Lock Status       locked"
         "HVAC status       on\n"
         "----------------  -------------------------\n"
     ),
@@ -112,6 +115,7 @@ EXPECTED_STATUS = {
         "GPS Latitude      48.1234567\n"
         "GPS Longitude     11.1234567\n"
         "GPS last updated  2020-02-18 17:58:38\n"
+        "Lock Status       locked"
         "HVAC status       on\n"
         "----------------  -------------------------\n"
     ),
