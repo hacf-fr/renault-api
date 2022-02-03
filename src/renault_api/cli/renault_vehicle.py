@@ -300,9 +300,6 @@ async def update_lock_status(
     try:
         if not await vehicle.supports_endpoint("lock-status"):
             return
-        if not await vehicle.has_contract_for_endpoint("lock-status"):  # pragma: no cover
-            update_status_table(status_table, "Lock status", "No contract.", None)
-            return
         response = await vehicle.get_lock_status()
     except QuotaLimitException as exc:  # pragma: no cover
         raise click.ClickException(repr(exc)) from exc
