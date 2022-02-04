@@ -214,6 +214,8 @@ class RenaultSession:
         vin: str,
         endpoint: str,
         params: Optional[Dict[str, str]] = None,
+        *,
+        adapter_type: str = "kca",
     ) -> models.KamereonVehicleDataResponse:
         """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
         return await kamereon.get_vehicle_data(
@@ -226,6 +228,7 @@ class RenaultSession:
             vin=vin,
             endpoint=endpoint,
             params=params,
+            adapter_type=adapter_type,
         )
 
     async def get_vehicle_contracts(
@@ -251,6 +254,8 @@ class RenaultSession:
         vin: str,
         endpoint: str,
         attributes: Dict[str, Any],
+        *,
+        adapter_type: str = "kca",
     ) -> models.KamereonVehicleDataResponse:
         """POST to /v{endpoint_version}/cars/{vin}/{endpoint}."""
         return await kamereon.set_vehicle_action(
@@ -263,4 +268,5 @@ class RenaultSession:
             vin=vin,
             endpoint=endpoint,
             attributes=attributes,
+            adapter_type=adapter_type,
         )

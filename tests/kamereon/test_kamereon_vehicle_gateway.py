@@ -45,5 +45,6 @@ def test_vehicles_response(filename: str) -> None:
             "uses_fuel": vehicle_data.uses_fuel(),
             "supports-hvac-status": vehicle_data.supports_endpoint("hvac-status"),
             "supports-location": vehicle_data.supports_endpoint("location"),
+            "charge-uses-kcm": vehicle_data.controls_action_via_kcm("charge"),
         }
         assert expected_specs == generated_specs
