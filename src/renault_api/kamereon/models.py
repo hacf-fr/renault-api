@@ -49,6 +49,7 @@ VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
     "X101VE": {  # ZOE phase 1
         "reports-in-watts": True,
         "support-endpoint-location": False,
+        "support-endpoint-lock-status": False,
     },
     "X102VE": {  # ZOE phase 2
         "warns-on-method-set_ac_stop": "Action `cancel` on endpoint `hvac-start` may not be supported on this model.",  # noqa
@@ -65,6 +66,7 @@ GATEWAY_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
     "GDC": {  # ZOE phase 1
         "reports-in-watts": True,
         "support-endpoint-location": False,
+        "support-endpoint-lock-status": False,
     },
 }
 
