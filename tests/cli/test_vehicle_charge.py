@@ -431,6 +431,7 @@ def test_charging_settings_deactivate(
 def test_charging_start(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     url = fixtures.inject_set_charging_start(mocked_responses, "start")
 
     result = cli_runner.invoke(__main__.main, "charge start")
@@ -451,6 +452,7 @@ def test_charging_start(mocked_responses: aioresponses, cli_runner: CliRunner) -
 def test_charging_stop(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     url = fixtures.inject_set_charging_start(mocked_responses, "stop")
 
     result = cli_runner.invoke(__main__.main, "charge stop")
@@ -463,6 +465,52 @@ def test_charging_stop(mocked_responses: aioresponses, cli_runner: CliRunner) ->
         }
     }
     expected_output = "{'action': 'stop'}\n"
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    assert expected_json == request.kwargs["json"]
+    assert expected_output == result.output
+
+
+def test_charging_dacia_start(
+    mocked_responses: aioresponses, cli_runner: CliRunner
+) -> None:
+    """It exits with a status code of zero."""
+    initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "spring.1.json")
+    url = fixtures.inject_set_kcm_charge_pause_resume(mocked_responses, "resume")
+
+    result = cli_runner.invoke(__main__.main, "charge start")
+    assert result.exit_code == 0, result.exception
+
+    expected_json = {
+        "data": {
+            "attributes": {"action": "resume"},
+            "type": "ChargePauseResume",
+        }
+    }
+    expected_output = "{'action': 'resume'}\n"
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    assert expected_json == request.kwargs["json"]
+    assert expected_output == result.output
+
+
+def test_charging_dacia_stop(
+    mocked_responses: aioresponses, cli_runner: CliRunner
+) -> None:
+    """It exits with a status code of zero."""
+    initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "spring.1.json")
+    url = fixtures.inject_set_kcm_charge_pause_resume(mocked_responses, "pause")
+
+    result = cli_runner.invoke(__main__.main, "charge stop")
+    assert result.exit_code == 0, result.exception
+
+    expected_json = {
+        "data": {
+            "attributes": {"action": "pause"},
+            "type": "ChargePauseResume",
+        }
+    }
+    expected_output = "{'action': 'pause'}\n"
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
     assert expected_json == request.kwargs["json"]
     assert expected_output == result.output
