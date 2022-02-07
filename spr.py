@@ -12,6 +12,7 @@ class AuthenticationFailed(Exception):
 
 # UserID is presumably gigya_person_id that can be found if execute "renault-api settings". The same ID is sent at the srp-set endpoint by android app, so probably that the right one
 UserID = "aaaaa11-2222-3333-4444-abcabcabc123"
+srpUser = UserID
 # AccountId is what returned if execute "renault-api accounts"
 AccountId = "eeeaa11-2222-3333-4444-abcabcabc000"
 # PinCode is the password used in SRP, and the only password that is requested in android in this flow is the Pin code.
@@ -21,7 +22,7 @@ vin = "X7LHABC1234567890"
 # country code
 Country = "US"
 
-usr = srp.User(UserID, PinCode)
+usr = srp.User(srpUser, PinCode)
 
 uname, A = usr.start_authentication()
 ParsedID = ""
