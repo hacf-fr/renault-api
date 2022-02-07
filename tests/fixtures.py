@@ -181,11 +181,15 @@ def inject_get_person(mocked_responses: aioresponses) -> str:
 
 def inject_get_notifications(mocked_responses: aioresponses) -> str:
     """Inject sample charges."""
-    urlpath = f"persons/{TEST_PERSON_ID}/notifications/kmr?notificationId=ffcb0310-503f-4bc3-9056-e9d051a089c6&{DEFAULT_QUERY_STRING}"
+    urlpath = (
+        f"persons/{TEST_PERSON_ID}/notifications/kmr?"
+        "notificationId=ffcb0310-503f-4bc3-9056-e9d051a089c6&"
+        f"{DEFAULT_QUERY_STRING}"
+    )
     return inject_data(
         mocked_responses,
         urlpath,
-        f"person/notifications.1.json",
+        "person/notifications.1.json",
     )
 
 
