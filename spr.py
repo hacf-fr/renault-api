@@ -18,6 +18,8 @@ AccountId = "eeeaa11-2222-3333-4444-abcabcabc000"
 PinCode = "0000"
 # vin of the car
 vin = "X7LHABC1234567890"
+# country code
+Country = "US"
 
 usr = srp.User(UserID, PinCode)
 
@@ -40,7 +42,9 @@ def res_state():
         + AccountId
         + "/kamereon/kca/car-adapter/v1/cars/"
         + vin
-        + '/res-state?country=RU"'
+        + '/res-state?country='
+        + Country
+        + '"'
     )
     stream = os.popen(strExec)
 
@@ -59,7 +63,7 @@ def srp_set():
         + AccountId
         + "/kamereon/kca/car-adapter/v1/cars/"
         + vin
-        + '/actions/srp-sets?country=RU\' \'{"data":{"type":"SrpSets","attributes":{"a":"'
+        + '/actions/srp-sets?country=' + Country + '\' \'{"data":{"type":"SrpSets","attributes":{"a":"'
         + A.hex().upper()
         + '","i":"'
         + UserID
@@ -166,7 +170,7 @@ def engine_start():
         + AccountId
         + "/kamereon/kca/car-adapter/v1/cars/"
         + vin
-        + '/actions/engine-start?country=RU\' \'{"data":{"type":"EngineStart","attributes":{"action":"start","srp":"'
+        + '/actions/engine-start?country='+ Country +'\' \'{"data":{"type":"EngineStart","attributes":{"action":"start","srp":"'
         + M.hex().upper()
         + "\"}}}'"
     )
