@@ -180,6 +180,20 @@ def inject_get_person(mocked_responses: aioresponses) -> str:
     )
 
 
+def inject_get_notifications(mocked_responses: aioresponses) -> str:
+    """Inject sample charges."""
+    urlpath = (
+        f"persons/{TEST_PERSON_ID}/notifications/kmr?"
+        "notificationId=ffcb0310-503f-4bc3-9056-e9d051a089c6&"
+        f"{DEFAULT_QUERY_STRING}"
+    )
+    return inject_data(
+        mocked_responses,
+        urlpath,
+        "person/notifications.1.json",
+    )
+
+
 def inject_get_vehicles(mocked_responses: aioresponses, vehicle: str) -> str:
     """Inject sample vehicles."""
     urlpath = f"accounts/{TEST_ACCOUNT_ID}/vehicles?{DEFAULT_QUERY_STRING}"

@@ -143,8 +143,8 @@ async def request(
 
         # Some endpoints return arrays instead of objects.
         # These need to be wrapped in an object.
-        if response_text.startswith("[") and wrap_array_in:
-            response_text = f'{{"{wrap_array_in}": {response_text}}}'
+        if response_text.startswith("["):
+            response_text = f'{{"{wrap_array_in or "data"}": {response_text}}}'
         kamereon_response: models.KamereonResponse = schema.loads(response_text)
         # Check for Kamereon error
         kamereon_response.raise_for_error_code()

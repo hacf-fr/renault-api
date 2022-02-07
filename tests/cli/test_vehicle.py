@@ -351,6 +351,43 @@ def test_http_get(mocked_responses: aioresponses, cli_runner: CliRunner) -> None
     assert expected_output == result.output
 
 
+def test_http_get_list(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+    """It exits with a status code of zero."""
+    credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
+    credential_store[CONF_LOCALE] = Credential(TEST_LOCALE)
+    credential_store[CONF_ACCOUNT_ID] = Credential(TEST_ACCOUNT_ID)
+    credential_store[CONF_VIN] = Credential(TEST_VIN)
+    credential_store[GIGYA_LOGIN_TOKEN] = Credential(TEST_LOGIN_TOKEN)
+    credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
+    credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
+
+    print(fixtures.inject_get_notifications(mocked_responses))
+
+    endpoint = (
+        "/commerce/v1/persons/person-id-1"
+        "/notifications/kmr?notificationId=ffcb0310-503f-4bc3-9056-e9d051a089c6"
+    )
+    result = cli_runner.invoke(
+        __main__.main,
+        f"http get {endpoint}",
+    )
+    assert result.exit_code == 0, result.exception
+
+    expected_output = (
+        "{'data': [{'notificationId': 'ffcb0310-503f-4bc3-9056-e9d051a089c6', "
+        "'notifDate': '2022-02-01T19:01:51.622', 'vin': '*PRIVATE*', "
+        "'personId': '*PRIVATE*', 'kmrUserId': '*PRIVATE*', "
+        "'actionType': 'COMMAND_RESPONSE', 'commandResponse': {'status': 'CREATED'}, "
+        "'commandType': 'SRP_SETS'}, "
+        "{'notificationId': 'ffcb0310-503f-4bc3-9056-e9d051a089c6', "
+        "'notifDate': '2022-02-01T19:01:51.623', 'vin': '*PRIVATE*', "
+        "'personId': '*PRIVATE*', 'kmrUserId': '*PRIVATE*', "
+        "'actionType': 'SRP_SALT_REQUEST', 'srpResponse': {'status': 'OK', 'loginB': "
+        "'*PRIVATE*', 'loginSalt': '*PRIVATE*'}}]}\n"
+    )
+    assert expected_output == result.output
+
+
 def test_http_post(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
