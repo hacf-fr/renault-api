@@ -1,0 +1,25 @@
+[
+  {
+    "notificationId": "ffcb0310-503f-4bc3-9056-e9d051a089c6",
+    "notifDate": "2022-02-01T19:01:51.622",
+    "vin": "*PRIVATE*",
+    "personId": "*PRIVATE*",
+    "kmrUserId": "*PRIVATE*",
+    "actionType": "COMMAND_RESPONSE",
+    "commandResponse": { "status": "CREATED" },
+    "commandType": "SRP_SETS"
+  },
+  {
+    "notificationId": "ffcb0310-503f-4bc3-9056-e9d051a089c6",
+    "notifDate": "2022-02-01T19:01:51.623",
+    "vin": "*PRIVATE*",
+    "personId": "*PRIVATE*",
+    "kmrUserId": "*PRIVATE*",
+    "actionType": "SRP_SALT_REQUEST",
+    "srpResponse": {
+      "status": "OK",
+      "loginB": "*PRIVATE*",
+      "loginSalt": "*PRIVATE*"
+    }
+  }
+]
