@@ -6,13 +6,12 @@ from typing import cast
 from typing import Dict
 from typing import List
 from typing import Optional
+from warnings import warn
 
 import aiohttp
 
 from .credential_store import CredentialStore
 from .exceptions import RenaultException
-from .kamereon import get_required_contracts
-from .kamereon import has_required_contracts
 from .kamereon import models
 from .kamereon import schemas
 from .renault_session import RenaultSession
@@ -408,7 +407,7 @@ class RenaultVehicle:
         response = await self.session.set_vehicle_action(
             account_id=self.account_id,
             vin=self.vin,
-            endpoint="hvac-start",
+            endpoint="actions/hvac-start",
             attributes=attributes,
         )
         return cast(
@@ -424,7 +423,7 @@ class RenaultVehicle:
         response = await self.session.set_vehicle_action(
             account_id=self.account_id,
             vin=self.vin,
-            endpoint="hvac-start",
+            endpoint="actions/hvac-start",
             attributes=attributes,
         )
         return cast(
@@ -449,7 +448,7 @@ class RenaultVehicle:
         response = await self.session.set_vehicle_action(
             account_id=self.account_id,
             vin=self.vin,
-            endpoint="hvac-schedule",
+            endpoint="actions/hvac-schedule",
             attributes=attributes,
         )
         return cast(
@@ -476,7 +475,7 @@ class RenaultVehicle:
         response = await self.session.set_vehicle_action(
             account_id=self.account_id,
             vin=self.vin,
-            endpoint="charge-schedule",
+            endpoint="actions/charge-schedule",
             attributes=attributes,
         )
         return cast(
@@ -496,7 +495,7 @@ class RenaultVehicle:
         response = await self.session.set_vehicle_action(
             account_id=self.account_id,
             vin=self.vin,
-            endpoint="charge-mode",
+            endpoint="actions/charge-mode",
             attributes=attributes,
         )
         return cast(
@@ -506,15 +505,25 @@ class RenaultVehicle:
 
     async def set_charge_start(self) -> models.KamereonVehicleChargingStartActionData:
         """Start vehicle charge."""
-        # await self.warn_on_method("set_charge_start")
-        attributes = {"action": "start"}
+        details = await self.get_details()
 
-        response = await self.session.set_vehicle_action(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="charging-start",
-            attributes=attributes,
-        )
+        if details.controls_action_via_kcm("charge"):
+            attributes = {"action": "resume"}
+            response = response = await self.session.set_vehicle_action(
+                account_id=self.account_id,
+                vin=self.vin,
+                endpoint="charge/pause-resume",
+                attributes=attributes,
+                adapter_type="kcm",
+            )
+        else:
+            attributes = {"action": "start"}
+            response = await self.session.set_vehicle_action(
+                account_id=self.account_id,
+                vin=self.vin,
+                endpoint="actions/charging-start",
+                attributes=attributes,
+            )
         return cast(
             models.KamereonVehicleChargingStartActionData,
             response.get_attributes(
@@ -524,15 +533,25 @@ class RenaultVehicle:
 
     async def set_charge_stop(self) -> models.KamereonVehicleChargingStartActionData:
         """Start vehicle charge."""
-        # await self.warn_on_method("set_charge_stop")
-        attributes = {"action": "stop"}
+        details = await self.get_details()
 
-        response = await self.session.set_vehicle_action(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="charging-start",
-            attributes=attributes,
-        )
+        if details.controls_action_via_kcm("charge"):
+            attributes = {"action": "pause"}
+            response = response = await self.session.set_vehicle_action(
+                account_id=self.account_id,
+                vin=self.vin,
+                endpoint="charge/pause-resume",
+                attributes=attributes,
+                adapter_type="kcm",
+            )
+        else:
+            attributes = {"action": "stop"}
+            response = await self.session.set_vehicle_action(
+                account_id=self.account_id,
+                vin=self.vin,
+                endpoint="actions/charging-start",
+                attributes=attributes,
+            )
         return cast(
             models.KamereonVehicleChargingStartActionData,
             response.get_attributes(
@@ -547,12 +566,10 @@ class RenaultVehicle:
 
     async def has_contract_for_endpoint(self, endpoint: str) -> bool:
         """Check if vehicle has contract for endpoint."""
-        required_contracts = get_required_contracts(endpoint)
-        if not required_contracts:  # pragma: no branch
-            return True
-
-        contracts = await self.get_contracts()  # pragma: no cover
-        return has_required_contracts(contracts, endpoint)  # pragma: no cover
+        # "Deprecated in 0.1.3, contract codes are country-specific"
+        # " and can't be used to guess requirements."
+        warn("This method is deprecated.", DeprecationWarning, stacklevel=2)
+        return True  # pragma: no cover
 
     async def warn_on_method(self, method: str) -> None:
         """Log a warning if the method requires it."""

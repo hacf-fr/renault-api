@@ -49,6 +49,7 @@ VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
     "X101VE": {  # ZOE phase 1
         "reports-in-watts": True,
         "support-endpoint-location": False,
+        "support-endpoint-lock-status": False,
     },
     "X102VE": {  # ZOE phase 2
         "warns-on-method-set_ac_stop": "Action `cancel` on endpoint `hvac-start` may not be supported on this model.",  # noqa
@@ -56,12 +57,16 @@ VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
     "XJB1SU": {  # CAPTUR II
         "support-endpoint-hvac-status": False,
     },
+    "XBG1VE": {  # DACIA SPRING
+        "control-charge-via-kcm": True,
+    },
 }
 
 GATEWAY_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
     "GDC": {  # ZOE phase 1
         "reports-in-watts": True,
         "support-endpoint-location": False,
+        "support-endpoint-lock-status": False,
     },
 }
 
@@ -220,6 +225,15 @@ class KamereonVehicleDetails(BaseModel):
                 f"warns-on-method-{method}", None
             )
         return None  # pragma: no cover
+
+    def controls_action_via_kcm(self, action: str) -> bool:
+        """Return True if model uses endpoint via kcm."""
+        # Default to False for unknown vehicles
+        if self.model and self.model.code:
+            return VEHICLE_SPECIFICATIONS.get(self.model.code, {}).get(
+                f"control-{action}-via-kcm", False
+            )
+        return False  # pragma: no cover
 
 
 @dataclass
@@ -380,6 +394,14 @@ class KamereonVehicleCockpitData(KamereonVehicleDataAttributes):
 class KamereonVehicleLockStatusData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data lock-status attributes."""
 
+    lockStatus: Optional[str]
+    doorStatusRearLeft: Optional[str]
+    doorStatusRearRight: Optional[str]
+    doorStatusDriver: Optional[str]
+    doorStatusPassenger: Optional[str]
+    hatchStatus: Optional[str]
+    lastUpdateTime: Optional[str]
+
 
 @dataclass
 class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
@@ -445,6 +467,15 @@ class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
                 f"support-endpoint-{endpoint}", True
             )
         return True  # pragma: no cover
+
+    def controls_action_via_kcm(self, action: str) -> bool:
+        """Return True if model uses endpoint via kcm."""
+        # Default to False for unknown vehicles
+        if self.modelCodeDetail:
+            return VEHICLE_SPECIFICATIONS.get(self.modelCodeDetail, {}).get(
+                f"control-{action}-via-kcm", False
+            )
+        return False  # pragma: no cover
 
 
 @dataclass

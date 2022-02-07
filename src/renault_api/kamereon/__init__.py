@@ -6,6 +6,7 @@ from typing import cast
 from typing import Dict
 from typing import List
 from typing import Optional
+from warnings import warn
 
 import aiohttp
 from marshmallow.schema import Schema
@@ -17,7 +18,7 @@ from . import schemas
 _LOGGER = logging.getLogger(__name__)
 
 
-DATA_ENDPOINTS: Dict[str, Any] = {
+_KCA_GET_ENDPOINTS: Dict[str, Any] = {
     "": {"version": 2},
     "battery-status": {"version": 2},
     "charge-history": {"version": 1},
@@ -33,13 +34,20 @@ DATA_ENDPOINTS: Dict[str, Any] = {
     "lock-status": {"version": 1},
     "notification-settings": {"version": 1},
 }
-ACTION_ENDPOINTS: Dict[str, Any] = {
-    "charge-mode": {"version": 1, "type": "ChargeMode"},
-    "charge-schedule": {"version": 2, "type": "ChargeSchedule"},
-    "charging-start": {"version": 1, "type": "ChargingStart"},
-    "hvac-schedule": {"version": 2, "type": "HvacSchedule"},
-    "hvac-start": {"version": 1, "type": "HvacStart"},
+_KCA_POST_ENDPOINTS: Dict[str, Any] = {
+    "actions/charge-mode": {"version": 1, "type": "ChargeMode"},
+    "actions/charge-schedule": {"version": 2, "type": "ChargeSchedule"},
+    "actions/charging-start": {"version": 1, "type": "ChargingStart"},
+    "actions/hvac-schedule": {"version": 2, "type": "HvacSchedule"},
+    "actions/hvac-start": {"version": 1, "type": "HvacStart"},
 }
+_KCM_POST_ENDPOINTS: Dict[str, Any] = {
+    "charge/pause-resume": {"version": 1, "type": "ChargePauseResume"},
+}
+
+# Deprecated from 0.1.8 - kept for compatibility
+DATA_ENDPOINTS = _KCA_GET_ENDPOINTS
+ACTION_ENDPOINTS = _KCA_POST_ENDPOINTS
 
 
 def get_commerce_url(root_url: str) -> str:
@@ -57,9 +65,13 @@ def get_account_url(root_url: str, account_id: str) -> str:
     return f"{get_commerce_url(root_url)}/accounts/{account_id}"
 
 
-def get_car_adapter_url(root_url: str, account_id: str, version: int, vin: str) -> str:
+def get_car_adapter_url(
+    root_url: str, account_id: str, version: int, vin: str, *, adapter_type: str = "kca"
+) -> str:
     """Get the url to the car adapter."""
     account_url = get_account_url(root_url, account_id)
+    if adapter_type == "kcm":
+        return f"{account_url}/kamereon/kcm/v{version}/vehicles/{vin}"
     return f"{account_url}/kamereon/kca/car-adapter/v{version}/cars/{vin}"
 
 
@@ -69,29 +81,21 @@ def get_contracts_url(root_url: str, account_id: str, vin: str) -> str:
     return f"{account_url}/vehicles/{vin}/contracts"
 
 
-def get_required_contracts(endpoint: str) -> str:
+def get_required_contracts(endpoint: str) -> str:  # pragma: no cover
     """Get the required contracts for the specified endpoint."""
-    # Contract codes are country-specific and can't be used to guess requirements.
-    # Implementation was therefore removed in 0.1.3.
-    endpoints = ACTION_ENDPOINTS if endpoint.startswith("action") else DATA_ENDPOINTS
-    return str(endpoints.get(endpoint, {}).get("requires-contracts", ""))
+    # "Deprecated in 0.1.3, contract codes are country-specific"
+    # " and can't be used to guess requirements."
+    warn("This method is deprecated.", DeprecationWarning, stacklevel=2)
+    return ""
 
 
 def has_required_contracts(
     contracts: List[models.KamereonVehicleContract], endpoint: str
 ) -> bool:
     """Check if vehicle has contract for endpoint."""
-    required_contracts = get_required_contracts(endpoint)
-    if not required_contracts:  # pragma: no branch
-        return True
-
-    for required_contract in required_contracts.split(","):  # pragma: no cover
-        if required_contract and not any(
-            contract.code == required_contract and contract.status == "ACTIVE"
-            for contract in contracts
-        ):
-            return False
-
+    # "Deprecated in 0.1.3, contract codes are country-specific"
+    # " and can't be used to guess requirements."
+    warn("This method is deprecated.", DeprecationWarning, stacklevel=2)
     return True  # pragma: no cover
 
 
@@ -262,10 +266,6 @@ async def get_vehicle_details(
     )
 
 
-def _get_endpoint_version(endpoint_details: Dict[str, Any]) -> int:
-    return int(endpoint_details["version"])
-
-
 async def get_vehicle_data(
     websession: aiohttp.ClientSession,
     root_url: str,
@@ -277,13 +277,17 @@ async def get_vehicle_data(
     endpoint: str,
     endpoint_version: Optional[int] = None,
     params: Optional[Dict[str, str]] = None,
+    *,
+    adapter_type: str = "kca",
 ) -> models.KamereonVehicleDataResponse:
     """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
+    endpoint_details = _KCA_GET_ENDPOINTS[endpoint]
     car_adapter_url = get_car_adapter_url(
         root_url=root_url,
         account_id=account_id,
-        version=endpoint_version or _get_endpoint_version(DATA_ENDPOINTS[endpoint]),
+        version=endpoint_version or int(endpoint_details["version"]),
         vin=vin,
+        adapter_type=adapter_type,
     )
     url = f"{car_adapter_url}/{endpoint}" if endpoint else car_adapter_url
     params = params or {}
@@ -314,19 +318,36 @@ async def set_vehicle_action(
     attributes: Dict[str, Any],
     endpoint_version: Optional[int] = None,
     data_type: Optional[Dict[str, Any]] = None,
+    *,
+    adapter_type: str = "kca",
 ) -> models.KamereonVehicleDataResponse:
-    """POST to /v{endpoint_version}/cars/{vin}/actions/{endpoint}."""
+    """POST to /v{endpoint_version}/cars/{vin}/{endpoint}."""
+    if "/" not in endpoint:
+        # Deprecated in 0.1.8
+        warn(
+            f"You should use the full endpoint: actions/{endpoint}.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        endpoint = f"actions/{endpoint}"
+
+    if adapter_type == "kcm":
+        endpoint_details = _KCM_POST_ENDPOINTS[endpoint]
+    else:
+        endpoint_details = _KCA_POST_ENDPOINTS[endpoint]
     car_adapter_url = get_car_adapter_url(
         root_url=root_url,
         account_id=account_id,
-        version=endpoint_version or _get_endpoint_version(ACTION_ENDPOINTS[endpoint]),
+        version=endpoint_version or int(endpoint_details["version"]),
         vin=vin,
+        adapter_type=adapter_type,
     )
-    url = f"{car_adapter_url}/actions/{endpoint}"
+
+    url = f"{car_adapter_url}/{endpoint}"
     params = {"country": country}
     json = {
         "data": {
-            "type": data_type or ACTION_ENDPOINTS[endpoint]["type"],
+            "type": data_type or endpoint_details["type"],
             "attributes": attributes,
         }
     }

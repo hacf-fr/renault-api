@@ -350,6 +350,7 @@ async def test_set_charge_start(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test set_charge_start."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     url = fixtures.inject_set_charging_start(mocked_responses, "start")
 
     expected_json = {
