@@ -158,6 +158,7 @@ async def display_status(
     await update_cockpit(vehicle, status_table)
     await update_location(vehicle, status_table)
     await update_lock_status(vehicle, status_table)
+    await update_res_state(vehicle, status_table)
     await update_hvac_status(vehicle, status_table)
 
     click.echo(tabulate(status_table.items()))
@@ -309,6 +310,28 @@ async def update_lock_status(
         items = [
             ("Lock status", response.lockStatus, None),
             ("Lock last updated", response.lastUpdateTime, "tzdatetime"),
+        ]
+
+        for key, value, unit in items:
+            update_status_table(status_table, key, value, unit)
+
+
+async def update_res_state(
+    vehicle: RenaultVehicle, status_table: Dict[str, Any]
+) -> None:
+    """Update status table from get_vehicle_res_state."""
+    try:
+        if not await vehicle.supports_endpoint("res-state"):
+            return
+        response = await vehicle.get_res_state()
+    except QuotaLimitException as exc:  # pragma: no cover
+        raise click.ClickException(repr(exc)) from exc
+    except KamereonResponseException as exc:  # pragma: no cover
+        click.echo(f"res state: {exc.error_details}", err=True)
+    else:
+        items = [
+            ("RES details", response.details, None),
+            ("RES code", response.code, None),
         ]
 
         for key, value, unit in items:
