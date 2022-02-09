@@ -321,7 +321,7 @@ async def update_res_state(
 ) -> None:
     """Update status table from get_vehicle_res_state."""
     try:
-        if not await vehicle.supports_endpoint("res-state"):
+        if not await vehicle.supports_endpoint("res-state"):  # pragma: no cover
             return
         response = await vehicle.get_res_state()
     except QuotaLimitException as exc:  # pragma: no cover
