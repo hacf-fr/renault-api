@@ -330,8 +330,7 @@ async def update_res_state(
         click.echo(f"res state: {exc.error_details}", err=True)
     else:
         items = [
-            ("RES details", response.details, None),
-            ("RES code", response.code, None),
+            ("Engine state", response.details, None),            
         ]
 
         for key, value, unit in items:
