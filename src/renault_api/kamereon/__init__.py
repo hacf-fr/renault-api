@@ -33,6 +33,7 @@ _KCA_GET_ENDPOINTS: Dict[str, Any] = {
     "location": {"version": 1},
     "lock-status": {"version": 1},
     "notification-settings": {"version": 1},
+    "res-state": {"version": 1},
 }
 _KCA_POST_ENDPOINTS: Dict[str, Any] = {
     "actions/charge-mode": {"version": 1, "type": "ChargeMode"},

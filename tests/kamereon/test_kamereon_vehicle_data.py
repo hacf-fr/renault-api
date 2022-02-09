@@ -394,6 +394,50 @@ def test_lock_status_unlocked() -> None:
     assert vehicle_data.lastUpdateTime == "2022-02-02T13:51:13Z"
 
 
+def test_res_state_stopped() -> None:
+    """Test res-state for res-state.1.json."""
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/res-state.1.json",
+        schemas.KamereonVehicleDataResponseSchema,
+    )
+    response.raise_for_error_code()
+    assert response.data is not None
+    assert response.data.raw_data["attributes"] == {
+        "details": "Stopped, ready for RES",
+        "code": "10",
+    }
+
+    vehicle_data = cast(
+        models.KamereonVehicleResStateData,
+        response.get_attributes(schemas.KamereonVehicleResStateDataSchema),
+    )
+
+    assert vehicle_data.details == "Stopped, ready for RES"
+    assert vehicle_data.code == "10"
+
+
+def test_res_state_running() -> None:
+    """Test res-state for res-state.2.json."""
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/res-state.2.json",
+        schemas.KamereonVehicleDataResponseSchema,
+    )
+    response.raise_for_error_code()
+    assert response.data is not None
+    assert response.data.raw_data["attributes"] == {
+        "details": "Running",
+        "code": "42",
+    }
+
+    vehicle_data = cast(
+        models.KamereonVehicleResStateData,
+        response.get_attributes(schemas.KamereonVehicleResStateDataSchema),
+    )
+
+    assert vehicle_data.details == "Running"
+    assert vehicle_data.code == "42"
+
+
 def test_charge_mode() -> None:
     """Test vehicle data for charge-mode.json."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(

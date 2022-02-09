@@ -404,6 +404,14 @@ class KamereonVehicleLockStatusData(KamereonVehicleDataAttributes):
 
 
 @dataclass
+class KamereonVehicleResStateData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle data res-set attributes."""
+
+    details: Optional[str]
+    code: Optional[str]
+
+
+@dataclass
 class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data hvac-status attributes."""
 

@@ -216,6 +216,19 @@ class RenaultVehicle:
             response.get_attributes(schemas.KamereonVehicleLockStatusDataSchema),
         )
 
+    async def get_res_state(self) -> models.KamereonVehicleResStateData:
+        """Get vehicle res state."""
+        # await self.warn_on_method("get_res_state")
+        response = await self.session.get_vehicle_data(
+            account_id=self.account_id,
+            vin=self.vin,
+            endpoint="res-state",
+        )
+        return cast(
+            models.KamereonVehicleResStateData,
+            response.get_attributes(schemas.KamereonVehicleResStateDataSchema),
+        )
+
     async def get_charging_settings(self) -> models.KamereonVehicleChargingSettingsData:
         """Get vehicle charging settings."""
         # await self.warn_on_method("get_charging_settings")

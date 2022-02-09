@@ -32,7 +32,7 @@ from renault_api.gigya import GIGYA_PERSON_ID
 
 EXPECTED_STATUS = {
     "captur_ii.1.json": (
-        "-----------------  -------------------\n"
+        "-----------------  ----------------------\n"
         "Total mileage      5566.78 km\n"
         "Fuel autonomy      35.0 km\n"
         "Fuel quantity      3.0 L\n"
@@ -41,7 +41,8 @@ EXPECTED_STATUS = {
         "GPS last updated   2020-02-18 17:58:38\n"
         "Lock status        locked\n"
         "Lock last updated  2022-02-02 14:51:13\n"
-        "-----------------  -------------------\n"
+        "Engine state       Stopped, ready for RES\n"
+        "-----------------  ----------------------\n"
     ),
     "captur_ii.2.json": (
         "-----------------  -------------------------\n"
@@ -59,6 +60,7 @@ EXPECTED_STATUS = {
         "GPS last updated   2020-02-18 17:58:38\n"
         "Lock status        locked\n"
         "Lock last updated  2022-02-02 14:51:13\n"
+        "Engine state       Stopped, ready for RES\n"
         "-----------------  -------------------------\n"
     ),
     "twingo_ze.1.json": (
@@ -75,6 +77,7 @@ EXPECTED_STATUS = {
         "GPS last updated   2020-02-18 17:58:38\n"
         "Lock status        locked\n"
         "Lock last updated  2022-02-02 14:51:13\n"
+        "Engine state       Stopped, ready for RES\n"
         "HVAC status        on\n"
         "-----------------  -------------------------\n"
     ),
@@ -87,6 +90,7 @@ EXPECTED_STATUS = {
         "Charging state        ChargeState.NOT_IN_CHARGE\n"
         "Charge mode           always\n"
         "Total mileage         49114.27 km\n"
+        "Engine state          Stopped, ready for RES\n"
         "HVAC status           off\n"
         "External temperature  8.0 °C\n"
         "--------------------  -------------------------\n"
@@ -100,6 +104,7 @@ EXPECTED_STATUS = {
         "Charging state        ChargeState.NOT_IN_CHARGE\n"
         "Charge mode           always\n"
         "Total mileage         49114.27 km\n"
+        "Engine state          Stopped, ready for RES\n"
         "HVAC status           off\n"
         "External temperature  8.0 °C\n"
         "--------------------  -------------------------\n"
@@ -120,6 +125,7 @@ EXPECTED_STATUS = {
         "GPS last updated   2020-02-18 17:58:38\n"
         "Lock status        locked\n"
         "Lock last updated  2022-02-02 14:51:13\n"
+        "Engine state       Stopped, ready for RES\n"
         "HVAC status        on\n"
         "-----------------  -------------------------\n"
     ),

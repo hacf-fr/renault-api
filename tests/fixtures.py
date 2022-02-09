@@ -394,6 +394,16 @@ def inject_get_lock_status(mocked_responses: aioresponses) -> str:
     )
 
 
+def inject_get_res_state(mocked_responses: aioresponses) -> str:
+    """Inject sample res-state."""
+    urlpath = f"{ADAPTER_PATH}/res-state?{DEFAULT_QUERY_STRING}"
+    return inject_data(
+        mocked_responses,
+        urlpath,
+        "vehicle_data/res-state.1.json",
+    )
+
+
 def inject_get_notification_settings(mocked_responses: aioresponses) -> str:
     """Inject sample notification-settings."""
     urlpath = f"{ADAPTER_PATH}/notification-settings?{DEFAULT_QUERY_STRING}"
@@ -471,6 +481,7 @@ def inject_vehicle_status(mocked_responses: aioresponses, vehicle: str) -> None:
     inject_get_battery_status(mocked_responses)
     inject_get_location(mocked_responses)
     inject_get_lock_status(mocked_responses)
+    inject_get_res_state(mocked_responses)
     inject_get_hvac_status(mocked_responses, vehicle)
     inject_get_charge_mode(mocked_responses)
     inject_get_cockpit(mocked_responses, vehicle)
