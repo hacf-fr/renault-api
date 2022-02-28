@@ -1,4 +1,5 @@
 """CLI function for a vehicle."""
+import json
 from typing import Any
 from typing import Dict
 from typing import List
@@ -161,7 +162,10 @@ async def display_status(
     await update_res_state(vehicle, status_table)
     await update_hvac_status(vehicle, status_table)
 
-    click.echo(tabulate(status_table.items()))
+    if ctx_data["json"]:  # pragma: no cover
+        click.echo(json.dumps(status_table))
+    else:
+        click.echo(tabulate(status_table.items()))
 
 
 def update_status_table(
