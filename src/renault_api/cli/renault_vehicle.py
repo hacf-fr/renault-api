@@ -154,7 +154,7 @@ async def display_status(
     vehicle = await get_vehicle(websession, ctx_data)
     status_table: Dict[str, Any] = {}
 
-    await update_battery_status(vehicle, status_table)
+    await update_battery_status(vehicle, status_table, ctx_data)
     await update_charge_mode(vehicle, status_table)
     await update_cockpit(vehicle, status_table)
     await update_location(vehicle, status_table)
@@ -181,7 +181,7 @@ def update_status_table(
 
 
 async def update_battery_status(
-    vehicle: RenaultVehicle, status_table: Dict[str, Any]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_battery_status."""
     try:
@@ -207,16 +207,28 @@ async def update_battery_status(
         ):
             response.chargingStatus = 0.0
 
-        items = [
-            ("Battery level", response.batteryLevel, "%"),
-            ("Last updated", response.timestamp, "tzdatetime"),
-            ("Available energy", response.batteryAvailableEnergy, "kWh"),
-            ("Range estimate", response.batteryAutonomy, "km"),
-            ("Plug state", response.get_plug_status(), None),
-            ("Charging state", response.get_charging_status(), None),
-            ("Charge rate", response.chargingInstantaneousPower, "kW"),
-            ("Time remaining", response.chargingRemainingTime, "min"),
-        ]
+        if ctx_data["json"]:  # pragma: no cover
+            items = [
+                ("Battery level", response.batteryLevel, None),
+                ("Last updated", response.timestamp, None),
+                ("Available energy", response.batteryAvailableEnergy, None),
+                ("Range estimate", response.batteryAutonomy, None),
+                ("Plug state", response.get_plug_status(), None),
+                ("Charging state", response.get_charging_status(), None),
+                ("Charge rate", response.chargingInstantaneousPower, None),
+                ("Time remaining", response.chargingRemainingTime, None),
+            ]
+        else:
+            items = [
+                ("Battery level", response.batteryLevel, "%"),
+                ("Last updated", response.timestamp, "tzdatetime"),
+                ("Available energy", response.batteryAvailableEnergy, "kWh"),
+                ("Range estimate", response.batteryAutonomy, "km"),
+                ("Plug state", response.get_plug_status(), None),
+                ("Charging state", response.get_charging_status(), None),
+                ("Charge rate", response.chargingInstantaneousPower, "kW"),
+                ("Time remaining", response.chargingRemainingTime, "min"),
+            ]
 
         for key, value, unit in items:
             update_status_table(status_table, key, value, unit)
