@@ -155,12 +155,12 @@ async def display_status(
     status_table: Dict[str, Any] = {}
 
     await update_battery_status(vehicle, status_table, ctx_data)
-    await update_charge_mode(vehicle, status_table)
-    await update_cockpit(vehicle, status_table)
-    await update_location(vehicle, status_table)
-    await update_lock_status(vehicle, status_table)
-    await update_res_state(vehicle, status_table)
-    await update_hvac_status(vehicle, status_table)
+    await update_charge_mode(vehicle, status_table, ctx_data)
+    await update_cockpit(vehicle, status_table, ctx_data)
+    await update_location(vehicle, status_table, ctx_data)
+    await update_lock_status(vehicle, status_table, ctx_data)
+    await update_res_state(vehicle, status_table, ctx_data)
+    await update_hvac_status(vehicle, status_table, ctx_data)
 
     if ctx_data["json"]:
         click.echo(json.dumps(status_table))
@@ -227,7 +227,7 @@ async def update_battery_status(
 
 
 async def update_charge_mode(
-    vehicle: RenaultVehicle, status_table: Dict[str, Any]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_charge_mode."""
     try:
@@ -246,13 +246,19 @@ async def update_charge_mode(
     except KamereonResponseException as exc:  # pragma: no cover
         click.echo(f"charge-mode: {exc.error_details}", err=True)
     else:
-        items = [("Charge mode", response.chargeMode, None)]
+        if ctx_data["json"]:
+            status_table["charge-mode"] = response.raw_data
+            return
+        else:
+            items = [("Charge mode", response.chargeMode, None)]
 
         for key, value, unit in items:
             update_status_table(status_table, key, value, unit)
 
 
-async def update_cockpit(vehicle: RenaultVehicle, status_table: Dict[str, Any]) -> None:
+async def update_cockpit(
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
+) -> None:
     """Update status table from get_vehicle_cockpit."""
     try:
         if not await vehicle.supports_endpoint("cockpit"):  # pragma: no cover
@@ -266,18 +272,22 @@ async def update_cockpit(vehicle: RenaultVehicle, status_table: Dict[str, Any]) 
     except KamereonResponseException as exc:  # pragma: no cover
         click.echo(f"cockpit: {exc.error_details}", err=True)
     else:
-        items = [
-            ("Total mileage", response.totalMileage, "km"),
-            ("Fuel autonomy", response.fuelAutonomy, "km"),
-            ("Fuel quantity", response.fuelQuantity, "L"),
-        ]
+        if ctx_data["json"]:
+            status_table["cockpit"] = response.raw_data
+            return
+        else:
+            items = [
+                ("Total mileage", response.totalMileage, "km"),
+                ("Fuel autonomy", response.fuelAutonomy, "km"),
+                ("Fuel quantity", response.fuelQuantity, "L"),
+            ]
 
         for key, value, unit in items:
             update_status_table(status_table, key, value, unit)
 
 
 async def update_location(
-    vehicle: RenaultVehicle, status_table: Dict[str, Any]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_location."""
     try:
@@ -292,18 +302,22 @@ async def update_location(
     except KamereonResponseException as exc:  # pragma: no cover
         click.echo(f"location: {exc.error_details}", err=True)
     else:
-        items = [
-            ("GPS Latitude", response.gpsLatitude, None),
-            ("GPS Longitude", response.gpsLongitude, None),
-            ("GPS last updated", response.lastUpdateTime, "tzdatetime"),
-        ]
+        if ctx_data["json"]:
+            status_table["location"] = response.raw_data
+            return
+        else:
+            items = [
+                ("GPS Latitude", response.gpsLatitude, None),
+                ("GPS Longitude", response.gpsLongitude, None),
+                ("GPS last updated", response.lastUpdateTime, "tzdatetime"),
+            ]
 
         for key, value, unit in items:
             update_status_table(status_table, key, value, unit)
 
 
 async def update_lock_status(
-    vehicle: RenaultVehicle, status_table: Dict[str, Any]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_lock_status."""
     try:
@@ -315,17 +329,21 @@ async def update_lock_status(
     except KamereonResponseException as exc:  # pragma: no cover
         click.echo(f"lock status: {exc.error_details}", err=True)
     else:
-        items = [
-            ("Lock status", response.lockStatus, None),
-            ("Lock last updated", response.lastUpdateTime, "tzdatetime"),
-        ]
+        if ctx_data["json"]:
+            status_table["lock-status"] = response.raw_data
+            return
+        else:
+            items = [
+                ("Lock status", response.lockStatus, None),
+                ("Lock last updated", response.lastUpdateTime, "tzdatetime"),
+            ]
 
         for key, value, unit in items:
             update_status_table(status_table, key, value, unit)
 
 
 async def update_res_state(
-    vehicle: RenaultVehicle, status_table: Dict[str, Any]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_res_state."""
     try:
@@ -337,16 +355,20 @@ async def update_res_state(
     except KamereonResponseException as exc:  # pragma: no cover
         click.echo(f"res state: {exc.error_details}", err=True)
     else:
-        items = [
-            ("Engine state", response.details, None),
-        ]
+        if ctx_data["json"]:
+            status_table["res-state"] = response.raw_data
+            return
+        else:
+            items = [
+                ("Engine state", response.details, None),
+            ]
 
         for key, value, unit in items:
             update_status_table(status_table, key, value, unit)
 
 
 async def update_hvac_status(
-    vehicle: RenaultVehicle, status_table: Dict[str, str]
+    vehicle: RenaultVehicle, status_table: Dict[str, str], ctx_data: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_hvac_status."""
     try:
@@ -363,11 +385,15 @@ async def update_hvac_status(
     except KamereonResponseException as exc:  # pragma: no cover
         click.echo(f"hvac-status: {exc.error_details}", err=True)
     else:
-        items = [
-            ("HVAC status", response.hvacStatus, None),
-            ("HVAC start at", response.nextHvacStartDate, "tzdatetime"),
-            ("External temperature", response.externalTemperature, "°C"),
-        ]
+        if ctx_data["json"]:
+            status_table["hvac-status"] = response.raw_data
+            return
+        else:
+            items = [
+                ("HVAC status", response.hvacStatus, None),
+                ("HVAC start at", response.nextHvacStartDate, "tzdatetime"),
+                ("External temperature", response.externalTemperature, "°C"),
+            ]
 
         for key, value, unit in items:
             update_status_table(status_table, key, value, unit)
