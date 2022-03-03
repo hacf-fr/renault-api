@@ -164,8 +164,9 @@ async def display_status(
 
     if ctx_data["json"]:
         click.echo(json.dumps(status_table))
-    else:
-        click.echo(tabulate(status_table.items()))
+        return
+
+    click.echo(tabulate(status_table.items()))
 
 
 def update_status_table(
