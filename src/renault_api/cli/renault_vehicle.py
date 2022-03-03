@@ -162,7 +162,7 @@ async def display_status(
     await update_res_state(vehicle, status_table)
     await update_hvac_status(vehicle, status_table)
 
-    if ctx_data["json"]:  # pragma: no cover
+    if ctx_data["json"]:
         click.echo(json.dumps(status_table))
     else:
         click.echo(tabulate(status_table.items()))
