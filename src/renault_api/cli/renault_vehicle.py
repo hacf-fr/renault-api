@@ -208,9 +208,8 @@ async def update_battery_status(
             response.chargingStatus = 0.0
 
         if ctx_data["json"]:
-            items = [
-                ("battery-status", response.raw_data, None),
-            ]
+            status_table["battery-status"] = response.raw_data
+            return
         else:
             items = [
                 ("Battery level", response.batteryLevel, "%"),
