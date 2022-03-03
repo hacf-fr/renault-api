@@ -209,14 +209,7 @@ async def update_battery_status(
 
         if ctx_data["json"]:  # pragma: no cover
             items = [
-                ("Battery level", response.batteryLevel, None),
-                ("Last updated", response.timestamp, None),
-                ("Available energy", response.batteryAvailableEnergy, None),
-                ("Range estimate", response.batteryAutonomy, None),
-                ("Plug state", response.get_plug_status(), None),
-                ("Charging state", response.get_charging_status(), None),
-                ("Charge rate", response.chargingInstantaneousPower, None),
-                ("Time remaining", response.chargingRemainingTime, None),
+                ("battery-status", response.raw_data, None),
             ]
         else:
             items = [
