@@ -210,17 +210,17 @@ async def update_battery_status(
         if ctx_data["json"]:
             status_table["battery-status"] = response.raw_data
             return
-        else:
-            items = [
-                ("Battery level", response.batteryLevel, "%"),
-                ("Last updated", response.timestamp, "tzdatetime"),
-                ("Available energy", response.batteryAvailableEnergy, "kWh"),
-                ("Range estimate", response.batteryAutonomy, "km"),
-                ("Plug state", response.get_plug_status(), None),
-                ("Charging state", response.get_charging_status(), None),
-                ("Charge rate", response.chargingInstantaneousPower, "kW"),
-                ("Time remaining", response.chargingRemainingTime, "min"),
-            ]
+        
+        items = [
+            ("Battery level", response.batteryLevel, "%"),
+            ("Last updated", response.timestamp, "tzdatetime"),
+            ("Available energy", response.batteryAvailableEnergy, "kWh"),
+            ("Range estimate", response.batteryAutonomy, "km"),
+            ("Plug state", response.get_plug_status(), None),
+            ("Charging state", response.get_charging_status(), None),
+            ("Charge rate", response.chargingInstantaneousPower, "kW"),
+            ("Time remaining", response.chargingRemainingTime, "min"),
+        ]
 
         for key, value, unit in items:
             update_status_table(status_table, key, value, unit)
@@ -249,8 +249,8 @@ async def update_charge_mode(
         if ctx_data["json"]:
             status_table["charge-mode"] = response.raw_data
             return
-        else:
-            items = [("Charge mode", response.chargeMode, None)]
+        
+        items = [("Charge mode", response.chargeMode, None)]
 
         for key, value, unit in items:
             update_status_table(status_table, key, value, unit)
@@ -275,12 +275,12 @@ async def update_cockpit(
         if ctx_data["json"]:
             status_table["cockpit"] = response.raw_data
             return
-        else:
-            items = [
-                ("Total mileage", response.totalMileage, "km"),
-                ("Fuel autonomy", response.fuelAutonomy, "km"),
-                ("Fuel quantity", response.fuelQuantity, "L"),
-            ]
+        
+        items = [
+            ("Total mileage", response.totalMileage, "km"),
+            ("Fuel autonomy", response.fuelAutonomy, "km"),
+            ("Fuel quantity", response.fuelQuantity, "L"),
+        ]
 
         for key, value, unit in items:
             update_status_table(status_table, key, value, unit)
@@ -305,12 +305,12 @@ async def update_location(
         if ctx_data["json"]:
             status_table["location"] = response.raw_data
             return
-        else:
-            items = [
-                ("GPS Latitude", response.gpsLatitude, None),
-                ("GPS Longitude", response.gpsLongitude, None),
-                ("GPS last updated", response.lastUpdateTime, "tzdatetime"),
-            ]
+       
+        items = [
+            ("GPS Latitude", response.gpsLatitude, None),
+            ("GPS Longitude", response.gpsLongitude, None),
+            ("GPS last updated", response.lastUpdateTime, "tzdatetime"),
+        ]
 
         for key, value, unit in items:
             update_status_table(status_table, key, value, unit)
@@ -332,11 +332,11 @@ async def update_lock_status(
         if ctx_data["json"]:
             status_table["lock-status"] = response.raw_data
             return
-        else:
-            items = [
-                ("Lock status", response.lockStatus, None),
-                ("Lock last updated", response.lastUpdateTime, "tzdatetime"),
-            ]
+       
+        items = [
+            ("Lock status", response.lockStatus, None),
+            ("Lock last updated", response.lastUpdateTime, "tzdatetime"),
+        ]
 
         for key, value, unit in items:
             update_status_table(status_table, key, value, unit)
@@ -358,10 +358,10 @@ async def update_res_state(
         if ctx_data["json"]:
             status_table["res-state"] = response.raw_data
             return
-        else:
-            items = [
-                ("Engine state", response.details, None),
-            ]
+
+        items = [
+            ("Engine state", response.details, None),
+        ]
 
         for key, value, unit in items:
             update_status_table(status_table, key, value, unit)
@@ -388,12 +388,12 @@ async def update_hvac_status(
         if ctx_data["json"]:
             status_table["hvac-status"] = response.raw_data
             return
-        else:
-            items = [
-                ("HVAC status", response.hvacStatus, None),
-                ("HVAC start at", response.nextHvacStartDate, "tzdatetime"),
-                ("External temperature", response.externalTemperature, "°C"),
-            ]
+        
+        items = [
+            ("HVAC status", response.hvacStatus, None),
+            ("HVAC start at", response.nextHvacStartDate, "tzdatetime"),
+            ("External temperature", response.externalTemperature, "°C"),
+        ]
 
         for key, value, unit in items:
             update_status_table(status_table, key, value, unit)
