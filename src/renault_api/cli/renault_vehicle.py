@@ -364,7 +364,7 @@ async def update_res_state(
 
 
 async def update_hvac_status(
-    vehicle: RenaultVehicle, status_table: Dict[str, str], ctx_data: Dict[str, Any]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_hvac_status."""
     try:
