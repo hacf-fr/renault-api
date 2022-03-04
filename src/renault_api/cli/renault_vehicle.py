@@ -303,7 +303,6 @@ async def update_location(
         if ctx_data["json"]:
             status_table["location"] = response.raw_data
             return
-       
         items = [
             ("GPS Latitude", response.gpsLatitude, None),
             ("GPS Longitude", response.gpsLongitude, None),
