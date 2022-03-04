@@ -249,7 +249,6 @@ async def update_charge_mode(
         if ctx_data["json"]:
             status_table["charge-mode"] = response.raw_data
             return
-        
         items = [("Charge mode", response.chargeMode, None)]
 
         for key, value, unit in items:
