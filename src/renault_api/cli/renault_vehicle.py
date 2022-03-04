@@ -329,7 +329,6 @@ async def update_lock_status(
         if ctx_data["json"]:
             status_table["lock-status"] = response.raw_data
             return
-       
         items = [
             ("Lock status", response.lockStatus, None),
             ("Lock last updated", response.lastUpdateTime, "tzdatetime"),
