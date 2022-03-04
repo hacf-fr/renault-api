@@ -185,37 +185,33 @@ async def update_battery_status(
             return
         if not await vehicle.supports_endpoint("battery-status"):  # pragma: no cover
             return
-        if not await vehicle.has_contract_for_endpoint(
-            "battery-status"
-        ):  # pragma: no cover
-            update_status_table(status_table, "Battery status", "No contract.", None)
-            return
         response = await vehicle.get_battery_status()
     except QuotaLimitException as exc:  # pragma: no cover
         raise click.ClickException(repr(exc)) from exc
     except KamereonResponseException as exc:  # pragma: no cover
         click.echo(f"battery-status: {exc.error_details}", err=True)
-    else:
-        if response.batteryAvailableEnergy == 0:  # pragma: no branch
-            response.batteryAvailableEnergy = None
-        if (  # pragma: no branch
-            response.chargingStatus == -1.0 and response.plugStatus == 0
-        ):
-            response.chargingStatus = 0.0
+        return
 
-        items = [
-            ("Battery level", response.batteryLevel, "%"),
-            ("Last updated", response.timestamp, "tzdatetime"),
-            ("Available energy", response.batteryAvailableEnergy, "kWh"),
-            ("Range estimate", response.batteryAutonomy, "km"),
-            ("Plug state", response.get_plug_status(), None),
-            ("Charging state", response.get_charging_status(), None),
-            ("Charge rate", response.chargingInstantaneousPower, "kW"),
-            ("Time remaining", response.chargingRemainingTime, "min"),
-        ]
+    if response.batteryAvailableEnergy == 0:  # pragma: no branch
+        response.batteryAvailableEnergy = None
+    if (  # pragma: no branch
+        response.chargingStatus == -1.0 and response.plugStatus == 0
+    ):
+        response.chargingStatus = 0.0
 
-        for key, value, unit in items:
-            update_status_table(status_table, key, value, unit)
+    items = [
+        ("Battery level", response.batteryLevel, "%"),
+        ("Last updated", response.timestamp, "tzdatetime"),
+        ("Available energy", response.batteryAvailableEnergy, "kWh"),
+        ("Range estimate", response.batteryAutonomy, "km"),
+        ("Plug state", response.get_plug_status(), None),
+        ("Charging state", response.get_charging_status(), None),
+        ("Charge rate", response.chargingInstantaneousPower, "kW"),
+        ("Time remaining", response.chargingRemainingTime, "min"),
+    ]
+
+    for key, value, unit in items:
+        update_status_table(status_table, key, value, unit)
 
 
 async def update_charge_mode(
@@ -227,21 +223,17 @@ async def update_charge_mode(
             return
         if not await vehicle.supports_endpoint("charge-mode"):  # pragma: no cover
             return
-        if not await vehicle.has_contract_for_endpoint(
-            "charge-mode"
-        ):  # pragma: no cover
-            update_status_table(status_table, "Charge mode", "No contract.", None)
-            return
         response = await vehicle.get_charge_mode()
     except QuotaLimitException as exc:  # pragma: no cover
         raise click.ClickException(repr(exc)) from exc
     except KamereonResponseException as exc:  # pragma: no cover
         click.echo(f"charge-mode: {exc.error_details}", err=True)
-    else:
-        items = [("Charge mode", response.chargeMode, None)]
+        return
 
-        for key, value, unit in items:
-            update_status_table(status_table, key, value, unit)
+    items = [("Charge mode", response.chargeMode, None)]
+
+    for key, value, unit in items:
+        update_status_table(status_table, key, value, unit)
 
 
 async def update_cockpit(vehicle: RenaultVehicle, status_table: Dict[str, Any]) -> None:
@@ -249,23 +241,21 @@ async def update_cockpit(vehicle: RenaultVehicle, status_table: Dict[str, Any]) 
     try:
         if not await vehicle.supports_endpoint("cockpit"):  # pragma: no cover
             return
-        if not await vehicle.has_contract_for_endpoint("cockpit"):  # pragma: no cover
-            update_status_table(status_table, "Cockpit", "No contract.", None)
-            return
         response = await vehicle.get_cockpit()
     except QuotaLimitException as exc:  # pragma: no cover
         raise click.ClickException(repr(exc)) from exc
     except KamereonResponseException as exc:  # pragma: no cover
         click.echo(f"cockpit: {exc.error_details}", err=True)
-    else:
-        items = [
-            ("Total mileage", response.totalMileage, "km"),
-            ("Fuel autonomy", response.fuelAutonomy, "km"),
-            ("Fuel quantity", response.fuelQuantity, "L"),
-        ]
+        return
 
-        for key, value, unit in items:
-            update_status_table(status_table, key, value, unit)
+    items = [
+        ("Total mileage", response.totalMileage, "km"),
+        ("Fuel autonomy", response.fuelAutonomy, "km"),
+        ("Fuel quantity", response.fuelQuantity, "L"),
+    ]
+
+    for key, value, unit in items:
+        update_status_table(status_table, key, value, unit)
 
 
 async def update_location(
@@ -275,23 +265,21 @@ async def update_location(
     try:
         if not await vehicle.supports_endpoint("location"):
             return
-        if not await vehicle.has_contract_for_endpoint("location"):  # pragma: no cover
-            update_status_table(status_table, "Location", "No contract.", None)
-            return
         response = await vehicle.get_location()
     except QuotaLimitException as exc:  # pragma: no cover
         raise click.ClickException(repr(exc)) from exc
     except KamereonResponseException as exc:  # pragma: no cover
         click.echo(f"location: {exc.error_details}", err=True)
-    else:
-        items = [
-            ("GPS Latitude", response.gpsLatitude, None),
-            ("GPS Longitude", response.gpsLongitude, None),
-            ("GPS last updated", response.lastUpdateTime, "tzdatetime"),
-        ]
+        return
 
-        for key, value, unit in items:
-            update_status_table(status_table, key, value, unit)
+    items = [
+        ("GPS Latitude", response.gpsLatitude, None),
+        ("GPS Longitude", response.gpsLongitude, None),
+        ("GPS last updated", response.lastUpdateTime, "tzdatetime"),
+    ]
+
+    for key, value, unit in items:
+        update_status_table(status_table, key, value, unit)
 
 
 async def update_lock_status(
@@ -306,14 +294,15 @@ async def update_lock_status(
         raise click.ClickException(repr(exc)) from exc
     except KamereonResponseException as exc:  # pragma: no cover
         click.echo(f"lock status: {exc.error_details}", err=True)
-    else:
-        items = [
-            ("Lock status", response.lockStatus, None),
-            ("Lock last updated", response.lastUpdateTime, "tzdatetime"),
-        ]
+        return
 
-        for key, value, unit in items:
-            update_status_table(status_table, key, value, unit)
+    items = [
+        ("Lock status", response.lockStatus, None),
+        ("Lock last updated", response.lastUpdateTime, "tzdatetime"),
+    ]
+
+    for key, value, unit in items:
+        update_status_table(status_table, key, value, unit)
 
 
 async def update_res_state(
@@ -328,13 +317,14 @@ async def update_res_state(
         raise click.ClickException(repr(exc)) from exc
     except KamereonResponseException as exc:  # pragma: no cover
         click.echo(f"res state: {exc.error_details}", err=True)
-    else:
-        items = [
-            ("Engine state", response.details, None),
-        ]
+        return
 
-        for key, value, unit in items:
-            update_status_table(status_table, key, value, unit)
+    items = [
+        ("Engine state", response.details, None),
+    ]
+
+    for key, value, unit in items:
+        update_status_table(status_table, key, value, unit)
 
 
 async def update_hvac_status(
@@ -344,22 +334,18 @@ async def update_hvac_status(
     try:
         if not await vehicle.supports_endpoint("hvac-status"):
             return
-        if not await vehicle.has_contract_for_endpoint(
-            "hvac-status"
-        ):  # pragma: no cover
-            update_status_table(status_table, "HVAC status", "No contract.", None)
-            return
         response = await vehicle.get_hvac_status()
     except QuotaLimitException as exc:  # pragma: no cover
         raise click.ClickException(repr(exc)) from exc
     except KamereonResponseException as exc:  # pragma: no cover
         click.echo(f"hvac-status: {exc.error_details}", err=True)
-    else:
-        items = [
-            ("HVAC status", response.hvacStatus, None),
-            ("HVAC start at", response.nextHvacStartDate, "tzdatetime"),
-            ("External temperature", response.externalTemperature, "°C"),
-        ]
+        return
 
-        for key, value, unit in items:
-            update_status_table(status_table, key, value, unit)
+    items = [
+        ("HVAC status", response.hvacStatus, None),
+        ("HVAC start at", response.nextHvacStartDate, "tzdatetime"),
+        ("External temperature", response.externalTemperature, "°C"),
+    ]
+
+    for key, value, unit in items:
+        update_status_table(status_table, key, value, unit)
