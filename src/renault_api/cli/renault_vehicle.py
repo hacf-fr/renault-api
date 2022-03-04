@@ -1,11 +1,11 @@
 """CLI function for a vehicle."""
+import json
 from typing import Any
 from typing import Dict
 from typing import List
 from typing import Optional
 from typing import Tuple
 
-import json
 import aiohttp
 import click
 from tabulate import tabulate
