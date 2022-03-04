@@ -154,13 +154,13 @@ async def display_status(
     vehicle = await get_vehicle(websession, ctx_data)
     status_table: Dict[str, Any] = {}
 
-    await update_battery_status(vehicle, status_table, ctx_data))
-    await update_charge_mode(vehicle, status_table, ctx_data))
-    await update_cockpit(vehicle, status_table, ctx_data))
-    await update_location(vehicle, status_table, ctx_data))
-    await update_lock_status(vehicle, status_table, ctx_data))
-    await update_res_state(vehicle, status_table, ctx_data))
-    await update_hvac_status(vehicle, status_table, ctx_data))
+    await update_battery_status(vehicle, status_table, ctx_data)
+    await update_charge_mode(vehicle, status_table, ctx_data)
+    await update_cockpit(vehicle, status_table, ctx_data)
+    await update_location(vehicle, status_table, ctx_data)
+    await update_lock_status(vehicle, status_table, ctx_data)
+    await update_res_state(vehicle, status_table, ctx_data)
+    await update_hvac_status(vehicle, status_table, ctx_data)
     if ctx_data["json"]:
         click.echo(json.dumps(status_table))
         return
