@@ -384,7 +384,6 @@ async def update_hvac_status(
         if ctx_data["json"]:
             status_table["hvac-status"] = response.raw_data
             return
-        
         items = [
             ("HVAC status", response.hvacStatus, None),
             ("HVAC start at", response.nextHvacStartDate, "tzdatetime"),
