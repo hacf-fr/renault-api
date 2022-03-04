@@ -185,11 +185,6 @@ async def update_battery_status(
             return
         if not await vehicle.supports_endpoint("battery-status"):  # pragma: no cover
             return
-        if not await vehicle.has_contract_for_endpoint(
-            "battery-status"
-        ):  # pragma: no cover
-            update_status_table(status_table, "Battery status", "No contract.", None)
-            return
         response = await vehicle.get_battery_status()
     except QuotaLimitException as exc:  # pragma: no cover
         raise click.ClickException(repr(exc)) from exc
@@ -227,11 +222,6 @@ async def update_charge_mode(
             return
         if not await vehicle.supports_endpoint("charge-mode"):  # pragma: no cover
             return
-        if not await vehicle.has_contract_for_endpoint(
-            "charge-mode"
-        ):  # pragma: no cover
-            update_status_table(status_table, "Charge mode", "No contract.", None)
-            return
         response = await vehicle.get_charge_mode()
     except QuotaLimitException as exc:  # pragma: no cover
         raise click.ClickException(repr(exc)) from exc
@@ -248,9 +238,6 @@ async def update_cockpit(vehicle: RenaultVehicle, status_table: Dict[str, Any]) 
     """Update status table from get_vehicle_cockpit."""
     try:
         if not await vehicle.supports_endpoint("cockpit"):  # pragma: no cover
-            return
-        if not await vehicle.has_contract_for_endpoint("cockpit"):  # pragma: no cover
-            update_status_table(status_table, "Cockpit", "No contract.", None)
             return
         response = await vehicle.get_cockpit()
     except QuotaLimitException as exc:  # pragma: no cover
@@ -274,9 +261,6 @@ async def update_location(
     """Update status table from get_vehicle_location."""
     try:
         if not await vehicle.supports_endpoint("location"):
-            return
-        if not await vehicle.has_contract_for_endpoint("location"):  # pragma: no cover
-            update_status_table(status_table, "Location", "No contract.", None)
             return
         response = await vehicle.get_location()
     except QuotaLimitException as exc:  # pragma: no cover
@@ -343,11 +327,6 @@ async def update_hvac_status(
     """Update status table from get_vehicle_hvac_status."""
     try:
         if not await vehicle.supports_endpoint("hvac-status"):
-            return
-        if not await vehicle.has_contract_for_endpoint(
-            "hvac-status"
-        ):  # pragma: no cover
-            update_status_table(status_table, "HVAC status", "No contract.", None)
             return
         response = await vehicle.get_hvac_status()
     except QuotaLimitException as exc:  # pragma: no cover
