@@ -211,7 +211,6 @@ async def update_battery_status(
         if ctx_data["json"]:
             status_table["battery-status"] = response.raw_data
             return
-        
         items = [
             ("Battery level", response.batteryLevel, "%"),
             ("Last updated", response.timestamp, "tzdatetime"),
