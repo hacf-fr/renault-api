@@ -274,7 +274,6 @@ async def update_cockpit(
         if ctx_data["json"]:
             status_table["cockpit"] = response.raw_data
             return
-        
         items = [
             ("Total mileage", response.totalMileage, "km"),
             ("Fuel autonomy", response.fuelAutonomy, "km"),
