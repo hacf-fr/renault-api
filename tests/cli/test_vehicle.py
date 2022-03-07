@@ -130,11 +130,13 @@ EXPECTED_STATUS = {
         "-----------------  -------------------------\n"
     ),
     "zoe_40.1_json.json": (
-        "{\"battery-status\": {\"timestamp\": \"2020-11-17T09:06:48+01:00\", \"batteryLevel\": 50, \"batteryAutonomy\": 128, \"batteryCapacity\": 0, \"batteryAvailableEnergy\": 0, \"plugStatus\": 0, \"chargingStatus\": -1.0}, "
-        "\"charge-mode\": {\"chargeMode\": \"always\"}, "
-        "\"cockpit\": {\"totalMileage\": 49114.27 }, "
-        "\"res-state\": {\"details\": \"Stopped, ready for RES\", \"code\": \"10\"}, "
-        "\"hvac-status\": {\"externalTemperature\": 8.0, \"hvacStatus\": \"off\"}}"
+        '{"battery-status": {"timestamp": "2020-11-17T09:06:48+01:00", '
+        '"batteryLevel": 50, "batteryAutonomy": 128, "batteryCapacity": 0, '
+        '"batteryAvailableEnergy": 0, "plugStatus": 0, "chargingStatus": -1.0}, '
+        '"charge-mode": {"chargeMode": "always"}, '
+        '"cockpit": {"totalMileage": 49114.27}, '
+        '"res-state": {"details": "Stopped, ready for RES", "code": "10"}, '
+        '"hvac-status": {"externalTemperature": 8.0, "hvacStatus": "off"}}\n'
     ),
 }
 
