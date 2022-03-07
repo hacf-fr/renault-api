@@ -1,4 +1,5 @@
 """CLI function for a vehicle."""
+import json
 from typing import Any
 from typing import Dict
 from typing import List
@@ -153,13 +154,16 @@ async def display_status(
     vehicle = await get_vehicle(websession, ctx_data)
     status_table: Dict[str, Any] = {}
 
-    await update_battery_status(vehicle, status_table)
-    await update_charge_mode(vehicle, status_table)
-    await update_cockpit(vehicle, status_table)
-    await update_location(vehicle, status_table)
-    await update_lock_status(vehicle, status_table)
-    await update_res_state(vehicle, status_table)
-    await update_hvac_status(vehicle, status_table)
+    await update_battery_status(vehicle, status_table, ctx_data)
+    await update_charge_mode(vehicle, status_table, ctx_data)
+    await update_cockpit(vehicle, status_table, ctx_data)
+    await update_location(vehicle, status_table, ctx_data)
+    await update_lock_status(vehicle, status_table, ctx_data)
+    await update_res_state(vehicle, status_table, ctx_data)
+    await update_hvac_status(vehicle, status_table, ctx_data)
+    if ctx_data["json"]:
+        click.echo(json.dumps(status_table))
+        return
 
     click.echo(tabulate(status_table.items()))
 
@@ -177,7 +181,7 @@ def update_status_table(
 
 
 async def update_battery_status(
-    vehicle: RenaultVehicle, status_table: Dict[str, Any]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_battery_status."""
     try:
@@ -199,6 +203,9 @@ async def update_battery_status(
     ):
         response.chargingStatus = 0.0
 
+    if ctx_data["json"]:
+        status_table["battery-status"] = response.raw_data
+        return
     items = [
         ("Battery level", response.batteryLevel, "%"),
         ("Last updated", response.timestamp, "tzdatetime"),
@@ -215,7 +222,7 @@ async def update_battery_status(
 
 
 async def update_charge_mode(
-    vehicle: RenaultVehicle, status_table: Dict[str, Any]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_charge_mode."""
     try:
@@ -230,13 +237,18 @@ async def update_charge_mode(
         click.echo(f"charge-mode: {exc.error_details}", err=True)
         return
 
+    if ctx_data["json"]:
+        status_table["charge-mode"] = response.raw_data
+        return
     items = [("Charge mode", response.chargeMode, None)]
 
     for key, value, unit in items:
         update_status_table(status_table, key, value, unit)
 
 
-async def update_cockpit(vehicle: RenaultVehicle, status_table: Dict[str, Any]) -> None:
+async def update_cockpit(
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
+) -> None:
     """Update status table from get_vehicle_cockpit."""
     try:
         if not await vehicle.supports_endpoint("cockpit"):  # pragma: no cover
@@ -248,6 +260,9 @@ async def update_cockpit(vehicle: RenaultVehicle, status_table: Dict[str, Any]) 
         click.echo(f"cockpit: {exc.error_details}", err=True)
         return
 
+    if ctx_data["json"]:
+        status_table["cockpit"] = response.raw_data
+        return
     items = [
         ("Total mileage", response.totalMileage, "km"),
         ("Fuel autonomy", response.fuelAutonomy, "km"),
@@ -259,7 +274,7 @@ async def update_cockpit(vehicle: RenaultVehicle, status_table: Dict[str, Any]) 
 
 
 async def update_location(
-    vehicle: RenaultVehicle, status_table: Dict[str, Any]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_location."""
     try:
@@ -272,6 +287,9 @@ async def update_location(
         click.echo(f"location: {exc.error_details}", err=True)
         return
 
+    if ctx_data["json"]:  # pragma: no cover
+        status_table["location"] = response.raw_data
+        return
     items = [
         ("GPS Latitude", response.gpsLatitude, None),
         ("GPS Longitude", response.gpsLongitude, None),
@@ -283,7 +301,7 @@ async def update_location(
 
 
 async def update_lock_status(
-    vehicle: RenaultVehicle, status_table: Dict[str, Any]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_lock_status."""
     try:
@@ -296,6 +314,9 @@ async def update_lock_status(
         click.echo(f"lock status: {exc.error_details}", err=True)
         return
 
+    if ctx_data["json"]:  # pragma: no cover
+        status_table["lock-status"] = response.raw_data
+        return
     items = [
         ("Lock status", response.lockStatus, None),
         ("Lock last updated", response.lastUpdateTime, "tzdatetime"),
@@ -306,7 +327,7 @@ async def update_lock_status(
 
 
 async def update_res_state(
-    vehicle: RenaultVehicle, status_table: Dict[str, Any]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_res_state."""
     try:
@@ -319,6 +340,9 @@ async def update_res_state(
         click.echo(f"res state: {exc.error_details}", err=True)
         return
 
+    if ctx_data["json"]:
+        status_table["res-state"] = response.raw_data
+        return
     items = [
         ("Engine state", response.details, None),
     ]
@@ -328,7 +352,7 @@ async def update_res_state(
 
 
 async def update_hvac_status(
-    vehicle: RenaultVehicle, status_table: Dict[str, str]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_hvac_status."""
     try:
@@ -341,6 +365,9 @@ async def update_hvac_status(
         click.echo(f"hvac-status: {exc.error_details}", err=True)
         return
 
+    if ctx_data["json"]:
+        status_table["hvac-status"] = response.raw_data
+        return
     items = [
         ("HVAC status", response.hvacStatus, None),
         ("HVAC start at", response.nextHvacStartDate, "tzdatetime"),
