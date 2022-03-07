@@ -314,7 +314,7 @@ async def update_lock_status(
         click.echo(f"lock status: {exc.error_details}", err=True)
         return
 
-    if ctx_data["json"]:
+    if ctx_data["json"]: # pragma: no cover
         status_table["lock-status"] = response.raw_data
         return
     items = [
