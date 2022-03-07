@@ -282,6 +282,7 @@ def test_vehicle_status_no_prompt(
 
     assert EXPECTED_STATUS["zoe_40.1.json"] == result.output
 
+
 def test_vehicle_status_json(
     mocked_responses: aioresponses, cli_runner: CliRunner
 ) -> None:
