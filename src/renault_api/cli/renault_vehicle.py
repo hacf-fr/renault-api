@@ -287,7 +287,7 @@ async def update_location(
         click.echo(f"location: {exc.error_details}", err=True)
         return
 
-    if ctx_data["json"]:
+    if ctx_data["json"]: # pragma: no cover
         status_table["location"] = response.raw_data
         return
     items = [
