@@ -129,6 +129,13 @@ EXPECTED_STATUS = {
         "HVAC status        on\n"
         "-----------------  -------------------------\n"
     ),
+    "zoe_40.1_json.json": (
+        "{\"battery-status\": {\"timestamp\": \"2020-11-17T09:06:48+01:00\", \"batteryLevel\": 50, \"batteryAutonomy\": 128, \"batteryCapacity\": 0, \"batteryAvailableEnergy\": 0, \"plugStatus\": 0, \"chargingStatus\": -1.0}, "
+        "\"charge-mode\": {\"chargeMode\": \"always\"}, "
+        "\"cockpit\": {\"totalMileage\": 49114.27 }, "
+        "\"res-state\": {\"details\": \"Stopped, ready for RES\", \"code\": \"10\"}, "
+        "\"hvac-status\": {\"externalTemperature\": 8.0, \"hvacStatus\": \"off\"}}"
+    ),
 }
 
 
@@ -272,6 +279,27 @@ def test_vehicle_status_no_prompt(
     assert result.exit_code == 0, result.exception
 
     assert EXPECTED_STATUS["zoe_40.1.json"] == result.output
+
+def test_vehicle_status_json(
+    mocked_responses: aioresponses, cli_runner: CliRunner
+) -> None:
+    """It exits with a status code of zero."""
+    credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
+    credential_store[CONF_LOCALE] = Credential(TEST_LOCALE)
+    credential_store[GIGYA_LOGIN_TOKEN] = Credential(TEST_LOGIN_TOKEN)
+    credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
+    credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
+
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
+    fixtures.inject_get_vehicle_contracts(mocked_responses, "fr_FR.2.json")
+    fixtures.inject_vehicle_status(mocked_responses, "zoe")
+
+    result = cli_runner.invoke(
+        __main__.main, f"--account {TEST_ACCOUNT_ID} --vin {TEST_VIN} --json status"
+    )
+    assert result.exit_code == 0, result.exception
+
+    assert EXPECTED_STATUS["zoe_40.1_json.json"] == result.output
 
 
 def test_vehicle_contracts(
