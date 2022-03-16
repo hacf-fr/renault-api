@@ -18,7 +18,7 @@ PERMANENT_KEYS = [
 
 GIGYA_URL_EU = "https://accounts.eu1.gigya.com"
 GIGYA_URL_US = "https://accounts.us1.gigya.com"
-KAMEREON_APIKEY = "Ae9FDWugRxZQAGm3Sxgk7uJn6Q4CGEA2"
+KAMEREON_APIKEY = "VAX7XYKGfa92yMvXculCkEFyfZbuM7Ss"
 KAMEREON_URL_EU = "https://api-wired-prod-1-euw1.wrd-aws.com"
 KAMEREON_URL_US = "https://api-wired-prod-1-usw2.wrd-aws.com"
 
