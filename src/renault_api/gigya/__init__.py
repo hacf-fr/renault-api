@@ -11,7 +11,7 @@ from . import models
 from . import schemas
 
 GIGYA_JWT = "gigya_jwt"
-GIGYA_LOGIN_TOKEN = "gigya_login_token"
+GIGYA_LOGIN_TOKEN = "gigya_login_token"  # noqa: S105
 GIGYA_PERSON_ID = "gigya_person_id"
 GIGYA_KEYS = [GIGYA_JWT, GIGYA_LOGIN_TOKEN, GIGYA_PERSON_ID]
 
