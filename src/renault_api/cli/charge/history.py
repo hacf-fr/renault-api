@@ -111,10 +111,7 @@ async def history(
     ]
     click.echo(
         tabulate(
-            [
-                _format_charge_history_item(item, period, details)
-                for item in charge_summaries
-            ],
+            [_format_charge_history_item(item, period) for item in charge_summaries],
             headers=headers,
         )
     )
