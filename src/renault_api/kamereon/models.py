@@ -47,7 +47,7 @@ COMMON_ERRRORS: List[Dict[str, Any]] = [
 
 VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
     "X101VE": {  # ZOE phase 1
-        "reports-durations-in-minutes": True,
+        "reports-charge-session-durations-in-minutes": True,
         "reports-in-watts": True,
         "support-endpoint-location": False,
         "support-endpoint-lock-status": False,
@@ -65,7 +65,7 @@ VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
 
 GATEWAY_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
     "GDC": {  # ZOE phase 1
-        "reports-durations-in-minutes": True,
+        "reports-charge-session-durations-in-minutes": True,
         "reports-in-watts": True,
         "support-endpoint-location": False,
         "support-endpoint-lock-status": False,
@@ -201,12 +201,12 @@ class KamereonVehicleDetails(BaseModel):
             return True
         return False
 
-    def reports_duration_in_minutes(self) -> bool:
+    def reports_charge_session_durations_in_minutes(self) -> bool:
         """Return True if model reports history durations in minutes."""
         # Default to False (=seconds) for unknown vehicles
         if self.model and self.model.code:
             return VEHICLE_SPECIFICATIONS.get(self.model.code, {}).get(
-                "reports-durations-in-minutes", False
+                "reports-charge-session-durations-in-minutes", False
             )
         return False  # pragma: no cover
 

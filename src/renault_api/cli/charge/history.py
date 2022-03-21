@@ -58,7 +58,11 @@ async def sessions(
 def _format_charges_item(
     item: Dict[str, Any], details: KamereonVehicleDetails
 ) -> List[str]:
-    duration_unit = "minutes" if details.reports_duration_in_minutes() else "seconds"
+    duration_unit = (
+        "minutes"
+        if details.reports_charge_session_durations_in_minutes()
+        else "seconds"
+    )
     return [
         helpers.get_display_value(item.get("chargeStartDate"), "tzdatetime"),
         helpers.get_display_value(item.get("chargeEndDate"), "tzdatetime"),
@@ -91,7 +95,6 @@ async def history(
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
     )
-    details = await vehicle.get_details()
     response = await vehicle.get_charge_history(
         start=parsed_start, end=parsed_end, period=period
     )
@@ -117,13 +120,10 @@ async def history(
     )
 
 
-def _format_charge_history_item(
-    item: Dict[str, Any], period: str, details: KamereonVehicleDetails
-) -> List[str]:
-    duration_unit = "minutes" if details.reports_duration_in_minutes() else "seconds"
+def _format_charge_history_item(item: Dict[str, Any], period: str) -> List[str]:
     return [
         helpers.get_display_value(item.get(period)),
         helpers.get_display_value(item.get("totalChargesNumber")),
-        helpers.get_display_value(item.get("totalChargesDuration"), duration_unit),
+        helpers.get_display_value(item.get("totalChargesDuration"), "minutes"),
         helpers.get_display_value(item.get("totalChargesErrors")),
     ]
