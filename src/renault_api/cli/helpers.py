@@ -178,8 +178,8 @@ def convert_minutes_to_tztime(minutes: int) -> str:
     return f"T{hours:02g}:{minutes:02g}Z"
 
 
-def _format_minutes(mins: float) -> str:
-    d = timedelta(minutes=mins)
+def _format_seconds(secs: float) -> str:
+    d = timedelta(seconds=secs)
     return str(d)
 
 
@@ -197,7 +197,9 @@ def get_display_value(
     if unit == "tztime":
         return _format_tztime(value)
     if unit == "minutes":
-        return _format_minutes(value)
+        return _format_seconds(value * 60)
+    if unit == "seconds":
+        return _format_seconds(value)
     if unit == "kW":
         value = value / 1000
         return f"{value:.2f} {unit}"

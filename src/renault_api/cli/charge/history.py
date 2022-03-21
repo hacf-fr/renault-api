@@ -10,6 +10,7 @@ from tabulate import tabulate
 
 from renault_api.cli import helpers
 from renault_api.cli import renault_vehicle
+from renault_api.kamereon.models import KamereonVehicleDetails
 
 
 @click.command()
@@ -29,6 +30,7 @@ async def sessions(
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
     )
+    details = await vehicle.get_details()
     response = await vehicle.get_charges(start=parsed_start, end=parsed_end)
     charges: List[Dict[str, Any]] = response.raw_data["charges"]
     if not charges:  # pragma: no cover
@@ -47,15 +49,24 @@ async def sessions(
         "Status",
     ]
     click.echo(
-        tabulate([_format_charges_item(item) for item in charges], headers=headers)
+        tabulate(
+            [_format_charges_item(item, details) for item in charges], headers=headers
+        )
     )
 
 
-def _format_charges_item(item: Dict[str, Any]) -> List[str]:
+def _format_charges_item(
+    item: Dict[str, Any], details: KamereonVehicleDetails
+) -> List[str]:
+    duration_unit = (
+        "minutes"
+        if details.reports_charge_session_durations_in_minutes()
+        else "seconds"
+    )
     return [
         helpers.get_display_value(item.get("chargeStartDate"), "tzdatetime"),
         helpers.get_display_value(item.get("chargeEndDate"), "tzdatetime"),
-        helpers.get_display_value(item.get("chargeDuration"), "minutes"),
+        helpers.get_display_value(item.get("chargeDuration"), duration_unit),
         helpers.get_display_value(item.get("chargeStartInstantaneousPower"), "kW"),
         helpers.get_display_value(item.get("chargeStartBatteryLevel"), "%"),
         helpers.get_display_value(item.get("chargeEndBatteryLevel"), "%"),

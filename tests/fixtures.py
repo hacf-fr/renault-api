@@ -350,14 +350,19 @@ def inject_get_hvac_sessions(
     )
 
 
-def inject_get_charges(mocked_responses: aioresponses, start: str, end: str) -> str:
+def inject_get_charges(
+    mocked_responses: aioresponses,
+    start: str,
+    end: str,
+    filename: str = "vehicle_data/charges.json",
+) -> str:
     """Inject sample charges."""
     query_string = f"{DEFAULT_QUERY_STRING}&end={end}&start={start}"
     urlpath = f"{ADAPTER_PATH}/charges?{query_string}"
     return inject_data(
         mocked_responses,
         urlpath,
-        "vehicle_data/charges.json",
+        filename,
     )
 
 

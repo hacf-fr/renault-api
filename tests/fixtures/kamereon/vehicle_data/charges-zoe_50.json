@@ -1,0 +1,67 @@
+{
+  "data": {
+    "type": "Car",
+    "id": "VF1AAAAA555777999",
+    "attributes": {
+      "charges": [
+        {
+          "chargeStartDate": "2022-03-16T02:02:16Z",
+          "chargeEndDate": "2022-03-16T04:01:58Z",
+          "chargeDuration": 7182,
+          "chargeStartBatteryLevel": 62,
+          "chargeEndBatteryLevel": 62,
+          "chargeEndStatus": "error"
+        },
+        {
+          "chargeStartDate": "2022-03-16T20:18:42Z",
+          "chargeEndDate": "2022-03-16T21:50:08Z",
+          "chargeDuration": 5486,
+          "chargeEndBatteryLevel": 60,
+          "chargeEndStatus": "error"
+        },
+        {
+          "chargeStartDate": "2022-03-17T01:01:10Z",
+          "chargeEndDate": "2022-03-17T05:02:01Z",
+          "chargeDuration": 14451,
+          "chargeEndBatteryLevel": 74,
+          "chargeEndStatus": "error"
+        },
+        {
+          "chargeStartDate": "2022-03-18T01:01:13Z",
+          "chargeEndDate": "2022-03-18T05:02:04Z",
+          "chargeDuration": 14451,
+          "chargeEndBatteryLevel": 64,
+          "chargeEndStatus": "error"
+        },
+        {
+          "chargeStartDate": "2022-03-18T17:34:28Z",
+          "chargeEndDate": "2022-03-18T17:37:57Z",
+          "chargeDuration": 209,
+          "chargeEndBatteryLevel": 55,
+          "chargeEndStatus": "error"
+        },
+        {
+          "chargeStartDate": "2022-03-18T17:40:37Z",
+          "chargeEndDate": "2022-03-18T18:17:22Z",
+          "chargeDuration": 2205,
+          "chargeEndBatteryLevel": 89,
+          "chargeEndStatus": "error"
+        },
+        {
+          "chargeStartDate": "2022-03-19T15:18:18Z",
+          "chargeEndDate": "2022-03-19T16:36:04Z",
+          "chargeDuration": 4666,
+          "chargeEndBatteryLevel": 99,
+          "chargeEndStatus": "error"
+        },
+        {
+          "chargeStartDate": "2022-03-20T21:21:31Z",
+          "chargeEndDate": "2022-03-21T06:32:50Z",
+          "chargeDuration": 33079,
+          "chargeEndBatteryLevel": 71,
+          "chargeEndStatus": "error"
+        }
+      ]
+    }
+  }
+}
