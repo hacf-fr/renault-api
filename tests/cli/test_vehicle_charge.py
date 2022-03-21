@@ -14,6 +14,7 @@ def test_charge_history_day(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     fixtures.inject_get_charge_history(
         mocked_responses, start="20201101", end="20201130", period="day"
     )
@@ -37,6 +38,7 @@ def test_charge_history_month(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     fixtures.inject_get_charge_history(
         mocked_responses, start="202011", end="202011", period="month"
     )
@@ -84,9 +86,10 @@ def test_charge_mode_set(mocked_responses: aioresponses, cli_runner: CliRunner) 
     assert expected_output == result.output
 
 
-def test_sessions(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_sessions_40(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     fixtures.inject_get_charges(mocked_responses, start="20201101", end="20201130")
 
     result = cli_runner.invoke(
@@ -101,6 +104,47 @@ def test_sessions(mocked_responses: aioresponses, cli_runner: CliRunner) -> None
         "  ------------  -------------  ---------------  -------------  --------\n"
         "2020-11-11 01:31:03  2020-11-11 09:30:17  7:59:00     3.10 kW     "
         "  15 %          74 %           59 %             slow           ok\n"
+    )
+    assert expected_output == result.output
+
+
+def test_sessions_50(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+    """It exits with a status code of zero."""
+    initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
+    fixtures.inject_get_charges(
+        mocked_responses,
+        start="20201101",
+        end="20201130",
+        filename="vehicle_data/charges-zoe_50.json",
+    )
+
+    result = cli_runner.invoke(
+        __main__.main, "charge sessions --from 2020-11-01 --to 2020-11-30"
+    )
+    assert result.exit_code == 0, result.exception
+
+    expected_output = (
+        "Charge start         Charge end           Duration    Power (kW)  "
+        "  Started at    Finished at    Charge gained    Power level    Status\n"
+        "-------------------  -------------------  ----------  ------------"
+        "  ------------  -------------  ---------------  -------------  --------\n"
+        "2022-03-16 03:02:16  2022-03-16 05:01:58  1:59:42                 "
+        "  62 %          62 %                                           error\n"
+        "2022-03-16 21:18:42  2022-03-16 22:50:08  1:31:26                 "
+        "                60 %                                           error\n"
+        "2022-03-17 02:01:10  2022-03-17 06:02:01  4:00:51                 "
+        "                74 %                                           error\n"
+        "2022-03-18 02:01:13  2022-03-18 06:02:04  4:00:51                 "
+        "                64 %                                           error\n"
+        "2022-03-18 18:34:28  2022-03-18 18:37:57  0:03:29                 "
+        "                55 %                                           error\n"
+        "2022-03-18 18:40:37  2022-03-18 19:17:22  0:36:45                 "
+        "                89 %                                           error\n"
+        "2022-03-19 16:18:18  2022-03-19 17:36:04  1:17:46                 "
+        "                99 %                                           error\n"
+        "2022-03-20 22:21:31  2022-03-21 07:32:50  9:11:19                 "
+        "                71 %                                           error\n"
     )
     assert expected_output == result.output
 
