@@ -3,7 +3,6 @@ import aiohttp
 import pytest
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall
-from renault_api.kamereon import exceptions
 from tests import fixtures
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
@@ -14,6 +13,7 @@ from tests.const import TEST_VIN
 from yarl import URL
 
 from renault_api import kamereon
+from renault_api.kamereon import exceptions
 
 
 @pytest.mark.asyncio
@@ -76,7 +76,7 @@ async def test_get_vehicle_data_xml_bad_gateway(
     websession: aiohttp.ClientSession, mocked_responses: aioresponses
 ) -> None:
     """Test get_vehicle_data with invalid xml data."""
-    fixtures.inject_get_battery_status(mocked_responses, f"error/bad_gateway.html")
+    fixtures.inject_get_battery_status(mocked_responses, "error/bad_gateway.html")
 
     with pytest.raises(exceptions.KamereonResponseException) as excinfo:
         await kamereon.get_vehicle_data(

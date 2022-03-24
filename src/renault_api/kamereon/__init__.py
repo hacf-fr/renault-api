@@ -11,10 +11,9 @@ from warnings import warn
 import aiohttp
 from marshmallow.schema import Schema
 
-from renault_api.kamereon.exceptions import KamereonException, KamereonResponseException
-
 from . import models
 from . import schemas
+from .exceptions import KamereonResponseException
 
 
 _LOGGER = logging.getLogger(__name__)
