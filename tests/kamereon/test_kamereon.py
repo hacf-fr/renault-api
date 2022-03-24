@@ -90,6 +90,7 @@ async def test_get_vehicle_data_xml_bad_gateway(
             endpoint="battery-status",
         )
     assert excinfo.value.error_code == "Invalid JSON"
+    assert excinfo.value.error_details
     assert excinfo.value.error_details.startswith(
         "<html>\n  <head>\n    <title>502 Bad Gateway</title>"
     )
