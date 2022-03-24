@@ -13,6 +13,7 @@ from marshmallow.schema import Schema
 
 from . import models
 from . import schemas
+from .exceptions import KamereonResponseException
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -146,9 +147,15 @@ async def request(
         # These need to be wrapped in an object.
         if response_text.startswith("["):
             response_text = f'{{"{wrap_array_in or "data"}": {response_text}}}'
+        if not response_text.startswith("{"):
+            # Check for HTTP error
+            http_response.raise_for_status()
+            raise KamereonResponseException("Invalid JSON", response_text)
+
         kamereon_response: models.KamereonResponse = schema.loads(response_text)
         # Check for Kamereon error
         kamereon_response.raise_for_error_code()
+
         # Check for HTTP error
         http_response.raise_for_status()
 
