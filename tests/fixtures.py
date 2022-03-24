@@ -256,13 +256,15 @@ def inject_get_vehicle_contracts(mocked_responses: aioresponses, filename: str) 
     )
 
 
-def inject_get_battery_status(mocked_responses: aioresponses) -> str:
+def inject_get_battery_status(
+    mocked_responses: aioresponses, filename: str = "vehicle_data/battery-status.1.json"
+) -> str:
     """Inject sample battery-status."""
     urlpath = f"{ADAPTER2_PATH}/battery-status?{DEFAULT_QUERY_STRING}"
     return inject_data(
         mocked_responses,
         urlpath,
-        "vehicle_data/battery-status.1.json",
+        filename,
     )
 
 
