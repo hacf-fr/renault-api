@@ -55,6 +55,9 @@ VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
     "X102VE": {  # ZOE phase 2
         "warns-on-method-set_ac_stop": "Action `cancel` on endpoint `hvac-start` may not be supported on this model.",  # noqa
     },
+    "XJA1VP": {  # CLIO V
+        "support-endpoint-hvac-status": False,
+    },
     "XJB1SU": {  # CAPTUR II
         "support-endpoint-hvac-status": False,
     },
@@ -197,6 +200,7 @@ class KamereonVehicleDetails(BaseModel):
         if energy_type in [
             "OTHER",
             "PHEV",
+            "HEV",
         ]:
             return True
         return False
