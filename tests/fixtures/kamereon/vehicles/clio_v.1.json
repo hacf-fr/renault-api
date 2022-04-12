@@ -1,0 +1,95 @@
+{
+  "accountId": "account-id-clio",
+  "country": "IT",
+  "vehicleLinks": [
+    {
+      "brand": "RENAULT",
+      "vin": "VF1AAAAA555777123",
+      "status": "ACTIVE",
+      "linkType": "OWNER",
+      "garageBrand": "RENAULT",
+      "mileage": 20096,
+      "mileageUnit": "km",
+      "mileageDate": "2021-08-18",
+      "startDate": "2020-10-26",
+      "createdDate": "2020-10-26T06:00:43.742183Z",
+      "lastModifiedDate": "2022-04-11T06:45:39.027640Z",
+      "ownershipStartDate": "2020-12-17",
+      "cancellationReason": {},
+      "preferredDealer": {
+        "dealerId": "38013362_001",
+        "dealerName": "AUTONORD FIORETTO SPA",
+        "brand": "RENAULT",
+        "createdDate": "2020-12-20T14:57:02.939854Z",
+        "lastModifiedDate": "2020-12-20T14:57:02.939854Z"
+      },
+      "connectedDriver": {
+        "role": "MAIN_DRIVER",
+        "createdDate": "2020-12-20T14:13:57.932714Z",
+        "lastModifiedDate": "2020-12-20T14:13:57.932714Z"
+      },
+      "vehicleDetails": {
+        "vin": "VF1AAAAA555777123",
+        "registrationDate": "2020-12-17",
+        "firstRegistrationDate": "2020-12-17",
+        "engineType": "H4M",
+        "engineRatio": "632",
+        "modelSCR": "CL5",
+        "deliveryCountry": { "code": "IT", "label": "ITALY" },
+        "family": { "code": "XJA", "label": "XJA FAMILY", "group": "007" },
+        "tcu": {
+          "code": "AIVCT",
+          "label": "WITH AIVC CONNECTION UNIT",
+          "group": "E70"
+        },
+        "navigationAssistanceLevel": { "code": "", "label": "", "group": "" },
+        "battery": {
+          "code": "BTAAR1",
+          "label": "BTAAR1 BATTERY",
+          "group": "968"
+        },
+        "radioType": {
+          "code": "NA406",
+          "label": "AIVI FULL NAV DAB 6 SPEAKERS",
+          "group": "425"
+        },
+        "registrationCountry": { "code": "IT" },
+        "brand": { "label": "RENAULT" },
+        "model": { "code": "XJA1VP", "label": "CLIO V", "group": "971" },
+        "gearbox": {
+          "code": "BVH4",
+          "label": "HYBRID 4 SPEED GEARBOX",
+          "group": "427"
+        },
+        "version": { "code": "INT MUH6UY" },
+        "energy": { "code": "ESS", "label": "PETROL", "group": "019" },
+        "registrationNumber": "REG-NUMBER",
+        "vcd": "STANDA/XJA/BJA/EA3/MU/ESS/DG/TEMP/TR4X2/AFURGE/RV/ABS/CA02/TN/PBNCH/LAC/VT/CPE/RET04/SPROJA/RALU17/CEAVRH/SANCL/AIRBA2/SERIE/DRA/DRAP06/HARM01/ATAR03/SGAV03/SGAR02/TECNM/BANAL/KM/MCSOL2/TPRM3/AVREPL/SSDECA/ABLAVI/ESPHSA/FPAS2/ALEVA/SOP03C/SSADPC/STHPLG/SKTGRV/VLMOU1/RETRCR/TRSEV1/RETC/LVAVIP/LVAREI/SASURV/RSGALT/SGSCHA/ITA01/APL03/SAN346/PANP02/FSTPO/ALOUC5/PART01/CMAR3P/SAN417/NA406/BVH4/ECLHB3/RDIF20/PNSTRD/ISOFIX/ENPH01/HRGM01/SANFLT/CSRGAC/SANACF/SDPCLV/TLRP00/FRDIS1/SPRODI/SAN613/AVFAP/AIRBDE/CHC03/PSMREC/E06U/SSPTLP/CHBASE/SANCML/SSFLEX/SDRQAR/SEXTIN/M2018/PHAS1/SPRTQT/SAN913/SSAPLC/THABT1/5DHS/HYB05/1KWH29/BTAAR1/VEC374/XJA1VP/NB004/SUSNPI/H4M/NOADR/SSCAEC/DLIGM2/PGPRT2/SRANCF/FEUAR3/SCDVIT/SANC09/SKTPOU/SKTPGR/SSCCPC/SSPREM/FDIU2/MAPSTD/RCALL/MET04/DANGMO/ECOMOD/SDCOSP/SSRCAR/AIVCT/PRCHR1/AVGSI/ITPK4/MLEXP1/SPERTA/PERB01/PERC01/SSPERG/SPERTP/SPERTS/VOLNCH/SSACTE/NODAA/REACTI/EV1GA1/AVTSR1/DWGE01/AVC1A/1234Y/NOLIE/NOLII/NOLIS/LIECHS/AEBS07/WOSRE/PRAHL/AVCAM",
+        "assets": [
+          {
+            "assetType": "PICTURE",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=STANDA%2FBJA%2FEA3%2FESS%2FDG%2FRV%2FCA02%2FVT%2FCPE%2FRET04%2FSPROJA%2FRALU17%2FDRA%2FDRAP06%2FHARM01%2FATAR03%2FSGAV03%2FSGAR02%2FTECNM%2FKM%2FMCSOL2%2FABLAVI%2FESPHSA%2FFPAS2%2FALEVA%2FSOP03C%2FSSADPC%2FVLMOU1%2FRETRCR%2FRETC%2FLVAREI%2FRSGALT%2FPANP02%2FNA406%2FBVH4%2FECLHB3%2FRDIF20%2FCSRGAC%2FSANACF%2FTLRP00%2FAIRBDE%2FCHBASE%2FM2018%2FSSAPLC%2FTHABT1%2FHYB05%2FNOADR%2FSSCAEC%2FDLIGM2%2FPGPRT2%2FSRANCF%2FFEUAR3%2FSKTPOU%2FRCALL%2FMET04%2FDANGMO%2FECOMOD%2FSSRCAR%2FAIVCT%2FPRCHR1%2FAVGSI%2FITPK4%2FMLEXP1%2FSPERTA%2FPERB01%2FPERC01%2FSSPERG%2FSPERTP%2FSPERTS%2FREACTI%2FEV1GA1%2FAVTSR1%2FDWGE01%2FNOLIE%2FNOLII%2FAEBS07%2FAVCAM&databaseId=f457977c-94e9-4746-aba4-b465dcccc955&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_LARGE"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=STANDA%2FBJA%2FEA3%2FESS%2FDG%2FRV%2FCA02%2FVT%2FCPE%2FRET04%2FSPROJA%2FRALU17%2FDRA%2FDRAP06%2FHARM01%2FATAR03%2FSGAV03%2FSGAR02%2FTECNM%2FKM%2FMCSOL2%2FABLAVI%2FESPHSA%2FFPAS2%2FALEVA%2FSOP03C%2FSSADPC%2FVLMOU1%2FRETRCR%2FRETC%2FLVAREI%2FRSGALT%2FPANP02%2FNA406%2FBVH4%2FECLHB3%2FRDIF20%2FCSRGAC%2FSANACF%2FTLRP00%2FAIRBDE%2FCHBASE%2FM2018%2FSSAPLC%2FTHABT1%2FHYB05%2FNOADR%2FSSCAEC%2FDLIGM2%2FPGPRT2%2FSRANCF%2FFEUAR3%2FSKTPOU%2FRCALL%2FMET04%2FDANGMO%2FECOMOD%2FSSRCAR%2FAIVCT%2FPRCHR1%2FAVGSI%2FITPK4%2FMLEXP1%2FSPERTA%2FPERB01%2FPERC01%2FSSPERG%2FSPERTP%2FSPERTS%2FREACTI%2FEV1GA1%2FAVTSR1%2FDWGE01%2FNOLIE%2FNOLII%2FAEBS07%2FAVCAM&databaseId=f457977c-94e9-4746-aba4-b465dcccc955&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              }
+            ]
+          }
+        ],
+        "yearsOfMaintenance": 12,
+        "connectivityTechnology": "NONE",
+        "easyConnectStore": false,
+        "electrical": false,
+        "rlinkStore": false,
+        "deliveryDate": "2020-12-17",
+        "retrievedFromDhs": false,
+        "engineEnergyType": "HEV",
+        "radioCode": ""
+      }
+    }
+  ]
+}

@@ -197,6 +197,7 @@ class KamereonVehicleDetails(BaseModel):
         if energy_type in [
             "OTHER",
             "PHEV",
+            "HEV",
         ]:
             return True
         return False

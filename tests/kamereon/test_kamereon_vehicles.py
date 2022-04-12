@@ -32,6 +32,18 @@ EXPECTED_SPECS = {
         "supports-location": True,
         "charge-uses-kcm": False,
     },
+    "clio_v.1.json": {
+        "get_brand_label": "RENAULT",
+        "get_energy_code": "ESS",
+        "get_model_code": "XJA1VP",
+        "get_model_label": "CLIO V",
+        "reports_charging_power_in_watts": False,
+        "uses_electricity": False,
+        "uses_fuel": True,
+        "supports-hvac-status": False,
+        "supports-location": True,
+        "charge-uses-kcm": False,
+    },
     "duster.1.json": {
         "get_brand_label": "RENAULT",
         "get_energy_code": "ESS",
