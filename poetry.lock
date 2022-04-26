@@ -516,7 +516,7 @@ tests = ["pytest", "pytz", "simplejson"]
 
 [[package]]
 name = "marshmallow-dataclass"
-version = "8.5.3"
+version = "8.5.6"
 description = "Python library to convert dataclasses into marshmallow schemas."
 category = "main"
 optional = false
@@ -527,11 +527,11 @@ marshmallow = ">=3.13.0,<4.0"
 typing-inspect = ">=0.7.1"
 
 [package.extras]
-dev = ["marshmallow-enum", "typeguard", "pre-commit (>=1.18,<2.0)", "sphinx", "pytest (>=5.4)", "pytest-mypy-plugins (>=1.2.0)", "typing-extensions (>=3.7.2,<3.8.0)"]
+dev = ["marshmallow-enum", "typeguard", "pre-commit (>=2.17,<3.0)", "sphinx", "pytest (>=5.4)", "pytest-mypy-plugins (>=1.2.0)", "typing-extensions (>=3.7.2)"]
 docs = ["sphinx"]
 enum = ["marshmallow-enum"]
-lint = ["pre-commit (>=1.18,<2.0)"]
-tests = ["pytest (>=5.4)", "pytest-mypy-plugins (>=1.2.0)", "typing-extensions (>=3.7.2,<3.8.0)"]
+lint = ["pre-commit (>=2.17,<3.0)"]
+tests = ["pytest (>=5.4)", "pytest-mypy-plugins (>=1.2.0)", "typing-extensions (>=3.7.2)"]
 union = ["typeguard"]
 
 [[package]]
@@ -1692,8 +1692,8 @@ marshmallow = [
     {file = "marshmallow-3.13.0.tar.gz", hash = "sha256:c67929438fd73a2be92128caa0325b1b5ed8b626d91a094d2f7f2771bf1f1c0e"},
 ]
 marshmallow-dataclass = [
-    {file = "marshmallow_dataclass-8.5.3-py3-none-any.whl", hash = "sha256:eefeff62ee975c64d293d2db9370e7e748a2ff83dcb5109416b75e087a2ac02e"},
-    {file = "marshmallow_dataclass-8.5.3.tar.gz", hash = "sha256:c0c5e1ea8d0e557b6fa00343799a9a9e60757b948fb096076beb6aa76bd68d30"},
+    {file = "marshmallow_dataclass-8.5.6-py3-none-any.whl", hash = "sha256:af5c5741d25c19cfdd637f8999418f00a24f46bf688f9e7bbdb350f4367982bd"},
+    {file = "marshmallow_dataclass-8.5.6.tar.gz", hash = "sha256:c3cc4acd5870da336c7230df5cb82ed8e230668769892a6d10a7cc40830d8a79"},
 ]
 mccabe = [
     {file = "mccabe-0.6.1-py2.py3-none-any.whl", hash = "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42"},
