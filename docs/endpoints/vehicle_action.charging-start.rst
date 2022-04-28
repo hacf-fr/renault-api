@@ -19,7 +19,7 @@ Sample payload:
       }
 
    Stop charge:
-   
+
    .. code-block:: JavaScript
 
       {
@@ -30,4 +30,4 @@ Sample payload:
       }
 
 
-   Please check the `Contributor Guide`_ to can provide a sample.
+   Please check the `Contributor Guide`_ to provide extra samples.
