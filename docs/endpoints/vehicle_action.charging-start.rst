@@ -13,7 +13,7 @@ Sample payload:
 
       {
          "data": {
-            "type": "ChargingStart", 
+            "type": "ChargingStart",
             "attributes": {"action": "start"}
          }
       }
@@ -24,7 +24,7 @@ Sample payload:
 
       {
          "data": {
-            "type": "ChargingStart", 
+            "type": "ChargingStart",
             "attributes": {"action": "stop"}
          }
       }
