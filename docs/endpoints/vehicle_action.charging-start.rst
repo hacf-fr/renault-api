@@ -8,7 +8,9 @@ Base url:
 
 Sample payload:
    Start charge:
+
    .. code-block:: JavaScript
+
       {
          "data": {
             "type": "ChargingStart", 
@@ -17,7 +19,9 @@ Sample payload:
       }
 
    Stop charge:
+   
    .. code-block:: JavaScript
+
       {
          "data": {
             "type": "ChargingStart", 
