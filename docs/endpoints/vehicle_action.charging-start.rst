@@ -7,6 +7,27 @@ Base url:
    ``/commerce/v1/accounts/{account_id}/kamereon/kca/car-adapter/v1/cars/{vin}/actions/charging-start``
 
 Sample payload:
-   Sample payload is not yet available for this endpoint.
+   Start charge:
 
-   Please check the `Contributor Guide`_ to can provide a sample.
+   .. code-block:: JavaScript
+
+      {
+         "data": {
+            "type": "ChargingStart",
+            "attributes": {"action": "start"}
+         }
+      }
+
+   Stop charge:
+
+   .. code-block:: JavaScript
+
+      {
+         "data": {
+            "type": "ChargingStart",
+            "attributes": {"action": "stop"}
+         }
+      }
+
+
+   Please check the `Contributor Guide`_ to provide extra samples.
