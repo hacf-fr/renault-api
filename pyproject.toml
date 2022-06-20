@@ -22,8 +22,8 @@ Changelog = "https://github.com/hacf-fr/renault-api/releases"
 python = ">=3.7.1"
 # Warning: as of 2020-11-19, aiohttp is pinned to 3.7.1 on HA-core
 aiohttp = ">=3.7.1"
-# Warning: as of 2020-11-19, pyjwt is pinned to 1.7.1 on HA-core
-pyjwt = ">=1.7.1"
+# Warning: as of 2022-05-16, pyjwt is pinned to 2.4.0 on HA-core
+pyjwt = ">=2.4.0"
 marshmallow-dataclass = ">=8.2.0"
 click = { version = ">=8.0.1", optional = true }
 tabulate = { version = ">=0.8.7", optional = true }
