@@ -64,6 +64,9 @@ cli = ["click", "tabulate", "dateparser"]
 [tool.poetry.scripts]
 renault-api = "renault_api.cli.__main__:main"
 
+[tool.poetry.group.dev.dependencies]
+pytest-asyncio = ">=0.20.1"
+
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
 
