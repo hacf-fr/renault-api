@@ -11,13 +11,14 @@ from typing import Generator
 from typing import Optional
 
 import pytest
+import pytest_asyncio
 from _pytest.monkeypatch import MonkeyPatch
 from aiohttp.client import ClientSession
 from aioresponses import aioresponses
 from click.testing import CliRunner
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def websession() -> AsyncGenerator[ClientSession, None]:
     """Fixture for generating ClientSession."""
     async with ClientSession() as aiohttp_session:
