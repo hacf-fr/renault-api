@@ -19,7 +19,7 @@ classifiers = [
 Changelog = "https://github.com/hacf-fr/renault-api/releases"
 
 [tool.poetry.dependencies]
-python = ">=3.7.1"
+python = ">=3.7.1,<4.0"
 # Warning: as of 2020-11-19, aiohttp is pinned to 3.7.1 on HA-core
 aiohttp = ">=3.7.1"
 # Warning: as of 2022-05-16, pyjwt is pinned to 2.4.0 on HA-core
@@ -32,7 +32,7 @@ dateparser = {version = ">=1.0.0", optional = true}
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"
 coverage = {extras = ["toml"], version = "^6.4"}
-safety = "^2.1.1"
+safety = "^2.3.1"
 mypy = "^0.971"
 typeguard = "^2.13.3"
 xdoctest = {extras = ["colors"], version = "^1.0.0"}
