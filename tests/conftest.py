@@ -101,7 +101,7 @@ def create_aiohttp_closed_event(
             # _app_protocol and _transport are set to None.
             pass
 
-    for conn in session.connector._conns.values():  # type: ignore[no-untyped-def]
+    for conn in session.connector._conns.values():  # type: ignore[union-attr]
         for handler, _ in conn:
             proto = getattr(handler.transport, "_ssl_protocol", None)
             if proto is None:
