@@ -117,7 +117,7 @@ def mypy(session: Session) -> None:
     args = session.posargs or ["src", "tests", "docs/conf.py"]
     session.install(".[cli]")
     session.install(
-        "mypy", "pytest", "types-dateparser", "types-tabulate", "types-tzlocal"
+        "mypy", "pytest", "types-dateparser", "types-tabulate", "types-tzlocal", "pytest-asyncio", "aioresponses"
     )
     session.run("mypy", *args)
     if not session.posargs:
