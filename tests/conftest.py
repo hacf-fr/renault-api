@@ -11,13 +11,14 @@ from typing import Generator
 from typing import Optional
 
 import pytest
+import pytest_asyncio
 from _pytest.monkeypatch import MonkeyPatch
 from aiohttp.client import ClientSession
 from aioresponses import aioresponses
 from click.testing import CliRunner
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def websession() -> AsyncGenerator[ClientSession, None]:
     """Fixture for generating ClientSession."""
     async with ClientSession() as aiohttp_session:
@@ -29,9 +30,9 @@ async def websession() -> AsyncGenerator[ClientSession, None]:
 
 
 @pytest.fixture(autouse=True)
-def mocked_responses() -> aioresponses:
+def mocked_responses() -> Generator[aioresponses, None, None]:
     """Fixture for mocking aiohttp responses."""
-    with aioresponses() as m:
+    with aioresponses() as m:  # type: ignore[no-untyped-call]
         yield m
 
 
@@ -82,7 +83,7 @@ def create_aiohttp_closed_event(
     transports = 0
     all_is_lost = asyncio.Event()
 
-    def connection_lost(exc, orig_lost):  # type: ignore
+    def connection_lost(exc, orig_lost):  # type: ignore[no-untyped-def]
         nonlocal transports
 
         try:
@@ -92,7 +93,7 @@ def create_aiohttp_closed_event(
             if transports == 0:
                 all_is_lost.set()
 
-    def eof_received(orig_eof_received):  # type: ignore
+    def eof_received(orig_eof_received):  # type: ignore[no-untyped-def]
         try:
             orig_eof_received()
         except AttributeError:
@@ -100,7 +101,7 @@ def create_aiohttp_closed_event(
             # _app_protocol and _transport are set to None.
             pass
 
-    for conn in session.connector._conns.values():  # type: ignore
+    for conn in session.connector._conns.values():  # type: ignore[union-attr]
         for handler, _ in conn:
             proto = getattr(handler.transport, "_ssl_protocol", None)
             if proto is None:
