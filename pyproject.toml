@@ -97,7 +97,10 @@ warn_unused_configs = true
 warn_unused_ignores = true
 
 [[tool.mypy.overrides]]
-module = 'aioresponses.*'
+module = [
+    "aioresponses",
+    "pytest_asyncio"
+]
 ignore_missing_imports = true
 
 [build-system]
