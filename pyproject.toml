@@ -98,6 +98,7 @@ warn_unused_ignores = true
 
 [[tool.mypy.overrides]]
 module = [
+    "aioresponses",
     "aioresponses.core",
     "pytest_asyncio"
 ]
