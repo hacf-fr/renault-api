@@ -123,7 +123,7 @@ def mypy(session: Session) -> None:
         "types-tabulate",
         "types-tzlocal",
         "pytest-asyncio",
-        "aioresponses"
+        "aioresponses",
     )
     session.run("mypy", *args)
     if not session.posargs:
