@@ -19,7 +19,7 @@ classifiers = [
 Changelog = "https://github.com/hacf-fr/renault-api/releases"
 
 [tool.poetry.dependencies]
-python = ">=3.7.1"
+python = ">=3.7.1,<4.0"
 # Warning: as of 2020-11-19, aiohttp is pinned to 3.7.1 on HA-core
 aiohttp = ">=3.7.1"
 # Warning: as of 2022-05-16, pyjwt is pinned to 2.4.0 on HA-core
@@ -30,33 +30,33 @@ tabulate = { version = ">=0.8.7", optional = true }
 dateparser = {version = ">=1.0.0", optional = true}
 
 [tool.poetry.dev-dependencies]
-pytest = "^7.1.2"
-coverage = {extras = ["toml"], version = "^6.4"}
-safety = "^2.1.1"
-mypy = "^0.971"
+pytest = "^7.2.0"
+coverage = {extras = ["toml"], version = "^6.5"}
+safety = "^2.3.1"
+mypy = "^0.982"
 typeguard = "^2.13.3"
-xdoctest = {extras = ["colors"], version = "^1.0.0"}
+xdoctest = {extras = ["colors"], version = "^1.1.0"}
 sphinx = "^4.3.2"
 sphinx-autobuild = "^2021.3.14"
 pre-commit = "^2.20.0"
 flake8 = "^4.0.1"
-black = "^22.6"
+black = "^22.10"
 flake8-bandit = "^3.0.0"
-flake8-bugbear = "^22.3.23"
+flake8-bugbear = "^22.10.27"
 flake8-docstrings = "^1.6.0"
 flake8-rst-docstrings = "^0.2.7"
-pep8-naming = "^0.12.1"
+pep8-naming = "^0.13.2"
 darglint = "^1.8.1"
-reorder-python-imports = "^3.8.2"
+reorder-python-imports = "^3.9.0"
 pre-commit-hooks = "^4.3.0"
 sphinx-rtd-theme = "^1.0.0"
 sphinx-click = "^4.3.0"
 Pygments = "^2.13.0"
-pytest-asyncio = "^0.18.3"
+pytest-asyncio = "^0.20.1"
 aioresponses = "^0.7.3"
-pytest-cov = "^3.0.0"
+pytest-cov = "^4.0.0"
 #ensure urllib3 is greater than 1.26.5 to account for CVE-2021-33503
-urllib3 = "^1.26.9"
+urllib3 = "^1.26.12"
 
 [tool.poetry.extras]
 cli = ["click", "tabulate", "dateparser"]
