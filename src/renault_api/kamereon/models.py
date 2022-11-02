@@ -64,6 +64,11 @@ VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
     "XBG1VE": {  # DACIA SPRING
         "control-charge-via-kcm": True,
     },
+    "XCB1VE": {  # MEGANE E-TECH
+        "reports-in-watts": True,
+        "reports-charge-session-durations-in-minutes": True,
+        "support-endpoint-lock-status": False,
+    },
 }
 
 GATEWAY_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
@@ -71,6 +76,11 @@ GATEWAY_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
         "reports-charge-session-durations-in-minutes": True,
         "reports-in-watts": True,
         "support-endpoint-location": False,
+        "support-endpoint-lock-status": False,
+    },
+    "AVN": {  # MEGANE E-TECH
+        "reports-in-watts": True,
+        "reports-charge-session-durations-in-minutes": True,
         "support-endpoint-lock-status": False,
     },
 }
