@@ -65,8 +65,6 @@ VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
         "control-charge-via-kcm": True,
     },
     "XCB1VE": {  # MEGANE E-TECH
-        "reports-in-watts": True,
-        "reports-charge-session-durations-in-minutes": True,
         "support-endpoint-lock-status": False,
     },
 }
