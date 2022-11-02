@@ -10,3 +10,6 @@ __pycache__/
 
 # Virtual env
 .venv
+
+# Intellij files
+.idea
