@@ -13,6 +13,7 @@ from . import enums
 from . import exceptions
 from . import helpers
 from renault_api.models import BaseModel
+from .enums import AssetPictureSize
 
 COMMON_ERRRORS: List[Dict[str, Any]] = [
     {
@@ -170,6 +171,7 @@ class KamereonVehicleDetails(BaseModel):
     model: Optional[KamereonVehicleDetailsGroup]
     energy: Optional[KamereonVehicleDetailsGroup]
     engineEnergyType: Optional[str]
+    assets: Optional[List[Dict[str, Any]]]
 
     def get_energy_code(self) -> Optional[str]:
         """Return vehicle energy code."""
@@ -186,6 +188,16 @@ class KamereonVehicleDetails(BaseModel):
     def get_model_label(self) -> Optional[str]:
         """Return vehicle model label."""
         return self.model.label if self.model else None
+
+    def get_picture(self, size: AssetPictureSize = AssetPictureSize.LARGE) -> Optional[str]:
+        asset_picture = next(filter(lambda asset: asset.get("assetType") == "PICTURE", self.assets or []))
+        if asset_picture is None:
+            return None
+
+        picture = next(filter(lambda rendition: rendition.get("resolutionType") == f"ONE_MYRENAULT_{size.name}",
+                              asset_picture.get("renditions")))
+
+        return picture.get("url") if picture else None
 
     def uses_electricity(self) -> bool:
         """Return True if model uses electricity."""

@@ -3,6 +3,8 @@ import json
 import os
 
 import pytest
+
+from renault_api.kamereon.enums import AssetPictureSize
 from tests import fixtures
 
 from renault_api.kamereon import models
@@ -39,6 +41,12 @@ def test_vehicles_response(filename: str) -> None:
                 "get_energy_code": vehicle_details.get_energy_code(),
                 "get_model_code": vehicle_details.get_model_code(),
                 "get_model_label": vehicle_details.get_model_label(),
+                "get_picture_small": vehicle_details.get_picture(
+                    AssetPictureSize.SMALL
+                ),
+                "get_picture_large": vehicle_details.get_picture(
+                    AssetPictureSize.LARGE
+                ),
                 "reports_charging_power_in_watts": power_in_watts,
                 "uses_electricity": vehicle_details.uses_electricity(),
                 "uses_fuel": vehicle_details.uses_fuel(),

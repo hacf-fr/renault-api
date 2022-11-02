@@ -23,3 +23,10 @@ class PlugState(Enum):
     PLUGGED = 1
     PLUG_ERROR = -1
     PLUG_UNKNOWN = -2147483648
+
+
+class AssetPictureSize(Enum):
+    """Enum for the asset picture size."""
+
+    SMALL = 0
+    LARGE = 1
