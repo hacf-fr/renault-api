@@ -121,7 +121,7 @@ EXPECTED_SPECS = {
         "get_energy_code": "ELECX",
         "get_model_code": "XCB1VE",
         "get_model_label": "MEGANE E-TECH",
-        "reports_charging_power_in_watts": True,
+        "reports_charging_power_in_watts": False,
         "uses_electricity": True,
         "uses_fuel": False,
         "supports-hvac-status": True,
