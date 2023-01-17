@@ -64,6 +64,9 @@ VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
     "XBG1VE": {  # DACIA SPRING
         "control-charge-via-kcm": True,
     },
+    "XCB1VE": {  # MEGANE E-TECH
+        "support-endpoint-lock-status": False,
+    },
 }
 
 GATEWAY_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
