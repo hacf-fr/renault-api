@@ -57,6 +57,8 @@ aioresponses = "^0.7.3"
 pytest-cov = "^4.0.0"
 #ensure urllib3 is greater than 1.26.5 to account for CVE-2021-33503
 urllib3 = "^1.26.13"
+#ensure certifi is greater than 2022.12.07 to account for CVE-2022-23491
+certifi = "^2022.12.07"
 #ensure gitpython is greater than 3.1.30 to account for CVE-2022-24439
 gitpython = "^3.1.30"
 
