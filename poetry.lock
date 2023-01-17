@@ -945,24 +945,24 @@ tests = ["pytest", "pytz", "simplejson"]
 
 [[package]]
 name = "marshmallow-dataclass"
-version = "8.5.10"
+version = "8.5.11"
 description = "Python library to convert dataclasses into marshmallow schemas."
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "marshmallow_dataclass-8.5.10-py3-none-any.whl", hash = "sha256:2a645ce0bec1bb7b24a00f08aaad7d56e3cde8c4b3cdef5f908afbd29b8ff5f7"},
-    {file = "marshmallow_dataclass-8.5.10.tar.gz", hash = "sha256:a7ab243fcb12cf2fe07dce852a0e8d91bfcb02e2447e629eb8752554dd20f106"},
+    {file = "marshmallow_dataclass-8.5.11-py3-none-any.whl", hash = "sha256:d9dbce8d356a8dad2b80fecf15cac97f42a48397eefa594693874a2a6539ea84"},
+    {file = "marshmallow_dataclass-8.5.11.tar.gz", hash = "sha256:b7b0ee28fa9e88edd00db324762848d3182fe5dba82c3b897cb525c402ffd143"},
 ]
 
 [package.dependencies]
 marshmallow = ">=3.13.0,<4.0"
-typing-inspect = ">=0.7.1"
+typing-inspect = ">=0.8.0"
 
 [package.extras]
-dev = ["marshmallow-enum", "pre-commit (>=2.17,<3.0)", "pytest (>=5.4)", "pytest-mypy-plugins (>=1.2.0)", "sphinx", "typeguard", "typing-extensions (>=3.7.2)"]
+dev = ["marshmallow (>=3.18.0,<4.0)", "marshmallow-enum", "pre-commit (>=2.17,<3.0)", "pytest (>=5.4)", "pytest-mypy-plugins (>=1.2.0)", "sphinx", "typeguard", "typing-extensions (>=3.7.2)"]
 docs = ["sphinx"]
-enum = ["marshmallow-enum"]
+enum = ["marshmallow (>=3.18.0,<4.0)", "marshmallow-enum"]
 lint = ["pre-commit (>=2.17,<3.0)"]
 tests = ["pytest (>=5.4)", "pytest-mypy-plugins (>=1.2.0)", "typing-extensions (>=3.7.2)"]
 union = ["typeguard"]
@@ -2066,15 +2066,14 @@ files = [
 
 [[package]]
 name = "typing-inspect"
-version = "0.7.1"
+version = "0.8.0"
 description = "Runtime inspection utilities for typing module."
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "typing_inspect-0.7.1-py2-none-any.whl", hash = "sha256:b1f56c0783ef0f25fb064a01be6e5407e54cf4a4bf4f3ba3fe51e0bd6dcea9e5"},
-    {file = "typing_inspect-0.7.1-py3-none-any.whl", hash = "sha256:3cd7d4563e997719a710a3bfe7ffb544c6b72069b6812a02e9b414a8fa3aaa6b"},
-    {file = "typing_inspect-0.7.1.tar.gz", hash = "sha256:047d4097d9b17f46531bf6f014356111a1b6fb821a24fe7ac909853ca2a782aa"},
+    {file = "typing_inspect-0.8.0-py3-none-any.whl", hash = "sha256:5fbf9c1e65d4fa01e701fe12a5bca6c6e08a4ffd5bc60bfac028253a447c5188"},
+    {file = "typing_inspect-0.8.0.tar.gz", hash = "sha256:8b1ff0c400943b6145df8119c41c244ca8207f1f10c9c057aeed1560e4806e3d"},
 ]
 
 [package.dependencies]
