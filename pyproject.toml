@@ -53,7 +53,7 @@ sphinx-rtd-theme = "^1.0.0"
 sphinx-click = "^4.3.0"
 Pygments = "^2.13.0"
 pytest-asyncio = "^0.20.3"
-aioresponses = "^0.7.3"
+aioresponses = "^0.7.4"
 pytest-cov = "^4.0.0"
 #ensure urllib3 (for requests/sphinx) is greater than 1.26.5 to account for CVE-2021-33503
 urllib3 = "^1.26.13"
@@ -99,10 +99,6 @@ warn_return_any = true
 warn_unreachable = true
 warn_unused_configs = true
 warn_unused_ignores = true
-
-[[tool.mypy.overrides]]
-module = 'aioresponses.*'
-ignore_missing_imports = true
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
