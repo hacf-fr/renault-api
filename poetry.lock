@@ -872,6 +872,7 @@ category = "dev"
 optional = false
 python-versions = "*"
 files = [
+    {file = "livereload-2.6.3-py2.py3-none-any.whl", hash = "sha256:ad4ac6f53b2d62bb6ce1a5e6e96f1f00976a32348afedcb4b6d68df2a1d346e4"},
     {file = "livereload-2.6.3.tar.gz", hash = "sha256:776f2f865e59fde56490a56bcc6773b6917366bce0c267c60ee8aaf1a0959869"},
 ]
 
@@ -1644,20 +1645,20 @@ files = [
 
 [[package]]
 name = "safety"
-version = "2.3.4"
+version = "2.3.5"
 description = "Checks installed dependencies for known vulnerabilities and licenses."
 category = "dev"
 optional = false
 python-versions = "*"
 files = [
-    {file = "safety-2.3.4-py3-none-any.whl", hash = "sha256:6224dcd9b20986a2b2c5e7acfdfba6bca42bb11b2783b24ed04f32317e5167ea"},
-    {file = "safety-2.3.4.tar.gz", hash = "sha256:b9e74e794e82f54d11f4091c5d820c4d2d81de9f953bf0b4f33ac8bc402ae72c"},
+    {file = "safety-2.3.5-py3-none-any.whl", hash = "sha256:2227fcac1b22b53c1615af78872b48348661691450aa25d6704a5504dbd1f7e2"},
+    {file = "safety-2.3.5.tar.gz", hash = "sha256:a60c11f8952f412cbb165d70cb1f673a3b43a2ba9a93ce11f97e6a4de834aa3a"},
 ]
 
 [package.dependencies]
 Click = ">=8.0.2"
 dparse = ">=0.6.2"
-packaging = ">=21.0"
+packaging = ">=21.0,<22.0"
 requests = "*"
 "ruamel.yaml" = ">=0.17.21"
 setuptools = ">=19.3"
@@ -2254,4 +2255,4 @@ cli = ["click", "tabulate", "dateparser"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.7.1,<4.0"
-content-hash = "ba2ecf5bfb1ad460d928081a2ed43c9b41a2f6e73bae6ded80318d2c6a115520"
+content-hash = "296b59ffafc0a6f3c99d7a6d695a5d5515b90ff77fc51c4dc2430db02e53cde1"
