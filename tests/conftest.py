@@ -32,7 +32,7 @@ async def websession() -> AsyncGenerator[ClientSession, None]:
 @pytest.fixture(autouse=True)
 def mocked_responses() -> Generator[aioresponses, None, None]:
     """Fixture for mocking aiohttp responses."""
-    with aioresponses() as m:  # type: ignore[no-untyped-call]
+    with aioresponses() as m:
         yield m
 
 
