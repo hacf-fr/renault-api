@@ -3,12 +3,11 @@ import json
 import os
 
 import pytest
-
-from renault_api.kamereon.enums import AssetPictureSize
 from tests import fixtures
 
 from renault_api.kamereon import models
 from renault_api.kamereon import schemas
+from renault_api.kamereon.enums import AssetPictureSize
 
 EXPECTED_SPECS = json.loads(
     fixtures.get_file_content(f"{fixtures.KAMEREON_FIXTURE_PATH}/expected_specs.json")

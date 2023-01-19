@@ -12,8 +12,8 @@ from marshmallow.schema import Schema
 from . import enums
 from . import exceptions
 from . import helpers
-from renault_api.models import BaseModel
 from .enums import AssetPictureSize
+from renault_api.models import BaseModel
 
 COMMON_ERRRORS: List[Dict[str, Any]] = [
     {
@@ -189,13 +189,23 @@ class KamereonVehicleDetails(BaseModel):
         """Return vehicle model label."""
         return self.model.label if self.model else None
 
-    def get_picture(self, size: AssetPictureSize = AssetPictureSize.LARGE) -> Optional[str]:
-        asset_picture = next(filter(lambda asset: asset.get("assetType") == "PICTURE", self.assets or []))
+    def get_picture(
+        self, size: AssetPictureSize = AssetPictureSize.LARGE
+    ) -> Optional[str]:
+        """Return vehicle picture."""
+        asset_picture = next(
+            filter(lambda asset: asset.get("assetType") == "PICTURE", self.assets or [])
+        )
         if asset_picture is None:
             return None
 
-        picture = next(filter(lambda rendition: rendition.get("resolutionType") == f"ONE_MYRENAULT_{size.name}",
-                              asset_picture.get("renditions")))
+        picture = next(
+            filter(
+                lambda rendition: rendition.get("resolutionType")
+                == f"ONE_MYRENAULT_{size.name}",
+                asset_picture.get("renditions"),
+            )
+        )
 
         return picture.get("url") if picture else None
 
