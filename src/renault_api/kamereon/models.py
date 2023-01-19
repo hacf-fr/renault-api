@@ -192,25 +192,23 @@ class KamereonVehicleDetails(BaseModel):
     def get_asset(self, asset_type: str) -> Optional[Dict[str, Any]]:
         """Return asset."""
         return next(
-            (
-                asset
-                for asset in self.assets or []
-                if asset.get("assetType") == asset_type
-            ),
+            filter(
+                lambda asset: asset.get("assetType") == asset_type, self.assets or []
+            )
         )
 
     def get_picture(
         self, size: AssetPictureSize = AssetPictureSize.LARGE
     ) -> Optional[str]:
         """Return vehicle picture."""
-        asset = self.get_asset("PICTURE") or {}
+        asset: dict[str, Any] = self.get_asset("PICTURE") or {}
 
-        rendition: Dict[str, str] = next(
-            (
-                rendition
-                for rendition in asset.get("renditions", [])
-                if rendition.get("resolutionType") == f"ONE_MYRENAULT_{size.name}"
-            ),
+        rendition: dict[str, str] = next(
+            filter(
+                lambda rendition: rendition.get("resolutionType")
+                == f"ONE_MYRENAULT_{size.name}",
+                asset.get("renditions"),
+            )
         )
 
         return rendition.get("url") if rendition else None
