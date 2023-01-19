@@ -193,21 +193,23 @@ class KamereonVehicleDetails(BaseModel):
         self, size: AssetPictureSize = AssetPictureSize.LARGE
     ) -> Optional[str]:
         """Return vehicle picture."""
-        asset_picture = next(
-            filter(lambda asset: asset.get("assetType") == "PICTURE", self.assets or [])
-        )
-        if asset_picture is None:
-            return None
-
-        picture = next(
-            filter(
-                lambda rendition: rendition.get("resolutionType")
-                == f"ONE_MYRENAULT_{size.name}",
-                asset_picture.get("renditions"),
-            )
+        assets: List[Dict[str, Any]] = [] if self.assets is None else self.assets
+        picture_asset: Dict[str, Any] = next(
+            (asset for asset in assets if asset.get("assetType") == "PICTURE"),
+            {},
         )
 
-        return picture.get("url") if picture else None
+        renditions: List[Dict[str, str]] = picture_asset.get("renditions", [])
+        picture: Dict[str, str] = next(
+            (
+                rendition
+                for rendition in renditions
+                if rendition.get("resolutionType") == f"ONE_MYRENAULT_{size.name}"
+            ),
+            {},
+        )
+
+        return picture.get("url")
 
     def uses_electricity(self) -> bool:
         """Return True if model uses electricity."""
