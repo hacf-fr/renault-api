@@ -12,6 +12,7 @@ from marshmallow.schema import Schema
 from . import enums
 from . import exceptions
 from . import helpers
+from .enums import AssetPictureSize
 from renault_api.models import BaseModel
 
 COMMON_ERRRORS: List[Dict[str, Any]] = [
@@ -170,6 +171,7 @@ class KamereonVehicleDetails(BaseModel):
     model: Optional[KamereonVehicleDetailsGroup]
     energy: Optional[KamereonVehicleDetailsGroup]
     engineEnergyType: Optional[str]
+    assets: Optional[List[Dict[str, Any]]]
 
     def get_energy_code(self) -> Optional[str]:
         """Return vehicle energy code."""
@@ -186,6 +188,30 @@ class KamereonVehicleDetails(BaseModel):
     def get_model_label(self) -> Optional[str]:
         """Return vehicle model label."""
         return self.model.label if self.model else None
+
+    def get_asset(self, asset_type: str) -> Optional[Dict[str, Any]]:
+        """Return asset."""
+        return next(
+            filter(
+                lambda asset: asset.get("assetType") == asset_type, self.assets or []
+            )
+        )
+
+    def get_picture(
+        self, size: AssetPictureSize = AssetPictureSize.LARGE
+    ) -> Optional[str]:
+        """Return vehicle picture."""
+        asset: Dict[str, Any] = self.get_asset("PICTURE") or {}
+
+        rendition: Dict[str, str] = next(
+            filter(
+                lambda rendition: rendition.get("resolutionType")
+                == f"ONE_MYRENAULT_{size.name}",
+                asset.get("renditions", [{}]),
+            )
+        )
+
+        return rendition.get("url") if rendition else None
 
     def uses_electricity(self) -> bool:
         """Return True if model uses electricity."""

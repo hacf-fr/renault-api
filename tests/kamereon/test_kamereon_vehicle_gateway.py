@@ -38,6 +38,8 @@ def test_vehicles_response(filename: str) -> None:
         del expected_specs["get_energy_code"]
         del expected_specs["get_model_code"]
         del expected_specs["get_model_label"]
+        del expected_specs["get_picture_large"]
+        del expected_specs["get_picture_small"]
         power_in_watts = vehicle_data.reports_charging_power_in_watts()
         generated_specs = {
             "reports_charging_power_in_watts": power_in_watts,
