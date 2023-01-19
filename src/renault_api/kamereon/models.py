@@ -207,7 +207,7 @@ class KamereonVehicleDetails(BaseModel):
             filter(
                 lambda rendition: rendition.get("resolutionType")
                 == f"ONE_MYRENAULT_{size.name}",
-                asset.get("renditions"),
+                asset.get("renditions", [{}]),
             )
         )
 
