@@ -189,27 +189,31 @@ class KamereonVehicleDetails(BaseModel):
         """Return vehicle model label."""
         return self.model.label if self.model else None
 
+    def get_asset(self, asset_type: str) -> Optional[Dict[str, Any]]:
+        """Return asset."""
+        return next(
+            (
+                asset
+                for asset in self.assets or []
+                if asset.get("assetType") == asset_type
+            ),
+        )
+
     def get_picture(
         self, size: AssetPictureSize = AssetPictureSize.LARGE
     ) -> Optional[str]:
         """Return vehicle picture."""
-        assets: List[Dict[str, Any]] = [] if self.assets is None else self.assets
-        picture_asset: Dict[str, Any] = next(
-            (asset for asset in assets if asset.get("assetType") == "PICTURE"),
-            {},
-        )
+        asset = self.get_asset("PICTURE") or {}
 
-        renditions: List[Dict[str, str]] = picture_asset.get("renditions", [])
-        picture: Dict[str, str] = next(
+        rendition: Dict[str, str] = next(
             (
                 rendition
-                for rendition in renditions
+                for rendition in asset.get("renditions", [])
                 if rendition.get("resolutionType") == f"ONE_MYRENAULT_{size.name}"
             ),
-            {},
         )
 
-        return picture.get("url")
+        return rendition.get("url") if rendition else None
 
     def uses_electricity(self) -> bool:
         """Return True if model uses electricity."""
