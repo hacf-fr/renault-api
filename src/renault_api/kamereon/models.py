@@ -201,9 +201,9 @@ class KamereonVehicleDetails(BaseModel):
         self, size: AssetPictureSize = AssetPictureSize.LARGE
     ) -> Optional[str]:
         """Return vehicle picture."""
-        asset: dict[str, Any] = self.get_asset("PICTURE") or {}
+        asset: Dict[str, Any] = self.get_asset("PICTURE") or {}
 
-        rendition: dict[str, str] = next(
+        rendition: Dict[str, str] = next(
             filter(
                 lambda rendition: rendition.get("resolutionType")
                 == f"ONE_MYRENAULT_{size.name}",
