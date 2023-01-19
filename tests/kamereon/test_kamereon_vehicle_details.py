@@ -27,10 +27,6 @@ def test_vehicle_details_response(filename: str) -> None:
 
     if path.basename(filename) in EXPECTED_SPECS:
         expected_specs = deepcopy(EXPECTED_SPECS[path.basename(filename)])
-        del expected_specs["get_brand_label"]
-        del expected_specs["get_energy_code"]
-        del expected_specs["get_model_code"]
-        del expected_specs["get_model_label"]
         power_in_watts = vehicle_details.reports_charging_power_in_watts()
         generated_specs = {
             "reports_charging_power_in_watts": power_in_watts,
@@ -39,5 +35,9 @@ def test_vehicle_details_response(filename: str) -> None:
             "supports-hvac-status": vehicle_details.supports_endpoint("hvac-status"),
             "supports-location": vehicle_details.supports_endpoint("location"),
             "charge-uses-kcm": vehicle_details.controls_action_via_kcm("charge"),
+            "get_brand_label": vehicle_details.get_brand_label(),
+            "get_energy_code": vehicle_details.get_energy_code(),
+            "get_model_code": vehicle_details.get_model_code(),
+            "get_model_label": vehicle_details.get_model_label(),
         }
         assert expected_specs == generated_specs

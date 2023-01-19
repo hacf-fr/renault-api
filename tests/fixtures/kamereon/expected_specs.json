@@ -1,0 +1,122 @@
+{
+  "captur_ii.1.json": {
+    "get_brand_label": "RENAULT",
+    "get_energy_code": "ESS",
+    "get_model_code": "XJB1SU",
+    "get_model_label": "CAPTUR II",
+    "reports_charging_power_in_watts": false,
+    "uses_electricity": false,
+    "uses_fuel": true,
+    "supports-hvac-status": false,
+    "supports-location": true,
+    "charge-uses-kcm": false
+  },
+  "captur_ii.2.json": {
+    "get_brand_label": "RENAULT",
+    "get_energy_code": "ESS",
+    "get_model_code": "XJB1SU",
+    "get_model_label": "CAPTUR II",
+    "reports_charging_power_in_watts": false,
+    "uses_electricity": true,
+    "uses_fuel": true,
+    "supports-hvac-status": false,
+    "supports-location": true,
+    "charge-uses-kcm": false
+  },
+  "clio_v.1.json": {
+    "get_brand_label": "RENAULT",
+    "get_energy_code": "ESS",
+    "get_model_code": "XJA1VP",
+    "get_model_label": "CLIO V",
+    "reports_charging_power_in_watts": false,
+    "uses_electricity": false,
+    "uses_fuel": true,
+    "supports-hvac-status": false,
+    "supports-location": true,
+    "charge-uses-kcm": false
+  },
+  "duster.1.json": {
+    "get_brand_label": "RENAULT",
+    "get_energy_code": "ESS",
+    "get_model_code": "XJD1SU",
+    "get_model_label": "NEW DUSTER",
+    "reports_charging_power_in_watts": false,
+    "uses_electricity": false,
+    "uses_fuel": true,
+    "supports-hvac-status": true,
+    "supports-location": true,
+    "charge-uses-kcm": false
+  },
+  "twingo_ze.1.json": {
+    "get_brand_label": "RENAULT",
+    "get_energy_code": "ELEC",
+    "get_model_code": "X071VE",
+    "get_model_label": "TWINGO III",
+    "reports_charging_power_in_watts": false,
+    "uses_electricity": true,
+    "uses_fuel": false,
+    "supports-hvac-status": true,
+    "supports-location": true,
+    "charge-uses-kcm": false
+  },
+  "zoe_40.1.json": {
+    "get_brand_label": "RENAULT",
+    "get_energy_code": "ELEC",
+    "get_model_code": "X101VE",
+    "get_model_label": "ZOE",
+    "reports_charging_power_in_watts": true,
+    "uses_electricity": true,
+    "uses_fuel": false,
+    "supports-hvac-status": true,
+    "supports-location": false,
+    "charge-uses-kcm": false
+  },
+  "zoe_40.2.json": {
+    "get_brand_label": "RENAULT",
+    "get_energy_code": "ELEC",
+    "get_model_code": "X101VE",
+    "get_model_label": "ZOE",
+    "reports_charging_power_in_watts": true,
+    "uses_electricity": true,
+    "uses_fuel": false,
+    "supports-hvac-status": true,
+    "supports-location": false,
+    "charge-uses-kcm": false
+  },
+  "zoe_50.1.json": {
+    "get_brand_label": "RENAULT",
+    "get_energy_code": "ELEC",
+    "get_model_code": "X102VE",
+    "get_model_label": "ZOE",
+    "reports_charging_power_in_watts": false,
+    "uses_electricity": true,
+    "uses_fuel": false,
+    "supports-hvac-status": true,
+    "supports-location": true,
+    "charge-uses-kcm": false
+  },
+  "spring.1.json": {
+    "get_brand_label": "DACIA",
+    "get_energy_code": "ELEC",
+    "get_model_code": "XBG1VE",
+    "get_model_label": "SPRING",
+    "reports_charging_power_in_watts": false,
+    "uses_electricity": true,
+    "uses_fuel": false,
+    "supports-hvac-status": true,
+    "supports-location": true,
+    "charge-uses-kcm": true
+  },
+  "megane_e-tech.1.json": {
+    "get_brand_label": "RENAULT",
+    "get_energy_code": "ELECX",
+    "get_model_code": "XCB1VE",
+    "get_model_label": "MEGANE E-TECH",
+    "reports_charging_power_in_watts": false,
+    "uses_electricity": true,
+    "uses_fuel": false,
+    "supports-hvac-status": true,
+    "supports-location": true,
+    "charge-uses-kcm": false
+  }
+}

@@ -1,4 +1,5 @@
 """Tests for Kamereon models."""
+import json
 import os
 
 import pytest
@@ -7,128 +8,9 @@ from tests import fixtures
 from renault_api.kamereon import models
 from renault_api.kamereon import schemas
 
-EXPECTED_SPECS = {
-    "captur_ii.1.json": {
-        "get_brand_label": "RENAULT",
-        "get_energy_code": "ESS",
-        "get_model_code": "XJB1SU",
-        "get_model_label": "CAPTUR II",
-        "reports_charging_power_in_watts": False,
-        "uses_electricity": False,
-        "uses_fuel": True,
-        "supports-hvac-status": False,
-        "supports-location": True,
-        "charge-uses-kcm": False,
-    },
-    "captur_ii.2.json": {
-        "get_brand_label": "RENAULT",
-        "get_energy_code": "ESS",
-        "get_model_code": "XJB1SU",
-        "get_model_label": "CAPTUR II",
-        "reports_charging_power_in_watts": False,
-        "uses_electricity": True,
-        "uses_fuel": True,
-        "supports-hvac-status": False,
-        "supports-location": True,
-        "charge-uses-kcm": False,
-    },
-    "clio_v.1.json": {
-        "get_brand_label": "RENAULT",
-        "get_energy_code": "ESS",
-        "get_model_code": "XJA1VP",
-        "get_model_label": "CLIO V",
-        "reports_charging_power_in_watts": False,
-        "uses_electricity": False,
-        "uses_fuel": True,
-        "supports-hvac-status": False,
-        "supports-location": True,
-        "charge-uses-kcm": False,
-    },
-    "duster.1.json": {
-        "get_brand_label": "RENAULT",
-        "get_energy_code": "ESS",
-        "get_model_code": "XJD1SU",
-        "get_model_label": "NEW DUSTER",
-        "reports_charging_power_in_watts": False,
-        "uses_electricity": False,
-        "uses_fuel": True,
-        "supports-hvac-status": True,
-        "supports-location": True,
-        "charge-uses-kcm": False,
-    },
-    "twingo_ze.1.json": {
-        "get_brand_label": "RENAULT",
-        "get_energy_code": "ELEC",
-        "get_model_code": "X071VE",
-        "get_model_label": "TWINGO III",
-        "reports_charging_power_in_watts": False,
-        "uses_electricity": True,
-        "uses_fuel": False,
-        "supports-hvac-status": True,
-        "supports-location": True,
-        "charge-uses-kcm": False,
-    },
-    "zoe_40.1.json": {
-        "get_brand_label": "RENAULT",
-        "get_energy_code": "ELEC",
-        "get_model_code": "X101VE",
-        "get_model_label": "ZOE",
-        "reports_charging_power_in_watts": True,
-        "uses_electricity": True,
-        "uses_fuel": False,
-        "supports-hvac-status": True,
-        "supports-location": False,
-        "charge-uses-kcm": False,
-    },
-    "zoe_40.2.json": {
-        "get_brand_label": "RENAULT",
-        "get_energy_code": "ELEC",
-        "get_model_code": "X101VE",
-        "get_model_label": "ZOE",
-        "reports_charging_power_in_watts": True,
-        "uses_electricity": True,
-        "uses_fuel": False,
-        "supports-hvac-status": True,
-        "supports-location": False,
-        "charge-uses-kcm": False,
-    },
-    "zoe_50.1.json": {
-        "get_brand_label": "RENAULT",
-        "get_energy_code": "ELEC",
-        "get_model_code": "X102VE",
-        "get_model_label": "ZOE",
-        "reports_charging_power_in_watts": False,
-        "uses_electricity": True,
-        "uses_fuel": False,
-        "supports-hvac-status": True,
-        "supports-location": True,
-        "charge-uses-kcm": False,
-    },
-    "spring.1.json": {
-        "get_brand_label": "DACIA",
-        "get_energy_code": "ELEC",
-        "get_model_code": "XBG1VE",
-        "get_model_label": "SPRING",
-        "reports_charging_power_in_watts": False,
-        "uses_electricity": True,
-        "uses_fuel": False,
-        "supports-hvac-status": True,
-        "supports-location": True,
-        "charge-uses-kcm": True,
-    },
-    "megane_e-tech.1.json": {
-        "get_brand_label": "RENAULT",
-        "get_energy_code": "ELECX",
-        "get_model_code": "XCB1VE",
-        "get_model_label": "MEGANE E-TECH",
-        "reports_charging_power_in_watts": False,
-        "uses_electricity": True,
-        "uses_fuel": False,
-        "supports-hvac-status": True,
-        "supports-location": True,
-        "charge-uses-kcm": False,
-    },
-}
+EXPECTED_SPECS = json.loads(
+    fixtures.get_file_content(f"{fixtures.KAMEREON_FIXTURE_PATH}/expected_specs.json")
+)
 
 
 @pytest.mark.parametrize(
