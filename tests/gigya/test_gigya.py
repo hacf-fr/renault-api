@@ -1,4 +1,7 @@
 """Tests for Gigya API."""
+import aiohttp
+import pytest
+from aioresponses import aioresponses
 from tests import fixtures
 from tests.const import TEST_GIGYA_APIKEY
 from tests.const import TEST_GIGYA_URL
@@ -6,10 +9,6 @@ from tests.const import TEST_LOGIN_TOKEN
 from tests.const import TEST_PASSWORD
 from tests.const import TEST_PERSON_ID
 from tests.const import TEST_USERNAME
-
-import aiohttp
-import pytest
-from aioresponses import aioresponses
 
 from renault_api import gigya
 

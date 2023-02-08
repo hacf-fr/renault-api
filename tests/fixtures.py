@@ -5,14 +5,6 @@ import datetime
 import json
 from glob import glob
 from os import path
-from tests.const import REDACTED
-from tests.const import TEST_ACCOUNT_ID
-from tests.const import TEST_COUNTRY
-from tests.const import TEST_GIGYA_URL
-from tests.const import TEST_KAMEREON_URL
-from tests.const import TEST_PERSON_ID
-from tests.const import TEST_VIN
-from tests.const import TO_REDACT
 from typing import Any
 from typing import List
 from typing import Mapping
@@ -21,6 +13,14 @@ from typing import Optional
 import jwt
 from aioresponses import aioresponses
 from marshmallow.schema import Schema
+from tests.const import REDACTED
+from tests.const import TEST_ACCOUNT_ID
+from tests.const import TEST_COUNTRY
+from tests.const import TEST_GIGYA_URL
+from tests.const import TEST_KAMEREON_URL
+from tests.const import TEST_PERSON_ID
+from tests.const import TEST_VIN
+from tests.const import TO_REDACT
 
 GIGYA_FIXTURE_PATH = "tests/fixtures/gigya"
 KAMEREON_FIXTURE_PATH = "tests/fixtures/kamereon"
