@@ -5,14 +5,6 @@ import datetime
 import json
 from glob import glob
 from os import path
-from typing import Any
-from typing import List
-from typing import Mapping
-from typing import Optional
-
-import jwt
-from aioresponses import aioresponses
-from marshmallow.schema import Schema
 from tests.const import REDACTED
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
@@ -21,6 +13,14 @@ from tests.const import TEST_KAMEREON_URL
 from tests.const import TEST_PERSON_ID
 from tests.const import TEST_VIN
 from tests.const import TO_REDACT
+from typing import Any
+from typing import List
+from typing import Mapping
+from typing import Optional
+
+import jwt
+from aioresponses import aioresponses
+from marshmallow.schema import Schema
 
 GIGYA_FIXTURE_PATH = "tests/fixtures/gigya"
 KAMEREON_FIXTURE_PATH = "tests/fixtures/kamereon"
@@ -108,6 +108,15 @@ def inject_gigya_login(mocked_responses: aioresponses) -> str:
         mocked_responses,
         "accounts.login",
         "login.json",
+    )
+
+
+def inject_gigya_login_invalid(mocked_responses: aioresponses) -> str:
+    """Inject Gigya login data."""
+    return inject_gigya(
+        mocked_responses,
+        "accounts.login",
+        "login_invalid.txt",
     )
 
 

@@ -1,7 +1,4 @@
 """Tests for Gigya API."""
-import aiohttp
-import pytest
-from aioresponses import aioresponses
 from tests import fixtures
 from tests.const import TEST_GIGYA_APIKEY
 from tests.const import TEST_GIGYA_URL
@@ -9,6 +6,10 @@ from tests.const import TEST_LOGIN_TOKEN
 from tests.const import TEST_PASSWORD
 from tests.const import TEST_PERSON_ID
 from tests.const import TEST_USERNAME
+
+import aiohttp
+import pytest
+from aioresponses import aioresponses
 
 from renault_api import gigya
 
@@ -28,6 +29,23 @@ async def test_login(
         TEST_PASSWORD,
     )
     assert response.get_session_cookie() == TEST_LOGIN_TOKEN
+
+
+@pytest.mark.asyncio
+async def test_login_error(
+    websession: aiohttp.ClientSession, mocked_responses: aioresponses
+) -> None:
+    """Test login response."""
+    fixtures.inject_gigya_login_invalid(mocked_responses)
+
+    with pytest.raises(gigya.exceptions.GigyaException):
+        await gigya.login(
+            websession,
+            TEST_GIGYA_URL,
+            TEST_GIGYA_APIKEY,
+            TEST_USERNAME,
+            TEST_PASSWORD,
+        )
 
 
 @pytest.mark.asyncio

@@ -1,5 +1,6 @@
 """Gigya API."""
 import logging
+from json import JSONDecodeError
 from typing import Any
 from typing import cast
 from typing import Dict
@@ -9,6 +10,7 @@ from marshmallow.schema import Schema
 
 from . import models
 from . import schemas
+from .exceptions import GigyaException
 
 GIGYA_JWT = "gigya_jwt"
 GIGYA_LOGIN_TOKEN = "gigya_login_token"  # noqa: S105
@@ -35,7 +37,10 @@ async def request(
         #    url,
         #    response_text,
         # )
-        gigya_response: models.GigyaResponse = schema.loads(response_text)
+        try:
+            gigya_response: models.GigyaResponse = schema.loads(response_text)
+        except JSONDecodeError as err:
+            raise GigyaException("Gigya responded with invalid JSON") from err
         # Check for Gigya error
         gigya_response.raise_for_error_code()
         # Check for HTTP error
