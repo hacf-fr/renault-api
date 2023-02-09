@@ -111,6 +111,15 @@ def inject_gigya_login(mocked_responses: aioresponses) -> str:
     )
 
 
+def inject_gigya_login_invalid(mocked_responses: aioresponses) -> str:
+    """Inject Gigya login data."""
+    return inject_gigya(
+        mocked_responses,
+        "accounts.login",
+        "login_invalid.txt",
+    )
+
+
 def inject_gigya_account_info(mocked_responses: aioresponses) -> str:
     """Inject Gigya getAccountInfo data."""
     return inject_gigya(

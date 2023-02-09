@@ -31,6 +31,23 @@ async def test_login(
 
 
 @pytest.mark.asyncio
+async def test_login_error(
+    websession: aiohttp.ClientSession, mocked_responses: aioresponses
+) -> None:
+    """Test login response."""
+    fixtures.inject_gigya_login_invalid(mocked_responses)
+
+    with pytest.raises(gigya.exceptions.GigyaException):
+        await gigya.login(
+            websession,
+            TEST_GIGYA_URL,
+            TEST_GIGYA_APIKEY,
+            TEST_USERNAME,
+            TEST_PASSWORD,
+        )
+
+
+@pytest.mark.asyncio
 async def test_person_id(
     websession: aiohttp.ClientSession, mocked_responses: aioresponses
 ) -> None:
