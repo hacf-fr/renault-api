@@ -62,7 +62,7 @@ certifi = "^2022.12.07"
 #ensure gitpython (for bandit/flake8-bandit) is greater than 3.1.30 to account for CVE-2022-24439
 gitpython = "^3.1.30"
 #ensure setuptools (for safety) is greater than 65.5.1 to account for CVE-2022-40897
-setuptools = "^67.2.0"
+setuptools = "^67.5.1"
 
 [tool.poetry.extras]
 cli = ["click", "tabulate", "dateparser"]
