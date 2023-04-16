@@ -1,0 +1,28 @@
+{
+  "data": {
+    "type": "Car",
+    "id": "VF1AAAAA555777999",
+    "attributes": {
+      "charges": [
+        {
+          "chargeStartDate": "2023-04-24T11:12:44Z",
+          "chargeEndDate": "2023-04-24T12:49:39Z",
+          "chargeDuration": 97,
+          "chargeStartBatteryLevel": 43,
+          "chargeEndBatteryLevel": 50,
+          "chargeEnergyRecovered": 4.10000038,
+          "chargeEndStatus": "ok"
+        },
+        {
+          "chargeStartDate": "2023-04-24T14:19:40Z",
+          "chargeEndDate": "2023-04-24T18:39:27Z",
+          "chargeDuration": 260,
+          "chargeStartBatteryLevel": 49,
+          "chargeEndBatteryLevel": 64,
+          "chargeEnergyRecovered": 9.200001,
+          "chargeEndStatus": "ok"
+        }
+      ]
+    }
+  }
+}
