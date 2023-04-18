@@ -60,7 +60,7 @@ urllib3 = "^1.26.15"
 #ensure certifi (for requests/sphinx) is greater than 2022.12.07 to account for CVE-2022-23491
 certifi = "^2022.12.07"
 #ensure gitpython (for bandit/flake8-bandit) is greater than 3.1.30 to account for CVE-2022-24439
-gitpython = "^3.1.30"
+gitpython = "^3.1.31"
 #ensure setuptools (for safety) is greater than 65.5.1 to account for CVE-2022-40897
 setuptools = "^67.6.1"
 
