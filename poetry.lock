@@ -946,14 +946,14 @@ tests = ["pytest", "pytz", "simplejson"]
 
 [[package]]
 name = "marshmallow-dataclass"
-version = "8.5.12"
+version = "8.5.13"
 description = "Python library to convert dataclasses into marshmallow schemas."
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "marshmallow_dataclass-8.5.12-py3-none-any.whl", hash = "sha256:45d9910d44a1b03978eb48e4098f691a01bb268fb86dac662b42636bbed92266"},
-    {file = "marshmallow_dataclass-8.5.12.tar.gz", hash = "sha256:a59fe346cebc37b670ca68dbd44c56d9198d98a7ff3ebcb864c77b899eee5b6e"},
+    {file = "marshmallow_dataclass-8.5.13-py3-none-any.whl", hash = "sha256:3290a13517f126dc3b9541fa04d38e809b6c73dac5cd66d1b1e43341c93fe783"},
+    {file = "marshmallow_dataclass-8.5.13.tar.gz", hash = "sha256:438196e119138a8d61d45ce763341fa0e1be5bf8ae12d52ae4562cfdbe68393c"},
 ]
 
 [package.dependencies]
