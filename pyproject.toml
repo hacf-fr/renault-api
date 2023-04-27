@@ -56,7 +56,7 @@ pytest-asyncio = "^0.21.0"
 aioresponses = "^0.7.4"
 pytest-cov = "^4.0.0"
 #ensure urllib3 (for requests/sphinx) is greater than 1.26.5 to account for CVE-2021-33503
-urllib3 = "^1.26.15"
+urllib3 = "^2.0.0"
 #ensure certifi (for requests/sphinx) is greater than 2022.12.07 to account for CVE-2022-23491
 certifi = "^2022.12.07"
 #ensure gitpython (for bandit/flake8-bandit) is greater than 3.1.30 to account for CVE-2022-24439
