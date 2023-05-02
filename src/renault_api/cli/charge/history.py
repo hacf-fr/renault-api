@@ -45,6 +45,7 @@ async def sessions(
         "Started at",
         "Finished at",
         "Charge gained",
+        "Energy gained",
         "Power level",
         "Status",
     ]
@@ -71,6 +72,7 @@ def _format_charges_item(
         helpers.get_display_value(item.get("chargeStartBatteryLevel"), "%"),
         helpers.get_display_value(item.get("chargeEndBatteryLevel"), "%"),
         helpers.get_display_value(item.get("chargeBatteryLevelRecovered"), "%"),
+        helpers.get_display_value(item.get("chargeEnergyRecovered"), "kWh"),
         helpers.get_display_value(item.get("chargePower")),
         helpers.get_display_value(item.get("chargeEndStatus")),
     ]
