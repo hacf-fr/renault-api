@@ -29,7 +29,7 @@ click = { version = ">=8.0.1", optional = true }
 tabulate = { version = ">=0.8.7", optional = true }
 dateparser = {version = ">=1.0.0", optional = true}
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "^7.3.1"
 coverage = {extras = ["toml"], version = "^7.2"}
 safety = "^2.3.5"
@@ -39,9 +39,9 @@ xdoctest = {extras = ["colors"], version = "^1.1.1"}
 sphinx = "^4.3.2"
 sphinx-autobuild = "^2021.3.14"
 pre-commit = "^2.21.0"
+bandit = "^1.7.5"
 flake8 = "^4.0.1"
 black = "^22.12"
-flake8-bandit = "^3.0.0"
 flake8-bugbear = "^22.12.6"
 flake8-docstrings = "^1.7.0"
 flake8-rst-docstrings = "^0.3.0"
