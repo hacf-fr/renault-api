@@ -940,28 +940,31 @@ tests = ["pytest", "pytz", "simplejson"]
 
 [[package]]
 name = "marshmallow-dataclass"
-version = "8.5.12"
+version = "8.5.14"
 description = "Python library to convert dataclasses into marshmallow schemas."
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "marshmallow_dataclass-8.5.12-py3-none-any.whl", hash = "sha256:45d9910d44a1b03978eb48e4098f691a01bb268fb86dac662b42636bbed92266"},
-    {file = "marshmallow_dataclass-8.5.12.tar.gz", hash = "sha256:a59fe346cebc37b670ca68dbd44c56d9198d98a7ff3ebcb864c77b899eee5b6e"},
+    {file = "marshmallow_dataclass-8.5.14-py3-none-any.whl", hash = "sha256:73859c8963774b5aad6b23ff3dd8456c8463e7c96bf5076051e1656fd4e101d0"},
+    {file = "marshmallow_dataclass-8.5.14.tar.gz", hash = "sha256:233c414dd24a6d512bcdb6fb840076bf7a29b7daaaea40634f155a5933377d2e"},
 ]
 
 [package.dependencies]
 marshmallow = ">=3.13.0,<4.0"
-typing-extensions = {version = ">=4.1.0", markers = "python_version < \"3.11\""}
-typing-inspect = ">=0.8.0"
+typing-extensions = [
+    {version = ">=4.2.0", markers = "python_version < \"3.11\" and python_version >= \"3.7\""},
+    {version = ">=3.7.2", markers = "python_version < \"3.8\""},
+]
+typing-inspect = ">=0.8.0,<1.0"
 
 [package.extras]
-dev = ["marshmallow (>=3.18.0,<4.0)", "marshmallow-enum", "pre-commit (>=2.17,<3.0)", "pytest (>=5.4)", "pytest-mypy-plugins (>=1.2.0)", "sphinx", "typeguard (>=2.0.0,<4.0.0)"]
+dev = ["marshmallow (>=3.18.0,<4.0)", "marshmallow-enum", "pre-commit (>=2.17,<3.0)", "pytest (>=5.4)", "pytest-mypy-plugins (>=1.2.0)", "sphinx", "typeguard (>=2.4.1,<4.0.0)"]
 docs = ["sphinx"]
 enum = ["marshmallow (>=3.18.0,<4.0)", "marshmallow-enum"]
 lint = ["pre-commit (>=2.17,<3.0)"]
 tests = ["pytest (>=5.4)", "pytest-mypy-plugins (>=1.2.0)"]
-union = ["typeguard (>=2.0.0,<4.0.0)"]
+union = ["typeguard (>=2.4.1,<4.0.0)"]
 
 [[package]]
 name = "mccabe"
