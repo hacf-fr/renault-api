@@ -11,8 +11,8 @@ TO_REDACT = ["accountId", "id", "radioCode", "registrationNumber", "vin"]
 
 TEST_ACCOUNT_ID = "account-id-1"
 TEST_LOCALE = "fr_FR"
-TEST_LOGIN_TOKEN = "sample-cookie-value"  # noqa: S105
-TEST_PASSWORD = "test_password"  # noqa: S105
+TEST_LOGIN_TOKEN = "sample-cookie-value"  # nosec
+TEST_PASSWORD = "test_password"  # nosec
 TEST_PERSON_ID = "person-id-1"
 TEST_USERNAME = "test@example.com"
 TEST_VIN = "VF1AAAAA555777999"
