@@ -146,7 +146,9 @@ async def request(
         # Some endpoints return arrays instead of objects.
         # These need to be wrapped in an object.
         if response_text.startswith("["):
-            response_text = f'{{"{wrap_array_in or "data"}": {response_text}}}'
+            response_text = (
+                f'{{"{wrap_array_in or "data"}": {response_text}}}'  # noqa: B907
+            )
         if not response_text.startswith("{"):
             # Check for HTTP error
             http_response.raise_for_status()

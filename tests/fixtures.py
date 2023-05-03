@@ -79,7 +79,7 @@ def get_file_content_as_wrapped_schema(
     """Read fixture text file as specified schema."""
     with open(filename, "r") as file:
         content = file.read()
-    content = f'{{"{wrap_in}": {content}}}'
+    content = f'{{"{wrap_in}": {content}}}'  # noqa: B907
     return schema.loads(content)
 
 
