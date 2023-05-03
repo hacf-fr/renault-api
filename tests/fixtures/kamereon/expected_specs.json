@@ -138,5 +138,19 @@
     "supports-hvac-status": true,
     "supports-location": true,
     "charge-uses-kcm": false
+  },
+  "megane_e-tech.2.json": {
+    "get_brand_label": "RENAULT",
+    "get_energy_code": "ELECX",
+    "get_model_code": "XCB1VE",
+    "get_model_label": "MEGANE E-TECH",
+    "get_picture_small": "https://3dv.renault.com/ImageFromBookmark?configuration=BCB%2FE2S%2FLHDG%2FACD03%2FSTDRF%2FWFTRT%2FRVX03%2FRAL18%2FCLS02%2FFSE04%2FOV369%2FLEDH2%2FPALAW%2FSPBDA%2FSLSW0%2FRVIMA%2FTRSV0%2FAJSW2%2FRA466%2FASOC2%2FRIM06%2FSLCCA%2FNOATD%2FBDPRO%2FNOETC%2FM2021%2FNB003%2FWRANT%2FNOADR%2FNODUP%2FNOWAP%2FRCALL%2FNOBSD%2F1BCOL%2FITPK0%2FNOMDM%2FPXA00%2FNOPXB%2FPIG00%2FNHTSW%2FNOLII%2FRRCAM%2FNODTR&databaseId=7669019f-69c7-43a7-8b1a-a4a26ab21b0d&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_SMALL_V2",
+    "get_picture_large": "https://3dv.renault.com/ImageFromBookmark?configuration=BCB%2FE2S%2FLHDG%2FACD03%2FSTDRF%2FWFTRT%2FRVX03%2FRAL18%2FCLS02%2FFSE04%2FOV369%2FLEDH2%2FPALAW%2FSPBDA%2FSLSW0%2FRVIMA%2FTRSV0%2FAJSW2%2FRA466%2FASOC2%2FRIM06%2FSLCCA%2FNOATD%2FBDPRO%2FNOETC%2FM2021%2FNB003%2FWRANT%2FNOADR%2FNODUP%2FNOWAP%2FRCALL%2FNOBSD%2F1BCOL%2FITPK0%2FNOMDM%2FPXA00%2FNOPXB%2FPIG00%2FNHTSW%2FNOLII%2FRRCAM%2FNODTR&databaseId=7669019f-69c7-43a7-8b1a-a4a26ab21b0d&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_LARGE",
+    "reports_charging_power_in_watts": false,
+    "uses_electricity": true,
+    "uses_fuel": false,
+    "supports-hvac-status": true,
+    "supports-location": true,
+    "charge-uses-kcm": false
   }
 }

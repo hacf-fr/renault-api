@@ -218,6 +218,7 @@ class KamereonVehicleDetails(BaseModel):
         energy_type = self.engineEnergyType or self.get_energy_code()
         if energy_type in [
             "ELEC",
+            "ELECX",
             "PHEV",
         ]:
             return True
