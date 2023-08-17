@@ -72,6 +72,8 @@ regex = "^2022.9.11"
 yarl = "^1.8.1"
 #ensure certifi (for requests/sphinx) is greater than 2023.7.22 to account for CVE-2023-37920
 certifi = "^2023.7.22"
+#ensure requests (for sphinx) is greater than 2.31.0 to account for CVE-2023-32681
+requests = "^2.31.0"
 
 [tool.poetry.extras]
 cli = ["click", "tabulate", "dateparser"]
