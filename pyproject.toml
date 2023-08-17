@@ -75,6 +75,8 @@ yarl = "^1.8.1"
 requests = "^2.31.0"
 #ensure tornado (for sphinx) is greater than 6.3.3 to account for GHSA-qppv-j76h-2rpx
 tornado = "^6.3.3"
+#ensure PyYAML (for sphinx) is greater than 6.0.1 to fix Cython wheel
+PyYAML = "^6.0.1"
 
 [tool.poetry.extras]
 cli = ["click", "tabulate", "dateparser"]
