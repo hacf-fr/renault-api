@@ -58,8 +58,6 @@ aioresponses = "^0.7.4"
 pytest-cov = "^4.0.0"
 #ensure urllib3 (for requests/sphinx) is greater than 1.26.5 to account for CVE-2021-33503
 urllib3 = "^1.26.15"
-#ensure certifi (for requests/sphinx) is greater than 2022.12.07 to account for CVE-2022-23491
-certifi = "^2022.12.07"
 #ensure gitpython (for bandit/flake8-bandit) is greater than 3.1.30 to account for CVE-2022-24439
 gitpython = "^3.1.31"
 #ensure setuptools (for safety) is greater than 65.5.1 to account for CVE-2022-40897
@@ -72,6 +70,8 @@ multidict = "^6.0.3"
 regex = "^2022.9.11"
 #ensure yarl (for aiohttp) is greater than 1.8.1 to account for Python 3.11
 yarl = "^1.8.1"
+#ensure certifi (for requests/sphinx) is greater than 2023.7.22 to account for CVE-2023-37920
+certifi = "^2023.7.22"
 
 [tool.poetry.extras]
 cli = ["click", "tabulate", "dateparser"]
