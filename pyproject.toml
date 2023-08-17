@@ -21,8 +21,8 @@ Changelog = "https://github.com/hacf-fr/renault-api/releases"
 
 [tool.poetry.dependencies]
 python = ">=3.7.1,<4.0"
-# Warning: as of 2020-11-19, aiohttp is pinned to 3.7.1 on HA-core
-aiohttp = ">=3.7.1"
+#ensure aiohttp is greater than 3.8.5 to account for CVE-2023-30589
+aiohttp = ">=3.8.5"
 # Warning: as of 2022-05-16, pyjwt is pinned to 2.4.0 on HA-core
 pyjwt = ">=2.4.0"
 marshmallow-dataclass = ">=8.2.0"
