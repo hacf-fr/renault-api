@@ -73,6 +73,8 @@ regex = "^2022.9.11"
 yarl = "^1.8.1"
 #ensure requests (for sphinx) is greater than 2.31.0 to account for CVE-2023-32681
 requests = "^2.31.0"
+#ensure tornado (for sphinx) is greater than 6.3.3 to account for GHSA-qppv-j76h-2rpx
+tornado = "^6.3.3"
 
 [tool.poetry.extras]
 cli = ["click", "tabulate", "dateparser"]
