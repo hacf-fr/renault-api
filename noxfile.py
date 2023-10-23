@@ -43,6 +43,9 @@ def activate_virtualenv_in_precommit_hooks(session: Session) -> None:
     Args:
         session: The Session object.
     """
+    if session.bin is None:
+        return
+
     virtualenv = session.env.get("VIRTUAL_ENV")
     if virtualenv is None:
         return
@@ -86,10 +89,10 @@ def precommit(session: Session) -> None:
     """Lint using pre-commit."""
     args = session.posargs or ["run", "--all-files", "--show-diff-on-failure"]
     session.install(
-        "bandit",
         "black",
         "darglint",
         "flake8",
+        "flake8-bandit",
         "flake8-bugbear",
         "flake8-docstrings",
         "flake8-rst-docstrings",
@@ -115,16 +118,8 @@ def safety(session: Session) -> None:
 def mypy(session: Session) -> None:
     """Type-check using mypy."""
     args = session.posargs or ["src", "tests", "docs/conf.py"]
-    session.install(".[cli]")
-    session.install(
-        "mypy",
-        "pytest",
-        "types-dateparser",
-        "types-tabulate",
-        "types-tzlocal",
-        "pytest-asyncio",
-        "aioresponses",
-    )
+    session.install(".")
+    session.install("mypy", "pytest", "types-requests", "types-pytz")
     session.run("mypy", *args)
     if not session.posargs:
         session.run("mypy", f"--python-executable={sys.executable}", "noxfile.py")
@@ -133,10 +128,8 @@ def mypy(session: Session) -> None:
 @session(python=python_versions)
 def tests(session: Session) -> None:
     """Run the test suite."""
-    session.install(".[cli]")
-    session.install(
-        "coverage[toml]", "pytest", "pygments", "pytest-asyncio", "aioresponses"
-    )
+    session.install(".")
+    session.install("coverage[toml]", "pytest", "pygments", "requests_mock")
     try:
         session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
     finally:
@@ -160,8 +153,8 @@ def coverage(session: Session) -> None:
 @session(python=python_versions)
 def typeguard(session: Session) -> None:
     """Runtime type checking using Typeguard."""
-    session.install(".[cli]")
-    session.install("pytest", "typeguard", "pygments", "pytest-asyncio", "aioresponses")
+    session.install(".")
+    session.install("pytest", "typeguard", "pygments", "requests_mock")
     session.run("pytest", f"--typeguard-packages={package}", *session.posargs)
 
 
@@ -178,8 +171,8 @@ def xdoctest(session: Session) -> None:
 def docs_build(session: Session) -> None:
     """Build the documentation."""
     args = session.posargs or ["docs", "docs/_build"]
-    session.run("python", "-m", "pip", "install", "-r", "docs/requirements.txt")
-    session.install(".[cli]")
+    session.install(".")
+    session.install("sphinx", "sphinx-click", "furo")
 
     build_dir = Path("docs", "_build")
     if build_dir.exists():
@@ -192,9 +185,8 @@ def docs_build(session: Session) -> None:
 def docs(session: Session) -> None:
     """Build and serve the documentation with live reloading on file changes."""
     args = session.posargs or ["--open-browser", "docs", "docs/_build"]
-    session.run("python", "-m", "pip", "install", "-r", "docs/requirements.txt")
-    session.install(".[cli]")
-    session.install("sphinx-autobuild")
+    session.install(".")
+    session.install("sphinx", "sphinx-autobuild", "sphinx-click", "furo")
 
     build_dir = Path("docs", "_build")
     if build_dir.exists():
