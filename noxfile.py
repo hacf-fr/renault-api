@@ -119,7 +119,13 @@ def mypy(session: Session) -> None:
     """Type-check using mypy."""
     args = session.posargs or ["src", "tests", "docs/conf.py"]
     session.install(".")
-    session.install("mypy", "pytest", "types-requests", "types-pytz")
+    session.install(
+        "mypy",
+        "pytest",
+        "types-requests",
+        "types-pytz",
+        "pytest-asyncio"
+    )
     session.run("mypy", *args)
     if not session.posargs:
         session.run("mypy", f"--python-executable={sys.executable}", "noxfile.py")
