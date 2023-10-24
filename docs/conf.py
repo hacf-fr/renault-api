@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 project = "Renault API"
-author = "epenet"
+author = "HACF (created and maintained by @epenet)"
 copyright = f"{datetime.now().year}, {author}"
 extensions = [
     "sphinx.ext.autodoc",
