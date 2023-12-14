@@ -26,7 +26,9 @@ def update_schedule(schedule: models.ChargeSchedule, settings: Dict[str, Any]) -
         if day in settings:
             day_settings = settings[day]
 
-            if day_settings:  # pragma: no branch
+            if day_settings is None:
+                setattr(schedule, day, None)
+            elif day_settings:  # pragma: no branch
                 start_time = day_settings["startTime"]
                 duration = day_settings["duration"]
 

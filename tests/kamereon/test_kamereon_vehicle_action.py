@@ -119,11 +119,20 @@ def test_charge_schedule_for_json() -> None:
         {
             "id": 1,
             "tuesday": {"startTime": "T12:00Z", "duration": 15},
+            "wednesday": None,
         }
     )
+
+    # Monday kept initial values
+    assert vehicle_data.schedules[0].monday is not None
+    assert vehicle_data.schedules[0].monday.startTime == "T00:00Z"
+    assert vehicle_data.schedules[0].monday.duration == 450
+    # Tuesday has updated values
     assert vehicle_data.schedules[0].tuesday is not None
     assert vehicle_data.schedules[0].tuesday.startTime == "T12:00Z"
     assert vehicle_data.schedules[0].tuesday.duration == 15
+    # Wednesday has values cleared
+    assert vehicle_data.schedules[0].wednesday is None
 
     # Test update activated state
     assert vehicle_data.schedules[1].activated
@@ -147,7 +156,7 @@ def test_charge_schedule_for_json() -> None:
                 "activated": True,
                 "monday": {"startTime": "T00:00Z", "duration": 450},
                 "tuesday": {"startTime": "T12:00Z", "duration": 15},
-                "wednesday": {"startTime": "T00:00Z", "duration": 450},
+                "wednesday": None,
                 "thursday": {"startTime": "T00:00Z", "duration": 450},
                 "friday": {"startTime": "T00:00Z", "duration": 450},
                 "saturday": {"startTime": "T00:00Z", "duration": 450},
