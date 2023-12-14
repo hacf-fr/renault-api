@@ -239,45 +239,45 @@ class KamereonVehicleDetails(BaseModel):
         """Return True if model reports history durations in minutes."""
         # Default to False (=seconds) for unknown vehicles
         if self.model and self.model.code:
-            return VEHICLE_SPECIFICATIONS.get(self.model.code, {}).get(
-                "reports-charge-session-durations-in-minutes", False
-            )
+            return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
+                self.model.code, {}
+            ).get("reports-charge-session-durations-in-minutes", False)
         return False  # pragma: no cover
 
     def reports_charging_power_in_watts(self) -> bool:
         """Return True if model reports chargingInstantaneousPower in watts."""
         # Default to False for unknown vehicles
         if self.model and self.model.code:
-            return VEHICLE_SPECIFICATIONS.get(self.model.code, {}).get(
-                "reports-in-watts", False
-            )
+            return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
+                self.model.code, {}
+            ).get("reports-in-watts", False)
         return False  # pragma: no cover
 
     def supports_endpoint(self, endpoint: str) -> bool:
         """Return True if model supports specified endpoint."""
         # Default to True for unknown vehicles
         if self.model and self.model.code:
-            return VEHICLE_SPECIFICATIONS.get(self.model.code, {}).get(
-                f"support-endpoint-{endpoint}", True
-            )
+            return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
+                self.model.code, {}
+            ).get(f"support-endpoint-{endpoint}", True)
         return True  # pragma: no cover
 
     def warns_on_method(self, method: str) -> Optional[str]:
         """Return warning message if model trigger a warning on the method call."""
         # Default to None for unknown vehicles
         if self.model and self.model.code:
-            return VEHICLE_SPECIFICATIONS.get(self.model.code, {}).get(
-                f"warns-on-method-{method}", None
-            )
+            return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
+                self.model.code, {}
+            ).get(f"warns-on-method-{method}", None)
         return None  # pragma: no cover
 
     def controls_action_via_kcm(self, action: str) -> bool:
         """Return True if model uses endpoint via kcm."""
         # Default to False for unknown vehicles
         if self.model and self.model.code:
-            return VEHICLE_SPECIFICATIONS.get(self.model.code, {}).get(
-                f"control-{action}-via-kcm", False
-            )
+            return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
+                self.model.code, {}
+            ).get(f"control-{action}-via-kcm", False)
         return False  # pragma: no cover
 
 
@@ -507,27 +507,27 @@ class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
         """Return True if model reports chargingInstantaneousPower in watts."""
         # Default to False for unknown vehicles
         if self.carGateway:
-            return GATEWAY_SPECIFICATIONS.get(self.carGateway, {}).get(
-                "reports-in-watts", False
-            )
+            return GATEWAY_SPECIFICATIONS.get(  # type:ignore[no-any-return]
+                self.carGateway, {}
+            ).get("reports-in-watts", False)
         return False  # pragma: no cover
 
     def supports_endpoint(self, endpoint: str) -> bool:
         """Return True if model supports specified endpoint."""
         # Default to True for unknown vehicles
         if self.carGateway:
-            return GATEWAY_SPECIFICATIONS.get(self.carGateway, {}).get(
-                f"support-endpoint-{endpoint}", True
-            )
+            return GATEWAY_SPECIFICATIONS.get(  # type:ignore[no-any-return]
+                self.carGateway, {}
+            ).get(f"support-endpoint-{endpoint}", True)
         return True  # pragma: no cover
 
     def controls_action_via_kcm(self, action: str) -> bool:
         """Return True if model uses endpoint via kcm."""
         # Default to False for unknown vehicles
         if self.modelCodeDetail:
-            return VEHICLE_SPECIFICATIONS.get(self.modelCodeDetail, {}).get(
-                f"control-{action}-via-kcm", False
-            )
+            return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
+                self.modelCodeDetail, {}
+            ).get(f"control-{action}-via-kcm", False)
         return False  # pragma: no cover
 
 
