@@ -1,8 +1,8 @@
 """Tests for Kamereon models."""
-from tests import fixtures
 from typing import cast
 
 import pytest
+from tests import fixtures
 
 from renault_api.kamereon import models
 from renault_api.kamereon import schemas
