@@ -64,6 +64,9 @@ VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
     },
     "XBG1VE": {  # DACIA SPRING
         "control-charge-via-kcm": True,
+        "support-endpoint-lock-status": False,
+        "support-endpoint-res-state": False,
+        "support-endpoint-charge-mode": False,
     },
     "XCB1VE": {  # MEGANE E-TECH
         "support-endpoint-lock-status": False,
