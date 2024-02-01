@@ -10,6 +10,12 @@ class KamereonException(RenaultException):
     pass
 
 
+class ModelValidationException(RenaultException, ValueError):
+    """Base exception for model validation errors."""
+
+    pass
+
+
 class KamereonResponseException(KamereonException):
     """Kamereon returned a parsable errors."""
 
