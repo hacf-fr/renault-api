@@ -6,6 +6,7 @@ from shutil import copyfile
 from unittest import mock
 
 import pytest
+
 from tests.const import TEST_LOGIN_TOKEN
 from tests.const import TEST_PERSON_ID
 from tests.fixtures import get_jwt

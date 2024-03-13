@@ -4,6 +4,7 @@ from typing import cast
 import aiohttp
 import pytest
 from aioresponses import aioresponses
+
 from tests import fixtures
 from tests.const import TEST_COUNTRY
 from tests.const import TEST_LOCALE

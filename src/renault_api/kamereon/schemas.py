@@ -4,7 +4,6 @@ import marshmallow_dataclass
 from . import models
 from renault_api.models import BaseSchema
 
-
 KamereonResponseSchema = marshmallow_dataclass.class_schema(
     models.KamereonResponse, base_schema=BaseSchema
 )()

@@ -2,8 +2,8 @@
 import logging
 from json import JSONDecodeError
 from typing import Any
-from typing import cast
 from typing import Dict
+from typing import cast
 
 import aiohttp
 from marshmallow.schema import Schema

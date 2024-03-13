@@ -5,7 +5,6 @@ from renault_api.const import CONF_GIGYA_URL
 from renault_api.const import CONF_KAMEREON_APIKEY
 from renault_api.const import CONF_KAMEREON_URL
 
-
 REDACTED = "*PRIVATE*"
 TO_REDACT = ["accountId", "id", "radioCode", "registrationNumber", "vin"]
 

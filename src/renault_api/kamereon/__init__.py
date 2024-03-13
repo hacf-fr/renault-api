@@ -2,10 +2,10 @@
 import logging
 from json import dumps as json_dumps
 from typing import Any
-from typing import cast
 from typing import Dict
 from typing import List
 from typing import Optional
+from typing import cast
 from warnings import warn
 
 import aiohttp
@@ -14,7 +14,6 @@ from marshmallow.schema import Schema
 from . import models
 from . import schemas
 from .exceptions import KamereonResponseException
-
 
 _LOGGER = logging.getLogger(__name__)
 

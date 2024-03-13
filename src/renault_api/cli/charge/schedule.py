@@ -17,7 +17,6 @@ from renault_api.kamereon.models import ChargeDaySchedule
 from renault_api.kamereon.models import ChargeSchedule
 from renault_api.renault_vehicle import RenaultVehicle
 
-
 _DAY_SCHEDULE_REGEX = re.compile(
     "(?P<prefix>T?)"
     "(?P<hours>[0-2][0-9])"

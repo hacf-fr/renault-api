@@ -1,6 +1,7 @@
 """Tests for Kamereon models."""
 import pytest
 from marshmallow.schema import Schema
+
 from tests import fixtures
 
 from renault_api.kamereon import exceptions

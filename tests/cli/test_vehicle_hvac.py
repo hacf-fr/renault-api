@@ -2,8 +2,9 @@
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall
 from click.testing import CliRunner
-from tests import fixtures
 from yarl import URL
+
+from tests import fixtures
 
 from . import initialise_credential_store
 from renault_api.cli import __main__

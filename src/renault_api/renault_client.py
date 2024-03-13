@@ -12,7 +12,6 @@ from .kamereon import models
 from .renault_account import RenaultAccount
 from .renault_session import RenaultSession
 
-
 _LOGGER = logging.getLogger(__name__)
 
 

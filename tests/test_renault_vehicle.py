@@ -7,6 +7,8 @@ import aiohttp
 import pytest
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall
+from yarl import URL
+
 from tests import fixtures
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
@@ -14,7 +16,6 @@ from tests.const import TEST_LOCALE_DETAILS
 from tests.const import TEST_VIN
 from tests.test_credential_store import get_logged_in_credential_store
 from tests.test_renault_session import get_logged_in_session
-from yarl import URL
 
 from renault_api.kamereon.helpers import DAYS_OF_WEEK
 from renault_api.kamereon.models import ChargeSchedule

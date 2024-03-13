@@ -40,12 +40,11 @@ repos:
         language: system
         types: [python]
         require_serial: true
-      - id: reorder-python-imports
-        name: Reorder python imports
-        entry: reorder-python-imports
+      - id: isort
+        name: Sort python imports
+        entry: isort
         language: system
         types: [python]
-        args: [--application-directories=src]
       - id: trailing-whitespace
         name: Trim Trailing Whitespace
         entry: trailing-whitespace-fixer

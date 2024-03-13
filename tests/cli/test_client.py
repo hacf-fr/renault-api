@@ -4,6 +4,7 @@ from locale import getdefaultlocale
 
 from aioresponses import aioresponses
 from click.testing import CliRunner
+
 from tests import fixtures
 from tests.const import TEST_LOCALE
 from tests.const import TEST_LOGIN_TOKEN

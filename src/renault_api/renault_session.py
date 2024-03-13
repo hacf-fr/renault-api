@@ -24,7 +24,6 @@ from .gigya.exceptions import GigyaResponseException
 from .kamereon import models
 from renault_api.helpers import get_api_keys
 
-
 _LOGGER = logging.getLogger(__name__)
 
 

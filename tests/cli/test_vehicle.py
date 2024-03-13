@@ -8,6 +8,8 @@ import pytest
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall
 from click.testing import CliRunner
+from yarl import URL
+
 from tests import fixtures
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_LOCALE
@@ -16,7 +18,6 @@ from tests.const import TEST_PASSWORD
 from tests.const import TEST_PERSON_ID
 from tests.const import TEST_USERNAME
 from tests.const import TEST_VIN
-from yarl import URL
 
 from renault_api.cli import __main__
 from renault_api.cli.renault_settings import CONF_ACCOUNT_ID
