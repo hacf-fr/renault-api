@@ -1,7 +1,6 @@
 """Sphinx configuration."""
 from datetime import datetime
 
-
 project = "Renault API"
 author = "epenet"
 copyright = f"{datetime.now().year}, {author}"
