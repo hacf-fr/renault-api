@@ -47,7 +47,7 @@ flake8-docstrings = "^1.7.0"
 flake8-rst-docstrings = "^0.3.0"
 pep8-naming = "^0.13.2"
 darglint = "^1.8.1"
-reorder-python-imports = "^3.9.0"
+isort = "^5.13.2"
 pre-commit-hooks = ">=4.4,<6.0"
 sphinx-rtd-theme = ">=1.2,<3.0"
 sphinx-click = ">=4.4,<6.0"
@@ -94,6 +94,11 @@ source = ["renault_api"]
 [tool.coverage.report]
 show_missing = true
 fail_under = 100
+
+[tool.isort]
+profile = "black"
+force_single_line = "true"
+known_local_folder = ["renault_api"]
 
 [tool.mypy]
 check_untyped_defs = true
