@@ -41,7 +41,7 @@ repos:
         types: [python]
         require_serial: true
       - id: isort
-        name: Reorder python imports
+        name: Sort python imports
         entry: isort
         language: system
         types: [python]
