@@ -2,10 +2,10 @@
 import logging
 from datetime import datetime
 from datetime import timezone
-from typing import cast
 from typing import Dict
 from typing import List
 from typing import Optional
+from typing import cast
 from warnings import warn
 
 import aiohttp
@@ -15,7 +15,6 @@ from .exceptions import RenaultException
 from .kamereon import models
 from .kamereon import schemas
 from .renault_session import RenaultSession
-
 
 _LOGGER = logging.getLogger(__name__)
 

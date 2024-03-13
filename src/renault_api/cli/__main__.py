@@ -22,7 +22,6 @@ from .charge import commands as charge_commands
 from .hvac import commands as hvac_commands
 from renault_api.credential_store import FileCredentialStore
 
-
 _WARNING_DEBUG_ENABLED = (
     "Debug output enabled. Logs may contain personally identifiable "
     "information and account credentials! Be sure to sanitise these logs "
