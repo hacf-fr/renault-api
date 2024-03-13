@@ -45,4 +45,4 @@ Action endpoints
 KCM Action endpoints
 -------------------------
 
-.. include:: endpoints/vehicle_kcm_actions.charge-pause-resume
+.. include:: endpoints/vehicle_kcm_actions.charge-pause-resume.rst
