@@ -1,4 +1,5 @@
 """Kamereon API."""
+
 import logging
 from json import dumps as json_dumps
 from typing import Any

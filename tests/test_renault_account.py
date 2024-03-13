@@ -1,4 +1,5 @@
 """Test cases for the Renault client API keys."""
+
 import aiohttp
 import pytest
 from aioresponses import aioresponses

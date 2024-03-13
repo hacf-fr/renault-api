@@ -1,4 +1,5 @@
 """Client for Renault API."""
+
 import logging
 from datetime import datetime
 from datetime import timezone

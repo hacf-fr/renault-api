@@ -1,4 +1,5 @@
 """Tests for Kamereon models."""
+
 import json
 import os
 

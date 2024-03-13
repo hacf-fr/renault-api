@@ -1,4 +1,5 @@
 """Test cases for the __main__ module."""
+
 import os
 from locale import getdefaultlocale
 

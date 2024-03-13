@@ -1,4 +1,5 @@
 """Tests for Kamereon models."""
+
 from tests import fixtures
 
 from renault_api.kamereon import models

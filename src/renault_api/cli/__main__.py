@@ -1,4 +1,5 @@
 """Command-line interface."""
+
 import errno
 import json
 import logging

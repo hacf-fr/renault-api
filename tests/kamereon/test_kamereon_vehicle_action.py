@@ -1,4 +1,5 @@
 """Tests for Kamereon models."""
+
 from typing import cast
 
 import pytest

@@ -1,4 +1,5 @@
 """Singletons for the CLI."""
+
 import os
 from textwrap import TextWrapper
 from typing import Any

@@ -1,4 +1,5 @@
 """Constants for Renault API."""
+
 CONF_COUNTRY = "country"
 CONF_LOCALE = "locale"
 CONF_GIGYA_APIKEY = "gigya-api-key"

@@ -1,4 +1,5 @@
 """Gigya API."""
+
 import logging
 from json import JSONDecodeError
 from typing import Any

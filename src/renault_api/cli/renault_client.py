@@ -1,4 +1,5 @@
 """Singletons for the CLI."""
+
 import json
 from locale import getdefaultlocale
 from typing import Any

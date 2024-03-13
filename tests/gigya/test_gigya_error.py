@@ -1,4 +1,5 @@
 """Tests for Gigya errors."""
+
 import pytest
 
 from tests import fixtures

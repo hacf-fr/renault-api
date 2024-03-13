@@ -1,4 +1,5 @@
 """Tests for Kamereon models."""
+
 import os
 from copy import deepcopy
 from typing import cast

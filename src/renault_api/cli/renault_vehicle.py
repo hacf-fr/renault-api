@@ -1,4 +1,5 @@
 """CLI function for a vehicle."""
+
 import json
 from typing import Any
 from typing import Dict
