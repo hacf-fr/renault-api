@@ -1,4 +1,5 @@
 """Tests for Kamereon API."""
+
 import aiohttp
 import pytest
 from aioresponses import aioresponses

@@ -1,4 +1,5 @@
 """Test cases for initialisation of the Kamereon client."""
+
 from typing import cast
 
 import aiohttp

@@ -1,4 +1,5 @@
 """Test cases for the __main__ module."""
+
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall
 from click.testing import CliRunner

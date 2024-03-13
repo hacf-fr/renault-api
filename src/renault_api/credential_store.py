@@ -1,4 +1,5 @@
 """Kamereon client for interaction with Renault servers."""
+
 import json
 import os
 from typing import Dict

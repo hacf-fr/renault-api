@@ -1,4 +1,5 @@
 """Tests for Kamereon models."""
+
 import pytest
 from marshmallow.schema import Schema
 

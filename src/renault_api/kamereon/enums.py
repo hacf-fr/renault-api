@@ -1,4 +1,5 @@
 """Kamereon enums."""
+
 from enum import Enum
 
 

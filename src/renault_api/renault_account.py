@@ -1,4 +1,5 @@
 """Client for Renault API."""
+
 import logging
 from typing import Dict
 from typing import List

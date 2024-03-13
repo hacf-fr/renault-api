@@ -1,4 +1,5 @@
 """Gigya exceptions."""
+
 from typing import Optional
 
 from renault_api.exceptions import RenaultException

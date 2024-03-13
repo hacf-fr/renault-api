@@ -1,4 +1,5 @@
 """Test suite for the renault_api CLI."""
+
 import os
 from typing import Optional
 

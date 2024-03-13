@@ -1,4 +1,5 @@
 """Test cases for the Gigya client."""
+
 import tempfile
 import time
 from datetime import timedelta

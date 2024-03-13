@@ -1,4 +1,5 @@
 """Gigya schemas."""
+
 import marshmallow_dataclass
 
 from . import models

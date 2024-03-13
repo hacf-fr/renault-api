@@ -1,4 +1,5 @@
 """Tests for Gigya API."""
+
 import aiohttp
 import pytest
 from aioresponses import aioresponses

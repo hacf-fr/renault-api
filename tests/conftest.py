@@ -1,4 +1,5 @@
 """Test configuration."""
+
 import asyncio
 import functools
 import pathlib

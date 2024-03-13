@@ -1,4 +1,5 @@
 """CLI function for a vehicle."""
+
 from typing import Any
 from typing import Dict
 from typing import Optional

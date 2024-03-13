@@ -1,4 +1,5 @@
 """Test suite for the renault_api package."""
+
 from __future__ import annotations
 
 import datetime
