@@ -16,7 +16,7 @@ Sample return:
 
    On Zoe40 (model code X101VE):
       * ``chargingInstantaneousPower`` gives value in watts.
-      * ``chargingStatus`` uses only a subset of ``ChargeStatus``_ enum (NOT_IN_CHARGE = 0.0, CHARGE_IN_PROGRESS = 1.0, CHARGE_ERROR = -1.0)
+      * ``chargingStatus`` uses only a subset of ``ChargeStatus``\_ enum (NOT_IN_CHARGE = 0.0, CHARGE_IN_PROGRESS = 1.0, CHARGE_ERROR = -1.0)
 
    On Zoe50 (model code X102VE):
       * ``batteryTemperature`` appears completely wrong.
