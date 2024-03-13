@@ -2,6 +2,7 @@
 import os
 
 from click.testing import CliRunner
+
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_LOCALE
 from tests.const import TEST_LOCALE_DETAILS

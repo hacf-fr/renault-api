@@ -2,6 +2,7 @@
 import aiohttp
 import pytest
 from aioresponses import aioresponses
+
 from tests import fixtures
 from tests.const import TEST_GIGYA_APIKEY
 from tests.const import TEST_GIGYA_URL

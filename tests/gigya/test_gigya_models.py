@@ -1,5 +1,6 @@
 """Tests for Gigya models."""
 import pytest
+
 from tests import fixtures
 
 from renault_api.gigya import models

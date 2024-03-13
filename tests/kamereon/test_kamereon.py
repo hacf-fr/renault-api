@@ -3,6 +3,8 @@ import aiohttp
 import pytest
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall
+from yarl import URL
+
 from tests import fixtures
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
@@ -10,7 +12,6 @@ from tests.const import TEST_KAMEREON_APIKEY
 from tests.const import TEST_KAMEREON_URL
 from tests.const import TEST_PERSON_ID
 from tests.const import TEST_VIN
-from yarl import URL
 
 from renault_api import kamereon
 from renault_api.kamereon import exceptions

@@ -1,5 +1,6 @@
 """Tests for Kamereon models."""
 import pytest
+
 from tests import fixtures
 
 from renault_api.kamereon import has_required_contracts

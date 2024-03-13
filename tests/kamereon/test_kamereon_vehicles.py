@@ -3,6 +3,7 @@ import json
 import os
 
 import pytest
+
 from tests import fixtures
 
 from renault_api.kamereon import models

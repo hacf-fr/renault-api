@@ -8,10 +8,10 @@ from typing import Generator
 from _pytest.fixtures import fixture
 from _pytest.monkeypatch import MonkeyPatch
 from click.testing import CliRunner
+
 from tests.const import TEST_LOCALE
 
 from renault_api.cli import __main__
-
 
 PATCH_TODAY = datetime(2018, 12, 25)
 
