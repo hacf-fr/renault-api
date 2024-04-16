@@ -7,9 +7,7 @@ import json
 from glob import glob
 from os import path
 from typing import Any
-from typing import List
 from typing import Mapping
-from typing import Optional
 
 import jwt
 from aioresponses import aioresponses
@@ -35,7 +33,7 @@ KCM_ADAPTER_PATH = f"{ACCOUNT_PATH}/kamereon/kcm/v1/vehicles/{TEST_VIN}"
 ADAPTER2_PATH = f"{ACCOUNT_PATH}/kamereon/kca/car-adapter/v2/cars/{TEST_VIN}"
 
 
-def get_jwt(timedelta: Optional[datetime.timedelta] = None) -> str:
+def get_jwt(timedelta: datetime.timedelta | None = None) -> str:
     """Read fixture text file as string."""
     if not timedelta:
         timedelta = datetime.timedelta(seconds=900)
@@ -56,21 +54,21 @@ def _jwt_as_string(encoded_jwt: Any) -> str:
     raise ValueError("Unable to read JWT token.")
 
 
-def get_json_files(parent_dir: str) -> List[str]:
+def get_json_files(parent_dir: str) -> list[str]:
     """Read fixture text file as string."""
     return glob(f"{parent_dir}/*.json")
 
 
 def get_file_content(filename: str) -> str:
     """Read fixture text file as string."""
-    with open(filename, mode="r", encoding="utf-8") as file:
+    with open(filename, encoding="utf-8") as file:
         content = file.read()
     return content
 
 
 def get_file_content_as_schema(filename: str, schema: Schema) -> Any:
     """Read fixture text file as specified schema."""
-    with open(filename, "r", encoding="utf-8") as file:
+    with open(filename, encoding="utf-8") as file:
         content = file.read()
     return schema.loads(content)
 
@@ -79,7 +77,7 @@ def get_file_content_as_wrapped_schema(
     filename: str, schema: Schema, wrap_in: str
 ) -> Any:
     """Read fixture text file as specified schema."""
-    with open(filename, "r") as file:
+    with open(filename) as file:
         content = file.read()
     content = f'{{"{wrap_in}": {content}}}'  # noqa: B907
     return schema.loads(content)
@@ -150,9 +148,9 @@ def inject_gigya_all(mocked_responses: aioresponses) -> None:
 def inject_data(
     mocked_responses: aioresponses,
     urlpath: str,
-    filename: Optional[str] = None,
+    filename: str | None = None,
     *,
-    body: Optional[str] = None,
+    body: str | None = None,
 ) -> str:
     """Inject Kamereon data."""
     url = f"{KAMEREON_BASE_URL}/{urlpath}"
