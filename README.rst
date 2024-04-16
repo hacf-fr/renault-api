@@ -5,7 +5,7 @@ Renault API
 
 |Read the Docs| |Tests| |Codecov|
 
-|pre-commit| |Black|
+|pre-commit| |Ruff|
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/renault-api.svg
    :target: https://pypi.org/project/renault-api/
@@ -28,6 +28,9 @@ Renault API
 .. |pre-commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white
    :target: https://github.com/pre-commit/pre-commit
    :alt: pre-commit
+.. |Ruff| image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json
+    :target: https://github.com/astral-sh/ruff
+    :alt: Ruff
 
 
 Features
