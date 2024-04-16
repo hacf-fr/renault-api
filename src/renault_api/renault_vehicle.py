@@ -522,7 +522,7 @@ class RenaultVehicle:
 
         if details.controls_action_via_kcm("charge"):
             attributes = {"action": "resume"}
-            response = response = await self.session.set_vehicle_action(
+            response = await self.session.set_vehicle_action(
                 account_id=self.account_id,
                 vin=self.vin,
                 endpoint="charge/pause-resume",
@@ -550,7 +550,7 @@ class RenaultVehicle:
 
         if details.controls_action_via_kcm("charge"):
             attributes = {"action": "pause"}
-            response = response = await self.session.set_vehicle_action(
+            response = await self.session.set_vehicle_action(
                 account_id=self.account_id,
                 vin=self.vin,
                 endpoint="charge/pause-resume",
