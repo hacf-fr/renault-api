@@ -117,6 +117,7 @@ def mypy(session: Session) -> None:
         "types-dateparser",
         "types-tabulate",
         "types-tzlocal",
+        "typeguard",
         "pytest-asyncio",
         "aioresponses",
     )
@@ -130,7 +131,12 @@ def tests(session: Session) -> None:
     """Run the test suite."""
     session.install(".[cli]")
     session.install(
-        "coverage[toml]", "pytest", "pygments", "pytest-asyncio", "aioresponses"
+        "coverage[toml]",
+        "pytest",
+        "pygments",
+        "pytest-asyncio",
+        "aioresponses",
+        "typeguard",
     )
     try:
         session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
