@@ -1,8 +1,9 @@
 """CLI function for a vehicle."""
 
+from __future__ import annotations
+
 import json
 from typing import Any
-from typing import Tuple
 
 import aiohttp
 import click
@@ -65,7 +66,7 @@ async def _get_vin(ctx_data: dict[str, Any], account: RenaultAccount) -> str:
 
 async def _get_vehicle_prompt(
     vehicle_links: list[KamereonVehiclesLink], account: RenaultAccount
-) -> Tuple[str, str | None]:
+) -> tuple[str, str | None]:
     """Get prompt for selecting vehicle."""
     vehicle_table = []
     default = None

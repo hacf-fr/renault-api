@@ -1,5 +1,7 @@
 """Test configuration."""
 
+from __future__ import annotations
+
 import asyncio
 import functools
 import pathlib

@@ -1,12 +1,13 @@
 """Helpers for Renault API."""
 
+from __future__ import annotations
+
 import asyncio
 import functools
 from datetime import datetime
 from datetime import timedelta
 from typing import Any
 from typing import Callable
-from typing import Tuple
 
 import aiohttp
 import click
@@ -136,7 +137,7 @@ def create_aiohttp_closed_event(
     return all_is_lost
 
 
-def parse_dates(start: str, end: str) -> Tuple[datetime, datetime]:
+def parse_dates(start: str, end: str) -> tuple[datetime, datetime]:
     """Convert start/end string arguments into datetime arguments."""
     parsed_start = dateparser.parse(start)
     parsed_end = dateparser.parse(end)

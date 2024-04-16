@@ -1,5 +1,7 @@
 """Gigya API."""
 
+from __future__ import annotations
+
 import logging
 from json import JSONDecodeError
 from typing import Any

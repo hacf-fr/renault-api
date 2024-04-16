@@ -1,5 +1,7 @@
 """Kamereon exceptions."""
 
+from __future__ import annotations
+
 from renault_api.exceptions import RenaultException
 
 
