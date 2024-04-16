@@ -9,6 +9,7 @@ import pytest
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall
 from click.testing import CliRunner
+from typeguard import suppress_type_checks
 from yarl import URL
 
 from tests import fixtures
@@ -497,10 +498,11 @@ def test_http_post_file(
     json_file = tmpdir.mkdir("json").join("sample.json")
     json_file.write(json.dumps(body))
 
-    result = cli_runner.invoke(
-        __main__.main,
-        f"http post-file {endpoint} '{json_file}'",  # noqa: B907
-    )
+    with suppress_type_checks():
+        result = cli_runner.invoke(
+            __main__.main,
+            f"http post-file {endpoint} '{json_file}'",
+        )
     assert result.exit_code == 0, result.exception
 
     expected_output = (
