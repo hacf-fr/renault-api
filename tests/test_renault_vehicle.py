@@ -24,7 +24,7 @@ from renault_api.kamereon.models import HvacSchedule
 from renault_api.renault_vehicle import RenaultVehicle
 
 
-@pytest.fixture
+@pytest.fixture()
 def vehicle(websession: aiohttp.ClientSession) -> RenaultVehicle:
     """Fixture for testing RenaultVehicle."""
     return RenaultVehicle(
@@ -52,7 +52,7 @@ def test_init(websession: aiohttp.ClientSession) -> None:
     )
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_details(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -64,7 +64,7 @@ async def test_get_details(
     assert await vehicle.get_details()
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_car_adapter(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -76,7 +76,7 @@ async def test_get_car_adapter(
     assert await vehicle.get_car_adapter()
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_contracts(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -89,7 +89,7 @@ async def test_get_contracts(
     assert await vehicle.get_contracts()
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_has_contract_for_endpoint_1(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -101,7 +101,7 @@ async def test_has_contract_for_endpoint_1(
     assert await vehicle.has_contract_for_endpoint("charge-mode")
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_has_contract_for_endpoint_2(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -114,7 +114,7 @@ async def test_has_contract_for_endpoint_2(
     # assert not await vehicle.has_contract_for_endpoint("charge-mode")
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_battery_status(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -123,7 +123,7 @@ async def test_get_battery_status(
     assert await vehicle.get_battery_status()
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_location(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -132,7 +132,7 @@ async def test_get_location(
     assert await vehicle.get_location()
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_hvac_status(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -141,7 +141,7 @@ async def test_get_hvac_status(
     assert await vehicle.get_hvac_status()
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_hvac_settings(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -155,8 +155,10 @@ async def test_get_hvac_settings(
     assert schedules
     assert schedules[1].id == 2
     assert schedules[1].activated is True
-    assert schedules[1].wednesday and schedules[1].wednesday.readyAtTime == "T15:15Z"
-    assert schedules[1].friday and schedules[1].friday.readyAtTime == "T15:15Z"
+    assert schedules[1].wednesday
+    assert schedules[1].wednesday.readyAtTime == "T15:15Z"
+    assert schedules[1].friday
+    assert schedules[1].friday.readyAtTime == "T15:15Z"
 
     for i in (0, 2, 3, 4):
         assert schedules[i].id == i + 1
@@ -165,7 +167,7 @@ async def test_get_hvac_settings(
             assert schedules[i].__dict__[day] is None
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_charge_mode(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -174,7 +176,7 @@ async def test_get_charge_mode(
     assert await vehicle.get_charge_mode()
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_cockpit(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -183,7 +185,7 @@ async def test_get_cockpit(
     assert await vehicle.get_cockpit()
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_lock_status(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -192,7 +194,7 @@ async def test_get_lock_status(
     assert await vehicle.get_lock_status()
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_charging_settings(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -201,7 +203,7 @@ async def test_get_charging_settings(
     assert await vehicle.get_charging_settings()
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_notification_settings(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -210,7 +212,7 @@ async def test_get_notification_settings(
     assert await vehicle.get_notification_settings()
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_charge_history_month(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -223,7 +225,7 @@ async def test_get_charge_history_month(
     )
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_charge_history_day(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -236,7 +238,7 @@ async def test_get_charge_history_day(
     )
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_charges(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -248,7 +250,7 @@ async def test_get_charges(
     )
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_hvac_history(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -261,7 +263,7 @@ async def test_get_hvac_history(
     )
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_hvac_sessions(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -273,7 +275,7 @@ async def test_get_hvac_sessions(
     )
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_set_ac_start(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -298,7 +300,7 @@ async def test_set_ac_start(
     assert expected_json == request.kwargs["json"]
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_set_ac_stop(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -313,7 +315,7 @@ async def test_set_ac_stop(
     assert expected_json == request.kwargs["json"]
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_set_charge_mode(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -329,7 +331,7 @@ async def test_set_charge_mode(
     assert expected_json == request.kwargs["json"]
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_set_charge_schedules(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -347,7 +349,7 @@ async def test_set_charge_schedules(
     assert expected_json == request.kwargs["json"]
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_set_charge_start(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -364,7 +366,7 @@ async def test_set_charge_start(
     assert expected_json == request.kwargs["json"]
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_set_hvac_schedules(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:

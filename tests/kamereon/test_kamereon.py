@@ -18,7 +18,7 @@ from renault_api import kamereon
 from renault_api.kamereon import exceptions
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_person(
     websession: aiohttp.ClientSession, mocked_responses: aioresponses
 ) -> None:
@@ -37,7 +37,7 @@ async def test_get_person(
     assert len(person.accounts) == 2
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_account_vehicles(
     websession: aiohttp.ClientSession, mocked_responses: aioresponses
 ) -> None:
@@ -54,7 +54,7 @@ async def test_get_account_vehicles(
     )
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_vehicle_data(
     websession: aiohttp.ClientSession, mocked_responses: aioresponses
 ) -> None:
@@ -73,7 +73,7 @@ async def test_get_vehicle_data(
     )
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_vehicle_data_xml_bad_gateway(
     websession: aiohttp.ClientSession, mocked_responses: aioresponses
 ) -> None:
@@ -98,7 +98,7 @@ async def test_get_vehicle_data_xml_bad_gateway(
     )
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_set_vehicle_action(
     websession: aiohttp.ClientSession, mocked_responses: aioresponses
 ) -> None:
