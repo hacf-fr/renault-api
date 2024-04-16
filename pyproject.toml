@@ -112,25 +112,16 @@ warn_unused_configs = true
 warn_unused_ignores = true
 
 [tool.ruff]
-line-length = 80
+line-length = 88
 target-version = "py38"
 
 [tool.ruff.lint]
 ignore = [
     "A001",    # Variable is shadowing a Python builtin
     "A002",    # Argument is shadowing a Python builtin
-    "C400",    # Unnecessary generator
-    "E501",    # Line too long (81 > 80)
-    "ERA001",  # Found commented-out code
     "N815",    # Variable in class scope should not be mixedCase
-    "PLR2004", # Magic value used in comparison, consider replacing
     "PLR0911", # Too many return statements
     "PLR0913", # Too many arguments in function definition
-    "PT001",   # Use `@pytest.fixture()` over `@pytest.fixture`
-    "PT018",   # Assertion should be broken down into multiple parts
-    "PT022",   # No teardown in fixture `cli_runner`, use `return` instead of `yield`
-    "PT023",   # Use `@pytest.mark.asyncio()` over `@pytest.mark.asyncio`
-    "PLW0127", # Self-assignment of variable
 ]
 select = [
     "A", #flake8-builtins

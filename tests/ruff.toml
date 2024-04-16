@@ -1,0 +1,13 @@
+# This extend our general Ruff rules specifically for tests
+extend = "../pyproject.toml"
+
+[lint]
+extend-ignore = [
+    "PLR2004", # Magic value used in comparison, consider replacing
+]
+
+[lint.isort]
+known-first-party = [
+    "renault-api",
+    "tests",
+]

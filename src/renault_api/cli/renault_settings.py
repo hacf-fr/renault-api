@@ -48,10 +48,10 @@ def display_settings(ctx_data: Dict[str, Any]) -> None:
     """Get the current configuration keys."""
     credential_store: CredentialStore = ctx_data["credential_store"]
     wrapper = TextWrapper(width=80)
-    items = list(
+    items = [
         [key, "\n".join(wrapper.wrap(credential_store.get_value(key) or "-"))]
         for key in credential_store._store.keys()
-    )
+    ]
     click.echo(tabulate(items, headers=["Key", "Value"]))
 
 

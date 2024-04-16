@@ -42,13 +42,6 @@ def test_has_required_contract_1() -> None:
     assert response.contractList is not None
 
     assert has_required_contracts(response.contractList, "battery-status")
-    # "Deprecated in 0.1.3, contract codes are country-specific"
-    # " and can't be used to guess requirements."
-    # assert not has_required_contracts(response.contractList, "charge-mode")
-    # assert not has_required_contracts(response.contractList, "charging-settings")
-    # assert not has_required_contracts(response.contractList, "hvac-history")
-    # assert not has_required_contracts(response.contractList, "hvac-sessions")
-    # assert not has_required_contracts(response.contractList, "hvac-status")
 
 
 def test_has_required_contract_2() -> None:

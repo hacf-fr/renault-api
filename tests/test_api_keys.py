@@ -14,7 +14,7 @@ from renault_api.exceptions import RenaultException
 from renault_api.helpers import get_api_keys
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 @pytest.mark.parametrize("locale", AVAILABLE_LOCALES.keys())
 async def test_available_locales(locale: str) -> None:
     """Ensure all items AVAILABLE_LOCALES have correct data."""
@@ -31,7 +31,7 @@ async def test_available_locales(locale: str) -> None:
         assert api_keys[key]
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_missing_aiohttp_session() -> None:
     """Ensure failure to unknown locale if aiohttp_session is not set."""
     locale = "invalid"
@@ -41,7 +41,7 @@ async def test_missing_aiohttp_session() -> None:
     assert "aiohttp_session is not set." in str(excinfo)
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 @pytest.mark.parametrize("locale", AVAILABLE_LOCALES.keys())
 @pytest.mark.skip(reason="Makes real calls to Renault servers")
 async def test_preload_force_api_keys(websession: ClientSession, locale: str) -> None:
@@ -53,7 +53,7 @@ async def test_preload_force_api_keys(websession: ClientSession, locale: str) ->
     assert api_keys == expected_api_keys
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 @pytest.mark.skip("API keys are out of date.")
 async def test_preload_unknown_api_keys(
     websession: ClientSession, mocked_responses: aioresponses
@@ -73,7 +73,7 @@ async def test_preload_unknown_api_keys(
     assert api_keys == expected_api_keys
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_preload_invalid_api_keys(
     websession: ClientSession, mocked_responses: aioresponses
 ) -> None:

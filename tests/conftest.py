@@ -37,10 +37,8 @@ def mocked_responses() -> Generator[aioresponses, None, None]:
         yield m
 
 
-@pytest.fixture
-def cli_runner(
-    monkeypatch: MonkeyPatch, tmpdir: pathlib.Path
-) -> Generator[CliRunner, None, None]:
+@pytest.fixture()
+def cli_runner(monkeypatch: MonkeyPatch, tmpdir: pathlib.Path) -> CliRunner:
     """Fixture for invoking command-line interfaces."""
     runner = CliRunner()
 
@@ -65,7 +63,7 @@ def cli_runner(
 
     monkeypatch.setattr("tzlocal.get_localzone", get_test_zone)
 
-    yield runner
+    return runner
 
 
 def create_aiohttp_closed_event(

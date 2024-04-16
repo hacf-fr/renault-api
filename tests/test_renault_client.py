@@ -14,7 +14,7 @@ from tests.test_renault_session import get_logged_in_session
 from renault_api.renault_client import RenaultClient
 
 
-@pytest.fixture
+@pytest.fixture()
 def client(websession: aiohttp.ClientSession) -> RenaultClient:
     """Fixture for testing RenaultClient."""
     return RenaultClient(
@@ -36,7 +36,7 @@ def test_init(websession: aiohttp.ClientSession) -> None:
     )
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_person(
     client: RenaultClient, mocked_responses: aioresponses
 ) -> None:
@@ -47,7 +47,7 @@ async def test_get_person(
     assert len(person.accounts) == 2
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_api_accounts(
     client: RenaultClient, mocked_responses: aioresponses
 ) -> None:
@@ -57,7 +57,7 @@ async def test_get_api_accounts(
     assert len(accounts) == 2
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_get_api_account(client: RenaultClient) -> None:
     """Test get_api_account."""
     account = await client.get_api_account(TEST_ACCOUNT_ID)

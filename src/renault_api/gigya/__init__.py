@@ -31,13 +31,7 @@ async def request(
     """Send request to Gigya."""
     async with websession.request(method, url, data=data) as http_response:
         response_text = await http_response.text()
-        # Disable logging on Gigya, to avoid unnecessary exposure.
-        # _LOGGER.debug(
-        #    "Received Gigya response %s on %s: %s",
-        #    http_response.status,
-        #    url,
-        #    response_text,
-        # )
+        # Don't log on Gigya, to avoid unnecessary exposure.
         try:
             gigya_response: models.GigyaResponse = schema.loads(response_text)
         except JSONDecodeError as err:

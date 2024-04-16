@@ -54,7 +54,7 @@ def test_charge_schedule_for_json() -> None:
     # Check that for_json returns the same as the original data
     assert vehicle_data.schedules is not None
     for_json = {
-        "schedules": list(schedule.for_json() for schedule in vehicle_data.schedules)
+        "schedules": [schedule.for_json() for schedule in vehicle_data.schedules]
     }
     assert for_json == {
         "schedules": [
@@ -149,7 +149,7 @@ def test_charge_schedule_for_json() -> None:
     # Activated flag has been updated in 'vehicle_data.update'
     # Refresh for_json with the updated data
     for_json = {  # type: ignore[unreachable]
-        "schedules": list(schedule.for_json() for schedule in vehicle_data.schedules)
+        "schedules": [schedule.for_json() for schedule in vehicle_data.schedules]
     }
     assert for_json == {
         "schedules": [
@@ -227,7 +227,7 @@ def test_hvac_schedule_for_json() -> None:
     # verify for_json returns proper original data
     assert vehicle_data.schedules is not None
     for_json = {
-        "schedules": list(schedule.for_json() for schedule in vehicle_data.schedules)
+        "schedules": [schedule.for_json() for schedule in vehicle_data.schedules]
     }
     expected_json = {
         "schedules": [
@@ -278,7 +278,7 @@ def test_hvac_schedule_for_json() -> None:
     )
 
     for_json = {
-        "schedules": list(schedule.for_json() for schedule in vehicle_data.schedules)
+        "schedules": [schedule.for_json() for schedule in vehicle_data.schedules]
     }
     expected_json = {
         "schedules": [
