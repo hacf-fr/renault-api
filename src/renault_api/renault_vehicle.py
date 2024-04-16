@@ -254,15 +254,13 @@ class RenaultVehicle:
         """Get vehicle charge history."""
         if not isinstance(start, datetime):  # pragma: no cover
             raise TypeError(
-                "`start` should be an instance of datetime.datetime, not {}".format(
-                    start.__class__
-                )
+                "`start` should be an instance of datetime.datetime, "
+                f"not {start.__class__}"
             )
         if not isinstance(end, datetime):  # pragma: no cover
             raise TypeError(
-                "`end` should be an instance of datetime.datetime, not {}".format(
-                    end.__class__
-                )
+                "`end` should be an instance of datetime.datetime, "
+                f"not {end.__class__}"
             )
         if period not in PERIOD_FORMATS.keys():  # pragma: no cover
             raise TypeError("`period` should be one of `month`, `day`")
@@ -289,15 +287,13 @@ class RenaultVehicle:
         """Get vehicle charges."""
         if not isinstance(start, datetime):  # pragma: no cover
             raise TypeError(
-                "`start` should be an instance of datetime.datetime, not {}".format(
-                    start.__class__
-                )
+                "`start` should be an instance of datetime.datetime, "
+                f"not {start.__class__}"
             )
         if not isinstance(end, datetime):  # pragma: no cover
             raise TypeError(
-                "`end` should be an instance of datetime.datetime, not {}".format(
-                    end.__class__
-                )
+                "`end` should be an instance of datetime.datetime, "
+                f"not {end.__class__}"
             )
 
         params = {
@@ -321,15 +317,13 @@ class RenaultVehicle:
         """Get vehicle hvac history."""
         if not isinstance(start, datetime):  # pragma: no cover
             raise TypeError(
-                "`start` should be an instance of datetime.datetime, not {}".format(
-                    start.__class__
-                )
+                "`start` should be an instance of datetime.datetime, "
+                f"not {start.__class__}"
             )
         if not isinstance(end, datetime):  # pragma: no cover
             raise TypeError(
-                "`end` should be an instance of datetime.datetime, not {}".format(
-                    end.__class__
-                )
+                "`end` should be an instance of datetime.datetime, "
+                f"not {end.__class__}"
             )
         if period not in PERIOD_FORMATS.keys():  # pragma: no cover
             raise TypeError("`period` should be one of `month`, `day`")
@@ -356,15 +350,13 @@ class RenaultVehicle:
         """Get vehicle hvac sessions."""
         if not isinstance(start, datetime):  # pragma: no cover
             raise TypeError(
-                "`start` should be an instance of datetime.datetime, not {}".format(
-                    start.__class__
-                )
+                "`start` should be an instance of datetime.datetime, "
+                f"not {start.__class__}"
             )
         if not isinstance(end, datetime):  # pragma: no cover
             raise TypeError(
-                "`end` should be an instance of datetime.datetime, not {}".format(
-                    end.__class__
-                )
+                "`end` should be an instance of datetime.datetime, "
+                f"not {end.__class__}"
             )
 
         params = {
@@ -394,9 +386,8 @@ class RenaultVehicle:
         if when:
             if not isinstance(when, datetime):  # pragma: no cover
                 raise TypeError(
-                    "`when` should be an instance of datetime.datetime, not {}".format(
-                        when.__class__
-                    )
+                    "`when` should be an instance of datetime.datetime, "
+                    f"not {when.__class__}"
                 )
             start_date_time = when.astimezone(timezone.utc).strftime(PERIOD_TZ_FORMAT)
             attributes["startDateTime"] = start_date_time
@@ -435,9 +426,8 @@ class RenaultVehicle:
         for schedule in schedules:
             if not isinstance(schedule, models.HvacSchedule):  # pragma: no cover
                 raise TypeError(
-                    "`schedules` should be a list of HvacSchedule, not {}".format(
-                        schedules.__class__
-                    )
+                    "`schedules` should be a list of HvacSchedule, "
+                    f"not {schedules.__class__}"
                 )
         attributes = {"schedules": [schedule.for_json() for schedule in schedules]}
 
@@ -461,9 +451,8 @@ class RenaultVehicle:
         for schedule in schedules:
             if not isinstance(schedule, models.ChargeSchedule):  # pragma: no cover
                 raise TypeError(
-                    "`schedules` should be a list of ChargeSchedule, not {}".format(
-                        schedules.__class__
-                    )
+                    "`schedules` should be a list of ChargeSchedule, "
+                    f"not {schedules.__class__}"
                 )
         attributes = {"schedules": [schedule.for_json() for schedule in schedules]}
 

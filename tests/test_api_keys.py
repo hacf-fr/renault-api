@@ -63,7 +63,7 @@ async def test_preload_unknown_api_keys(
 
     fake_locale = "invalid"
     fake_url = f"{LOCALE_BASE_URL}/configuration/android/config_{fake_locale}.json"
-    with open("tests/fixtures/config_sample.txt", "r") as f:
+    with open("tests/fixtures/config_sample.txt") as f:
         fake_body = f.read()
 
     mocked_responses.get(fake_url, status=200, body=fake_body)
