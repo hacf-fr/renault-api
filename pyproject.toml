@@ -24,6 +24,9 @@ python = ">=3.8,<4.0"
 aiohttp = ">=3.8.5"
 # Warning: as of 2022-05-16, pyjwt is pinned to 2.4.0 on HA-core
 pyjwt = ">=2.4.0"
+#ensure cryptography (for pyjwt) is greater than 42.0.5 to account for PVE-2024-65647
+cryptography = "^42.0.5"
+
 marshmallow-dataclass = ">=8.2.0"
 click = { version = ">=8.0.1", optional = true }
 tabulate = { version = ">=0.8.7", optional = true }
