@@ -1,9 +1,6 @@
 """CLI function for a vehicle."""
 
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
 
 import aiohttp
 import click
@@ -19,7 +16,7 @@ from renault_api.kamereon.models import KamereonVehicleDetails
 @click.pass_obj
 @helpers.coro_with_websession
 async def sessions(
-    ctx_data: Dict[str, Any],
+    ctx_data: dict[str, Any],
     *,
     start: str,
     end: str,
@@ -33,7 +30,7 @@ async def sessions(
     )
     details = await vehicle.get_details()
     response = await vehicle.get_charges(start=parsed_start, end=parsed_end)
-    charges: List[Dict[str, Any]] = response.raw_data["charges"]
+    charges: list[dict[str, Any]] = response.raw_data["charges"]
     if not charges:  # pragma: no cover
         click.echo("No data available.")
         return
@@ -58,8 +55,8 @@ async def sessions(
 
 
 def _format_charges_item(
-    item: Dict[str, Any], details: KamereonVehicleDetails
-) -> List[str]:
+    item: dict[str, Any], details: KamereonVehicleDetails
+) -> list[str]:
     duration_unit = (
         "minutes"
         if details.reports_charge_session_durations_in_minutes()
@@ -84,11 +81,11 @@ def _format_charges_item(
 @click.pass_obj
 @helpers.coro_with_websession
 async def history(
-    ctx_data: Dict[str, Any],
+    ctx_data: dict[str, Any],
     *,
     start: str,
     end: str,
-    period: Optional[str],
+    period: str | None,
     websession: aiohttp.ClientSession,
 ) -> None:
     """Display charge history."""
@@ -101,7 +98,7 @@ async def history(
     response = await vehicle.get_charge_history(
         start=parsed_start, end=parsed_end, period=period
     )
-    charge_summaries: List[Dict[str, Any]] = response.raw_data["chargeSummaries"]
+    charge_summaries: list[dict[str, Any]] = response.raw_data["chargeSummaries"]
     if not charge_summaries:  # pragma: no cover
         click.echo("No data available.")
         return
@@ -120,7 +117,7 @@ async def history(
     )
 
 
-def _format_charge_history_item(item: Dict[str, Any], period: str) -> List[str]:
+def _format_charge_history_item(item: dict[str, Any], period: str) -> list[str]:
     return [
         helpers.get_display_value(item.get(period)),
         helpers.get_display_value(item.get("totalChargesNumber")),

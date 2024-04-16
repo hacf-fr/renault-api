@@ -1,9 +1,8 @@
 """Client for Renault API."""
 
+from __future__ import annotations
+
 import logging
-from typing import Dict
-from typing import List
-from typing import Optional
 
 import aiohttp
 
@@ -22,12 +21,12 @@ class RenaultAccount:
     def __init__(
         self,
         account_id: str,
-        session: Optional[RenaultSession] = None,
-        websession: Optional[aiohttp.ClientSession] = None,
-        locale: Optional[str] = None,
-        country: Optional[str] = None,
-        locale_details: Optional[Dict[str, str]] = None,
-        credential_store: Optional[CredentialStore] = None,
+        session: RenaultSession | None = None,
+        websession: aiohttp.ClientSession | None = None,
+        locale: str | None = None,
+        country: str | None = None,
+        locale_details: dict[str, str] | None = None,
+        credential_store: CredentialStore | None = None,
     ) -> None:
         """Initialise Renault account."""
         self._account_id = account_id
@@ -63,12 +62,12 @@ class RenaultAccount:
             self.account_id,
         )
 
-    async def get_api_vehicles(self) -> List[RenaultVehicle]:
+    async def get_api_vehicles(self) -> list[RenaultVehicle]:
         """Get vehicle proxies."""
         response = await self.get_vehicles()
         if response.vehicleLinks is None:  # pragma: no cover
             raise ValueError("response.accounts is None")
-        result: List[RenaultVehicle] = []
+        result: list[RenaultVehicle] = []
         for vehicle in response.vehicleLinks:
             if vehicle.vin is None:  # pragma: no cover
                 continue
