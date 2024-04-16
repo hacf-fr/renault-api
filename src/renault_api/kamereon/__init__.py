@@ -26,7 +26,7 @@ _KCA_GET_ENDPOINTS: Dict[str, Any] = {
     "charge-mode": {"version": 1},
     "charges": {"version": 1},
     "charging-settings": {"version": 1},
-    "cockpit": {"version": 2},
+    "cockpit": {"version": 1},
     "hvac-history": {"version": 1},
     "hvac-sessions": {"version": 1},
     "hvac-status": {"version": 1},
