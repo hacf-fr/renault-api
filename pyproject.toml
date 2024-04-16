@@ -119,7 +119,6 @@ target-version = "py38"
 ignore = [
     "A001",    # Variable is shadowing a Python builtin
     "A002",    # Argument is shadowing a Python builtin
-    "C400",    # Unnecessary generator
     "E501",    # Line too long (81 > 80)
     "ERA001",  # Found commented-out code
     "N815",    # Variable in class scope should not be mixedCase

@@ -456,7 +456,7 @@ class RenaultVehicle:
                         schedules.__class__
                     )
                 )
-        attributes = {"schedules": list(schedule.for_json() for schedule in schedules)}
+        attributes = {"schedules": [schedule.for_json() for schedule in schedules]}
 
         response = await self.session.set_vehicle_action(
             account_id=self.account_id,
@@ -483,7 +483,7 @@ class RenaultVehicle:
                         schedules.__class__
                     )
                 )
-        attributes = {"schedules": list(schedule.for_json() for schedule in schedules)}
+        attributes = {"schedules": [schedule.for_json() for schedule in schedules]}
 
         response = await self.session.set_vehicle_action(
             account_id=self.account_id,
