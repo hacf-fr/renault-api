@@ -1,8 +1,7 @@
 """CLI function for a vehicle."""
 
-from __future__ import annotations
-
 from typing import Any
+from typing import Tuple
 
 import aiohttp
 import click
@@ -65,7 +64,7 @@ async def _get_account_id(ctx_data: dict[str, Any], client: RenaultClient) -> st
 
 async def _get_account_prompt(
     accounts: list[KamereonPersonAccount], client: RenaultClient
-) -> tuple[str, str | None]:
+) -> Tuple[str, str | None]:
     """Get prompt for selecting account."""
     account_table = []
     default = None

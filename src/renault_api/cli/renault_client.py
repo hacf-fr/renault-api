@@ -1,7 +1,5 @@
 """Singletons for the CLI."""
 
-from __future__ import annotations
-
 import json
 from locale import getdefaultlocale
 from typing import Any

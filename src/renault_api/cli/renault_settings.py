@@ -1,7 +1,5 @@
 """Singletons for the CLI."""
 
-from __future__ import annotations
-
 import os
 from textwrap import TextWrapper
 from typing import Any

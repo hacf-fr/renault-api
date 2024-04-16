@@ -1,9 +1,8 @@
 """CLI function for a vehicle."""
 
-from __future__ import annotations
-
 import re
 from typing import Any
+from typing import Tuple
 
 import aiohttp
 import click
@@ -89,7 +88,7 @@ async def _get_schedule(
     ctx_data: dict[str, Any],
     websession: aiohttp.ClientSession,
     id: int,
-) -> tuple[RenaultVehicle, list[ChargeSchedule], ChargeSchedule]:
+) -> Tuple[RenaultVehicle, list[ChargeSchedule], ChargeSchedule]:
     """Get the given schedules activated-flag to given state."""
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
@@ -198,7 +197,7 @@ def update_settings(
                 )
 
 
-def _parse_day_schedule(raw: str) -> tuple[str, int]:
+def _parse_day_schedule(raw: str) -> Tuple[str, int]:
     match = _DAY_SCHEDULE_REGEX.match(raw)
     if not match:  # pragma: no cover
         raise ValueError(

@@ -1,7 +1,5 @@
 """Kamereon API."""
 
-from __future__ import annotations
-
 import logging
 from json import dumps as json_dumps
 from typing import Any

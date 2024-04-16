@@ -1,7 +1,5 @@
 """Test suite for the renault_api CLI."""
 
-from __future__ import annotations
-
 import os
 
 from tests.const import TEST_ACCOUNT_ID
