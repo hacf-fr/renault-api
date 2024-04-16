@@ -112,14 +112,13 @@ warn_unused_configs = true
 warn_unused_ignores = true
 
 [tool.ruff]
-line-length = 80
+line-length = 88
 target-version = "py38"
 
 [tool.ruff.lint]
 ignore = [
     "A001",    # Variable is shadowing a Python builtin
     "A002",    # Argument is shadowing a Python builtin
-    "E501",    # Line too long (81 > 80)
     "ERA001",  # Found commented-out code
     "N815",    # Variable in class scope should not be mixedCase
     "PLR0911", # Too many return statements
