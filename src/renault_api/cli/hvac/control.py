@@ -1,6 +1,8 @@
 """CLI function for a vehicle."""
 
 from typing import Any
+from typing import Dict
+from typing import Optional
 
 import aiohttp
 import click
@@ -24,10 +26,10 @@ from renault_api.cli import renault_vehicle
 @click.pass_obj
 @helpers.coro_with_websession
 async def start(
-    ctx_data: dict[str, Any],
+    ctx_data: Dict[str, Any],
     *,
     temperature: int,
-    at: str | None,
+    at: Optional[str],
     websession: aiohttp.ClientSession,
 ) -> None:
     """Start air conditioning."""
@@ -46,7 +48,7 @@ async def start(
 @click.pass_obj
 @helpers.coro_with_websession
 async def cancel(
-    ctx_data: dict[str, Any],
+    ctx_data: Dict[str, Any],
     *,
     websession: aiohttp.ClientSession,
 ) -> None:

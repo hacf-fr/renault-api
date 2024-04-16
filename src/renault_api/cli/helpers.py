@@ -6,6 +6,7 @@ from datetime import datetime
 from datetime import timedelta
 from typing import Any
 from typing import Callable
+from typing import Optional
 from typing import Tuple
 
 import aiohttp
@@ -183,8 +184,8 @@ def _format_seconds(secs: float) -> str:
 
 
 def get_display_value(
-    value: Any | None = None,
-    unit: str | None = None,
+    value: Optional[Any] = None,
+    unit: Optional[str] = None,
 ) -> str:
     """Get a display for value."""
     if value is None:  # pragma: no cover

@@ -3,6 +3,9 @@
 import logging
 from json import dumps as json_dumps
 from typing import Any
+from typing import Dict
+from typing import List
+from typing import Optional
 from typing import cast
 from warnings import warn
 
@@ -16,7 +19,7 @@ from .exceptions import KamereonResponseException
 _LOGGER = logging.getLogger(__name__)
 
 
-_KCA_GET_ENDPOINTS: dict[str, Any] = {
+_KCA_GET_ENDPOINTS: Dict[str, Any] = {
     "": {"version": 2},
     "battery-status": {"version": 2},
     "charge-history": {"version": 1},
@@ -33,14 +36,14 @@ _KCA_GET_ENDPOINTS: dict[str, Any] = {
     "notification-settings": {"version": 1},
     "res-state": {"version": 1},
 }
-_KCA_POST_ENDPOINTS: dict[str, Any] = {
+_KCA_POST_ENDPOINTS: Dict[str, Any] = {
     "actions/charge-mode": {"version": 1, "type": "ChargeMode"},
     "actions/charge-schedule": {"version": 2, "type": "ChargeSchedule"},
     "actions/charging-start": {"version": 1, "type": "ChargingStart"},
     "actions/hvac-schedule": {"version": 2, "type": "HvacSchedule"},
     "actions/hvac-start": {"version": 1, "type": "HvacStart"},
 }
-_KCM_POST_ENDPOINTS: dict[str, Any] = {
+_KCM_POST_ENDPOINTS: Dict[str, Any] = {
     "charge/pause-resume": {"version": 1, "type": "ChargePauseResume"},
 }
 
@@ -89,7 +92,7 @@ def get_required_contracts(endpoint: str) -> str:  # pragma: no cover
 
 
 def has_required_contracts(
-    contracts: list[models.KamereonVehicleContract], endpoint: str
+    contracts: List[models.KamereonVehicleContract], endpoint: str
 ) -> bool:
     """Check if vehicle has contract for endpoint."""
     # "Deprecated in 0.1.3, contract codes are country-specific"
@@ -104,11 +107,11 @@ async def request(
     url: str,
     api_key: str,
     gigya_jwt: str,
-    params: dict[str, str],
-    json: dict[str, Any] | None = None,
-    schema: Schema | None = None,
+    params: Dict[str, str],
+    json: Optional[Dict[str, Any]] = None,
+    schema: Optional[Schema] = None,
     *,
-    wrap_array_in: str | None = None,
+    wrap_array_in: Optional[str] = None,
 ) -> models.KamereonResponse:
     """Process Kamereon HTTP request."""
     schema = schema or schemas.KamereonResponseSchema
@@ -280,8 +283,8 @@ async def get_vehicle_data(
     account_id: str,
     vin: str,
     endpoint: str,
-    endpoint_version: int | None = None,
-    params: dict[str, str] | None = None,
+    endpoint_version: Optional[int] = None,
+    params: Optional[Dict[str, str]] = None,
     *,
     adapter_type: str = "kca",
 ) -> models.KamereonVehicleDataResponse:
@@ -320,9 +323,9 @@ async def set_vehicle_action(
     account_id: str,
     vin: str,
     endpoint: str,
-    attributes: dict[str, Any],
-    endpoint_version: int | None = None,
-    data_type: dict[str, Any] | None = None,
+    attributes: Dict[str, Any],
+    endpoint_version: Optional[int] = None,
+    data_type: Optional[Dict[str, Any]] = None,
     *,
     adapter_type: str = "kca",
 ) -> models.KamereonVehicleDataResponse:

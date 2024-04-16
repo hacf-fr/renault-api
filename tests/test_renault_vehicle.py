@@ -1,9 +1,8 @@
 """Test cases for the Renault client API keys."""
 
-from __future__ import annotations
-
 from datetime import datetime
 from datetime import timezone
+from typing import List
 
 import aiohttp
 import pytest
@@ -148,7 +147,7 @@ async def test_get_hvac_settings(
 
     assert data.mode == "scheduled"
     assert data.schedules
-    schedules: list[HvacSchedule] = data.schedules
+    schedules: List[HvacSchedule] = data.schedules
     assert schedules
     assert schedules[1].id == 2
     assert schedules[1].activated is True
@@ -335,7 +334,7 @@ async def test_set_charge_schedules(
     """Test set_charge_schedules."""
     url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
 
-    schedules: list[ChargeSchedule] = []
+    schedules: List[ChargeSchedule] = []
     assert await vehicle.set_charge_schedules(schedules)
 
     expected_json = {
@@ -368,7 +367,7 @@ async def test_set_hvac_schedules(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test set_hvac_schedules."""
-    schedules: list[HvacSchedule] = []
+    schedules: List[HvacSchedule] = []
     url = fixtures.inject_set_hvac_schedules(mocked_responses)
 
     assert await vehicle.set_hvac_schedules(schedules)

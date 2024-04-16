@@ -2,6 +2,9 @@
 
 import re
 from typing import Any
+from typing import Dict
+from typing import List
+from typing import Optional
 from typing import Tuple
 
 import aiohttp
@@ -37,7 +40,7 @@ def schedule() -> None:
 @click.pass_obj
 @helpers.coro_with_websession
 async def show(
-    ctx_data: dict[str, Any],
+    ctx_data: Dict[str, Any],
     *,
     websession: aiohttp.ClientSession,
 ) -> None:
@@ -72,8 +75,8 @@ async def show(
         )
 
 
-def _format_charge_schedule(schedule: ChargeSchedule, key: str) -> list[str]:
-    details: ChargeDaySchedule | None = getattr(schedule, key)
+def _format_charge_schedule(schedule: ChargeSchedule, key: str) -> List[str]:
+    details: Optional[ChargeDaySchedule] = getattr(schedule, key)
     if not details:  # pragma: no cover
         return [key.capitalize(), "-", "-", "-"]
     return [
@@ -85,10 +88,10 @@ def _format_charge_schedule(schedule: ChargeSchedule, key: str) -> list[str]:
 
 
 async def _get_schedule(
-    ctx_data: dict[str, Any],
+    ctx_data: Dict[str, Any],
     websession: aiohttp.ClientSession,
     id: int,
-) -> Tuple[RenaultVehicle, list[ChargeSchedule], ChargeSchedule]:
+) -> Tuple[RenaultVehicle, List[ChargeSchedule], ChargeSchedule]:
     """Get the given schedules activated-flag to given state."""
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
@@ -116,7 +119,7 @@ async def _get_schedule(
 @click.pass_obj
 @helpers.coro_with_websession
 async def set(
-    ctx_data: dict[str, Any],
+    ctx_data: Dict[str, Any],
     *,
     id: int,
     websession: aiohttp.ClientSession,
@@ -138,7 +141,7 @@ async def set(
 @click.pass_obj
 @helpers.coro_with_websession
 async def activate(
-    ctx_data: dict[str, Any],
+    ctx_data: Dict[str, Any],
     *,
     id: int,
     websession: aiohttp.ClientSession,
@@ -159,7 +162,7 @@ async def activate(
 @click.pass_obj
 @helpers.coro_with_websession
 async def deactivate(
-    ctx_data: dict[str, Any],
+    ctx_data: Dict[str, Any],
     *,
     id: int,
     websession: aiohttp.ClientSession,

@@ -3,6 +3,9 @@
 import json
 from dataclasses import dataclass
 from typing import Any
+from typing import Dict
+from typing import List
+from typing import Optional
 from typing import cast
 
 from marshmallow.schema import Schema
@@ -13,7 +16,7 @@ from . import helpers
 from .enums import AssetPictureSize
 from renault_api.models import BaseModel
 
-COMMON_ERRRORS: list[dict[str, Any]] = [
+COMMON_ERRRORS: List[Dict[str, Any]] = [
     {
         "errorCode": "err.func.400",
         "error_type": exceptions.InvalidInputException,
@@ -44,7 +47,7 @@ COMMON_ERRRORS: list[dict[str, Any]] = [
     },
 ]
 
-VEHICLE_SPECIFICATIONS: dict[str, dict[str, Any]] = {
+VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
     "X101VE": {  # ZOE phase 1
         "reports-charge-session-durations-in-minutes": True,
         "reports-in-watts": True,
@@ -68,7 +71,7 @@ VEHICLE_SPECIFICATIONS: dict[str, dict[str, Any]] = {
     },
 }
 
-GATEWAY_SPECIFICATIONS: dict[str, dict[str, Any]] = {
+GATEWAY_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
     "GDC": {  # ZOE phase 1
         "reports-charge-session-durations-in-minutes": True,
         "reports-in-watts": True,
@@ -82,8 +85,8 @@ GATEWAY_SPECIFICATIONS: dict[str, dict[str, Any]] = {
 class KamereonResponseError(BaseModel):
     """Kamereon response error."""
 
-    errorCode: str | None
-    errorMessage: str | None
+    errorCode: Optional[str]
+    errorMessage: Optional[str]
 
     def raise_for_error_code(self) -> None:
         """Raise exception from response error."""
@@ -96,7 +99,7 @@ class KamereonResponseError(BaseModel):
             self.errorCode, error_details
         )  # pragma: no cover
 
-    def get_error_details(self) -> str | None:
+    def get_error_details(self) -> Optional[str]:
         """Extract the error details sometimes hidden inside nested JSON."""
         try:
             error_details = json.loads(self.errorMessage or "{}")
@@ -124,7 +127,7 @@ class KamereonResponseError(BaseModel):
 class KamereonResponse(BaseModel):
     """Kamereon response."""
 
-    errors: list[KamereonResponseError] | None
+    errors: Optional[List[KamereonResponseError]]
 
     def raise_for_error_code(self) -> None:
         """Raise exception if errors found in the response."""
@@ -137,57 +140,57 @@ class KamereonResponse(BaseModel):
 class KamereonPersonAccount(BaseModel):
     """Kamereon person account data."""
 
-    accountId: str | None
-    accountType: str | None
-    accountStatus: str | None
+    accountId: Optional[str]
+    accountType: Optional[str]
+    accountStatus: Optional[str]
 
 
 @dataclass
 class KamereonPersonResponse(KamereonResponse):
     """Kamereon response to GET on /persons/{gigya_person_id}."""
 
-    accounts: list[KamereonPersonAccount] | None
+    accounts: Optional[List[KamereonPersonAccount]]
 
 
 @dataclass
 class KamereonVehicleDetailsGroup(BaseModel):
     """Kamereon vehicle details group data."""
 
-    code: str | None
-    label: str | None
-    group: str | None
+    code: Optional[str]
+    label: Optional[str]
+    group: Optional[str]
 
 
 @dataclass
 class KamereonVehicleDetails(BaseModel):
     """Kamereon vehicle details."""
 
-    vin: str | None
-    registrationNumber: str | None
-    radioCode: str | None
-    brand: KamereonVehicleDetailsGroup | None
-    model: KamereonVehicleDetailsGroup | None
-    energy: KamereonVehicleDetailsGroup | None
-    engineEnergyType: str | None
-    assets: list[dict[str, Any]] | None
+    vin: Optional[str]
+    registrationNumber: Optional[str]
+    radioCode: Optional[str]
+    brand: Optional[KamereonVehicleDetailsGroup]
+    model: Optional[KamereonVehicleDetailsGroup]
+    energy: Optional[KamereonVehicleDetailsGroup]
+    engineEnergyType: Optional[str]
+    assets: Optional[List[Dict[str, Any]]]
 
-    def get_energy_code(self) -> str | None:
+    def get_energy_code(self) -> Optional[str]:
         """Return vehicle energy code."""
         return self.energy.code if self.energy else None
 
-    def get_brand_label(self) -> str | None:
+    def get_brand_label(self) -> Optional[str]:
         """Return vehicle model label."""
         return self.brand.label if self.brand else None
 
-    def get_model_code(self) -> str | None:
+    def get_model_code(self) -> Optional[str]:
         """Return vehicle model code."""
         return self.model.code if self.model else None
 
-    def get_model_label(self) -> str | None:
+    def get_model_label(self) -> Optional[str]:
         """Return vehicle model label."""
         return self.model.label if self.model else None
 
-    def get_asset(self, asset_type: str) -> dict[str, Any] | None:
+    def get_asset(self, asset_type: str) -> Optional[Dict[str, Any]]:
         """Return asset."""
         return next(
             filter(
@@ -197,11 +200,11 @@ class KamereonVehicleDetails(BaseModel):
 
     def get_picture(
         self, size: AssetPictureSize = AssetPictureSize.LARGE
-    ) -> str | None:
+    ) -> Optional[str]:
         """Return vehicle picture."""
-        asset: dict[str, Any] = self.get_asset("PICTURE") or {}
+        asset: Dict[str, Any] = self.get_asset("PICTURE") or {}
 
-        rendition: dict[str, str] = next(
+        rendition: Dict[str, str] = next(
             filter(
                 lambda rendition: rendition.get("resolutionType")
                 == f"ONE_MYRENAULT_{size.name}",
@@ -260,7 +263,7 @@ class KamereonVehicleDetails(BaseModel):
             ).get(f"support-endpoint-{endpoint}", True)
         return True  # pragma: no cover
 
-    def warns_on_method(self, method: str) -> str | None:
+    def warns_on_method(self, method: str) -> Optional[str]:
         """Return warning message if model trigger a warning on the method call."""
         # Default to None for unknown vehicles
         if self.model and self.model.code:
@@ -283,17 +286,17 @@ class KamereonVehicleDetails(BaseModel):
 class KamereonVehiclesLink(BaseModel):
     """Kamereon vehicles link data."""
 
-    vin: str | None
-    vehicleDetails: KamereonVehicleDetails | None
+    vin: Optional[str]
+    vehicleDetails: Optional[KamereonVehicleDetails]
 
 
 @dataclass
 class KamereonVehiclesResponse(KamereonResponse):
     """Kamereon response to GET on /accounts/{account_id}/vehicles."""
 
-    accountId: str | None
-    country: str | None
-    vehicleLinks: list[KamereonVehiclesLink] | None
+    accountId: Optional[str]
+    country: Optional[str]
+    vehicleLinks: Optional[List[KamereonVehiclesLink]]
 
 
 @dataclass
@@ -310,41 +313,41 @@ class KamereonVehicleDataAttributes(BaseModel):
 class KamereonVehicleContract(BaseModel):
     """Kamereon vehicle contract."""
 
-    type: str | None
-    contractId: str | None
-    code: str | None
-    group: str | None
-    durationMonths: int | None
-    startDate: str | None
-    endDate: str | None
-    status: str | None
-    statusLabel: str | None
-    description: str | None
+    type: Optional[str]
+    contractId: Optional[str]
+    code: Optional[str]
+    group: Optional[str]
+    durationMonths: Optional[int]
+    startDate: Optional[str]
+    endDate: Optional[str]
+    status: Optional[str]
+    statusLabel: Optional[str]
+    description: Optional[str]
 
 
 @dataclass
 class KamereonVehicleContractsResponse(KamereonResponse):
     """Kamereon response to GET on /accounts/{accountId}/vehicles/{vin}/contracts."""
 
-    contractList: list[KamereonVehicleContract] | None
+    contractList: Optional[List[KamereonVehicleContract]]
 
 
 @dataclass
 class KamereonVehicleData(BaseModel):
     """Kamereon vehicle data."""
 
-    type: str | None
-    id: str | None
-    attributes: dict[str, Any] | None
+    type: Optional[str]
+    id: Optional[str]
+    attributes: Optional[Dict[str, Any]]
 
 
 @dataclass
 class KamereonVehicleDataResponse(KamereonResponse):
     """Kamereon response to GET/POST on .../cars/{vin}/{type}."""
 
-    data: KamereonVehicleData | None
+    data: Optional[KamereonVehicleData]
 
-    def get_attributes(self, schema: Schema) -> KamereonVehicleDataAttributes | None:
+    def get_attributes(self, schema: Schema) -> Optional[KamereonVehicleDataAttributes]:
         """Return jwt token."""
         return (
             cast(KamereonVehicleDataAttributes, schema.load(self.data.attributes))
@@ -357,18 +360,18 @@ class KamereonVehicleDataResponse(KamereonResponse):
 class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
     """Kamereon vehicle battery-status data."""
 
-    timestamp: str | None
-    batteryLevel: int | None
-    batteryTemperature: int | None
-    batteryAutonomy: int | None
-    batteryCapacity: int | None
-    batteryAvailableEnergy: int | None
-    plugStatus: int | None
-    chargingStatus: float | None
-    chargingRemainingTime: int | None
-    chargingInstantaneousPower: float | None
+    timestamp: Optional[str]
+    batteryLevel: Optional[int]
+    batteryTemperature: Optional[int]
+    batteryAutonomy: Optional[int]
+    batteryCapacity: Optional[int]
+    batteryAvailableEnergy: Optional[int]
+    plugStatus: Optional[int]
+    chargingStatus: Optional[float]
+    chargingRemainingTime: Optional[int]
+    chargingInstantaneousPower: Optional[float]
 
-    def get_plug_status(self) -> enums.PlugState | None:
+    def get_plug_status(self) -> Optional[enums.PlugState]:
         """Return plug status."""
         try:
             return (
@@ -382,7 +385,7 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
                 f"Unable to convert `{self.plugStatus}` to PlugState."
             ) from err
 
-    def get_charging_status(self) -> enums.ChargeState | None:
+    def get_charging_status(self) -> Optional[enums.ChargeState]:
         """Return charging status."""
         try:
             return (
@@ -401,89 +404,89 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
 class KamereonVehicleLocationData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data location attributes."""
 
-    lastUpdateTime: str | None
-    gpsLatitude: float | None
-    gpsLongitude: float | None
+    lastUpdateTime: Optional[str]
+    gpsLatitude: Optional[float]
+    gpsLongitude: Optional[float]
 
 
 @dataclass
 class KamereonVehicleHvacStatusData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data hvac-status attributes."""
 
-    lastUpdateTime: str | None
-    externalTemperature: float | None
-    hvacStatus: str | None
-    nextHvacStartDate: str | None
-    socThreshold: float | None
+    lastUpdateTime: Optional[str]
+    externalTemperature: Optional[float]
+    hvacStatus: Optional[str]
+    nextHvacStartDate: Optional[str]
+    socThreshold: Optional[float]
 
 
 @dataclass
 class KamereonVehicleChargeModeData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data charge-mode attributes."""
 
-    chargeMode: str | None
+    chargeMode: Optional[str]
 
 
 @dataclass
 class KamereonVehicleCockpitData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data cockpit attributes."""
 
-    fuelAutonomy: float | None
-    fuelQuantity: float | None
-    totalMileage: float | None
+    fuelAutonomy: Optional[float]
+    fuelQuantity: Optional[float]
+    totalMileage: Optional[float]
 
 
 @dataclass
 class KamereonVehicleLockStatusData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data lock-status attributes."""
 
-    lockStatus: str | None
-    doorStatusRearLeft: str | None
-    doorStatusRearRight: str | None
-    doorStatusDriver: str | None
-    doorStatusPassenger: str | None
-    hatchStatus: str | None
-    lastUpdateTime: str | None
+    lockStatus: Optional[str]
+    doorStatusRearLeft: Optional[str]
+    doorStatusRearRight: Optional[str]
+    doorStatusDriver: Optional[str]
+    doorStatusPassenger: Optional[str]
+    hatchStatus: Optional[str]
+    lastUpdateTime: Optional[str]
 
 
 @dataclass
 class KamereonVehicleResStateData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data res-set attributes."""
 
-    details: str | None
-    code: str | None
+    details: Optional[str]
+    code: Optional[str]
 
 
 @dataclass
 class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data hvac-status attributes."""
 
-    vin: str | None
-    vehicleId: int | None
-    batteryCode: str | None
-    brand: str | None
-    canGeneration: str | None
-    carGateway: str | None
-    deliveryCountry: str | None
-    deliveryDate: str | None
-    energy: str | None
-    engineType: str | None
-    familyCode: str | None
-    firstRegistrationDate: str | None
-    gearbox: str | None
-    modelCode: str | None
-    modelCodeDetail: str | None
-    modelName: str | None
-    radioType: str | None
-    region: str | None
-    registrationCountry: str | None
-    registrationNumber: str | None
-    tcuCode: str | None
-    versionCode: str | None
-    privacyMode: str | None
-    privacyModeUpdateDate: str | None
-    svtFlag: bool | None
-    svtBlockFlag: bool | None
+    vin: Optional[str]
+    vehicleId: Optional[int]
+    batteryCode: Optional[str]
+    brand: Optional[str]
+    canGeneration: Optional[str]
+    carGateway: Optional[str]
+    deliveryCountry: Optional[str]
+    deliveryDate: Optional[str]
+    energy: Optional[str]
+    engineType: Optional[str]
+    familyCode: Optional[str]
+    firstRegistrationDate: Optional[str]
+    gearbox: Optional[str]
+    modelCode: Optional[str]
+    modelCodeDetail: Optional[str]
+    modelName: Optional[str]
+    radioType: Optional[str]
+    region: Optional[str]
+    registrationCountry: Optional[str]
+    registrationNumber: Optional[str]
+    tcuCode: Optional[str]
+    versionCode: Optional[str]
+    privacyMode: Optional[str]
+    privacyModeUpdateDate: Optional[str]
+    svtFlag: Optional[bool]
+    svtBlockFlag: Optional[bool]
 
     def uses_electricity(self) -> bool:
         """Return True if model uses electricity."""
@@ -533,17 +536,17 @@ class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
 class ChargeDaySchedule(BaseModel):
     """Kamereon vehicle charge schedule for day."""
 
-    startTime: str | None
-    duration: int | None
+    startTime: Optional[str]
+    duration: Optional[int]
 
-    def for_json(self) -> dict[str, Any]:
+    def for_json(self) -> Dict[str, Any]:
         """Create dict for json."""
         return {
             "startTime": self.startTime,
             "duration": self.duration,
         }
 
-    def get_end_time(self) -> str | None:
+    def get_end_time(self) -> Optional[str]:
         """Get end time."""
         if self.startTime is None:  # pragma: no cover
             return None
@@ -554,24 +557,24 @@ class ChargeDaySchedule(BaseModel):
 class ChargeSchedule(BaseModel):
     """Kamereon vehicle charge schedule for week."""
 
-    id: int | None
-    activated: bool | None
-    monday: ChargeDaySchedule | None
-    tuesday: ChargeDaySchedule | None
-    wednesday: ChargeDaySchedule | None
-    thursday: ChargeDaySchedule | None
-    friday: ChargeDaySchedule | None
-    saturday: ChargeDaySchedule | None
-    sunday: ChargeDaySchedule | None
+    id: Optional[int]
+    activated: Optional[bool]
+    monday: Optional[ChargeDaySchedule]
+    tuesday: Optional[ChargeDaySchedule]
+    wednesday: Optional[ChargeDaySchedule]
+    thursday: Optional[ChargeDaySchedule]
+    friday: Optional[ChargeDaySchedule]
+    saturday: Optional[ChargeDaySchedule]
+    sunday: Optional[ChargeDaySchedule]
 
-    def for_json(self) -> dict[str, Any]:
+    def for_json(self) -> Dict[str, Any]:
         """Create dict for json."""
-        result: dict[str, Any] = {
+        result: Dict[str, Any] = {
             "id": self.id,
             "activated": self.activated,
         }
         for day in helpers.DAYS_OF_WEEK:
-            day_spec: ChargeDaySchedule | None = getattr(self, day, None)
+            day_spec: Optional[ChargeDaySchedule] = getattr(self, day, None)
             if day_spec is None:
                 result[day] = day_spec
             else:
@@ -583,9 +586,9 @@ class ChargeSchedule(BaseModel):
 class HvacDaySchedule(BaseModel):
     """Kamereon vehicle hvac schedule for day."""
 
-    readyAtTime: str | None
+    readyAtTime: Optional[str]
 
-    def for_json(self) -> dict[str, str | None]:
+    def for_json(self) -> Dict[str, Optional[str]]:
         """Create dict for json."""
         return {
             "readyAtTime": self.readyAtTime,
@@ -596,24 +599,24 @@ class HvacDaySchedule(BaseModel):
 class HvacSchedule(BaseModel):
     """Kamereon vehicle hvac schedule for week."""
 
-    id: int | None
-    activated: bool | None
-    monday: HvacDaySchedule | None
-    tuesday: HvacDaySchedule | None
-    wednesday: HvacDaySchedule | None
-    thursday: HvacDaySchedule | None
-    friday: HvacDaySchedule | None
-    saturday: HvacDaySchedule | None
-    sunday: HvacDaySchedule | None
+    id: Optional[int]
+    activated: Optional[bool]
+    monday: Optional[HvacDaySchedule]
+    tuesday: Optional[HvacDaySchedule]
+    wednesday: Optional[HvacDaySchedule]
+    thursday: Optional[HvacDaySchedule]
+    friday: Optional[HvacDaySchedule]
+    saturday: Optional[HvacDaySchedule]
+    sunday: Optional[HvacDaySchedule]
 
-    def for_json(self) -> dict[str, Any]:
+    def for_json(self) -> Dict[str, Any]:
         """Create dict for json."""
-        result: dict[str, Any] = {
+        result: Dict[str, Any] = {
             "id": self.id,
             "activated": self.activated,
         }
         for day in helpers.DAYS_OF_WEEK:
-            day_spec: HvacDaySchedule | None = getattr(self, day, None)
+            day_spec: Optional[HvacDaySchedule] = getattr(self, day, None)
             if day_spec is None:
                 result[day] = day_spec
             else:
@@ -625,10 +628,10 @@ class HvacSchedule(BaseModel):
 class KamereonVehicleChargingSettingsData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data charging-settings attributes."""
 
-    mode: str | None
-    schedules: list[ChargeSchedule] | None
+    mode: Optional[str]
+    schedules: Optional[List[ChargeSchedule]]
 
-    def update(self, args: dict[str, Any]) -> None:
+    def update(self, args: Dict[str, Any]) -> None:
         """Update schedule."""
         if "id" not in args:  # pragma: no cover
             raise ValueError("id not provided for update.")
@@ -645,8 +648,8 @@ class KamereonVehicleChargingSettingsData(KamereonVehicleDataAttributes):
 class KamereonVehicleHvacSettingsData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data hvac-settings (mode+schedules) attributes."""
 
-    mode: str | None
-    schedules: list[HvacSchedule] | None
+    mode: Optional[str]
+    schedules: Optional[List[HvacSchedule]]
 
 
 @dataclass

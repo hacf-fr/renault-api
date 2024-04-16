@@ -9,6 +9,7 @@ from datetime import tzinfo
 from typing import Any
 from typing import AsyncGenerator
 from typing import Generator
+from typing import Optional
 
 import pytest
 import pytest_asyncio
@@ -44,13 +45,13 @@ def cli_runner(monkeypatch: MonkeyPatch, tmpdir: pathlib.Path) -> CliRunner:
     monkeypatch.setattr("os.path.expanduser", lambda x: x.replace("~", str(tmpdir)))
 
     class TZ1(tzinfo):
-        def utcoffset(self, dt: datetime | None) -> timedelta:
+        def utcoffset(self, dt: Optional[datetime]) -> timedelta:
             return timedelta(hours=1)
 
-        def dst(self, dt: datetime | None) -> timedelta:
+        def dst(self, dt: Optional[datetime]) -> timedelta:
             return timedelta(0)
 
-        def tzname(self, dt: datetime | None) -> str:
+        def tzname(self, dt: Optional[datetime]) -> str:
             return "+01:00"
 
         def __repr__(self) -> str:

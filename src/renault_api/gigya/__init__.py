@@ -3,6 +3,7 @@
 import logging
 from json import JSONDecodeError
 from typing import Any
+from typing import Dict
 from typing import cast
 
 import aiohttp
@@ -24,7 +25,7 @@ async def request(
     websession: aiohttp.ClientSession,
     method: str,
     url: str,
-    data: dict[str, Any],
+    data: Dict[str, Any],
     schema: Schema,
 ) -> models.GigyaResponse:
     """Send request to Gigya."""

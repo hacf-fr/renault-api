@@ -2,6 +2,9 @@
 
 import json
 from typing import Any
+from typing import Dict
+from typing import List
+from typing import Optional
 from typing import Tuple
 
 import aiohttp
@@ -21,7 +24,7 @@ from renault_api.renault_account import RenaultAccount
 from renault_api.renault_vehicle import RenaultVehicle
 
 
-async def _get_vin(ctx_data: dict[str, Any], account: RenaultAccount) -> str:
+async def _get_vin(ctx_data: Dict[str, Any], account: RenaultAccount) -> str:
     """Prompt the user for vin."""
     # First, check context data
     if "vin" in ctx_data:
@@ -64,8 +67,8 @@ async def _get_vin(ctx_data: dict[str, Any], account: RenaultAccount) -> str:
 
 
 async def _get_vehicle_prompt(
-    vehicle_links: list[KamereonVehiclesLink], account: RenaultAccount
-) -> Tuple[str, str | None]:
+    vehicle_links: List[KamereonVehiclesLink], account: RenaultAccount
+) -> Tuple[str, Optional[str]]:
     """Get prompt for selecting vehicle."""
     vehicle_table = []
     default = None
@@ -93,7 +96,7 @@ async def _get_vehicle_prompt(
 
 
 async def get_vehicle(
-    websession: aiohttp.ClientSession, ctx_data: dict[str, Any]
+    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
 ) -> RenaultVehicle:
     """Get RenaultVehicle for use by CLI."""
     account = await renault_account.get_account(websession, ctx_data)
@@ -102,7 +105,7 @@ async def get_vehicle(
 
 
 async def display_vehicle(
-    websession: aiohttp.ClientSession, ctx_data: dict[str, Any]
+    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
 ) -> None:
     """Display vehicle status."""
     vehicle = await get_vehicle(websession, ctx_data)
@@ -121,7 +124,7 @@ async def display_vehicle(
 
 
 async def display_contracts(
-    websession: aiohttp.ClientSession, ctx_data: dict[str, Any]
+    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
 ) -> None:
     """Display vehicle contracts."""
     vehicle = await get_vehicle(websession, ctx_data)
@@ -146,11 +149,11 @@ async def display_contracts(
 
 
 async def display_status(
-    websession: aiohttp.ClientSession, ctx_data: dict[str, Any]
+    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
 ) -> None:
     """Display vehicle status."""
     vehicle = await get_vehicle(websession, ctx_data)
-    status_table: dict[str, Any] = {}
+    status_table: Dict[str, Any] = {}
 
     await update_battery_status(vehicle, status_table, ctx_data)
     await update_charge_mode(vehicle, status_table, ctx_data)
@@ -167,10 +170,10 @@ async def display_status(
 
 
 def update_status_table(
-    status_table: dict[str, Any],
+    status_table: Dict[str, Any],
     key: str,
-    value: Any | None,
-    unit: str | None,
+    value: Optional[Any],
+    unit: Optional[str],
 ) -> None:
     """Update statuses with formatted strings."""
     if value is None:
@@ -179,7 +182,7 @@ def update_status_table(
 
 
 async def update_battery_status(
-    vehicle: RenaultVehicle, status_table: dict[str, Any], ctx_data: dict[str, Any]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_battery_status."""
     try:
@@ -220,7 +223,7 @@ async def update_battery_status(
 
 
 async def update_charge_mode(
-    vehicle: RenaultVehicle, status_table: dict[str, Any], ctx_data: dict[str, Any]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_charge_mode."""
     try:
@@ -245,7 +248,7 @@ async def update_charge_mode(
 
 
 async def update_cockpit(
-    vehicle: RenaultVehicle, status_table: dict[str, Any], ctx_data: dict[str, Any]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_cockpit."""
     try:
@@ -272,7 +275,7 @@ async def update_cockpit(
 
 
 async def update_location(
-    vehicle: RenaultVehicle, status_table: dict[str, Any], ctx_data: dict[str, Any]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_location."""
     try:
@@ -299,7 +302,7 @@ async def update_location(
 
 
 async def update_lock_status(
-    vehicle: RenaultVehicle, status_table: dict[str, Any], ctx_data: dict[str, Any]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_lock_status."""
     try:
@@ -325,7 +328,7 @@ async def update_lock_status(
 
 
 async def update_res_state(
-    vehicle: RenaultVehicle, status_table: dict[str, Any], ctx_data: dict[str, Any]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_res_state."""
     try:
@@ -350,7 +353,7 @@ async def update_res_state(
 
 
 async def update_hvac_status(
-    vehicle: RenaultVehicle, status_table: dict[str, Any], ctx_data: dict[str, Any]
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
 ) -> None:
     """Update status table from get_vehicle_hvac_status."""
     try:

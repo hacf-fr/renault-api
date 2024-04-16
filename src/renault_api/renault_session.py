@@ -1,10 +1,10 @@
 """Session provider for interaction with Renault servers."""
 
-from __future__ import annotations
-
 import asyncio
 import logging
 from typing import Any
+from typing import Dict
+from typing import Optional
 
 import aiohttp
 
@@ -34,10 +34,10 @@ class RenaultSession:
     def __init__(
         self,
         websession: aiohttp.ClientSession,
-        locale: str | None = None,
-        country: str | None = None,
-        locale_details: dict[str, str] | None = None,
-        credential_store: CredentialStore | None = None,
+        locale: Optional[str] = None,
+        country: Optional[str] = None,
+        locale_details: Optional[Dict[str, str]] = None,
+        credential_store: Optional[CredentialStore] = None,
     ) -> None:
         """Initialise RenaultSession."""
         self._gigya_lock = asyncio.Lock()
@@ -155,7 +155,7 @@ class RenaultSession:
                 return jwt
 
     async def http_request(
-        self, method: str, endpoint: str, json: dict[str, Any] | None = None
+        self, method: str, endpoint: str, json: Optional[Dict[str, Any]] = None
     ) -> models.KamereonResponse:
         """GET to specified endpoint."""
         url = (await self._get_kamereon_root_url()) + endpoint
@@ -213,7 +213,7 @@ class RenaultSession:
         account_id: str,
         vin: str,
         endpoint: str,
-        params: dict[str, str] | None = None,
+        params: Optional[Dict[str, str]] = None,
         *,
         adapter_type: str = "kca",
     ) -> models.KamereonVehicleDataResponse:
@@ -253,7 +253,7 @@ class RenaultSession:
         account_id: str,
         vin: str,
         endpoint: str,
-        attributes: dict[str, Any],
+        attributes: Dict[str, Any],
         *,
         adapter_type: str = "kca",
     ) -> models.KamereonVehicleDataResponse:

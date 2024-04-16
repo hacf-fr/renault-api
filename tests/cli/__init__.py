@@ -1,6 +1,7 @@
 """Test suite for the renault_api CLI."""
 
 import os
+from typing import Optional
 
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_LOCALE
@@ -22,8 +23,8 @@ from renault_api.gigya import GIGYA_PERSON_ID
 
 
 def initialise_credential_store(
-    include_account_id: bool | None = None,
-    include_vin: bool | None = None,
+    include_account_id: Optional[bool] = None,
+    include_vin: Optional[bool] = None,
 ) -> None:
     """Initialise CLI credential store."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
