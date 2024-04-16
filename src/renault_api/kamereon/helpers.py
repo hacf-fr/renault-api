@@ -41,7 +41,7 @@ def update_schedule(schedule: models.ChargeSchedule, settings: Dict[str, Any]) -
 
 
 def create_schedule(
-    settings: Dict[str, Any]
+    settings: Dict[str, Any],
 ) -> models.ChargeSchedule:  # pragma: no cover
     """Update schedule."""
     raise NotImplementedError
