@@ -127,7 +127,6 @@ select = [
     "B",     # flake8-bugbear
     "C4",    # flake8-comprehensions
     "C90",   # mccabe
-    "D",     # pydocstyle
     "E",     # pycodestyle error
     "ERA",   # eradicate
     "F",     # Pyflakes
@@ -136,8 +135,6 @@ select = [
     "PL",    # Pylint
     "PT",    # flake8-pytest-style
     "UP",    # pyupgrade
-    "W",     # pycodestyle warning
-    "YTT",   # flake8-2020
 ]
 
 [tool.ruff.lint.isort]
