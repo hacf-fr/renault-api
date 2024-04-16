@@ -42,15 +42,9 @@ xdoctest = {extras = ["colors"], version = "^1.1.1"}
 sphinx = ">=4.3.2,<8.0.0"
 sphinx-autobuild = "^2021.3.14"
 pre-commit = ">=2.21,<4.0"
-bandit = "^1.7.5"
-flake8 = ">=4.0.1,<6.0.0"
+ruff = ">=0.3.7"
 black = ">=22.12,<25.0"
-flake8-bugbear = ">=22.12.6,<24.0.0"
-flake8-docstrings = "^1.7.0"
-flake8-rst-docstrings = "^0.3.0"
-pep8-naming = "^0.13.2"
 darglint = "^1.8.1"
-isort = "^5.13.2"
 pre-commit-hooks = ">=4.4,<6.0"
 sphinx-rtd-theme = ">=1.2,<3.0"
 sphinx-click = ">=4.4,<6.0"
@@ -62,8 +56,6 @@ pytest-cov = "^4.0.0"
 urllib3 = ">=1.26.15,<3.0.0"
 #ensure certifi (for requests/sphinx) is greater than 2023.7.22 to account for CVE-2023-37920
 certifi = ">=2023.7.22,<2025.0.0"
-#ensure gitpython (for bandit/flake8-bandit) is greater than 3.1.32 to account for CVE-2022-24439
-gitpython = "^3.1.32"
 #ensure setuptools (for safety) is greater than 65.5.1 to account for CVE-2022-40897
 setuptools = ">=67.6.1,<70.0.0"
 #ensure frozenlist (for aiohttp) is greater than 1.3.1 to account for Python 3.11
@@ -98,11 +90,6 @@ source = ["renault_api"]
 show_missing = true
 fail_under = 100
 
-[tool.isort]
-profile = "black"
-force_single_line = "true"
-known_local_folder = ["renault_api"]
-
 [tool.mypy]
 check_untyped_defs = true
 disallow_any_generics = true
@@ -123,6 +110,53 @@ warn_return_any = true
 warn_unreachable = true
 warn_unused_configs = true
 warn_unused_ignores = true
+
+[tool.ruff]
+line-length = 80
+target-version = "py38"
+
+[tool.ruff.lint]
+ignore = [
+    "A001",    # Variable is shadowing a Python builtin
+    "A002",    # Argument is shadowing a Python builtin
+    "C400",    # Unnecessary generator
+    "E501",    # Line too long (81 > 80)
+    "ERA001",  # Found commented-out code
+    "N815",    # Variable in class scope should not be mixedCase
+    "PLR2004", # Magic value used in comparison, consider replacing
+    "PLR0911", # Too many return statements
+    "PLR0913", # Too many arguments in function definition
+    "PT001",   # Use `@pytest.fixture()` over `@pytest.fixture`
+    "PT018",   # Assertion should be broken down into multiple parts
+    "PT022",   # No teardown in fixture `cli_runner`, use `return` instead of `yield`
+    "PT023",   # Use `@pytest.mark.asyncio()` over `@pytest.mark.asyncio`
+    "PLW0127", # Self-assignment of variable
+]
+select = [
+    "A", #flake8-builtins
+    "B", #flake8-bugbear
+    "C4", #flake8-comprehensions
+    "C90", #mccabe
+    "E", #pycodestyle error
+    "ERA", #eradicate
+    "F", #Pyflakes
+    "I", #isort
+    "N", #pep8-naming
+    "PL", #Pylint
+    "PT", #flake8-pytest-style
+]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+known-local-folder = [
+    "renault_api",
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
