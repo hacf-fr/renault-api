@@ -108,10 +108,6 @@ async def test_has_contract_for_endpoint_2(
     """Test has_contract_for_endpoint."""
     fixtures.inject_get_vehicle_contracts(mocked_responses, "fr_FR.1.json")
     assert await vehicle.has_contract_for_endpoint("battery-status")
-    # "Deprecated in 0.1.3, contract codes are country-specific"
-    # " and can't be used to guess requirements."
-    # assert not await vehicle.has_contract_for_endpoint("hvac-status")
-    # assert not await vehicle.has_contract_for_endpoint("charge-mode")
 
 
 @pytest.mark.asyncio()

@@ -119,7 +119,6 @@ target-version = "py38"
 ignore = [
     "A001",    # Variable is shadowing a Python builtin
     "A002",    # Argument is shadowing a Python builtin
-    "ERA001",  # Found commented-out code
     "N815",    # Variable in class scope should not be mixedCase
     "PLR0911", # Too many return statements
     "PLR0913", # Too many arguments in function definition
