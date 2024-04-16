@@ -77,6 +77,8 @@ requests = "^2.31.0"
 tornado = "^6.3.3"
 #ensure PyYAML (for sphinx) is greater than 6.0.1 to fix Cython wheel
 PyYAML = "^6.0.1"
+#ensure cryptography (for pyjwt) is greater than 42.0.5 to account for PVE-2024-65647
+cryptography = "^42.0.5"
 
 [tool.poetry.extras]
 cli = ["click", "tabulate", "dateparser"]
