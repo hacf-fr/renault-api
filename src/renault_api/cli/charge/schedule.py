@@ -27,6 +27,7 @@ _DAY_SCHEDULE_REGEX = re.compile(
     ","
     "(?P<duration>[0-9]+)"
 )
+_HOURS_PER_DAY = 24
 
 
 @click.group()
@@ -208,7 +209,7 @@ def _parse_day_schedule(raw: str) -> Tuple[str, int]:
         )
 
     hours = int(match.group("hours"))
-    if hours > 23:  # pragma: no cover
+    if hours >= _HOURS_PER_DAY:  # pragma: no cover
         raise ValueError(
             f"Invalid specification for charge schedule: `{raw}`. "
             "Hours should be less than 24."

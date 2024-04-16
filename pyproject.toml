@@ -122,7 +122,6 @@ ignore = [
     "E501",    # Line too long (81 > 80)
     "ERA001",  # Found commented-out code
     "N815",    # Variable in class scope should not be mixedCase
-    "PLR2004", # Magic value used in comparison, consider replacing
     "PLR0911", # Too many return statements
     "PLR0913", # Too many arguments in function definition
 ]
