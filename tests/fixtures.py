@@ -389,7 +389,7 @@ def inject_get_charging_settings(mocked_responses: aioresponses, type: str) -> s
 
 def inject_get_cockpit(mocked_responses: aioresponses, vehicle: str) -> str:
     """Inject sample cockpit."""
-    urlpath = f"{ADAPTER2_PATH}/cockpit?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{ADAPTER_PATH}/cockpit?{DEFAULT_QUERY_STRING}"
     filename = f"vehicle_data/cockpit.{vehicle}.json"
     if not path.exists(f"{KAMEREON_FIXTURE_PATH}/{filename}"):
         filename = "vehicle_data/cockpit.zoe.json"
