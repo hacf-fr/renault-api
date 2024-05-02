@@ -1057,17 +1057,6 @@ files = [
 ]
 
 [[package]]
-name = "pathspec"
-version = "0.9.0"
-description = "Utility library for gitignore style pattern matching of file paths."
-optional = false
-python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
-files = [
-    {file = "pathspec-0.9.0-py2.py3-none-any.whl", hash = "sha256:7d15c4ddb0b5c802d161efc417ec1a2558ea2653c2e8ad9c19098201dc1c993a"},
-    {file = "pathspec-0.9.0.tar.gz", hash = "sha256:e564499435a2673d586f6b2130bb5b95f04a3ba06f81b8f895b651a3c76aabb1"},
-]
-
-[[package]]
 name = "platformdirs"
 version = "2.4.0"
 description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
@@ -1595,13 +1584,13 @@ files = [
 
 [[package]]
 name = "safety"
-version = "3.1.0"
+version = "3.2.0"
 description = "Checks installed dependencies for known vulnerabilities and licenses."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "safety-3.1.0-py3-none-any.whl", hash = "sha256:f2ba2d36f15ac1e24751547a73b854509a7d6db31efd30b57f64ffdf9d021934"},
-    {file = "safety-3.1.0.tar.gz", hash = "sha256:71f47b82ece153ec2f240e277f7cbfa70d5da2e0d143162c67f63b2f7459a1aa"},
+    {file = "safety-3.2.0-py3-none-any.whl", hash = "sha256:a432fc9d17e79a4386c4f093656b617c56f839cde022649cfa796d72c7a544de"},
+    {file = "safety-3.2.0.tar.gz", hash = "sha256:8bd5cab5f3d8a61ce0ea6e98f267c1006d056097c45c644fee7afeff7d5949c1"},
 ]
 
 [package.dependencies]
@@ -2187,4 +2176,4 @@ cli = ["click", "dateparser", "tabulate"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<4.0"
-content-hash = "afd889046ceef67408ddd374ce30b56df756d8a5e58c20127a297c0728079691"
+content-hash = "755266c52dbd8a542f07b79ea4124652c2933f4b685fbf11c359dca797276609"
