@@ -62,7 +62,7 @@ frozenlist = "^1.3.1"
 #ensure multidict (for aiohttp) is greater than 6.0.3 to account for Python 3.11
 multidict = "^6.0.3"
 #ensure regex (for dateparser) is greater than 2022.9.11 to account for Python 3.11
-regex = ">=2022.9.11,<2024.0.0"
+regex = ">=2022.9.11,<2025.0.0"
 #ensure yarl (for aiohttp) is greater than 1.8.1 to account for Python 3.11
 yarl = "^1.8.1"
 #ensure requests (for sphinx) is greater than 2.31.0 to account for CVE-2023-32681
