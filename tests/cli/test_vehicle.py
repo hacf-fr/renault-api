@@ -81,7 +81,7 @@ EXPECTED_STATUS = {
         "Lock status        locked\n"
         "Lock last updated  2022-02-02 14:51:13\n"
         "Engine state       Stopped, ready for RES\n"
-        "HVAC status        on\n"
+        "HVAC status        2\n"
         "-----------------  -------------------------\n"
     ),
     "zoe_40.1.json": (
@@ -94,7 +94,7 @@ EXPECTED_STATUS = {
         "Charge mode           always\n"
         "Total mileage         49114.27 km\n"
         "Engine state          Stopped, ready for RES\n"
-        "HVAC status           off\n"
+        "HVAC status           1\n"
         "External temperature  8.0 °C\n"
         "--------------------  -------------------------\n"
     ),
@@ -108,7 +108,7 @@ EXPECTED_STATUS = {
         "Charge mode           always\n"
         "Total mileage         49114.27 km\n"
         "Engine state          Stopped, ready for RES\n"
-        "HVAC status           off\n"
+        "HVAC status           1\n"
         "External temperature  8.0 °C\n"
         "--------------------  -------------------------\n"
     ),
@@ -129,7 +129,7 @@ EXPECTED_STATUS = {
         "Lock status        locked\n"
         "Lock last updated  2022-02-02 14:51:13\n"
         "Engine state       Stopped, ready for RES\n"
-        "HVAC status        on\n"
+        "HVAC status        2\n"
         "-----------------  -------------------------\n"
     ),
     "zoe_40.1_json.json": (
@@ -139,7 +139,7 @@ EXPECTED_STATUS = {
         '"charge-mode": {"chargeMode": "always"}, '
         '"cockpit": {"totalMileage": 49114.27}, '
         '"res-state": {"details": "Stopped, ready for RES", "code": "10"}, '
-        '"hvac-status": {"externalTemperature": 8.0, "hvacStatus": "off"}}\n'
+        '"hvac-status": {"externalTemperature": 8.0, "hvacStatus": 1}}\n'
     ),
 }
 
