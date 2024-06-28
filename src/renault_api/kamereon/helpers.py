@@ -1,10 +1,10 @@
 """Helpers for Kamereon models."""
 
-from __future__ import annotations
+from typing import TYPE_CHECKING, Any
 
-from typing import Any
-
-from . import models
+if TYPE_CHECKING:
+    # Avoid circular imports
+    from .models import ChargeSchedule
 
 DAYS_OF_WEEK = [
     "monday",
@@ -17,8 +17,11 @@ DAYS_OF_WEEK = [
 ]
 
 
-def update_schedule(schedule: models.ChargeSchedule, settings: dict[str, Any]) -> None:
+def update_schedule(schedule: "ChargeSchedule", settings: dict[str, Any]) -> None:
     """Update schedule."""
+    # Avoid circular imports
+    from .models import ChargeDaySchedule
+
     if "activated" in settings:
         schedule.activated = settings["activated"]
     for day in DAYS_OF_WEEK:
@@ -34,13 +37,13 @@ def update_schedule(schedule: models.ChargeSchedule, settings: dict[str, Any]) -
                 setattr(
                     schedule,
                     day,
-                    models.ChargeDaySchedule(day_settings, start_time, duration),
+                    ChargeDaySchedule(day_settings, start_time, duration),
                 )
 
 
 def create_schedule(
     settings: dict[str, Any],
-) -> models.ChargeSchedule:  # pragma: no cover
+) -> "ChargeSchedule":  # pragma: no cover
     """Update schedule."""
     raise NotImplementedError
 
