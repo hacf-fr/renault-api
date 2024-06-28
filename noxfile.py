@@ -102,7 +102,13 @@ def safety(session: Session) -> None:
     """Scan dependencies for insecure packages."""
     requirements = session.poetry.export_requirements()
     session.install("safety")
-    session.run("safety", "check", "--full-report", f"--file={requirements}")
+    session.run(
+        "safety",
+        "check",
+        "--full-report",
+        f"--file={requirements}",
+        "-i 70612",  # Disputed - no fix available https://github.com/pyupio/safety/issues/527
+    )
 
 
 @session(python=python_versions)
