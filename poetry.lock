@@ -2011,13 +2011,13 @@ testing = ["coverage (>=4)", "coverage-enable-subprocess (>=1)", "flaky (>=3)", 
 
 [[package]]
 name = "xdoctest"
-version = "1.1.4"
+version = "1.1.5"
 description = "A rewrite of the builtin doctest module"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "xdoctest-1.1.4-py3-none-any.whl", hash = "sha256:2ee7920603e1a977749cabf611dfde1935165c6ac83dcfb2c9bdf8fc3ac1ec26"},
-    {file = "xdoctest-1.1.4.tar.gz", hash = "sha256:eb3fbad5a9ac4d47b2fafa60435ac15f2cbcd33dc860bf1e759a1f63bfeddc10"},
+    {file = "xdoctest-1.1.5-py3-none-any.whl", hash = "sha256:f36fe64d7c0ad0553dbff39ff05c43a0aab69d313466f24a38d00e757182ade0"},
+    {file = "xdoctest-1.1.5.tar.gz", hash = "sha256:89b0c3ad7fe03a068e22a457ab18c38fc70c62329c2963f43954b83c29374e66"},
 ]
 
 [package.dependencies]
