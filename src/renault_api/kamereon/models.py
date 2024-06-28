@@ -415,7 +415,7 @@ class KamereonVehicleHvacStatusData(KamereonVehicleDataAttributes):
 
     lastUpdateTime: Optional[str]
     externalTemperature: Optional[float]
-    hvacStatus: Optional[int]
+    hvacStatus: Optional[str]
     nextHvacStartDate: Optional[str]
     socThreshold: Optional[float]
 
