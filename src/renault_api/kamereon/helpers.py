@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
+from typing import Any
 
 if TYPE_CHECKING:
     # Avoid circular imports
@@ -19,7 +20,7 @@ DAYS_OF_WEEK = [
 ]
 
 
-def update_schedule(schedule: "ChargeSchedule", settings: dict[str, Any]) -> None:
+def update_schedule(schedule: ChargeSchedule, settings: dict[str, Any]) -> None:
     """Update schedule."""
     # Avoid circular imports
     from .models import ChargeDaySchedule
@@ -45,7 +46,7 @@ def update_schedule(schedule: "ChargeSchedule", settings: dict[str, Any]) -> Non
 
 def create_schedule(
     settings: dict[str, Any],
-) -> "ChargeSchedule":  # pragma: no cover
+) -> ChargeSchedule:  # pragma: no cover
     """Update schedule."""
     raise NotImplementedError
 
