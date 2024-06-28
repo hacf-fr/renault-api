@@ -1341,7 +1341,7 @@ files = [
 name = "regex"
 version = "2024.5.15"
 description = "Alternative regular expression module, to replace re."
-optional = false
+optional = true
 python-versions = ">=3.8"
 files = [
     {file = "regex-2024.5.15-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:a81e3cfbae20378d75185171587cbf756015ccb14840702944f014e0d93ea09f"},
@@ -2141,4 +2141,4 @@ cli = ["click", "dateparser", "tabulate"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<4.0"
-content-hash = "cf948247f03463c0c4a999ae98fc9969cb2597a980136f40316bd2745ffc3e71"
+content-hash = "6df485ca15bb80a93d7993f7d54494088c1898c6160e80444c6f219fa61a7072"
