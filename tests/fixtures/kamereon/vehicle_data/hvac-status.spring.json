@@ -4,7 +4,7 @@
     "id": "UU1AAAAA555777123",
     "attributes": {
       "socThreshold": 30.0,
-      "hvacStatus": 1,
+      "hvacStatus": "off",
       "lastUpdateTime": "2020-12-03T00:00:00Z"
     }
   }

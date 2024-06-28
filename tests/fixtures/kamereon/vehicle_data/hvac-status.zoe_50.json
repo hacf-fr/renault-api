@@ -2,6 +2,6 @@
   "data": {
     "type": "Car",
     "id": "VF1AAAAA555777999",
-    "attributes": { "socThreshold": 40, "hvacStatus": 2 }
+    "attributes": { "socThreshold": 40, "hvacStatus": "on" }
   }
 }
