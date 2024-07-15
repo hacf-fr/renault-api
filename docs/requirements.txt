@@ -1,4 +1,4 @@
-sphinx==7.3.7
+sphinx==7.4.1
 sphinx-click==6.0.0
 sphinx-rtd-theme==2.0.0
 click==8.1.7
