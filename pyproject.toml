@@ -26,7 +26,7 @@ aiohttp = ">=3.9.5"
 # Warning: as of 2023-07-19, pyjwt is pinned to 2.8.0 on HA-core
 PyJWT = ">=2.8.0"
 #ensure cryptography (for pyjwt) is greater than 42.0.5 to account for PVE-2024-65647
-cryptography = "^42.0.5"
+cryptography = ">=42.0.5"
 
 marshmallow-dataclass = ">=8.2.0"
 click = { version = ">=8.0.1", optional = true }
