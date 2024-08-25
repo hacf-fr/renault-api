@@ -639,9 +639,9 @@ class KamereonVehicleChargingSettingsData(KamereonVehicleDataAttributes):
             self.schedules = []
         for schedule in self.schedules:
             if schedule.id == args["id"]:  # pragma: no branch
-                helpers.update_schedule(schedule, args)
+                helpers.update_charge_schedule(schedule, args)
                 return
-        self.schedules.append(helpers.create_schedule(args))  # pragma: no cover
+        self.schedules.append(helpers.create_charge_schedule(args))  # pragma: no cover
 
 
 @dataclass
@@ -651,6 +651,17 @@ class KamereonVehicleHvacSettingsData(KamereonVehicleDataAttributes):
     mode: Optional[str]
     schedules: Optional[List[HvacSchedule]]
 
+    def update(self, args: Dict[str, Any]) -> None:
+        """Update schedule."""
+        if "id" not in args:  # pragma: no cover
+            raise ValueError("id not provided for update.")
+        if self.schedules is None:  # pragma: no cover
+            self.schedules = []
+        for schedule in self.schedules:
+            if schedule.id == args["id"]:  # pragma: no branch
+                helpers.update_hvac_schedule(schedule, args)
+                return
+        self.schedules.append(helpers.create_hvac_schedule(args))  # pragma: no cover
 
 @dataclass
 class KamereonVehicleNotificationSettingsData(KamereonVehicleDataAttributes):
