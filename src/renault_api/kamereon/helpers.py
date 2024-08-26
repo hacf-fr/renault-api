@@ -17,7 +17,9 @@ DAYS_OF_WEEK = [
 ]
 
 
-def update_charge_schedule(schedule: models.ChargeSchedule, settings: dict[str, Any]) -> None:
+def update_charge_schedule(
+    schedule: models.ChargeSchedule, settings: dict[str, Any]
+) -> None:
     """Update charge schedule."""
     if "activated" in settings:
         schedule.activated = settings["activated"]
@@ -37,7 +39,9 @@ def update_charge_schedule(schedule: models.ChargeSchedule, settings: dict[str, 
                     models.ChargeDaySchedule(day_settings, start_time, duration),
                 )
 
-def update_hvac_schedule(schedule: models.HvacSchedule, settings: dict[str, Any]) -> None:
+def update_hvac_schedule(
+    schedule: models.HvacSchedule, settings: dict[str, Any]
+) -> None:
     """Update HVAC schedule."""
     if "activated" in settings:
         schedule.activated = settings["activated"]
