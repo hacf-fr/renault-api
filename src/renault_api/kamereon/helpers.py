@@ -39,6 +39,7 @@ def update_charge_schedule(
                     models.ChargeDaySchedule(day_settings, start_time, duration),
                 )
 
+
 def update_hvac_schedule(
     schedule: models.HvacSchedule, settings: dict[str, Any]
 ) -> None:
@@ -60,11 +61,13 @@ def update_hvac_schedule(
                     models.HvacDaySchedule(day_settings, ready_at_time),
                 )
 
+
 def create_charge_schedule(
     settings: dict[str, Any],
 ) -> models.ChargeSchedule:  # pragma: no cover
     """Update schedule."""
     raise NotImplementedError
+
 
 def create_hvac_schedule(
     settings: dict[str, Any],
