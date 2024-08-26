@@ -271,10 +271,14 @@ def test_hvac_schedule_for_json() -> None:
         )
     assert for_json == expected_json
 
-    # perform an update
-    vehicle_data.schedules[0].activated = True
-    vehicle_data.schedules[0].sunday = models.HvacDaySchedule(
-        raw_data={}, readyAtTime="T20:30Z"
+    # Update days only
+    vehicle_data.update(
+        {
+            "id": 1,
+            "sunday": {"readyAtTime": "T20:30Z"},
+            "tuesday": {"readyAtTime": "T20:30Z"},
+            "thursday": None,
+        }
     )
 
     for_json = {
@@ -284,9 +288,9 @@ def test_hvac_schedule_for_json() -> None:
         "schedules": [
             {
                 "id": 1,
-                "activated": True,
+                "activated": False,
                 "monday": None,
-                "tuesday": None,
+                "tuesday": {"readyAtTime": "T20:30Z"},
                 "wednesday": None,
                 "thursday": None,
                 "friday": None,
@@ -296,6 +300,60 @@ def test_hvac_schedule_for_json() -> None:
             {
                 "id": 2,
                 "activated": True,
+                "monday": None,
+                "tuesday": None,
+                "wednesday": {"readyAtTime": "T15:15Z"},
+                "thursday": None,
+                "friday": {"readyAtTime": "T15:15Z"},
+                "saturday": None,
+                "sunday": None,
+            },
+        ]
+    }
+    for i in [3, 4, 5]:
+        expected_json["schedules"].append(
+            {
+                "id": i,
+                "activated": False,
+                "monday": None,
+                "tuesday": None,
+                "wednesday": None,
+                "thursday": None,
+                "friday": None,
+                "saturday": None,
+                "sunday": None,
+            }
+        )
+
+    assert for_json == expected_json
+
+    # Update 'activated' only
+    vehicle_data.update(
+        {
+            "id": 2,
+            "activated": False,
+        }
+    )
+
+    for_json = {
+        "schedules": [schedule.for_json() for schedule in vehicle_data.schedules]
+    }
+    expected_json = {
+        "schedules": [
+            {
+                "id": 1,
+                "activated": False,
+                "monday": None,
+                "tuesday": {"readyAtTime": "T20:30Z"},
+                "wednesday": None,
+                "thursday": None,
+                "friday": None,
+                "saturday": None,
+                "sunday": {"readyAtTime": "T20:30Z"},
+            },
+            {
+                "id": 2,
+                "activated": False,
                 "monday": None,
                 "tuesday": None,
                 "wednesday": {"readyAtTime": "T15:15Z"},
