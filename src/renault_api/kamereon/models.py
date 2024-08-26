@@ -663,6 +663,7 @@ class KamereonVehicleHvacSettingsData(KamereonVehicleDataAttributes):
                 return
         self.schedules.append(helpers.create_hvac_schedule(args))  # pragma: no cover
 
+
 @dataclass
 class KamereonVehicleNotificationSettingsData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data notification-settings attributes."""
