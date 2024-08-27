@@ -22,6 +22,7 @@ class PlugState(Enum):
 
     UNPLUGGED = 0
     PLUGGED = 1
+    PLUGGED_WAITING_FOR_CHARGE = 3
     PLUG_ERROR = -1
     PLUG_UNKNOWN = -2147483648
 
