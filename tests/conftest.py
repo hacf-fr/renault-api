@@ -37,7 +37,7 @@ def mocked_responses() -> Generator[aioresponses, None, None]:
         yield m
 
 
-@pytest.fixture()
+@pytest.fixture
 def cli_runner(monkeypatch: MonkeyPatch, tmpdir: pathlib.Path) -> CliRunner:
     """Fixture for invoking command-line interfaces."""
     runner = CliRunner()
