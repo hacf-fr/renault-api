@@ -15,7 +15,7 @@ from tests.const import TEST_USERNAME
 from renault_api import gigya
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_login(
     websession: aiohttp.ClientSession, mocked_responses: aioresponses
 ) -> None:
@@ -32,7 +32,7 @@ async def test_login(
     assert response.get_session_cookie() == TEST_LOGIN_TOKEN
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_login_error(
     websession: aiohttp.ClientSession, mocked_responses: aioresponses
 ) -> None:
@@ -49,7 +49,7 @@ async def test_login_error(
         )
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_person_id(
     websession: aiohttp.ClientSession, mocked_responses: aioresponses
 ) -> None:
@@ -65,7 +65,7 @@ async def test_person_id(
     assert response.get_person_id() == TEST_PERSON_ID
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_get_jwt_token(
     websession: aiohttp.ClientSession, mocked_responses: aioresponses
 ) -> None:

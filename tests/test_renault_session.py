@@ -35,7 +35,7 @@ def get_logged_in_session(websession: aiohttp.ClientSession) -> RenaultSession:
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def session(websession: aiohttp.ClientSession) -> RenaultSession:
     """Fixture for testing RenaultSession."""
     return RenaultSession(
@@ -45,7 +45,7 @@ def session(websession: aiohttp.ClientSession) -> RenaultSession:
     )
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_init_locale_only(websession: aiohttp.ClientSession) -> None:
     """Test initialisation with locale only."""
     session = RenaultSession(
@@ -59,7 +59,7 @@ async def test_init_locale_only(websession: aiohttp.ClientSession) -> None:
     assert await session._get_kamereon_root_url()
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_init_country_only(websession: aiohttp.ClientSession) -> None:
     """Test initialisation with country only."""
     session = RenaultSession(
@@ -89,7 +89,7 @@ async def test_init_country_only(websession: aiohttp.ClientSession) -> None:
         assert await session._get_kamereon_root_url()
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_init_locale_details_only(websession: aiohttp.ClientSession) -> None:
     """Test initialisation with locale_details only."""
     session = RenaultSession(
@@ -107,7 +107,7 @@ async def test_init_locale_details_only(websession: aiohttp.ClientSession) -> No
     assert await session._get_kamereon_root_url()
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_init_locale_and_details(websession: aiohttp.ClientSession) -> None:
     """Test initialisation with locale and locale_details."""
     session = RenaultSession(
@@ -122,7 +122,7 @@ async def test_init_locale_and_details(websession: aiohttp.ClientSession) -> Non
     assert await session._get_kamereon_root_url()
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_init_locale_country(websession: aiohttp.ClientSession) -> None:
     """Test initialisation with locale and country."""
     session = RenaultSession(
@@ -137,7 +137,7 @@ async def test_init_locale_country(websession: aiohttp.ClientSession) -> None:
     assert await session._get_kamereon_root_url()
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_not_logged_in(session: RenaultSession) -> None:
     """Test errors when not logged in."""
     with pytest.raises(
@@ -159,7 +159,7 @@ async def test_not_logged_in(session: RenaultSession) -> None:
         await session._get_jwt()
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_login(session: RenaultSession, mocked_responses: aioresponses) -> None:
     """Test login/person/jwt response."""
     fixtures.inject_gigya_all(mocked_responses)
@@ -180,7 +180,7 @@ async def test_login(session: RenaultSession, mocked_responses: aioresponses) ->
     assert len(mocked_responses.requests) == 3
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_expired_login_token(
     websession: aiohttp.ClientSession, mocked_responses: aioresponses
 ) -> None:
