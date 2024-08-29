@@ -53,6 +53,28 @@ def update_charge_schedule(
                 )
 
 
+def update_hvac_schedule(
+    schedule: models.HvacSchedule, settings: dict[str, Any]
+) -> None:
+    """Update HVAC schedule."""
+    if "activated" in settings:
+        schedule.activated = settings["activated"]
+    for day in DAYS_OF_WEEK:
+        if day in settings:
+            day_settings = settings[day]
+
+            if day_settings is None:
+                setattr(schedule, day, None)
+            elif day_settings:  # pragma: no branch
+                ready_at_time = day_settings["readyAtTime"]
+
+                setattr(
+                    schedule,
+                    day,
+                    models.HvacDaySchedule(day_settings, ready_at_time),
+                )
+
+
 def create_schedule(
     settings: dict[str, Any],
 ) -> models.ChargeSchedule:  # pragma: no cover
@@ -67,6 +89,13 @@ def create_schedule(
 def create_charge_schedule(
     settings: dict[str, Any],
 ) -> models.ChargeSchedule:  # pragma: no cover
+    """Update schedule."""
+    raise NotImplementedError
+
+
+def create_hvac_schedule(
+    settings: dict[str, Any],
+) -> models.HvacSchedule:  # pragma: no cover
     """Update schedule."""
     raise NotImplementedError
 
