@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from typing import Any
+from warnings import warn
 
 from . import models
 
@@ -17,8 +18,22 @@ DAYS_OF_WEEK = [
 ]
 
 
-def update_schedule(schedule: models.ChargeSchedule, settings: dict[str, Any]) -> None:
-    """Update schedule."""
+def update_schedule(
+    schedule: models.ChargeSchedule, settings: dict[str, Any]
+) -> None:  # pragma: no cover
+    """Update charge schedule."""
+    warn(
+        "This method is deprecated, please use update_charge_schedule.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+    update_charge_schedule(schedule, settings)
+
+
+def update_charge_schedule(
+    schedule: models.ChargeSchedule, settings: dict[str, Any]
+) -> None:
+    """Update charge schedule."""
     if "activated" in settings:
         schedule.activated = settings["activated"]
     for day in DAYS_OF_WEEK:
@@ -39,6 +54,17 @@ def update_schedule(schedule: models.ChargeSchedule, settings: dict[str, Any]) -
 
 
 def create_schedule(
+    settings: dict[str, Any],
+) -> models.ChargeSchedule:  # pragma: no cover
+    warn(
+        "This method is deprecated, please use create_charge_schedule.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+    return create_charge_schedule(settings)
+
+
+def create_charge_schedule(
     settings: dict[str, Any],
 ) -> models.ChargeSchedule:  # pragma: no cover
     """Update schedule."""
