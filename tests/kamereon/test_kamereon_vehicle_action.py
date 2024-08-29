@@ -271,14 +271,10 @@ def test_hvac_schedule_for_json() -> None:
         )
     assert for_json == expected_json
 
-    # Update days only
-    vehicle_data.update(
-        {
-            "id": 1,
-            "sunday": {"readyAtTime": "T20:30Z"},
-            "tuesday": {"readyAtTime": "T20:30Z"},
-            "thursday": None,
-        }
+    # perform an update
+    vehicle_data.schedules[0].activated = True
+    vehicle_data.schedules[0].sunday = models.HvacDaySchedule(
+        raw_data={}, readyAtTime="T20:30Z"
     )
 
     for_json = {
@@ -288,17 +284,6 @@ def test_hvac_schedule_for_json() -> None:
         "schedules": [
             {
                 "id": 1,
-                "activated": False,
-                "monday": None,
-                "tuesday": {"readyAtTime": "T20:30Z"},
-                "wednesday": None,
-                "thursday": None,
-                "friday": None,
-                "saturday": None,
-                "sunday": {"readyAtTime": "T20:30Z"},
-            },
-            {
-                "id": 2,
                 "activated": True,
                 "monday": None,
                 "tuesday": None,
