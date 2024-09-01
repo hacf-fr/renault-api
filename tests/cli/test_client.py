@@ -34,10 +34,13 @@ def test_login_prompt(mocked_responses: aioresponses, cli_runner: CliRunner) -> 
         input=f"{TEST_USERNAME}\n{TEST_PASSWORD}\n{TEST_LOCALE}\ny",
     )
     assert result.exit_code == 0, result.exception
+    default_locale = getdefaultlocale()[0]
+    prompt_default = f" [{default_locale}]" if default_locale else ""
+
     expected_output = (
         f"User: {TEST_USERNAME}\n"
         "Password: \n"
-        f"Please select a locale [{getdefaultlocale()[0]}]: {TEST_LOCALE}\n"
+        f"Please select a locale{prompt_default}: {TEST_LOCALE}\n"
         "Do you want to save the locale to the credential store? [y/N]: y\n"
         "\n"
     )
@@ -70,9 +73,11 @@ def test_list_accounts_prompt(
         input=f"{TEST_LOCALE}\nN\n{TEST_USERNAME}\n{TEST_PASSWORD}\n",
     )
     assert result.exit_code == 0, result.exception
+    default_locale = getdefaultlocale()[0]
+    prompt_default = f" [{default_locale}]" if default_locale else ""
 
     expected_output = (
-        f"Please select a locale [{getdefaultlocale()[0]}]: {TEST_LOCALE}\n"
+        f"Please select a locale{prompt_default}: {TEST_LOCALE}\n"
         "Do you want to save the locale to the credential store? [y/N]: N\n"
         "\n"
         f"User: {TEST_USERNAME}\n"
