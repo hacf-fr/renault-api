@@ -93,14 +93,14 @@ jobs:
 
       - name: Upload coverage data
         if: always() && matrix.session == 'tests'
-        uses: actions/upload-artifact@v4.3.6
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: coverage-data-${{ matrix.python-version }}-${{ matrix.os }}
           path: ".coverage.*"
 
       - name: Upload documentation
         if: matrix.session == 'docs-build'
-        uses: actions/upload-artifact@v4.3.6
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: docs
           path: docs/_build
