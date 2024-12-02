@@ -500,3 +500,23 @@ def test_hvac_settings_schedule() -> None:
         assert vehicle_data.schedules[i].id == i + 1
         for day in DAYS_OF_WEEK:
             assert vehicle_data.schedules[i].__dict__.get(day) is None
+
+
+def test_no_data() -> None:
+    """Test missing vehicle data."""
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/no_data.json",
+        schemas.KamereonVehicleDataResponseSchema,
+    )
+    response.raise_for_error_code()
+    assert response.data is not None
+    assert response.data.raw_data == {"id": "VF1AAAA", "type": "ChargeMode"}
+
+    vehicle_data = cast(
+        models.KamereonVehicleCockpitData,
+        response.get_attributes(schemas.KamereonVehicleCockpitDataSchema),
+    )
+
+    assert vehicle_data.totalMileage is None
+    assert vehicle_data.fuelAutonomy is None
+    assert vehicle_data.fuelQuantity is None
