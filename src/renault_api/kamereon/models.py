@@ -353,9 +353,7 @@ class KamereonVehicleDataResponse(KamereonResponse):
             return cast(
                 KamereonVehicleDataAttributes, schema.load(self.data.attributes)
             )
-        raise exceptions.KamereonException(
-            f"Unable to parse attributes from `{self.raw_data}`."
-        )
+        raise cast(KamereonVehicleDataAttributes, schema.load({}))
 
 
 @dataclass
