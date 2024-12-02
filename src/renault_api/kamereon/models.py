@@ -349,11 +349,10 @@ class KamereonVehicleDataResponse(KamereonResponse):
 
     def get_attributes(self, schema: Schema) -> KamereonVehicleDataAttributes:
         """Return jwt token."""
+        attributes = {}
         if self.data and self.data.attributes is not None:
-            return cast(
-                KamereonVehicleDataAttributes, schema.load(self.data.attributes)
-            )
-        raise cast(KamereonVehicleDataAttributes, schema.load({}))
+            attributes = self.data.attributes
+        return cast(KamereonVehicleDataAttributes, schema.load(attributes))
 
 
 @dataclass
