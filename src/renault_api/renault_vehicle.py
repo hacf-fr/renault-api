@@ -136,6 +136,18 @@ class RenaultVehicle:
             response.get_attributes(schemas.KamereonVehicleBatteryStatusDataSchema),
         )
 
+    async def get_tyre_pressure(self) -> models.KamereonVehicleTyrePressureData:
+        """Get vehicle tyre pressure."""
+        response = await self.session.get_vehicle_data(
+            account_id=self.account_id,
+            vin=self.vin,
+            endpoint="pressure",
+        )
+        return cast(
+            models.KamereonVehicleTyrePressureData,
+            response.get_attributes(schemas.KamereonVehicleTyrePressureDataSchema),
+        )
+
     async def get_location(self) -> models.KamereonVehicleLocationData:
         """Get vehicle location."""
         response = await self.session.get_vehicle_data(

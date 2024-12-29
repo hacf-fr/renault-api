@@ -276,6 +276,16 @@ def inject_get_battery_status(
         filename,
     )
 
+def inject_get_tyre_pressure(
+    mocked_responses: aioresponses, filename: str = "vehicle_data/tyre-pressure.json"
+) -> str:
+    """Inject sample tyre-pressure."""
+    urlpath = f"{ADAPTER2_PATH}/pressure?{DEFAULT_QUERY_STRING}"
+    return inject_data(
+        mocked_responses,
+        urlpath,
+        filename,
+    )
 
 def inject_get_location(mocked_responses: aioresponses) -> str:
     """Inject sample location."""
@@ -501,6 +511,7 @@ def inject_vehicle_status(mocked_responses: aioresponses, vehicle: str) -> None:
     inject_get_hvac_status(mocked_responses, vehicle)
     inject_get_charge_mode(mocked_responses)
     inject_get_cockpit(mocked_responses, vehicle)
+    inject_get_tyre_pressure(mocked_responses)
 
 
 def ensure_redacted(data: Mapping[str, Any], to_redact: list[str] = TO_REDACT) -> None:

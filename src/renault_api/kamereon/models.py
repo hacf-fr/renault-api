@@ -398,6 +398,18 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
                 f"Unable to convert `{self.chargingStatus}` to ChargeState."
             ) from err
 
+@dataclass
+class KamereonVehicleTyrePressureData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle tyre-pressure data."""
+    
+    flPressure: Optional[int]
+    frPressure: Optional[int]
+    rlPressure: Optional[int]
+    rrPressure: Optional[int]
+    flStatus: Optional[int]
+    frStatus: Optional[int]
+    rlStatus: Optional[int]
+    rrStatus: Optional[int]
 
 @dataclass
 class KamereonVehicleLocationData(KamereonVehicleDataAttributes):

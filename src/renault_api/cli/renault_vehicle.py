@@ -162,6 +162,7 @@ async def display_status(
     await update_lock_status(vehicle, status_table, ctx_data)
     await update_res_state(vehicle, status_table, ctx_data)
     await update_hvac_status(vehicle, status_table, ctx_data)
+    await update_tyre_pressure(vehicle, status_table, ctx_data)
     if ctx_data["json"]:
         click.echo(json.dumps(status_table))
         return
@@ -221,6 +222,33 @@ async def update_battery_status(
     for key, value, unit in items:
         update_status_table(status_table, key, value, unit)
 
+async def update_tyre_pressure(
+    vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
+) -> None:
+    """Update status table from get_tyre_pressure."""
+    try:
+        if not await vehicle.supports_endpoint("pressure"):  # pragma: no cover
+            return
+        response = await vehicle.get_tyre_pressure()
+    except QuotaLimitException as exc:  # pragma: no cover
+        raise click.ClickException(repr(exc)) from exc
+    except KamereonResponseException as exc:  # pragma: no cover
+        click.echo(f"pressure: {exc.error_details}", err=True)
+        return
+    
+    if ctx_data["json"]:
+        status_table["pressure"] = response.raw_data
+        return
+    
+    items = [
+        ("Front left pressure", response.flPressure, "bar"),
+        ("Front right pressure", response.frPressure, "bar"),
+        ("Rear left pressure", response.rlPressure, "bar"),
+        ("Rear right pressure", response.rrPressure, "bar"),
+    ]
+    
+    for key, value, unit in items:
+        update_status_table(status_table, key, value, unit)
 
 async def update_charge_mode(
     vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
