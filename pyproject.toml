@@ -9,7 +9,6 @@ homepage = "https://github.com/hacf-fr/renault-api"
 repository = "https://github.com/hacf-fr/renault-api"
 documentation = "https://renault-api.readthedocs.io"
 classifiers = [
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -20,7 +19,7 @@ classifiers = [
 Changelog = "https://github.com/hacf-fr/renault-api/releases"
 
 [tool.poetry.dependencies]
-python = ">=3.8,<4.0"
+python = ">=3.9,<4.0"
 # Warning: as of 2024-04-23, aiohttp is pinned to 3.9.5 on HA-core
 aiohttp = ">=3.9.5"
 # Warning: as of 2023-07-19, pyjwt is pinned to 2.8.0 on HA-core
