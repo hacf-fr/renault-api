@@ -13,6 +13,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 
 [tool.poetry.urls]
@@ -26,6 +27,8 @@ aiohttp = ">=3.9.5"
 PyJWT = ">=2.8.0"
 #ensure cryptography (for pyjwt) is greater than 42.0.5 to account for PVE-2024-65647
 cryptography = ">=42.0.5"
+#ensure cffi (for cryptography) is greater than 1.17.0 for python 3.13 compatibility
+cffi = ">=1.17.0"
 
 marshmallow-dataclass = ">=8.2.0"
 click = { version = ">=8.0.1", optional = true }
@@ -65,6 +68,10 @@ tornado = "^6.3.3"
 PyYAML = "^6.0.1"
 #ensure virtualenv (for pre-commit) is greater than 20.21.0 to account for PVE-2024-68477
 virtualenv = ">=20.21.0"
+#ensure nodeenv (for pre-commit) is greater than 1.9.0 for python 3.13 compatibility
+nodeenv = ">=1.9.0"
+#ensure typing-extensions (for safety>pydantic) is greater than 4.12.2 for python 3.13 compatibility
+typing-extensions = ">=4.12.2"
 
 [tool.poetry.extras]
 cli = ["click", "tabulate", "dateparser"]
