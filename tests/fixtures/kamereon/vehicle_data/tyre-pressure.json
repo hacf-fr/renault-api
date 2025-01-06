@@ -1,16 +1,16 @@
 {
-    "data": {
-        "type": "Car",
-        "id": "VF1AAAAA555777999",
-        "attributes": {
-            "flPressure": 2460,
-            "frPressure": 2730,
-            "rlPressure": 2790,
-            "rrPressure": 2790,
-            "flStatus": 0,
-            "frStatus": 0,
-            "rlStatus": 0,
-            "rrStatus": 0
-        }
+  "data": {
+    "type": "Car",
+    "id": "VF1AAAAA555777999",
+    "attributes": {
+      "flPressure": 2460,
+      "frPressure": 2730,
+      "rlPressure": 2790,
+      "rrPressure": 2790,
+      "flStatus": 0,
+      "frStatus": 0,
+      "rlStatus": 0,
+      "rrStatus": 0
     }
+  }
 }

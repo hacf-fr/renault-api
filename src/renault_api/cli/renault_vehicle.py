@@ -222,6 +222,7 @@ async def update_battery_status(
     for key, value, unit in items:
         update_status_table(status_table, key, value, unit)
 
+
 async def update_tyre_pressure(
     vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]
 ) -> None:
@@ -235,20 +236,21 @@ async def update_tyre_pressure(
     except KamereonResponseException as exc:  # pragma: no cover
         click.echo(f"pressure: {exc.error_details}", err=True)
         return
-    
+
     if ctx_data["json"]:
         status_table["pressure"] = response.raw_data
         return
-    
+
     items = [
         ("Front left pressure", response.flPressure, "bar"),
         ("Front right pressure", response.frPressure, "bar"),
         ("Rear left pressure", response.rlPressure, "bar"),
         ("Rear right pressure", response.rrPressure, "bar"),
     ]
-    
+
     for key, value, unit in items:
         update_status_table(status_table, key, value, unit)
+
 
 async def update_charge_mode(
     vehicle: RenaultVehicle, status_table: Dict[str, Any], ctx_data: Dict[str, Any]

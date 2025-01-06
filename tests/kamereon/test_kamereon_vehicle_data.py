@@ -104,6 +104,7 @@ def test_battery_status_2() -> None:
     assert vehicle_data.get_plug_status() == enums.PlugState.PLUGGED
     assert vehicle_data.get_charging_status() == enums.ChargeState.CHARGE_IN_PROGRESS
 
+
 def test_tyre_pressure() -> None:
     """Test vehicle data for tyre-pressure.json."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
@@ -120,8 +121,9 @@ def test_tyre_pressure() -> None:
         "flStatus": 0,
         "frStatus": 0,
         "rlStatus": 0,
-        "rrStatus": 0
+        "rrStatus": 0,
     }
+
 
 def test_cockpit_zoe() -> None:
     """Test vehicle data for cockpit.zoe.json."""
