@@ -1,9 +1,10 @@
 """Session provider for interaction with Renault servers."""
 
+from __future__ import annotations
+
 import asyncio
 import logging
 from typing import Any
-from typing import Optional
 
 import aiohttp
 
@@ -33,10 +34,10 @@ class RenaultSession:
     def __init__(
         self,
         websession: aiohttp.ClientSession,
-        locale: Optional[str] = None,
-        country: Optional[str] = None,
-        locale_details: Optional[dict[str, str]] = None,
-        credential_store: Optional[CredentialStore] = None,
+        locale: str | None = None,
+        country: str | None = None,
+        locale_details: dict[str, str] | None = None,
+        credential_store: CredentialStore | None = None,
     ) -> None:
         """Initialise RenaultSession."""
         self._gigya_lock = asyncio.Lock()
@@ -154,7 +155,7 @@ class RenaultSession:
                 return jwt
 
     async def http_request(
-        self, method: str, endpoint: str, json: Optional[dict[str, Any]] = None
+        self, method: str, endpoint: str, json: dict[str, Any] | None = None
     ) -> models.KamereonResponse:
         """GET to specified endpoint."""
         url = (await self._get_kamereon_root_url()) + endpoint
@@ -212,7 +213,7 @@ class RenaultSession:
         account_id: str,
         vin: str,
         endpoint: str,
-        params: Optional[dict[str, str]] = None,
+        params: dict[str, str] | None = None,
         *,
         adapter_type: str = "kca",
     ) -> models.KamereonVehicleDataResponse:

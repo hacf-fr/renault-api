@@ -1,9 +1,10 @@
 """Singletons for the CLI."""
 
+from __future__ import annotations
+
 import json
 from locale import getdefaultlocale
 from typing import Any
-from typing import Optional
 
 import aiohttp
 import click
@@ -149,7 +150,7 @@ async def http_request(
     ctx_data: dict[str, Any],
     method: str,
     endpoint: str,
-    json_body: Optional[dict[str, Any]] = None,
+    json_body: dict[str, Any] | None = None,
 ) -> None:
     """Run HTTP request."""
     endpoint = await http_get_endpoint(websession, ctx_data, endpoint)

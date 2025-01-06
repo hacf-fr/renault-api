@@ -1,7 +1,8 @@
 """CLI function for a vehicle."""
 
+from __future__ import annotations
+
 from typing import Any
-from typing import Optional
 
 import aiohttp
 import click
@@ -28,7 +29,7 @@ async def start(
     ctx_data: dict[str, Any],
     *,
     temperature: int,
-    at: Optional[str],
+    at: str | None,
     websession: aiohttp.ClientSession,
 ) -> None:
     """Start air conditioning."""

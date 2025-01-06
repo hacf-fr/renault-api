@@ -1,7 +1,8 @@
 """Client for Renault API."""
 
+from __future__ import annotations
+
 import logging
-from typing import Optional
 
 import aiohttp
 
@@ -20,12 +21,12 @@ class RenaultAccount:
     def __init__(
         self,
         account_id: str,
-        session: Optional[RenaultSession] = None,
-        websession: Optional[aiohttp.ClientSession] = None,
-        locale: Optional[str] = None,
-        country: Optional[str] = None,
-        locale_details: Optional[dict[str, str]] = None,
-        credential_store: Optional[CredentialStore] = None,
+        session: RenaultSession | None = None,
+        websession: aiohttp.ClientSession | None = None,
+        locale: str | None = None,
+        country: str | None = None,
+        locale_details: dict[str, str] | None = None,
+        credential_store: CredentialStore | None = None,
     ) -> None:
         """Initialise Renault account."""
         self._account_id = account_id

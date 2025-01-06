@@ -1,8 +1,9 @@
 """CLI function for a vehicle."""
 
+from __future__ import annotations
+
 import json
 from typing import Any
-from typing import Optional
 
 import aiohttp
 import click
@@ -65,7 +66,7 @@ async def _get_vin(ctx_data: dict[str, Any], account: RenaultAccount) -> str:
 
 async def _get_vehicle_prompt(
     vehicle_links: list[KamereonVehiclesLink], account: RenaultAccount
-) -> tuple[str, Optional[str]]:
+) -> tuple[str, str | None]:
     """Get prompt for selecting vehicle."""
     vehicle_table = []
     default = None
@@ -170,8 +171,8 @@ async def display_status(
 def update_status_table(
     status_table: dict[str, Any],
     key: str,
-    value: Optional[Any],
-    unit: Optional[str],
+    value: Any | None,
+    unit: str | None,
 ) -> None:
     """Update statuses with formatted strings."""
     if value is None:

@@ -1,6 +1,6 @@
 """Kamereon exceptions."""
 
-from typing import Optional
+from __future__ import annotations
 
 from renault_api.exceptions import RenaultException
 
@@ -14,7 +14,7 @@ class KamereonException(RenaultException):
 class KamereonResponseException(KamereonException):
     """Kamereon returned a parsable errors."""
 
-    def __init__(self, error_code: Optional[str], error_details: Optional[str]):
+    def __init__(self, error_code: str | None, error_details: str | None):
         """Initialise KamereonResponseException."""
         self.error_code = error_code
         self.error_details = error_details

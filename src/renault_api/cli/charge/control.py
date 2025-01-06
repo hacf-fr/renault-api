@@ -1,7 +1,8 @@
 """CLI function for a vehicle."""
 
+from __future__ import annotations
+
 from typing import Any
-from typing import Optional
 
 import aiohttp
 import click
@@ -20,7 +21,7 @@ from renault_api.cli import renault_vehicle
 async def mode(
     ctx_data: dict[str, Any],
     *,
-    set: Optional[str] = None,
+    set: str | None = None,
     websession: aiohttp.ClientSession,
 ) -> None:
     """Display or set charge mode."""

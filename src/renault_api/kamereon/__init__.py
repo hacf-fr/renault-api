@@ -1,9 +1,10 @@
 """Kamereon API."""
 
+from __future__ import annotations
+
 import logging
 from json import dumps as json_dumps
 from typing import Any
-from typing import Optional
 from typing import cast
 from warnings import warn
 
@@ -107,10 +108,10 @@ async def request(
     api_key: str,
     gigya_jwt: str,
     params: dict[str, str],
-    json: Optional[dict[str, Any]] = None,
-    schema: Optional[Schema] = None,
+    json: dict[str, Any] | None = None,
+    schema: Schema | None = None,
     *,
-    wrap_array_in: Optional[str] = None,
+    wrap_array_in: str | None = None,
 ) -> models.KamereonResponse:
     """Process Kamereon HTTP request."""
     schema = schema or schemas.KamereonResponseSchema
@@ -282,8 +283,8 @@ async def get_vehicle_data(
     account_id: str,
     vin: str,
     endpoint: str,
-    endpoint_version: Optional[int] = None,
-    params: Optional[dict[str, str]] = None,
+    endpoint_version: int | None = None,
+    params: dict[str, str] | None = None,
     *,
     adapter_type: str = "kca",
 ) -> models.KamereonVehicleDataResponse:
@@ -323,8 +324,8 @@ async def set_vehicle_action(
     vin: str,
     endpoint: str,
     attributes: dict[str, Any],
-    endpoint_version: Optional[int] = None,
-    data_type: Optional[dict[str, Any]] = None,
+    endpoint_version: int | None = None,
+    data_type: dict[str, Any] | None = None,
     *,
     adapter_type: str = "kca",
 ) -> models.KamereonVehicleDataResponse:

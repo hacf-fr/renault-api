@@ -1,8 +1,9 @@
 """CLI function for a vehicle."""
 
+from __future__ import annotations
+
 import re
 from typing import Any
-from typing import Optional
 
 import aiohttp
 import click
@@ -73,7 +74,7 @@ async def show(
 
 
 def _format_charge_schedule(schedule: ChargeSchedule, key: str) -> list[str]:
-    details: Optional[ChargeDaySchedule] = getattr(schedule, key)
+    details: ChargeDaySchedule | None = getattr(schedule, key)
     if not details:  # pragma: no cover
         return [key.capitalize(), "-", "-", "-"]
     return [

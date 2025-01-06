@@ -1,7 +1,8 @@
 """CLI function for a vehicle."""
 
+from __future__ import annotations
+
 from typing import Any
-from typing import Optional
 
 import aiohttp
 import click
@@ -86,7 +87,7 @@ async def history(
     *,
     start: str,
     end: str,
-    period: Optional[str],
+    period: str | None,
     websession: aiohttp.ClientSession,
 ) -> None:
     """Display charge history."""

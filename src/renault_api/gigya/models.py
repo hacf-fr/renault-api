@@ -1,8 +1,9 @@
 """Gigya models."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Any
-from typing import Optional
 
 from . import exceptions
 from renault_api.models import BaseModel
@@ -20,7 +21,7 @@ class GigyaResponse(BaseModel):
     """Gigya response."""
 
     errorCode: int
-    errorDetails: Optional[str]
+    errorDetails: str | None
 
     def raise_for_error_code(self) -> None:
         """Checks the response information."""
@@ -36,14 +37,14 @@ class GigyaResponse(BaseModel):
 class GigyaLoginSessionInfo(BaseModel):
     """Gigya Login sessionInfo details."""
 
-    cookieValue: Optional[str]
+    cookieValue: str | None
 
 
 @dataclass
 class GigyaLoginResponse(GigyaResponse):
     """Gigya response to POST on /accounts.login."""
 
-    sessionInfo: Optional[GigyaLoginSessionInfo]
+    sessionInfo: GigyaLoginSessionInfo | None
 
     def get_session_cookie(self) -> str:
         """Return cookie value from session information."""
@@ -60,14 +61,14 @@ class GigyaLoginResponse(GigyaResponse):
 class GigyaGetAccountInfoData(BaseModel):
     """Gigya GetAccountInfo data details."""
 
-    personId: Optional[str]
+    personId: str | None
 
 
 @dataclass
 class GigyaGetAccountInfoResponse(GigyaResponse):
     """Gigya response to POST on /accounts.getAccountInfo."""
 
-    data: Optional[GigyaGetAccountInfoData]
+    data: GigyaGetAccountInfoData | None
 
     def get_person_id(self) -> str:
         """Return person id."""
@@ -86,7 +87,7 @@ class GigyaGetAccountInfoResponse(GigyaResponse):
 class GigyaGetJWTResponse(GigyaResponse):
     """Gigya response to POST on /accounts.getJWT."""
 
-    id_token: Optional[str]
+    id_token: str | None
 
     def get_jwt(self) -> str:
         """Return jwt token."""

@@ -1,8 +1,9 @@
 """Kamereon client for interaction with Renault servers."""
 
+from __future__ import annotations
+
 import json
 import os
-from typing import Optional
 
 import jwt
 
@@ -26,7 +27,7 @@ class CredentialStore:
                 return cred
         raise KeyError(name)
 
-    def get(self, name: str) -> Optional[Credential]:
+    def get(self, name: str) -> Credential | None:
         """Get a credential the credential store."""
         if name in list(self._store.keys()):
             cred = self._store[name]
@@ -34,7 +35,7 @@ class CredentialStore:
                 return cred
         return None
 
-    def get_value(self, name: str) -> Optional[str]:
+    def get_value(self, name: str) -> str | None:
         """Get a credential value from the credential store."""
         if name in list(self._store.keys()):
             cred = self._store[name]
