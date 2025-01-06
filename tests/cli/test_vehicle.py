@@ -163,7 +163,11 @@ EXPECTED_STATUS = {
         '"charge-mode": {"chargeMode": "always"}, '
         '"cockpit": {"totalMileage": 49114.27}, '
         '"res-state": {"details": "Stopped, ready for RES", "code": "10"}, '
-        '"hvac-status": {"externalTemperature": 8.0, "hvacStatus": "off"}}\n'
+        '"hvac-status": {"externalTemperature": 8.0, "hvacStatus": "off"}, '
+        '"pressure": {"flPressure": 2460, "frPressure": 2730, '
+        '"rlPressure": 2790, "rrPressure": 2790, '
+        '"flStatus": 0, "frStatus": 0, '
+        '"rlStatus": 0, "rrStatus": 0}}\n'
     ),
 }
 
