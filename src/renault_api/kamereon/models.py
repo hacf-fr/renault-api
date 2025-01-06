@@ -69,6 +69,9 @@ VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
     "XCB1VE": {  # MEGANE E-TECH
         "support-endpoint-lock-status": False,
     },
+    "XCB1SE": {  # SCENIC E-TECH
+        "support-endpoint-lock-status": False,
+    },
 }
 
 GATEWAY_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
