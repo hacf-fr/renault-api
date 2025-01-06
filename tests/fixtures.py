@@ -281,7 +281,7 @@ def inject_get_tyre_pressure(
     mocked_responses: aioresponses, filename: str = "vehicle_data/tyre-pressure.json"
 ) -> str:
     """Inject sample tyre-pressure."""
-    urlpath = f"{ADAPTER2_PATH}/pressure?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{ADAPTER_PATH}/pressure?{DEFAULT_QUERY_STRING}"
     return inject_data(
         mocked_responses,
         urlpath,
