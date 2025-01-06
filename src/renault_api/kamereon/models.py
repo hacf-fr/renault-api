@@ -3,8 +3,6 @@
 import json
 from dataclasses import dataclass
 from typing import Any
-from typing import Dict
-from typing import List
 from typing import Optional
 from typing import cast
 
@@ -16,7 +14,7 @@ from . import helpers
 from .enums import AssetPictureSize
 from renault_api.models import BaseModel
 
-COMMON_ERRRORS: List[Dict[str, Any]] = [
+COMMON_ERRRORS: list[dict[str, Any]] = [
     {
         "errorCode": "err.func.400",
         "error_type": exceptions.InvalidInputException,
@@ -47,7 +45,7 @@ COMMON_ERRRORS: List[Dict[str, Any]] = [
     },
 ]
 
-VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
+VEHICLE_SPECIFICATIONS: dict[str, dict[str, Any]] = {
     "X101VE": {  # ZOE phase 1
         "reports-charge-session-durations-in-minutes": True,
         "reports-in-watts": True,
@@ -74,7 +72,7 @@ VEHICLE_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
     },
 }
 
-GATEWAY_SPECIFICATIONS: Dict[str, Dict[str, Any]] = {
+GATEWAY_SPECIFICATIONS: dict[str, dict[str, Any]] = {
     "GDC": {  # ZOE phase 1
         "reports-charge-session-durations-in-minutes": True,
         "reports-in-watts": True,
@@ -130,7 +128,7 @@ class KamereonResponseError(BaseModel):
 class KamereonResponse(BaseModel):
     """Kamereon response."""
 
-    errors: Optional[List[KamereonResponseError]]
+    errors: Optional[list[KamereonResponseError]]
 
     def raise_for_error_code(self) -> None:
         """Raise exception if errors found in the response."""
@@ -152,7 +150,7 @@ class KamereonPersonAccount(BaseModel):
 class KamereonPersonResponse(KamereonResponse):
     """Kamereon response to GET on /persons/{gigya_person_id}."""
 
-    accounts: Optional[List[KamereonPersonAccount]]
+    accounts: Optional[list[KamereonPersonAccount]]
 
 
 @dataclass
@@ -175,7 +173,7 @@ class KamereonVehicleDetails(BaseModel):
     model: Optional[KamereonVehicleDetailsGroup]
     energy: Optional[KamereonVehicleDetailsGroup]
     engineEnergyType: Optional[str]
-    assets: Optional[List[Dict[str, Any]]]
+    assets: Optional[list[dict[str, Any]]]
 
     def get_energy_code(self) -> Optional[str]:
         """Return vehicle energy code."""
@@ -193,7 +191,7 @@ class KamereonVehicleDetails(BaseModel):
         """Return vehicle model label."""
         return self.model.label if self.model else None
 
-    def get_asset(self, asset_type: str) -> Optional[Dict[str, Any]]:
+    def get_asset(self, asset_type: str) -> Optional[dict[str, Any]]:
         """Return asset."""
         return next(
             filter(
@@ -205,9 +203,9 @@ class KamereonVehicleDetails(BaseModel):
         self, size: AssetPictureSize = AssetPictureSize.LARGE
     ) -> Optional[str]:
         """Return vehicle picture."""
-        asset: Dict[str, Any] = self.get_asset("PICTURE") or {}
+        asset: dict[str, Any] = self.get_asset("PICTURE") or {}
 
-        rendition: Dict[str, str] = next(
+        rendition: dict[str, str] = next(
             filter(
                 lambda rendition: rendition.get("resolutionType")
                 == f"ONE_MYRENAULT_{size.name}",
@@ -299,7 +297,7 @@ class KamereonVehiclesResponse(KamereonResponse):
 
     accountId: Optional[str]
     country: Optional[str]
-    vehicleLinks: Optional[List[KamereonVehiclesLink]]
+    vehicleLinks: Optional[list[KamereonVehiclesLink]]
 
 
 @dataclass
@@ -332,7 +330,7 @@ class KamereonVehicleContract(BaseModel):
 class KamereonVehicleContractsResponse(KamereonResponse):
     """Kamereon response to GET on /accounts/{accountId}/vehicles/{vin}/contracts."""
 
-    contractList: Optional[List[KamereonVehicleContract]]
+    contractList: Optional[list[KamereonVehicleContract]]
 
 
 @dataclass
@@ -341,7 +339,7 @@ class KamereonVehicleData(BaseModel):
 
     type: Optional[str]
     id: Optional[str]
-    attributes: Optional[Dict[str, Any]]
+    attributes: Optional[dict[str, Any]]
 
 
 @dataclass
@@ -555,7 +553,7 @@ class ChargeDaySchedule(BaseModel):
     startTime: Optional[str]
     duration: Optional[int]
 
-    def for_json(self) -> Dict[str, Any]:
+    def for_json(self) -> dict[str, Any]:
         """Create dict for json."""
         return {
             "startTime": self.startTime,
@@ -583,9 +581,9 @@ class ChargeSchedule(BaseModel):
     saturday: Optional[ChargeDaySchedule]
     sunday: Optional[ChargeDaySchedule]
 
-    def for_json(self) -> Dict[str, Any]:
+    def for_json(self) -> dict[str, Any]:
         """Create dict for json."""
-        result: Dict[str, Any] = {
+        result: dict[str, Any] = {
             "id": self.id,
             "activated": self.activated,
         }
@@ -604,7 +602,7 @@ class HvacDaySchedule(BaseModel):
 
     readyAtTime: Optional[str]
 
-    def for_json(self) -> Dict[str, Optional[str]]:
+    def for_json(self) -> dict[str, Optional[str]]:
         """Create dict for json."""
         return {
             "readyAtTime": self.readyAtTime,
@@ -625,9 +623,9 @@ class HvacSchedule(BaseModel):
     saturday: Optional[HvacDaySchedule]
     sunday: Optional[HvacDaySchedule]
 
-    def for_json(self) -> Dict[str, Any]:
+    def for_json(self) -> dict[str, Any]:
         """Create dict for json."""
-        result: Dict[str, Any] = {
+        result: dict[str, Any] = {
             "id": self.id,
             "activated": self.activated,
         }
@@ -645,9 +643,9 @@ class KamereonVehicleChargingSettingsData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data charging-settings attributes."""
 
     mode: Optional[str]
-    schedules: Optional[List[ChargeSchedule]]
+    schedules: Optional[list[ChargeSchedule]]
 
-    def update(self, args: Dict[str, Any]) -> None:
+    def update(self, args: dict[str, Any]) -> None:
         """Update schedule."""
         if "id" not in args:  # pragma: no cover
             raise ValueError("id not provided for update.")
@@ -665,9 +663,9 @@ class KamereonVehicleHvacSettingsData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data hvac-settings (mode+schedules) attributes."""
 
     mode: Optional[str]
-    schedules: Optional[List[HvacSchedule]]
+    schedules: Optional[list[HvacSchedule]]
 
-    def update(self, args: Dict[str, Any]) -> None:
+    def update(self, args: dict[str, Any]) -> None:
         """Update schedule."""
         if "id" not in args:  # pragma: no cover
             raise ValueError("id not provided for update.")

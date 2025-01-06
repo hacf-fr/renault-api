@@ -3,12 +3,12 @@
 import asyncio
 import functools
 import pathlib
+from collections.abc import AsyncGenerator
+from collections.abc import Generator
 from datetime import datetime
 from datetime import timedelta
 from datetime import tzinfo
 from typing import Any
-from typing import AsyncGenerator
-from typing import Generator
 from typing import Optional
 
 import pytest

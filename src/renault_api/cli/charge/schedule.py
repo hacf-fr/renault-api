@@ -2,10 +2,7 @@
 
 import re
 from typing import Any
-from typing import Dict
-from typing import List
 from typing import Optional
-from typing import Tuple
 
 import aiohttp
 import click
@@ -40,7 +37,7 @@ def schedule() -> None:
 @click.pass_obj
 @helpers.coro_with_websession
 async def show(
-    ctx_data: Dict[str, Any],
+    ctx_data: dict[str, Any],
     *,
     websession: aiohttp.ClientSession,
 ) -> None:
@@ -75,7 +72,7 @@ async def show(
         )
 
 
-def _format_charge_schedule(schedule: ChargeSchedule, key: str) -> List[str]:
+def _format_charge_schedule(schedule: ChargeSchedule, key: str) -> list[str]:
     details: Optional[ChargeDaySchedule] = getattr(schedule, key)
     if not details:  # pragma: no cover
         return [key.capitalize(), "-", "-", "-"]
@@ -88,10 +85,10 @@ def _format_charge_schedule(schedule: ChargeSchedule, key: str) -> List[str]:
 
 
 async def _get_schedule(
-    ctx_data: Dict[str, Any],
+    ctx_data: dict[str, Any],
     websession: aiohttp.ClientSession,
     id: int,
-) -> Tuple[RenaultVehicle, List[ChargeSchedule], ChargeSchedule]:
+) -> tuple[RenaultVehicle, list[ChargeSchedule], ChargeSchedule]:
     """Get the given schedules activated-flag to given state."""
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
@@ -119,7 +116,7 @@ async def _get_schedule(
 @click.pass_obj
 @helpers.coro_with_websession
 async def set(
-    ctx_data: Dict[str, Any],
+    ctx_data: dict[str, Any],
     *,
     id: int,
     websession: aiohttp.ClientSession,
@@ -141,7 +138,7 @@ async def set(
 @click.pass_obj
 @helpers.coro_with_websession
 async def activate(
-    ctx_data: Dict[str, Any],
+    ctx_data: dict[str, Any],
     *,
     id: int,
     websession: aiohttp.ClientSession,
@@ -162,7 +159,7 @@ async def activate(
 @click.pass_obj
 @helpers.coro_with_websession
 async def deactivate(
-    ctx_data: Dict[str, Any],
+    ctx_data: dict[str, Any],
     *,
     id: int,
     websession: aiohttp.ClientSession,
@@ -200,7 +197,7 @@ def update_settings(
                 )
 
 
-def _parse_day_schedule(raw: str) -> Tuple[str, int]:
+def _parse_day_schedule(raw: str) -> tuple[str, int]:
     match = _DAY_SCHEDULE_REGEX.match(raw)
     if not match:  # pragma: no cover
         raise ValueError(

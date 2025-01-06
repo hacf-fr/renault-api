@@ -2,9 +2,9 @@
 
 import os
 import pathlib
+from collections.abc import Generator
 from datetime import datetime
 from typing import Any
-from typing import Generator
 
 from _pytest.fixtures import fixture
 from _pytest.monkeypatch import MonkeyPatch

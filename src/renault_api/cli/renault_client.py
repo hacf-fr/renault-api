@@ -3,7 +3,6 @@
 import json
 from locale import getdefaultlocale
 from typing import Any
-from typing import Dict
 from typing import Optional
 
 import aiohttp
@@ -23,7 +22,7 @@ from renault_api.renault_session import RenaultSession
 
 
 async def get_locale(
-    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
+    websession: aiohttp.ClientSession, ctx_data: dict[str, Any]
 ) -> str:
     """Prompt the user for locale."""
     credential_store: CredentialStore = ctx_data["credential_store"]
@@ -51,7 +50,7 @@ async def get_locale(
 
 
 async def _create_renault_session(
-    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
+    websession: aiohttp.ClientSession, ctx_data: dict[str, Any]
 ) -> RenaultSession:
     """Get RenaultClient for use by CLI."""
     credential_store: CredentialStore = ctx_data["credential_store"]
@@ -71,7 +70,7 @@ async def _create_renault_session(
 
 
 async def _get_logged_in_session(
-    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
+    websession: aiohttp.ClientSession, ctx_data: dict[str, Any]
 ) -> RenaultSession:
     """Get RenaultSession for use by CLI."""
     session = await _create_renault_session(websession=websession, ctx_data=ctx_data)
@@ -83,7 +82,7 @@ async def _get_logged_in_session(
 
 
 async def get_logged_in_client(
-    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
+    websession: aiohttp.ClientSession, ctx_data: dict[str, Any]
 ) -> RenaultClient:
     """Get RenaultClient for use by CLI."""
     session = await _get_logged_in_session(websession=websession, ctx_data=ctx_data)
@@ -107,7 +106,7 @@ async def _prompt_login(session: RenaultSession) -> None:
 
 async def login(
     websession: aiohttp.ClientSession,
-    ctx_data: Dict[str, Any],
+    ctx_data: dict[str, Any],
     user: str,
     password: str,
 ) -> None:
@@ -117,7 +116,7 @@ async def login(
 
 
 async def display_accounts(
-    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
+    websession: aiohttp.ClientSession, ctx_data: dict[str, Any]
 ) -> None:
     """Display accounts."""
     client = await get_logged_in_client(websession=websession, ctx_data=ctx_data)
@@ -129,7 +128,7 @@ async def display_accounts(
 
 
 async def http_get_endpoint(
-    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any], endpoint: str
+    websession: aiohttp.ClientSession, ctx_data: dict[str, Any], endpoint: str
 ) -> str:
     """Run HTTP GET request."""
     if "{account_id}" in endpoint:  # pragma: no branch
@@ -147,10 +146,10 @@ async def http_get_endpoint(
 
 async def http_request(
     websession: aiohttp.ClientSession,
-    ctx_data: Dict[str, Any],
+    ctx_data: dict[str, Any],
     method: str,
     endpoint: str,
-    json_body: Optional[Dict[str, Any]] = None,
+    json_body: Optional[dict[str, Any]] = None,
 ) -> None:
     """Run HTTP request."""
     endpoint = await http_get_endpoint(websession, ctx_data, endpoint)
