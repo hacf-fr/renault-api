@@ -3,8 +3,6 @@
 import logging
 from datetime import datetime
 from datetime import timezone
-from typing import Dict
-from typing import List
 from typing import Optional
 from typing import cast
 from warnings import warn
@@ -37,7 +35,7 @@ class RenaultVehicle:
         websession: Optional[aiohttp.ClientSession] = None,
         locale: Optional[str] = None,
         country: Optional[str] = None,
-        locale_details: Optional[Dict[str, str]] = None,
+        locale_details: Optional[dict[str, str]] = None,
         credential_store: Optional[CredentialStore] = None,
         vehicle_details: Optional[models.KamereonVehicleDetails] = None,
         car_adapter: Optional[models.KamereonVehicleCarAdapterData] = None,
@@ -47,7 +45,7 @@ class RenaultVehicle:
         self._vin = vin
         self._vehicle_details = vehicle_details
         self._car_adapter = car_adapter
-        self._contracts: Optional[List[models.KamereonVehicleContract]] = None
+        self._contracts: Optional[list[models.KamereonVehicleContract]] = None
 
         if session:
             self._session = session
@@ -110,7 +108,7 @@ class RenaultVehicle:
         )
         return self._car_adapter
 
-    async def get_contracts(self) -> List[models.KamereonVehicleContract]:
+    async def get_contracts(self) -> list[models.KamereonVehicleContract]:
         """Get vehicle contracts."""
         if self._contracts:
             return self._contracts
@@ -432,7 +430,7 @@ class RenaultVehicle:
         )
 
     async def set_hvac_schedules(
-        self, schedules: List[models.HvacSchedule]
+        self, schedules: list[models.HvacSchedule]
     ) -> models.KamereonVehicleHvacScheduleActionData:
         """Set vehicle charge schedules."""
         for schedule in schedules:
@@ -457,7 +455,7 @@ class RenaultVehicle:
         )
 
     async def set_charge_schedules(
-        self, schedules: List[models.ChargeSchedule]
+        self, schedules: list[models.ChargeSchedule]
     ) -> models.KamereonVehicleChargeScheduleActionData:
         """Set vehicle charge schedules."""
         for schedule in schedules:

@@ -3,7 +3,6 @@
 import asyncio
 import functools
 import logging
-from typing import Dict
 from typing import Optional
 
 import aiohttp
@@ -23,7 +22,7 @@ async def get_api_keys(
     locale: str,
     force_load: bool = False,
     websession: Optional[aiohttp.ClientSession] = None,
-) -> Dict[str, str]:
+) -> dict[str, str]:
     """Get the API keys for specified locale.
 
     Args:

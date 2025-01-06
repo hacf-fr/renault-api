@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import datetime
 import json
+from collections.abc import Mapping
 from glob import glob
 from os import path
 from typing import Any
-from typing import Mapping
 
 import jwt
 from aioresponses import aioresponses

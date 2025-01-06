@@ -3,7 +3,6 @@
 import asyncio
 import logging
 from typing import Any
-from typing import Dict
 from typing import Optional
 
 import aiohttp
@@ -36,7 +35,7 @@ class RenaultSession:
         websession: aiohttp.ClientSession,
         locale: Optional[str] = None,
         country: Optional[str] = None,
-        locale_details: Optional[Dict[str, str]] = None,
+        locale_details: Optional[dict[str, str]] = None,
         credential_store: Optional[CredentialStore] = None,
     ) -> None:
         """Initialise RenaultSession."""
@@ -155,7 +154,7 @@ class RenaultSession:
                 return jwt
 
     async def http_request(
-        self, method: str, endpoint: str, json: Optional[Dict[str, Any]] = None
+        self, method: str, endpoint: str, json: Optional[dict[str, Any]] = None
     ) -> models.KamereonResponse:
         """GET to specified endpoint."""
         url = (await self._get_kamereon_root_url()) + endpoint
@@ -213,7 +212,7 @@ class RenaultSession:
         account_id: str,
         vin: str,
         endpoint: str,
-        params: Optional[Dict[str, str]] = None,
+        params: Optional[dict[str, str]] = None,
         *,
         adapter_type: str = "kca",
     ) -> models.KamereonVehicleDataResponse:
@@ -253,7 +252,7 @@ class RenaultSession:
         account_id: str,
         vin: str,
         endpoint: str,
-        attributes: Dict[str, Any],
+        attributes: dict[str, Any],
         *,
         adapter_type: str = "kca",
     ) -> models.KamereonVehicleDataResponse:
