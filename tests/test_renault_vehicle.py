@@ -120,6 +120,15 @@ async def test_get_battery_status(
 
 
 @pytest.mark.asyncio
+async def test_get_tyre_pressure(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
+    """Test get_tyre_pressure."""
+    fixtures.inject_get_tyre_pressure(mocked_responses)
+    assert await vehicle.get_tyre_pressure()
+
+
+@pytest.mark.asyncio
 async def test_get_location(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:

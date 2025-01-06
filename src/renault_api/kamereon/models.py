@@ -403,6 +403,20 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
 
 
 @dataclass
+class KamereonVehicleTyrePressureData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle tyre-pressure data."""
+
+    flPressure: Optional[int]
+    frPressure: Optional[int]
+    rlPressure: Optional[int]
+    rrPressure: Optional[int]
+    flStatus: Optional[int]
+    frStatus: Optional[int]
+    rlStatus: Optional[int]
+    rrStatus: Optional[int]
+
+
+@dataclass
 class KamereonVehicleLocationData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data location attributes."""
 
