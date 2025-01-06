@@ -68,6 +68,8 @@ tornado = "^6.3.3"
 PyYAML = "^6.0.1"
 #ensure virtualenv (for pre-commit) is greater than 20.21.0 to account for PVE-2024-68477
 virtualenv = ">=20.21.0"
+#ensure nodeenv (for pre-commit) is greater than 1.9.0 for python 3.13 compatibility
+nodeenv = ">=1.9.0"
 
 [tool.poetry.extras]
 cli = ["click", "tabulate", "dateparser"]
