@@ -114,6 +114,23 @@ Once installed, the following command prompts for credentials and settings, disp
 
 Please see the `Command-line Reference <Usage_>`_ for full details.
 
+Short examples
+=========
+
+**GET request (=query)**
+
+Windows/DOS format:  
+
+renault-api  http get /commerce/v1/accounts/{account_id}/kamereon/kca/car-adapter/v1/cars/{vin}/cockpit
+
+**POST request (=command)**
+
+Windows/DOS format (internal quotes escaped, whole payload enclosed in un-escaped quotes):
+
+Refresh battery status: 
+
+renault-api http post /commerce/v1/accounts/{account_id}/kamereon/kca/car-adapter/v1/cars/{vin}/actions/refresh-battery-status "{\\"data\\": {\\"type\\": \\"RefreshBatteryStatus\\"}}"
+
 
 Contributing
 ------------
