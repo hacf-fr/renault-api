@@ -12,6 +12,7 @@ class ChargeState(Enum):
     WAITING_FOR_CURRENT_CHARGE = 0.3
     ENERGY_FLAP_OPENED = 0.4
     CHARGE_IN_PROGRESS = 1.0
+    V2L_CONNECTED = -1.4
     # This next is more accurately "not charging" (<= ZE40) or "error" (ZE50).
     CHARGE_ERROR = -1.0
     UNAVAILABLE = -1.1
