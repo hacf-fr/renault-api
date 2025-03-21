@@ -57,6 +57,8 @@ jobs:
         run: |
           pip install --constraint=.github/workflows/constraints.txt poetry
           poetry --version
+          poetry self add poetry-plugin-export
+          poetry self show plugins
 
       - name: Install Nox
         run: |
