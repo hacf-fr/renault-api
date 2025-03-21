@@ -76,7 +76,7 @@ jobs:
           digest = hashlib.sha256(payload).hexdigest()
           result = "${{ runner.os }}-{}-{}-pre-commit".format(python, digest[:8])
 
-          print("name=result::{}".format(result)) >> $GITHUB_OUTPUT
+          print("::set-output name=result::{}".format(result))
 
       - name: Restore pre-commit cache
         uses: actions/cache@v4
