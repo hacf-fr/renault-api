@@ -480,7 +480,7 @@ def test_http_post(mocked_responses: aioresponses, cli_runner: CliRunner) -> Non
     json_body = json.dumps(body)
     result = cli_runner.invoke(
         __main__.main,
-        f"http post {endpoint} '{json_body}'",  # noqa: B907
+        f"http post {endpoint} '{json_body}'",
     )
     assert result.exit_code == 0, result.exception
 
