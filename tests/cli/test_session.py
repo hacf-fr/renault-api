@@ -99,7 +99,7 @@ def test_get_keys_succeeds(cli_runner: CliRunner) -> None:
 
     expected_output = (
         "Key                Value\n"
-        f"{'-'*17}  {'-'*66}\n"
+        f"{'-' * 17}  {'-' * 66}\n"
         f"locale             {TEST_LOCALE}\n"
         f"{CONF_GIGYA_URL}     {TEST_LOCALE_DETAILS[CONF_GIGYA_URL]}\n"
         f"{CONF_GIGYA_APIKEY}      {TEST_LOCALE_DETAILS[CONF_GIGYA_APIKEY]}\n"

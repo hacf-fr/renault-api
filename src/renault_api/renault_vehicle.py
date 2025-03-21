@@ -269,8 +269,7 @@ class RenaultVehicle:
             )
         if not isinstance(end, datetime):  # pragma: no cover
             raise TypeError(
-                "`end` should be an instance of datetime.datetime, "
-                f"not {end.__class__}"
+                f"`end` should be an instance of datetime.datetime, not {end.__class__}"
             )
         if period not in PERIOD_FORMATS.keys():  # pragma: no cover
             raise TypeError("`period` should be one of `month`, `day`")
@@ -302,8 +301,7 @@ class RenaultVehicle:
             )
         if not isinstance(end, datetime):  # pragma: no cover
             raise TypeError(
-                "`end` should be an instance of datetime.datetime, "
-                f"not {end.__class__}"
+                f"`end` should be an instance of datetime.datetime, not {end.__class__}"
             )
 
         params = {
@@ -332,8 +330,7 @@ class RenaultVehicle:
             )
         if not isinstance(end, datetime):  # pragma: no cover
             raise TypeError(
-                "`end` should be an instance of datetime.datetime, "
-                f"not {end.__class__}"
+                f"`end` should be an instance of datetime.datetime, not {end.__class__}"
             )
         if period not in PERIOD_FORMATS.keys():  # pragma: no cover
             raise TypeError("`period` should be one of `month`, `day`")
@@ -365,8 +362,7 @@ class RenaultVehicle:
             )
         if not isinstance(end, datetime):  # pragma: no cover
             raise TypeError(
-                "`end` should be an instance of datetime.datetime, "
-                f"not {end.__class__}"
+                f"`end` should be an instance of datetime.datetime, not {end.__class__}"
             )
 
         params = {
