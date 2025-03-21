@@ -65,25 +65,9 @@ jobs:
 
       - name: Compute pre-commit cache key
         if: matrix.session == 'pre-commit'
-        id: pre-commit-cache-old
-        shell: python
-        run: |
-          import hashlib
-          import sys
-
-          python = "py{}.{}".format(*sys.version_info[:2])
-          payload = sys.version.encode() + sys.executable.encode()
-          digest = hashlib.sha256(payload).hexdigest()
-          result = "${{ runner.os }}-{}-{}-pre-commit".format(python, digest[:8])
-
-          print("result={}".format(result))
-
-          # python --version
-      - name: Compute pre-commit cache key
-        if: matrix.session == 'pre-commit'
         id: pre-commit-cache
         run: |
-          echo "result=${{ runner.os }}-$(python --version)" >> $GITHUB_OUTPUT
+          echo "result=${{ runner.os }}-$(python --version | cut -d ' ' -f 2)" >> $GITHUB_OUTPUT
 
       - name: Restore pre-commit cache
         uses: actions/cache@v4
