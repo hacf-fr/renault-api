@@ -46,9 +46,9 @@ def test_main_succeeds(cli_runner: CliRunner) -> None:
     click_version_str = imp_metadata.version("click")
     click_version_parts = tuple(int(part) for part in click_version_str.split(".")[:2])
     result = cli_runner.invoke(__main__.main)
-    assert result.exit_code == (
-        2 if click_version_parts >= (8, 2) else 0
-    ), result.exception
+    assert result.exit_code == (2 if click_version_parts >= (8, 2) else 0), (
+        result.exception
+    )
 
 
 def test_debug(cli_runner: CliRunner, caplog: Any) -> None:
