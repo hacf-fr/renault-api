@@ -43,6 +43,8 @@ def patch_datetime(monkeypatch: MonkeyPatch) -> Generator[None, None, None]:
 
 def test_main_succeeds(cli_runner: CliRunner) -> None:
     """It exits with a status code of zero."""
+    # Click behavior was changed in click 8.2
+    # See https://github.com/pallets/click/pull/1489
     click_version_str = imp_metadata.version("click")
     click_version_parts = tuple(int(part) for part in click_version_str.split(".")[:2])
     result = cli_runner.invoke(__main__.main)
