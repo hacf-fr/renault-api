@@ -1,0 +1,229 @@
+{
+  "accountId": "account-id-renault-5",
+  "country": "PT",
+  "vehicleLinks": [
+    {
+      "brand": "RENAULT",
+      "vin": "VF1AAAA0000000000",
+      "status": "ACTIVE",
+      "linkType": "OWNER",
+      "garageBrand": "RENAULT",
+      "startDate": "2025-02-19",
+      "createdDate": "2025-02-19T18:57:22.035221Z",
+      "lastModifiedDate": "2025-02-19T18:57:22.035221Z",
+      "ownershipStartDate": "2025-02-19",
+      "cancellationReason": {},
+      "preferredDealer": {
+        "dealerId": "62013156_001",
+        "brand": "RENAULT",
+        "createdDate": "2025-02-18T09:44:44.446766660Z",
+        "lastModifiedDate": "2025-02-18T09:44:44.447267527Z"
+      },
+      "connectedDriver": {
+        "role": "MAIN_DRIVER",
+        "createdDate": "2025-02-20T17:56:00.695546Z",
+        "lastModifiedDate": "2025-02-20T17:56:00.695546Z",
+        "createdBy": "MyRenault Backend",
+        "lastModifiedBy": "MyRenault Backend"
+      },
+      "vehicleDetails": {
+        "vin": "VF1AAAA0000000000",
+        "registrationDate": "2025-02-17",
+        "firstRegistrationDate": "2025-02-17",
+        "engineType": "6AK",
+        "engineRatio": "260",
+        "modelSCR": "R5E",
+        "passToSalesDate": "2024-12-03",
+        "deliveryCountry": {
+          "code": "PT",
+          "label": "PORTUGAL"
+        },
+        "family": {
+          "code": "X1316",
+          "label": "X1316 FAMILY",
+          "group": "007"
+        },
+        "tcu": {
+          "code": "AIVCT",
+          "label": "WITH AIVC CONNECTION UNIT",
+          "group": "E70"
+        },
+        "navigationAssistanceLevel": {},
+        "battery": {
+          "code": "BTGAE",
+          "label": "BATTERY BTGAE",
+          "group": "968"
+        },
+        "radioType": {
+          "code": "1234",
+          "label": "IVI2 FULL10 CLASSIC 6HP D",
+          "group": "425"
+        },
+        "registrationCountry": {
+          "code": "PT"
+        },
+        "brand": {
+          "label": "RENAULT"
+        },
+        "model": {
+          "code": "R5E1VE",
+          "label": "RENAULT 5",
+          "group": "971"
+        },
+        "gearbox": {
+          "code": "1EVGB",
+          "label": "REDUCER FOR ELECTRIC MOTOR",
+          "group": "427"
+        },
+        "version": {
+          "code": "E3 A1 N"
+        },
+        "energy": {
+          "code": "ELECX",
+          "label": "ELECTRICITY",
+          "group": "019"
+        },
+        "bodyType": {
+          "code": "HTB",
+          "label": "5 DOOR HATCHBACK",
+          "group": "008"
+        },
+        "steeringSide": {
+          "code": "LHDG",
+          "label": "LEFT-HAND DRIVE",
+          "group": "027"
+        },
+        "additionalEngineType": {
+          "code": "NOATY",
+          "label": "WITHOUT ADDITIONAL ENGINE TYPE",
+          "group": "948"
+        },
+        "hybridation": {
+          "code": "NOHYB",
+          "label": "NO HYBRIDISATION LEVEL",
+          "group": "956"
+        },
+        "registrationNumber": "REG-NUMBER",
+        "vcd": "PAVEH/X1316/HTB/EA3/A1/ELECX/LHDG/TEMP/2WDRV/BEMBK/ACC02/00ABS/ACD02/STDRF/NHTWS/HTRWI/WFTRP/CLK00/RVX09/2RVLG/RAL18/FSBFX/SPADP/FAB02/SERIE/CLSCO/CLS02/HAR00/RHR03/FSE02/RSE03/BIYYA/TIBCH/KMETR/TPRM3/SDSGL/NOSTK/SSENJO/NTCRF/SABG3/LEDH2/ESCHS/FPAS2/PALAW/M3CA2/PRROP/DB6T0/NOAGR/SLSW0/NOSAL/RVIAT/TRSV0/NBRVX/FWL1T/RWL1T/NOOSW/REPKT/NHTS0/00PRT/BRA03/RUNLI/HSTPL/SBRS5/SSEDNC/RMSB3/NA496/1EVGB/RMLT3/ASOC0/RIM03/SPRTER/TYSUM/ISOFI/EPER0/HR11M/MY00/FXCCA/NOKPL/PRALA/CHGS4/TL01A/BRAT0/NOBDP/NOADT/ABCXL/ELC1/NOETC/STWBA/NOLSV/PRFEX/NOFCI/M2024/PHAS1/NOLTD/V2G00/NOATY/NOHYB/52K0B/BTGAE/VEC011/R5E1VE/NB034/6AK/02ANT/NOADR/LKA05/BIHT0/NODUP/NOWAP/SIDCO/NOCCH/VTS00/NOASI/SBCAL/AMLT0/DRL02/RCALL/SSCARP/POLFI/TBI00/MET05/NOBSD/NOECM/RCAR0/NOM2C/AIVCT/NOGSI/TPEQJ/TSGNE/2BCOL/ITPK0/MDMOD/PXA03/PXB00/NOPXC/NOPXD/NOPXE/PXF00/SSPXJ/NHTSW/APVIR/DDAWA/WICH0/SMIS2/FCOWA/C1AH2/NOPRA/VSPTA/1234Y/NOLIE/NOLII/NOWFI/AEBA4/ARS00/ADISC/PRAHL/SPMR2/RRCAM/NORCT/NOH08/NOTCC/NOADD/EGSRB/CHRGI",
+        "manufacturingDate": "2024-12-03",
+        "assets": [
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "mybrand_2",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=PAVEH%2FX1316%2FHTB%2FEA3%2FLHDG%2FACC02%2FACD02%2FWFTRP%2FCLK00%2FRVX09%2FRAL18%2FCLS02%2FFSE02%2FBIYYA%2FPRROP%2FSLSW0%2FRVIAT%2FTRSV0%2FNHTS0%2FNA496%2FRIM03%2FFXCCA%2FABCXL%2F02ANT%2FNODUP%2FNOWAP%2FSBCAL%2FAMLT0%2FMET05%2FNOBSD%2FITPK0%2FPXA03%2FPXB00%2FPXF00%2FSSPXJ%2FNHTSW%2FWICH0%2FNOLIE%2FNOLII%2FRRCAM&databaseId=8121f650-597b-4824-8964-24c315e9457a&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=PAVEH%2FX1316%2FHTB%2FEA3%2FLHDG%2FACC02%2FACD02%2FWFTRP%2FCLK00%2FRVX09%2FRAL18%2FCLS02%2FFSE02%2FBIYYA%2FPRROP%2FSLSW0%2FRVIAT%2FTRSV0%2FNHTS0%2FNA496%2FRIM03%2FFXCCA%2FABCXL%2F02ANT%2FNODUP%2FNOWAP%2FSBCAL%2FAMLT0%2FMET05%2FNOBSD%2FITPK0%2FPXA03%2FPXB00%2FPXF00%2FSSPXJ%2FNHTSW%2FWICH0%2FNOLIE%2FNOLII%2FRRCAM&databaseId=8121f650-597b-4824-8964-24c315e9457a&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_LARGE"
+              }
+            ],
+            "viewPointInLowerCase": "mybrand_2"
+          },
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "mybrand_5",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=PAVEH%2FX1316%2FHTB%2FEA3%2FLHDG%2FACC02%2FACD02%2FWFTRP%2FCLK00%2FRVX09%2FRAL18%2FCLS02%2FFSE02%2FBIYYA%2FPRROP%2FSLSW0%2FRVIAT%2FTRSV0%2FNHTS0%2FNA496%2FRIM03%2FFXCCA%2FABCXL%2F02ANT%2FNODUP%2FNOWAP%2FSBCAL%2FAMLT0%2FMET05%2FNOBSD%2FITPK0%2FPXA03%2FPXB00%2FPXF00%2FSSPXJ%2FNHTSW%2FWICH0%2FNOLIE%2FNOLII%2FRRCAM&databaseId=8121f650-597b-4824-8964-24c315e9457a&bookmarkSet=RSITE&bookmark=EXT_34_AV&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=PAVEH%2FX1316%2FHTB%2FEA3%2FLHDG%2FACC02%2FACD02%2FWFTRP%2FCLK00%2FRVX09%2FRAL18%2FCLS02%2FFSE02%2FBIYYA%2FPRROP%2FSLSW0%2FRVIAT%2FTRSV0%2FNHTS0%2FNA496%2FRIM03%2FFXCCA%2FABCXL%2F02ANT%2FNODUP%2FNOWAP%2FSBCAL%2FAMLT0%2FMET05%2FNOBSD%2FITPK0%2FPXA03%2FPXB00%2FPXF00%2FSSPXJ%2FNHTSW%2FWICH0%2FNOLIE%2FNOLII%2FRRCAM&databaseId=8121f650-597b-4824-8964-24c315e9457a&bookmarkSet=RSITE&bookmark=EXT_34_AV&profile=HELIOS_OWNERSERVICES_LARGE"
+              }
+            ],
+            "viewPointInLowerCase": "mybrand_5"
+          },
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "myb_car_selector",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=PAVEH%2FX1316%2FHTB%2FEA3%2FLHDG%2FACC02%2FACD02%2FWFTRP%2FCLK00%2FRVX09%2FRAL18%2FCLS02%2FFSE02%2FBIYYA%2FPRROP%2FSLSW0%2FRVIAT%2FTRSV0%2FNHTS0%2FNA496%2FRIM03%2FFXCCA%2FABCXL%2F02ANT%2FNODUP%2FNOWAP%2FSBCAL%2FAMLT0%2FMET05%2FNOBSD%2FITPK0%2FPXA03%2FPXB00%2FPXF00%2FSSPXJ%2FNHTSW%2FWICH0%2FNOLIE%2FNOLII%2FRRCAM&databaseId=8121f650-597b-4824-8964-24c315e9457a&bookmarkSet=CARPICKER&bookmark=EXT_RIGHT_SIDE&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=PAVEH%2FX1316%2FHTB%2FEA3%2FLHDG%2FACC02%2FACD02%2FWFTRP%2FCLK00%2FRVX09%2FRAL18%2FCLS02%2FFSE02%2FBIYYA%2FPRROP%2FSLSW0%2FRVIAT%2FTRSV0%2FNHTS0%2FNA496%2FRIM03%2FFXCCA%2FABCXL%2F02ANT%2FNODUP%2FNOWAP%2FSBCAL%2FAMLT0%2FMET05%2FNOBSD%2FITPK0%2FPXA03%2FPXB00%2FPXF00%2FSSPXJ%2FNHTSW%2FWICH0%2FNOLIE%2FNOLII%2FRRCAM&databaseId=8121f650-597b-4824-8964-24c315e9457a&bookmarkSet=CARPICKER&bookmark=EXT_RIGHT_SIDE&profile=HELIOS_OWNERSERVICES_LARGE"
+              }
+            ],
+            "viewPointInLowerCase": "myb_car_selector"
+          },
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "myb_car_page_dashboard",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=PAVEH%2FX1316%2FHTB%2FEA3%2FLHDG%2FACC02%2FACD02%2FWFTRP%2FCLK00%2FRVX09%2FRAL18%2FCLS02%2FFSE02%2FBIYYA%2FPRROP%2FSLSW0%2FRVIAT%2FTRSV0%2FNHTS0%2FNA496%2FRIM03%2FFXCCA%2FABCXL%2F02ANT%2FNODUP%2FNOWAP%2FSBCAL%2FAMLT0%2FMET05%2FNOBSD%2FITPK0%2FPXA03%2FPXB00%2FPXF00%2FSSPXJ%2FNHTSW%2FWICH0%2FNOLIE%2FNOLII%2FRRCAM&databaseId=8121f650-597b-4824-8964-24c315e9457a&bookmarkSet=CARPICKER&bookmark=EXT_LEFT_SIDE&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=PAVEH%2FX1316%2FHTB%2FEA3%2FLHDG%2FACC02%2FACD02%2FWFTRP%2FCLK00%2FRVX09%2FRAL18%2FCLS02%2FFSE02%2FBIYYA%2FPRROP%2FSLSW0%2FRVIAT%2FTRSV0%2FNHTS0%2FNA496%2FRIM03%2FFXCCA%2FABCXL%2F02ANT%2FNODUP%2FNOWAP%2FSBCAL%2FAMLT0%2FMET05%2FNOBSD%2FITPK0%2FPXA03%2FPXB00%2FPXF00%2FSSPXJ%2FNHTSW%2FWICH0%2FNOLIE%2FNOLII%2FRRCAM&databaseId=8121f650-597b-4824-8964-24c315e9457a&bookmarkSet=CARPICKER&bookmark=EXT_LEFT_SIDE&profile=HELIOS_OWNERSERVICES_LARGE"
+              }
+            ],
+            "viewPointInLowerCase": "myb_car_page_dashboard"
+          },
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "myb_program_settings_page",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=PAVEH%2FX1316%2FHTB%2FEA3%2FLHDG%2FACC02%2FACD02%2FWFTRP%2FCLK00%2FRVX09%2FRAL18%2FCLS02%2FFSE02%2FBIYYA%2FPRROP%2FSLSW0%2FRVIAT%2FTRSV0%2FNHTS0%2FNA496%2FRIM03%2FFXCCA%2FABCXL%2F02ANT%2FNODUP%2FNOWAP%2FSBCAL%2FAMLT0%2FMET05%2FNOBSD%2FITPK0%2FPXA03%2FPXB00%2FPXF00%2FSSPXJ%2FNHTSW%2FWICH0%2FNOLIE%2FNOLII%2FRRCAM&databaseId=8121f650-597b-4824-8964-24c315e9457a&bookmarkSet=CARPICKER&bookmark=EXT_LEFT_SIDE&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=PAVEH%2FX1316%2FHTB%2FEA3%2FLHDG%2FACC02%2FACD02%2FWFTRP%2FCLK00%2FRVX09%2FRAL18%2FCLS02%2FFSE02%2FBIYYA%2FPRROP%2FSLSW0%2FRVIAT%2FTRSV0%2FNHTS0%2FNA496%2FRIM03%2FFXCCA%2FABCXL%2F02ANT%2FNODUP%2FNOWAP%2FSBCAL%2FAMLT0%2FMET05%2FNOBSD%2FITPK0%2FPXA03%2FPXB00%2FPXF00%2FSSPXJ%2FNHTSW%2FWICH0%2FNOLIE%2FNOLII%2FRRCAM&databaseId=8121f650-597b-4824-8964-24c315e9457a&bookmarkSet=CARPICKER&bookmark=EXT_LEFT_SIDE&profile=HELIOS_OWNERSERVICES_LARGE"
+              }
+            ],
+            "viewPointInLowerCase": "myb_program_settings_page"
+          },
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "myb_plug_and_charge_activation",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=PAVEH%2FX1316%2FHTB%2FEA3%2FLHDG%2FACC02%2FACD02%2FWFTRP%2FCLK00%2FRVX09%2FRAL18%2FCLS02%2FFSE02%2FBIYYA%2FPRROP%2FSLSW0%2FRVIAT%2FTRSV0%2FNHTS0%2FNA496%2FRIM03%2FFXCCA%2FABCXL%2F02ANT%2FNODUP%2FNOWAP%2FSBCAL%2FAMLT0%2FMET05%2FNOBSD%2FITPK0%2FPXA03%2FPXB00%2FPXF00%2FSSPXJ%2FNHTSW%2FWICH0%2FNOLIE%2FNOLII%2FRRCAM&databaseId=8121f650-597b-4824-8964-24c315e9457a&bookmarkSet=CARPICKER&bookmark=EXT_RIGHT_SIDE&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=PAVEH%2FX1316%2FHTB%2FEA3%2FLHDG%2FACC02%2FACD02%2FWFTRP%2FCLK00%2FRVX09%2FRAL18%2FCLS02%2FFSE02%2FBIYYA%2FPRROP%2FSLSW0%2FRVIAT%2FTRSV0%2FNHTS0%2FNA496%2FRIM03%2FFXCCA%2FABCXL%2F02ANT%2FNODUP%2FNOWAP%2FSBCAL%2FAMLT0%2FMET05%2FNOBSD%2FITPK0%2FPXA03%2FPXB00%2FPXF00%2FSSPXJ%2FNHTSW%2FWICH0%2FNOLIE%2FNOLII%2FRRCAM&databaseId=8121f650-597b-4824-8964-24c315e9457a&bookmarkSet=CARPICKER&bookmark=EXT_RIGHT_SIDE&profile=HELIOS_OWNERSERVICES_LARGE"
+              }
+            ],
+            "viewPointInLowerCase": "myb_plug_and_charge_activation"
+          },
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "myb_plug_and_charge_my_car",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=PAVEH%2FX1316%2FHTB%2FEA3%2FLHDG%2FACC02%2FACD02%2FWFTRP%2FCLK00%2FRVX09%2FRAL18%2FCLS02%2FFSE02%2FBIYYA%2FPRROP%2FSLSW0%2FRVIAT%2FTRSV0%2FNHTS0%2FNA496%2FRIM03%2FFXCCA%2FABCXL%2F02ANT%2FNODUP%2FNOWAP%2FSBCAL%2FAMLT0%2FMET05%2FNOBSD%2FITPK0%2FPXA03%2FPXB00%2FPXF00%2FSSPXJ%2FNHTSW%2FWICH0%2FNOLIE%2FNOLII%2FRRCAM&databaseId=8121f650-597b-4824-8964-24c315e9457a&bookmarkSet=CARPICKER&bookmark=EXT_LEFT_SIDE&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=PAVEH%2FX1316%2FHTB%2FEA3%2FLHDG%2FACC02%2FACD02%2FWFTRP%2FCLK00%2FRVX09%2FRAL18%2FCLS02%2FFSE02%2FBIYYA%2FPRROP%2FSLSW0%2FRVIAT%2FTRSV0%2FNHTS0%2FNA496%2FRIM03%2FFXCCA%2FABCXL%2F02ANT%2FNODUP%2FNOWAP%2FSBCAL%2FAMLT0%2FMET05%2FNOBSD%2FITPK0%2FPXA03%2FPXB00%2FPXF00%2FSSPXJ%2FNHTSW%2FWICH0%2FNOLIE%2FNOLII%2FRRCAM&databaseId=8121f650-597b-4824-8964-24c315e9457a&bookmarkSet=CARPICKER&bookmark=EXT_LEFT_SIDE&profile=HELIOS_OWNERSERVICES_LARGE"
+              }
+            ],
+            "viewPointInLowerCase": "myb_plug_and_charge_my_car"
+          }
+        ],
+        "yearsOfMaintenance": 12,
+        "connectivityTechnology": "NONE",
+        "easyConnectStore": true,
+        "electrical": true,
+        "deliveryDate": "2025-02-19",
+        "retrievedFromDhs": false,
+        "engineEnergyType": "ELEC",
+        "radioCode": "",
+        "premiumSubscribed": false,
+        "batteryType": "NMC"
+      }
+    }
+  ]
+}
