@@ -2,7 +2,6 @@
 
 from datetime import datetime
 from datetime import timezone
-from typing import List
 
 import aiohttp
 import pytest
@@ -120,6 +119,15 @@ async def test_get_battery_status(
 
 
 @pytest.mark.asyncio
+async def test_get_tyre_pressure(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
+    """Test get_tyre_pressure."""
+    fixtures.inject_get_tyre_pressure(mocked_responses)
+    assert await vehicle.get_tyre_pressure()
+
+
+@pytest.mark.asyncio
 async def test_get_location(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
@@ -147,7 +155,7 @@ async def test_get_hvac_settings(
 
     assert data.mode == "scheduled"
     assert data.schedules
-    schedules: List[HvacSchedule] = data.schedules
+    schedules: list[HvacSchedule] = data.schedules
     assert schedules
     assert schedules[1].id == 2
     assert schedules[1].activated is True
@@ -334,7 +342,7 @@ async def test_set_charge_schedules(
     """Test set_charge_schedules."""
     url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
 
-    schedules: List[ChargeSchedule] = []
+    schedules: list[ChargeSchedule] = []
     assert await vehicle.set_charge_schedules(schedules)
 
     expected_json = {
@@ -367,7 +375,7 @@ async def test_set_hvac_schedules(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test set_hvac_schedules."""
-    schedules: List[HvacSchedule] = []
+    schedules: list[HvacSchedule] = []
     url = fixtures.inject_set_hvac_schedules(mocked_responses)
 
     assert await vehicle.set_hvac_schedules(schedules)

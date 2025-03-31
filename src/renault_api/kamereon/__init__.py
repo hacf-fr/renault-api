@@ -3,8 +3,6 @@
 import logging
 from json import dumps as json_dumps
 from typing import Any
-from typing import Dict
-from typing import List
 from typing import Optional
 from typing import cast
 from warnings import warn
@@ -19,7 +17,7 @@ from .exceptions import KamereonResponseException
 _LOGGER = logging.getLogger(__name__)
 
 
-_KCA_GET_ENDPOINTS: Dict[str, Any] = {
+_KCA_GET_ENDPOINTS: dict[str, Any] = {
     "": {"version": 2},
     "battery-status": {"version": 2},
     "charge-history": {"version": 1},
@@ -34,16 +32,17 @@ _KCA_GET_ENDPOINTS: Dict[str, Any] = {
     "location": {"version": 1},
     "lock-status": {"version": 1},
     "notification-settings": {"version": 1},
+    "pressure": {"version": 1},
     "res-state": {"version": 1},
 }
-_KCA_POST_ENDPOINTS: Dict[str, Any] = {
+_KCA_POST_ENDPOINTS: dict[str, Any] = {
     "actions/charge-mode": {"version": 1, "type": "ChargeMode"},
     "actions/charge-schedule": {"version": 2, "type": "ChargeSchedule"},
     "actions/charging-start": {"version": 1, "type": "ChargingStart"},
     "actions/hvac-schedule": {"version": 2, "type": "HvacSchedule"},
     "actions/hvac-start": {"version": 1, "type": "HvacStart"},
 }
-_KCM_POST_ENDPOINTS: Dict[str, Any] = {
+_KCM_POST_ENDPOINTS: dict[str, Any] = {
     "charge/pause-resume": {"version": 1, "type": "ChargePauseResume"},
 }
 
@@ -92,7 +91,7 @@ def get_required_contracts(endpoint: str) -> str:  # pragma: no cover
 
 
 def has_required_contracts(
-    contracts: List[models.KamereonVehicleContract], endpoint: str
+    contracts: list[models.KamereonVehicleContract], endpoint: str
 ) -> bool:
     """Check if vehicle has contract for endpoint."""
     # "Deprecated in 0.1.3, contract codes are country-specific"
@@ -107,8 +106,8 @@ async def request(
     url: str,
     api_key: str,
     gigya_jwt: str,
-    params: Dict[str, str],
-    json: Optional[Dict[str, Any]] = None,
+    params: dict[str, str],
+    json: Optional[dict[str, Any]] = None,
     schema: Optional[Schema] = None,
     *,
     wrap_array_in: Optional[str] = None,
@@ -146,7 +145,7 @@ async def request(
         # Some endpoints return arrays instead of objects.
         # These need to be wrapped in an object.
         if response_text.startswith("["):
-            response_text = f'{{"{wrap_array_in or "data"}": {response_text}}}'  # noqa: B907
+            response_text = f'{{"{wrap_array_in or "data"}": {response_text}}}'
         if not response_text.startswith("{"):
             # Check for HTTP error
             http_response.raise_for_status()
@@ -284,7 +283,7 @@ async def get_vehicle_data(
     vin: str,
     endpoint: str,
     endpoint_version: Optional[int] = None,
-    params: Optional[Dict[str, str]] = None,
+    params: Optional[dict[str, str]] = None,
     *,
     adapter_type: str = "kca",
 ) -> models.KamereonVehicleDataResponse:
@@ -323,9 +322,9 @@ async def set_vehicle_action(
     account_id: str,
     vin: str,
     endpoint: str,
-    attributes: Dict[str, Any],
+    attributes: dict[str, Any],
     endpoint_version: Optional[int] = None,
-    data_type: Optional[Dict[str, Any]] = None,
+    data_type: Optional[dict[str, Any]] = None,
     *,
     adapter_type: str = "kca",
 ) -> models.KamereonVehicleDataResponse:

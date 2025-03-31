@@ -18,23 +18,23 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { python-version: "3.11", os: ubuntu-latest, session: "pre-commit" }
-          - { python-version: "3.12", os: ubuntu-latest, session: "safety" }
+          - { python-version: "3.13", os: ubuntu-latest, session: "pre-commit" }
+          - { python-version: "3.13", os: ubuntu-latest, session: "safety" }
+          - { python-version: "3.13", os: ubuntu-latest, session: "mypy" }
           - { python-version: "3.12", os: ubuntu-latest, session: "mypy" }
           - { python-version: "3.11", os: ubuntu-latest, session: "mypy" }
           - { python-version: "3.10", os: ubuntu-latest, session: "mypy" }
           - { python-version: "3.9", os: ubuntu-latest, session: "mypy" }
-          - { python-version: "3.8", os: ubuntu-latest, session: "mypy" }
+          - { python-version: "3.13", os: ubuntu-latest, session: "tests" }
           - { python-version: "3.12", os: ubuntu-latest, session: "tests" }
           - { python-version: "3.11", os: ubuntu-latest, session: "tests" }
           - { python-version: "3.10", os: ubuntu-latest, session: "tests" }
           - { python-version: "3.9", os: ubuntu-latest, session: "tests" }
-          - { python-version: "3.8", os: ubuntu-latest, session: "tests" }
-          - { python-version: "3.12", os: windows-latest, session: "tests" }
-          - { python-version: "3.12", os: macos-latest, session: "tests" }
-          - { python-version: "3.12", os: ubuntu-latest, session: "typeguard" }
-          - { python-version: "3.12", os: ubuntu-latest, session: "xdoctest" }
-          - { python-version: "3.12", os: ubuntu-latest, session: "docs-build" }
+          - { python-version: "3.13", os: windows-latest, session: "tests" }
+          - { python-version: "3.13", os: macos-latest, session: "tests" }
+          - { python-version: "3.13", os: ubuntu-latest, session: "typeguard" }
+          - { python-version: "3.13", os: ubuntu-latest, session: "xdoctest" }
+          - { python-version: "3.13", os: ubuntu-latest, session: "docs-build" }
 
     env:
       NOXSESSION: ${{ matrix.session }}
@@ -57,6 +57,8 @@ jobs:
         run: |
           pip install --constraint=.github/workflows/constraints.txt poetry
           poetry --version
+          poetry self add poetry-plugin-export
+          poetry self show plugins
 
       - name: Install Nox
         run: |
@@ -66,17 +68,8 @@ jobs:
       - name: Compute pre-commit cache key
         if: matrix.session == 'pre-commit'
         id: pre-commit-cache
-        shell: python
         run: |
-          import hashlib
-          import sys
-
-          python = "py{}.{}".format(*sys.version_info[:2])
-          payload = sys.version.encode() + sys.executable.encode()
-          digest = hashlib.sha256(payload).hexdigest()
-          result = "${{ runner.os }}-{}-{}-pre-commit".format(python, digest[:8])
-
-          print("::set-output name=result::{}".format(result))
+          echo "result=${{ runner.os }}-$(python --version | cut -d ' ' -f 2)" >> $GITHUB_OUTPUT
 
       - name: Restore pre-commit cache
         uses: actions/cache@v4
@@ -93,14 +86,15 @@ jobs:
 
       - name: Upload coverage data
         if: always() && matrix.session == 'tests'
-        uses: actions/upload-artifact@v4.3.6
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: coverage-data-${{ matrix.python-version }}-${{ matrix.os }}
           path: ".coverage.*"
+          include-hidden-files: true
 
       - name: Upload documentation
         if: matrix.session == 'docs-build'
-        uses: actions/upload-artifact@v4.3.6
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: docs
           path: docs/_build
@@ -115,7 +109,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
 
       - name: Upgrade pip
         run: |
@@ -126,6 +120,8 @@ jobs:
         run: |
           pip install --constraint=.github/workflows/constraints.txt poetry
           poetry --version
+          poetry self add poetry-plugin-export
+          poetry self show plugins
 
       - name: Install Nox
         run: |
@@ -133,7 +129,7 @@ jobs:
           nox --version
 
       - name: Download coverage data
-        uses: actions/download-artifact@v4.1.8
+        uses: actions/download-artifact@v4.2.1
         with:
           pattern: coverage-data-*
           merge-multiple: true
@@ -147,4 +143,4 @@ jobs:
           nox --force-color --session=coverage -- xml
 
       - name: Upload coverage report
-        uses: codecov/codecov-action@v4.5.0
+        uses: codecov/codecov-action@v5.4.0

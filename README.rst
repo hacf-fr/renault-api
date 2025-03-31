@@ -57,7 +57,7 @@ This package has been developed to be used with Home-Assistant, but it can be us
 Requirements
 ------------
 
-* Python (>= 3.8)
+* Python (>= 3.9)
 
 API Usage
 ---------
@@ -112,8 +112,19 @@ Once installed, the following command prompts for credentials and settings, disp
 * Credentials will automatically be stored in the user home directory (~/.credentials/renault-api.json)
 * Logs will automatically be generated in `logs` subfolder
 
-Please see the `Command-line Reference <Usage_>`_ for full details.
+It is also possible to use raw http GET/POST commands, for example to get odometer and others data on a Windows machine:
 
+.. code:: console
+
+  C:> renault-api http get /commerce/v1/accounts/{account_id}/kamereon/kca/car-adapter/v1/cars/{vin}/cockpit
+
+Or to request a battery status refresh on a Windows Machine (internal quotes escaped, whole payload enclosed in un-escaped quotes):
+
+.. code:: console
+
+  C:> renault-api http post /commerce/v1/accounts/{account_id}/kamereon/kca/car-adapter/v1/cars/{vin}/actions/refresh-battery-status "{\\"data\\": {\\"type\\": \\"RefreshBatteryStatus\\"}}"
+
+Please see the `Command-line Reference <Usage_>`_ for full details.
 
 Contributing
 ------------

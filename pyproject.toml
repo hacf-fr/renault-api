@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "renault-api"
-version = "0.2.7"
+version = "0.2.10"
 description = "Renault API"
 authors = ["epenet"]
 license = "MIT"
@@ -9,24 +9,26 @@ homepage = "https://github.com/hacf-fr/renault-api"
 repository = "https://github.com/hacf-fr/renault-api"
 documentation = "https://renault-api.readthedocs.io"
 classifiers = [
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 
 [tool.poetry.urls]
 Changelog = "https://github.com/hacf-fr/renault-api/releases"
 
 [tool.poetry.dependencies]
-python = ">=3.8,<4.0"
+python = ">=3.9,<4.0"
 # Warning: as of 2024-04-23, aiohttp is pinned to 3.9.5 on HA-core
 aiohttp = ">=3.9.5"
 # Warning: as of 2023-07-19, pyjwt is pinned to 2.8.0 on HA-core
 PyJWT = ">=2.8.0"
 #ensure cryptography (for pyjwt) is greater than 42.0.5 to account for PVE-2024-65647
 cryptography = ">=42.0.5"
+#ensure cffi (for cryptography) is greater than 1.17.0 for python 3.13 compatibility
+cffi = ">=1.17.0"
 
 marshmallow-dataclass = ">=8.2.0"
 click = { version = ">=8.0.1", optional = true }
@@ -43,21 +45,21 @@ mypy = "^1.2"
 typeguard = ">=4.1.3,<5.0.0"
 xdoctest = {extras = ["colors"], version = "^1.1.1"}
 sphinx = ">=4.3.2,<8.0.0"
-sphinx-autobuild = "^2021.3.14"
-pre-commit = ">=2.21,<4.0"
+sphinx-autobuild = ">=2021.3.14,<2025.0.0"
+pre-commit = ">=2.21,<5.0"
 ruff = ">=0.3.7"
 darglint = "^1.8.1"
 pre-commit-hooks = ">=4.4,<6.0"
-sphinx-rtd-theme = ">=1.2,<3.0"
+sphinx-rtd-theme = ">=1.2,<4.0"
 sphinx-click = ">=4.4,<7.0"
 Pygments = "^2.15.0"
-pytest-asyncio = ">=0.21,<0.25"
+pytest-asyncio = ">=0.21,<0.27"
 aioresponses = "^0.7.4"
-pytest-cov = ">=4,<6"
+pytest-cov = ">=4,<7"
 #ensure urllib3 (for requests/sphinx) is greater than 1.26.5 to account for CVE-2021-33503
 urllib3 = ">=1.26.15,<3.0.0"
 #ensure certifi (for requests/sphinx) is greater than 2023.7.22 to account for CVE-2023-37920
-certifi = ">=2023.7.22,<2025.0.0"
+certifi = ">=2023.7.22,<2026.0.0"
 #ensure requests (for sphinx) is greater than 2.31.0 to account for CVE-2023-32681
 requests = "^2.31.0"
 #ensure tornado (for sphinx) is greater than 6.3.3 to account for GHSA-qppv-j76h-2rpx
@@ -66,6 +68,10 @@ tornado = "^6.3.3"
 PyYAML = "^6.0.1"
 #ensure virtualenv (for pre-commit) is greater than 20.21.0 to account for PVE-2024-68477
 virtualenv = ">=20.21.0"
+#ensure nodeenv (for pre-commit) is greater than 1.9.0 for python 3.13 compatibility
+nodeenv = ">=1.9.0"
+#ensure typing-extensions (for safety>pydantic) is greater than 4.12.2 for python 3.13 compatibility
+typing-extensions = ">=4.12.2"
 
 [tool.poetry.extras]
 cli = ["click", "tabulate", "dateparser"]
@@ -107,7 +113,7 @@ warn_unused_ignores = true
 
 [tool.ruff]
 line-length = 88
-target-version = "py38"
+target-version = "py39"
 
 [tool.ruff.lint]
 ignore = [

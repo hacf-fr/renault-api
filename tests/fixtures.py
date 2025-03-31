@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import datetime
 import json
+from collections.abc import Mapping
 from glob import glob
 from os import path
 from typing import Any
-from typing import Mapping
 
 import jwt
 from aioresponses import aioresponses
@@ -79,7 +79,7 @@ def get_file_content_as_wrapped_schema(
     """Read fixture text file as specified schema."""
     with open(filename) as file:
         content = file.read()
-    content = f'{{"{wrap_in}": {content}}}'  # noqa: B907
+    content = f'{{"{wrap_in}": {content}}}'
     return schema.loads(content)
 
 
@@ -270,6 +270,18 @@ def inject_get_battery_status(
 ) -> str:
     """Inject sample battery-status."""
     urlpath = f"{ADAPTER2_PATH}/battery-status?{DEFAULT_QUERY_STRING}"
+    return inject_data(
+        mocked_responses,
+        urlpath,
+        filename,
+    )
+
+
+def inject_get_tyre_pressure(
+    mocked_responses: aioresponses, filename: str = "vehicle_data/tyre-pressure.json"
+) -> str:
+    """Inject sample tyre-pressure."""
+    urlpath = f"{ADAPTER_PATH}/pressure?{DEFAULT_QUERY_STRING}"
     return inject_data(
         mocked_responses,
         urlpath,
@@ -501,6 +513,7 @@ def inject_vehicle_status(mocked_responses: aioresponses, vehicle: str) -> None:
     inject_get_hvac_status(mocked_responses, vehicle)
     inject_get_charge_mode(mocked_responses)
     inject_get_cockpit(mocked_responses, vehicle)
+    inject_get_tyre_pressure(mocked_responses)
 
 
 def ensure_redacted(data: Mapping[str, Any], to_redact: list[str] = TO_REDACT) -> None:

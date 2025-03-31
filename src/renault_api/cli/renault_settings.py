@@ -3,7 +3,6 @@
 import os
 from textwrap import TextWrapper
 from typing import Any
-from typing import Dict
 from typing import Optional
 
 import aiohttp
@@ -23,7 +22,7 @@ CREDENTIAL_PATH = "~/.credentials/renault-api.json"
 
 async def set_options(
     websession: aiohttp.ClientSession,
-    ctx_data: Dict[str, Any],
+    ctx_data: dict[str, Any],
     locale: Optional[str],
     account: Optional[str],
     vin: Optional[str],
@@ -44,7 +43,7 @@ async def set_options(
         credential_store[CONF_VIN] = Credential(vin)
 
 
-def display_settings(ctx_data: Dict[str, Any]) -> None:
+def display_settings(ctx_data: dict[str, Any]) -> None:
     """Get the current configuration keys."""
     credential_store: CredentialStore = ctx_data["credential_store"]
     wrapper = TextWrapper(width=80)

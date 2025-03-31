@@ -1,10 +1,7 @@
 """CLI function for a vehicle."""
 
 from typing import Any
-from typing import Dict
-from typing import List
 from typing import Optional
-from typing import Tuple
 
 import aiohttp
 import click
@@ -20,7 +17,7 @@ from renault_api.renault_account import RenaultAccount
 from renault_api.renault_client import RenaultClient
 
 
-async def _get_account_id(ctx_data: Dict[str, Any], client: RenaultClient) -> str:
+async def _get_account_id(ctx_data: dict[str, Any], client: RenaultClient) -> str:
     """Prompt the user for account."""
     # First, check context data
     if "account" in ctx_data:
@@ -66,8 +63,8 @@ async def _get_account_id(ctx_data: Dict[str, Any], client: RenaultClient) -> st
 
 
 async def _get_account_prompt(
-    accounts: List[KamereonPersonAccount], client: RenaultClient
-) -> Tuple[str, Optional[str]]:
+    accounts: list[KamereonPersonAccount], client: RenaultClient
+) -> tuple[str, Optional[str]]:
     """Get prompt for selecting account."""
     account_table = []
     default = None
@@ -93,7 +90,7 @@ async def _get_account_prompt(
 
 
 async def get_account(
-    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
+    websession: aiohttp.ClientSession, ctx_data: dict[str, Any]
 ) -> RenaultAccount:
     """Get RenaultAccount for use by CLI."""
     client = await renault_client.get_logged_in_client(
@@ -104,7 +101,7 @@ async def get_account(
 
 
 async def display_vehicles(
-    websession: aiohttp.ClientSession, ctx_data: Dict[str, Any]
+    websession: aiohttp.ClientSession, ctx_data: dict[str, Any]
 ) -> None:
     """Display vehicle status."""
     account = await get_account(websession, ctx_data)

@@ -2,14 +2,12 @@
 
 from dataclasses import dataclass
 from typing import Any
-from typing import Dict
-from typing import List
 from typing import Optional
 
 from . import exceptions
 from renault_api.models import BaseModel
 
-COMMON_ERRRORS: List[Dict[str, Any]] = [
+COMMON_ERRRORS: list[dict[str, Any]] = [
     {
         "errorCode": 403042,
         "error_type": exceptions.InvalidCredentialsException,

@@ -2,8 +2,6 @@
 
 import json
 import os
-from typing import Dict
-from typing import List
 from typing import Optional
 
 import jwt
@@ -18,7 +16,7 @@ class CredentialStore:
 
     def __init__(self) -> None:
         """Initialise the credential store."""
-        self._store: Dict[str, Credential] = {}
+        self._store: dict[str, Credential] = {}
 
     def __getitem__(self, name: str) -> Credential:
         """Get a credential the credential store."""
@@ -78,7 +76,7 @@ class CredentialStore:
                 del self._store[key]
         self._write()
 
-    def clear_keys(self, to_delete: List[str]) -> None:
+    def clear_keys(self, to_delete: list[str]) -> None:
         """Remove specified keys from credential store."""
         for key in list(self._store.keys()):
             if key in to_delete:

@@ -1,0 +1,11 @@
+{
+  "data": {
+    "id": "VF1AAAA0000000000",
+    "attributes": {
+      "internalTemperature": 15.0,
+      "hvacStatus": "off",
+      "socThreshold": 15.0,
+      "lastUpdateTime": "2025-03-24T18:57:22Z"
+    }
+  }
+}

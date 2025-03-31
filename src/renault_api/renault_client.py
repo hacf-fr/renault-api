@@ -1,8 +1,6 @@
 """Client for Renault API."""
 
 import logging
-from typing import Dict
-from typing import List
 from typing import Optional
 
 import aiohttp
@@ -25,7 +23,7 @@ class RenaultClient:
         websession: Optional[aiohttp.ClientSession] = None,
         locale: Optional[str] = None,
         country: Optional[str] = None,
-        locale_details: Optional[Dict[str, str]] = None,
+        locale_details: Optional[dict[str, str]] = None,
         credential_store: Optional[CredentialStore] = None,
     ) -> None:
         """Initialise Renault client."""
@@ -53,12 +51,12 @@ class RenaultClient:
         """GET to /persons/{person_id}."""
         return await self.session.get_person()
 
-    async def get_api_accounts(self) -> List[RenaultAccount]:
+    async def get_api_accounts(self) -> list[RenaultAccount]:
         """Get account proxies."""
         response = await self.get_person()
         if response.accounts is None:  # pragma: no cover
             raise ValueError("response.accounts is None")
-        result: List[RenaultAccount] = []
+        result: list[RenaultAccount] = []
         for account in response.accounts:
             if account.accountId is None:  # pragma: no cover
                 continue
