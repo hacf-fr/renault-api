@@ -4,7 +4,7 @@ import os
 
 from aioresponses import aioresponses
 from click.testing import CliRunner
-from syrupy import SnapshotAssertion
+from syrupy.assertion import SnapshotAssertion
 
 from tests import fixtures
 from tests.const import TEST_ACCOUNT_ID

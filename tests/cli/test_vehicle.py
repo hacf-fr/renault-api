@@ -8,7 +8,7 @@ import pytest
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall
 from click.testing import CliRunner
-from syrupy import SnapshotAssertion
+from syrupy.assertion import SnapshotAssertion
 from typeguard import suppress_type_checks
 from yarl import URL
 
