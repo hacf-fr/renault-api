@@ -84,10 +84,34 @@ GATEWAY_SPECIFICATIONS: dict[str, dict[str, Any]] = {
     },
 }
 
+_ACCOUNT_ROOT = "/commerce/v1/accounts/{account_id}/kamereon"
+_DEFAULT_ENDPOINTS: dict[str, str] = {
+    "battery-status": "/kca/car-adapter/v2/cars/{vin}/battery-status",
+}
 
-_DEFAULT_ENDPOINTS: dict[str, str] = {}
-
-_VEHICLE_ENDPOINTS: dict[str, dict[str, str]] = {}
+_VEHICLE_ENDPOINTS: dict[str, dict[str, str]] = {
+    "X101VE": {  # ZOE phase 1
+        "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
+    },
+    "X102VE": {  # ZOE phase 2
+        "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
+    },
+    "XJA1VP": {  # CLIO V
+        "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
+    },
+    "XJB1SU": {  # CAPTUR II
+        "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
+    },
+    "XBG1VE": {  # DACIA SPRING
+        "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
+    },
+    "XCB1VE": {  # MEGANE E-TECH
+        "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
+    },
+    "XCB1SE": {  # SCENIC E-TECH
+        "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
+    },
+}
 
 
 @dataclass
@@ -304,7 +328,7 @@ class KamereonVehicleDetails(BaseModel):
             )
             return _DEFAULT_ENDPOINTS
 
-        return _VEHICLE_ENDPOINTS[self.model.code]
+        return _VEHICLE_ENDPOINTS[model_code]
 
     def get_endpoint(self, endpoint: str) -> str | None:
         """Return model endpoint"""
@@ -315,9 +339,9 @@ class KamereonVehicleDetails(BaseModel):
             _LOGGER.warning(
                 "Endpoint %s is Model %s is not documented, using default endpoints"
             )
-            return _DEFAULT_ENDPOINTS
+            return _DEFAULT_ENDPOINTS.get(endpoint)
 
-        return _VEHICLE_ENDPOINTS[self.model.code]
+        return endpoints[endpoint]
 
 
 @dataclass

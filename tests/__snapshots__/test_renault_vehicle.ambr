@@ -1,50 +1,62 @@
 # serializer version: 1
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/captur_ii.1.json]
   dict({
+    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/captur_ii.2.json]
   dict({
+    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/clio_v.1.json]
   dict({
+    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/duster.1.json]
   dict({
+    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/megane_e-tech.1.json]
   dict({
+    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/megane_e-tech.2.json]
   dict({
+    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/renault_5.1.json]
   dict({
+    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/spring.1.json]
   dict({
+    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/twingo_ze.1.json]
   dict({
+    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/zoe_40.1.json]
   dict({
+    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/zoe_40.2.json]
   dict({
+    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/zoe_50.1.json]
   dict({
+    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
   })
 # ---
 # name: test_set_ac_start
