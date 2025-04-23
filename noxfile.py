@@ -125,6 +125,7 @@ def mypy(session: Session) -> None:
         "typeguard",
         "pytest-asyncio",
         "aioresponses",
+        "syrupy",
     )
     session.run("mypy", *args)
     if not session.posargs:
@@ -141,6 +142,7 @@ def tests(session: Session) -> None:
         "pygments",
         "pytest-asyncio",
         "aioresponses",
+        "syrupy",
         "typeguard",
     )
     try:
@@ -167,7 +169,9 @@ def coverage(session: Session) -> None:
 def typeguard(session: Session) -> None:
     """Runtime type checking using Typeguard."""
     session.install(".[cli]")
-    session.install("pytest", "typeguard", "pygments", "pytest-asyncio", "aioresponses")
+    session.install(
+        "pytest", "typeguard", "pygments", "pytest-asyncio", "aioresponses", "syrupy"
+    )
     session.run("pytest", f"--typeguard-packages={package}", *session.posargs)
 
 
