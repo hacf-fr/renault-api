@@ -1,6 +1,7 @@
 """Kamereon models."""
 
 import json
+import logging
 from dataclasses import dataclass
 from typing import Any
 from typing import Optional
@@ -13,6 +14,8 @@ from . import exceptions
 from . import helpers
 from .enums import AssetPictureSize
 from renault_api.models import BaseModel
+
+_LOGGER = logging.getLogger(__name__)
 
 COMMON_ERRRORS: list[dict[str, Any]] = [
     {
@@ -379,11 +382,9 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
                 if self.plugStatus is not None
                 else None
             )
-        except ValueError as err:  # pragma: no cover
-            # should we return PlugState.NOT_AVAILABLE?
-            raise exceptions.KamereonException(
-                f"Unable to convert `{self.plugStatus}` to PlugState."
-            ) from err
+        except ValueError:  # pragma: no cover
+            _LOGGER.warning("Unable to convert `%s` to PlugState.", self.plugStatus)
+            return None
 
     def get_charging_status(self) -> Optional[enums.ChargeState]:
         """Return charging status."""
