@@ -1,5 +1,6 @@
 """Test cases for the Renault client API keys."""
 
+import os
 from datetime import datetime
 from datetime import timezone
 
@@ -358,3 +359,22 @@ async def test_set_hvac_schedules(
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
 
     assert request.kwargs["json"] == snapshot
+
+
+@pytest.mark.parametrize(
+    "filename", fixtures.get_json_files(f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicles")
+)
+@pytest.mark.asyncio
+async def test_get_endpoints(
+    vehicle: RenaultVehicle,
+    mocked_responses: aioresponses,
+    filename: str,
+    snapshot: SnapshotAssertion,
+) -> None:
+    """Test get_endpoints."""
+    filename = os.path.basename(filename)
+    fixtures.inject_get_vehicle_details(mocked_responses, filename)
+    details = await vehicle.get_details()
+    endpoints = details.get_endpoints()
+
+    assert endpoints == snapshot

@@ -85,6 +85,11 @@ GATEWAY_SPECIFICATIONS: dict[str, dict[str, Any]] = {
 }
 
 
+_DEFAULT_ENDPOINTS: dict[str, str] = {}
+
+_VEHICLE_ENDPOINTS: dict[str, dict[str, str]] = {}
+
+
 @dataclass
 class KamereonResponseError(BaseModel):
     """Kamereon response error."""
@@ -284,6 +289,35 @@ class KamereonVehicleDetails(BaseModel):
                 self.model.code, {}
             ).get(f"control-{action}-via-kcm", False)
         return False  # pragma: no cover
+
+    def get_endpoints(self) -> dict[str, str]:
+        """Return model endpoints."""
+        model_code = self.get_model_code()
+        if not model_code:
+            # Model code not available
+            return _DEFAULT_ENDPOINTS
+
+        if model_code not in _VEHICLE_ENDPOINTS:
+            # Model not documented
+            _LOGGER.warning(
+                "Model %s is not documented, using default endpoints", self.model.code
+            )
+            return _DEFAULT_ENDPOINTS
+
+        return _VEHICLE_ENDPOINTS[self.model.code]
+
+    def get_endpoint(self, endpoint: str) -> str | None:
+        """Return model endpoint"""
+        endpoints = self.get_endpoints()
+
+        if endpoint not in endpoints:
+            # Endpoint not documented
+            _LOGGER.warning(
+                "Endpoint %s is Model %s is not documented, using default endpoints"
+            )
+            return _DEFAULT_ENDPOINTS
+
+        return _VEHICLE_ENDPOINTS[self.model.code]
 
 
 @dataclass
