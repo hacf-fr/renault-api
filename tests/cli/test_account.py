@@ -1,10 +1,10 @@
 """Test cases for the __main__ module."""
 
 import os
-from locale import getdefaultlocale
 
 from aioresponses import aioresponses
 from click.testing import CliRunner
+from syrupy import SnapshotAssertion
 
 from tests import fixtures
 from tests.const import TEST_ACCOUNT_ID
@@ -27,7 +27,7 @@ from renault_api.gigya import GIGYA_PERSON_ID
 
 
 def test_list_vehicles_prompt(
-    mocked_responses: aioresponses, cli_runner: CliRunner
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     fixtures.inject_gigya_all(mocked_responses)
@@ -52,33 +52,11 @@ def test_list_vehicles_prompt(
     )
     assert result.exit_code == 0, result.exception
 
-    default_locale = getdefaultlocale()[0]
-    prompt_default = f" [{default_locale}]" if default_locale else ""
-
-    expected_output = (
-        f"Please select a locale{prompt_default}: {TEST_LOCALE}\n"
-        "Do you want to save the locale to the credential store? [y/N]: N\n"
-        "\n"
-        f"User: {TEST_USERNAME}\n"
-        "Password: \n"
-        "\n"
-        "    ID            Type         Vehicles\n"
-        "--  ------------  ---------  ----------\n"
-        " 1  account-id-1  MYRENAULT           1\n"
-        " 2  account-id-2  SFDC                1\n"
-        "\n"
-        "Please select account [1]: 1\n"
-        "Do you want to save the account ID to the credential store? [y/N]: y\n"
-        "\n"
-        "Registration    Brand    Model    VIN\n"
-        "--------------  -------  -------  -----------------\n"
-        "REG-NUMBER      RENAULT  ZOE      VF1AAAAA555777999\n"
-    )
-    assert expected_output == result.output
+    assert result.output == snapshot
 
 
 def test_list_vehicles_store(
-    mocked_responses: aioresponses, cli_runner: CliRunner
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
@@ -92,17 +70,11 @@ def test_list_vehicles_store(
 
     result = cli_runner.invoke(__main__.main, "vehicles")
     assert result.exit_code == 0, result.exception
-
-    expected_output = (
-        "Registration    Brand    Model    VIN\n"
-        "--------------  -------  -------  -----------------\n"
-        "REG-NUMBER      RENAULT  ZOE      VF1AAAAA555777999\n"
-    )
-    assert expected_output == result.output
+    assert result.output == snapshot
 
 
 def test_list_vehicles_no_prompt(
-    mocked_responses: aioresponses, cli_runner: CliRunner
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
@@ -115,10 +87,4 @@ def test_list_vehicles_no_prompt(
 
     result = cli_runner.invoke(__main__.main, f"--account {TEST_ACCOUNT_ID} vehicles")
     assert result.exit_code == 0, result.exception
-
-    expected_output = (
-        "Registration    Brand    Model    VIN\n"
-        "--------------  -------  -------  -----------------\n"
-        "REG-NUMBER      RENAULT  ZOE      VF1AAAAA555777999\n"
-    )
-    assert expected_output == result.output
+    assert result.output == snapshot
