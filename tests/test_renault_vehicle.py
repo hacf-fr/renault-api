@@ -7,6 +7,7 @@ import aiohttp
 import pytest
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall
+from syrupy.assertion import SnapshotAssertion
 from yarl import URL
 
 from tests import fixtures
@@ -281,7 +282,7 @@ async def test_get_hvac_sessions(
 
 @pytest.mark.asyncio
 async def test_set_ac_start(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_ac_start."""
     url = fixtures.inject_set_hvac_start(mocked_responses, "start")
@@ -289,55 +290,38 @@ async def test_set_ac_start(
         21, datetime(2020, 11, 24, 6, 30, tzinfo=timezone.utc)
     )
 
-    expected_json = {
-        "data": {
-            "type": "HvacStart",
-            "attributes": {
-                "action": "start",
-                "targetTemperature": 21,
-                "startDateTime": "2020-11-24T06:30:00Z",
-            },
-        }
-    }
-
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
+    assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
 async def test_set_ac_stop(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_ac_stop."""
     url = fixtures.inject_set_hvac_start(mocked_responses, "cancel")
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     assert await vehicle.set_ac_stop()
 
-    expected_json = {"data": {"type": "HvacStart", "attributes": {"action": "cancel"}}}
-
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
+    assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
 async def test_set_charge_mode(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_charge_mode."""
     url = fixtures.inject_set_charge_mode(mocked_responses, "schedule_mode")
     assert await vehicle.set_charge_mode("schedule_mode")
 
-    expected_json = {
-        "data": {"type": "ChargeMode", "attributes": {"action": "schedule_mode"}}
-    }
-
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
+    assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
 async def test_set_charge_schedules(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_charge_schedules."""
     url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
@@ -345,34 +329,26 @@ async def test_set_charge_schedules(
     schedules: list[ChargeSchedule] = []
     assert await vehicle.set_charge_schedules(schedules)
 
-    expected_json = {
-        "data": {"type": "ChargeSchedule", "attributes": {"schedules": []}}
-    }
-
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
+    assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
 async def test_set_charge_start(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_charge_start."""
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     url = fixtures.inject_set_charging_start(mocked_responses, "start")
 
-    expected_json = {
-        "data": {"type": "ChargingStart", "attributes": {"action": "start"}}
-    }
-
     assert await vehicle.set_charge_start()
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
+    assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
 async def test_set_hvac_schedules(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_hvac_schedules."""
     schedules: list[HvacSchedule] = []
@@ -381,6 +357,4 @@ async def test_set_hvac_schedules(
     assert await vehicle.set_hvac_schedules(schedules)
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
 
-    assert request.kwargs["json"] == {
-        "data": {"type": "HvacSchedule", "attributes": {"schedules": []}}
-    }
+    assert request.kwargs["json"] == snapshot

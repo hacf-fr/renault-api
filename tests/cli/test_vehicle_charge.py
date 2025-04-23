@@ -3,6 +3,7 @@
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall
 from click.testing import CliRunner
+from syrupy.assertion import SnapshotAssertion
 from yarl import URL
 
 from tests import fixtures
@@ -12,7 +13,7 @@ from renault_api.cli import __main__
 
 
 def test_charge_history_day(
-    mocked_responses: aioresponses, cli_runner: CliRunner
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -25,18 +26,11 @@ def test_charge_history_day(
         __main__.main, "charge history --from 2020-11-01 --to 2020-11-30 --period day"
     )
     assert result.exit_code == 0, result.exception
-
-    expected_output = (
-        "     Day    Number of charges  Total time charging      Errors\n"
-        "--------  -------------------  ---------------------  --------\n"
-        "20201208                    2  8:15:00                       0\n"
-        "20201205                    1  10:57:00                      0\n"
-    )
-    assert expected_output == result.output
+    assert result.output == snapshot
 
 
 def test_charge_history_month(
-    mocked_responses: aioresponses, cli_runner: CliRunner
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -49,28 +43,24 @@ def test_charge_history_month(
         __main__.main, "charge history --from 2020-11-01 --to 2020-11-30"
     )
     assert result.exit_code == 0, result.exception
-
-    expected_output = (
-        "  Month    Number of charges  Total time charging      Errors\n"
-        "-------  -------------------  ---------------------  --------\n"
-        " 202011                    1  7:59:00                       0\n"
-    )
-    assert expected_output == result.output
+    assert result.output == snapshot
 
 
-def test_charge_mode_get(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_charge_mode_get(
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_get_charge_mode(mocked_responses)
 
     result = cli_runner.invoke(__main__.main, "charge mode")
     assert result.exit_code == 0, result.exception
-
-    expected_output = "Charge mode: always\n"
-    assert expected_output == result.output
+    assert result.output == snapshot
 
 
-def test_charge_mode_set(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_charge_mode_set(
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     url = fixtures.inject_set_charge_mode(mocked_responses, mode="schedule_mode")
@@ -78,17 +68,14 @@ def test_charge_mode_set(mocked_responses: aioresponses, cli_runner: CliRunner) 
     result = cli_runner.invoke(__main__.main, "charge mode --set schedule_mode")
     assert result.exit_code == 0, result.exception
 
-    expected_json = {
-        "data": {"attributes": {"action": "schedule_mode"}, "type": "ChargeMode"}
-    }
-    expected_output = "{'action': 'schedule_mode'}\n"
-
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
-    assert expected_output == result.output
+    assert request.kwargs["json"] == snapshot
+    assert result.output == snapshot
 
 
-def test_sessions_40(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_sessions_40(
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
@@ -98,22 +85,12 @@ def test_sessions_40(mocked_responses: aioresponses, cli_runner: CliRunner) -> N
         __main__.main, "charge sessions --from 2020-11-01 --to 2020-11-30"
     )
     assert result.exit_code == 0, result.exception
-
-    expected_output = (
-        "Charge start         Charge end           Duration    Power (kW)  "
-        "  Started at    Finished at    Charge gained    Energy gained    "
-        "Power level    Status\n"
-        "-------------------  -------------------  ----------  ------------"
-        "  ------------  -------------  ---------------  ---------------  "
-        "-------------  --------\n"
-        "2020-11-11 01:31:03  2020-11-11 09:30:17  7:59:00     3.10 kW     "
-        "  15 %          74 %           59 %                              slow      "
-        "     ok\n"
-    )
-    assert expected_output == result.output
+    assert result.output == snapshot
 
 
-def test_sessions_45(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_sessions_45(
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
@@ -128,36 +105,12 @@ def test_sessions_45(mocked_responses: aioresponses, cli_runner: CliRunner) -> N
         __main__.main, "charge sessions --from 2020-11-01 --to 2020-11-30"
     )
     assert result.exit_code == 0, result.exception
-
-    expected_output = (
-        "Charge start         Charge end           Duration    Power (kW)  "
-        "  Started at    Finished at    Charge gained    Energy gained    "
-        "Power level    Status\n"
-        "-------------------  -------------------  ----------  ------------"
-        "  ------------  -------------  ---------------  ---------------  "
-        "-------------  --------\n"
-        "2020-11-11 01:31:03  2020-11-11 09:30:17  7:59:00     3.10 kW     "
-        "  15 %          74 %           59 %                              slow      "
-        "     ok\n"
-    )
-    expected_output = (
-        "Charge start         Charge end           Duration    Power (kW)  "
-        "  Started at    Finished at    Charge gained    Energy gained    "
-        "Power level    Status\n"
-        "-------------------  -------------------  ----------  ------------  "
-        "------------  -------------  ---------------  ---------------  "
-        "-------------  --------\n"
-        "2023-04-24 12:12:44  2023-04-24 13:49:39  1:37:00                 "
-        "  43 %          50 %                            4.10000038 kWh      "
-        "            ok\n"
-        "2023-04-24 15:19:40  2023-04-24 19:39:27  4:20:00                 "
-        "  49 %          64 %                            9.200001 kWh        "
-        "            ok\n"
-    )
-    assert expected_output == result.output
+    assert result.output == snapshot
 
 
-def test_sessions_50(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_sessions_50(
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
@@ -172,45 +125,11 @@ def test_sessions_50(mocked_responses: aioresponses, cli_runner: CliRunner) -> N
         __main__.main, "charge sessions --from 2020-11-01 --to 2020-11-30"
     )
     assert result.exit_code == 0, result.exception
-
-    expected_output = (
-        "Charge start         Charge end           Duration    Power (kW)  "
-        "  Started at    Finished at    Charge gained    Energy gained    "
-        "Power level    Status\n"
-        "-------------------  -------------------  ----------  ------------"
-        "  ------------  -------------  ---------------  ---------------  "
-        "-------------  --------\n"
-        "2022-03-16 03:02:16  2022-03-16 05:01:58  1:59:42                 "
-        "  62 %          62 %                                              "
-        "              error\n"
-        "2022-03-16 21:18:42  2022-03-16 22:50:08  1:31:26                 "
-        "                60 %                                              "
-        "              error\n"
-        "2022-03-17 02:01:10  2022-03-17 06:02:01  4:00:51                 "
-        "                74 %                                              "
-        "              error\n"
-        "2022-03-18 02:01:13  2022-03-18 06:02:04  4:00:51                 "
-        "                64 %                                              "
-        "              error\n"
-        "2022-03-18 18:34:28  2022-03-18 18:37:57  0:03:29                 "
-        "                55 %                                              "
-        "              error\n"
-        "2022-03-18 18:40:37  2022-03-18 19:17:22  0:36:45                 "
-        "                89 %                                              "
-        "              error\n"
-        "2022-03-19 16:18:18  2022-03-19 17:36:04  1:17:46                 "
-        "                99 %                                              "
-        "              error\n"
-        "2022-03-20 22:21:31  2022-03-21 07:32:50  9:11:19                 "
-        "                71 %                                              "
-        "              error\n"
-    )
-
-    assert expected_output == result.output
+    assert result.output == snapshot
 
 
 def test_charge_schedule_show(
-    mocked_responses: aioresponses, cli_runner: CliRunner
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -218,70 +137,11 @@ def test_charge_schedule_show(
 
     result = cli_runner.invoke(__main__.main, "charge schedule show")
     assert result.exit_code == 0, result.exception
-
-    expected_output = (
-        "Mode: scheduled\n"
-        "\n"
-        "Schedule ID: 1 [Active]\n"
-        "Day        Start time    End time    Duration\n"
-        "---------  ------------  ----------  ----------\n"
-        "Monday     01:00         08:30       7:30:00\n"
-        "Tuesday    01:00         08:30       7:30:00\n"
-        "Wednesday  01:00         08:30       7:30:00\n"
-        "Thursday   01:00         08:30       7:30:00\n"
-        "Friday     01:00         08:30       7:30:00\n"
-        "Saturday   01:00         08:30       7:30:00\n"
-        "Sunday     01:00         08:30       7:30:00\n"
-        "\n"
-        "Schedule ID: 2 [Active]\n"
-        "Day        Start time    End time    Duration\n"
-        "---------  ------------  ----------  ----------\n"
-        "Monday     00:30         00:45       0:15:00\n"
-        "Tuesday    00:30         00:45       0:15:00\n"
-        "Wednesday  00:30         00:45       0:15:00\n"
-        "Thursday   00:30         00:45       0:15:00\n"
-        "Friday     00:30         00:45       0:15:00\n"
-        "Saturday   00:30         00:45       0:15:00\n"
-        "Sunday     00:30         00:45       0:15:00\n"
-        "\n"
-        "Schedule ID: 3\n"
-        "Day        Start time    End time    Duration\n"
-        "---------  ------------  ----------  ----------\n"
-        "Monday     -             -           -\n"
-        "Tuesday    -             -           -\n"
-        "Wednesday  -             -           -\n"
-        "Thursday   -             -           -\n"
-        "Friday     -             -           -\n"
-        "Saturday   -             -           -\n"
-        "Sunday     -             -           -\n"
-        "\n"
-        "Schedule ID: 4\n"
-        "Day        Start time    End time    Duration\n"
-        "---------  ------------  ----------  ----------\n"
-        "Monday     -             -           -\n"
-        "Tuesday    -             -           -\n"
-        "Wednesday  -             -           -\n"
-        "Thursday   -             -           -\n"
-        "Friday     -             -           -\n"
-        "Saturday   -             -           -\n"
-        "Sunday     -             -           -\n"
-        "\n"
-        "Schedule ID: 5\n"
-        "Day        Start time    End time    Duration\n"
-        "---------  ------------  ----------  ----------\n"
-        "Monday     -             -           -\n"
-        "Tuesday    -             -           -\n"
-        "Wednesday  -             -           -\n"
-        "Thursday   -             -           -\n"
-        "Friday     -             -           -\n"
-        "Saturday   -             -           -\n"
-        "Sunday     -             -           -\n"
-    )
-    assert expected_output == result.output
+    assert result.output == snapshot
 
 
 def test_charging_settings_set(
-    mocked_responses: aioresponses, cli_runner: CliRunner
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -295,79 +155,13 @@ def test_charging_settings_set(
         __main__.main, f"charge schedule set 1 {monday} {friday} {saturday}"
     )
     assert result.exit_code == 0, result.exception
-
-    expected_json = {
-        "data": {
-            "attributes": {
-                "schedules": [
-                    {
-                        "id": 1,
-                        "activated": True,
-                        "monday": None,
-                        "tuesday": {"startTime": "T00:00Z", "duration": 450},
-                        "wednesday": {"startTime": "T00:00Z", "duration": 450},
-                        "thursday": {"startTime": "T00:00Z", "duration": 450},
-                        "friday": {"startTime": "T23:30Z", "duration": 480},
-                        "saturday": {"startTime": "T18:30Z", "duration": 120},
-                        "sunday": {"startTime": "T00:00Z", "duration": 450},
-                    },
-                    {
-                        "id": 2,
-                        "activated": True,
-                        "monday": {"startTime": "T23:30Z", "duration": 15},
-                        "tuesday": {"startTime": "T23:30Z", "duration": 15},
-                        "wednesday": {"startTime": "T23:30Z", "duration": 15},
-                        "thursday": {"startTime": "T23:30Z", "duration": 15},
-                        "friday": {"startTime": "T23:30Z", "duration": 15},
-                        "saturday": {"startTime": "T23:30Z", "duration": 15},
-                        "sunday": {"startTime": "T23:30Z", "duration": 15},
-                    },
-                    {
-                        "id": 3,
-                        "activated": False,
-                        "monday": None,
-                        "tuesday": None,
-                        "wednesday": None,
-                        "thursday": None,
-                        "friday": None,
-                        "saturday": None,
-                        "sunday": None,
-                    },
-                    {
-                        "id": 4,
-                        "activated": False,
-                        "monday": None,
-                        "tuesday": None,
-                        "wednesday": None,
-                        "thursday": None,
-                        "friday": None,
-                        "saturday": None,
-                        "sunday": None,
-                    },
-                    {
-                        "id": 5,
-                        "activated": False,
-                        "monday": None,
-                        "tuesday": None,
-                        "wednesday": None,
-                        "thursday": None,
-                        "friday": None,
-                        "saturday": None,
-                        "sunday": None,
-                    },
-                ],
-            },
-            "type": "ChargeSchedule",
-        }
-    }
-    expected_output = "{'schedules': [{'id': 1, 'activated': True, "
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
-    assert result.output.startswith(expected_output)
+    assert request.kwargs["json"] == snapshot
+    assert result.output == snapshot
 
 
 def test_charging_settings_activate(
-    mocked_responses: aioresponses, cli_runner: CliRunner
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -376,81 +170,14 @@ def test_charging_settings_activate(
 
     result = cli_runner.invoke(__main__.main, "charge schedule activate 3")
     assert result.exit_code == 0, result.exception
-
-    expected_json = {
-        "data": {
-            "attributes": {
-                "schedules": [
-                    {
-                        "id": 1,
-                        "activated": True,
-                        "monday": {"startTime": "T00:00Z", "duration": 450},
-                        "tuesday": {"startTime": "T00:00Z", "duration": 450},
-                        "wednesday": {"startTime": "T00:00Z", "duration": 450},
-                        "thursday": {"startTime": "T00:00Z", "duration": 450},
-                        "friday": {"startTime": "T00:00Z", "duration": 450},
-                        "saturday": {"startTime": "T00:00Z", "duration": 450},
-                        "sunday": {"startTime": "T00:00Z", "duration": 450},
-                    },
-                    {
-                        "id": 2,
-                        "activated": True,
-                        "monday": {"startTime": "T23:30Z", "duration": 15},
-                        "tuesday": {"startTime": "T23:30Z", "duration": 15},
-                        "wednesday": {"startTime": "T23:30Z", "duration": 15},
-                        "thursday": {"startTime": "T23:30Z", "duration": 15},
-                        "friday": {"startTime": "T23:30Z", "duration": 15},
-                        "saturday": {"startTime": "T23:30Z", "duration": 15},
-                        "sunday": {"startTime": "T23:30Z", "duration": 15},
-                    },
-                    {
-                        "id": 3,
-                        "activated": True,
-                        "monday": None,
-                        "tuesday": None,
-                        "wednesday": None,
-                        "thursday": None,
-                        "friday": None,
-                        "saturday": None,
-                        "sunday": None,
-                    },
-                    {
-                        "id": 4,
-                        "activated": False,
-                        "monday": None,
-                        "tuesday": None,
-                        "wednesday": None,
-                        "thursday": None,
-                        "friday": None,
-                        "saturday": None,
-                        "sunday": None,
-                    },
-                    {
-                        "id": 5,
-                        "activated": False,
-                        "monday": None,
-                        "tuesday": None,
-                        "wednesday": None,
-                        "thursday": None,
-                        "friday": None,
-                        "saturday": None,
-                        "sunday": None,
-                    },
-                ]
-            },
-            "type": "ChargeSchedule",
-        }
-    }
-    expected_output = "{'schedules': [{'id': 1, 'activated': True, "
-
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
 
-    assert expected_json == request.kwargs["json"]
-    assert result.output.startswith(expected_output)
+    assert request.kwargs["json"] == snapshot
+    assert result.output == snapshot
 
 
 def test_charging_settings_deactivate(
-    mocked_responses: aioresponses, cli_runner: CliRunner
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -459,80 +186,15 @@ def test_charging_settings_deactivate(
 
     result = cli_runner.invoke(__main__.main, "charge schedule deactivate 1")
     assert result.exit_code == 0, result.exception
-
-    expected_json = {
-        "data": {
-            "attributes": {
-                "schedules": [
-                    {
-                        "id": 1,
-                        "activated": False,
-                        "monday": {"startTime": "T00:00Z", "duration": 450},
-                        "tuesday": {"startTime": "T00:00Z", "duration": 450},
-                        "wednesday": {"startTime": "T00:00Z", "duration": 450},
-                        "thursday": {"startTime": "T00:00Z", "duration": 450},
-                        "friday": {"startTime": "T00:00Z", "duration": 450},
-                        "saturday": {"startTime": "T00:00Z", "duration": 450},
-                        "sunday": {"startTime": "T00:00Z", "duration": 450},
-                    },
-                    {
-                        "id": 2,
-                        "activated": True,
-                        "monday": {"startTime": "T23:30Z", "duration": 15},
-                        "tuesday": {"startTime": "T23:30Z", "duration": 15},
-                        "wednesday": {"startTime": "T23:30Z", "duration": 15},
-                        "thursday": {"startTime": "T23:30Z", "duration": 15},
-                        "friday": {"startTime": "T23:30Z", "duration": 15},
-                        "saturday": {"startTime": "T23:30Z", "duration": 15},
-                        "sunday": {"startTime": "T23:30Z", "duration": 15},
-                    },
-                    {
-                        "id": 3,
-                        "activated": False,
-                        "monday": None,
-                        "tuesday": None,
-                        "wednesday": None,
-                        "thursday": None,
-                        "friday": None,
-                        "saturday": None,
-                        "sunday": None,
-                    },
-                    {
-                        "id": 4,
-                        "activated": False,
-                        "monday": None,
-                        "tuesday": None,
-                        "wednesday": None,
-                        "thursday": None,
-                        "friday": None,
-                        "saturday": None,
-                        "sunday": None,
-                    },
-                    {
-                        "id": 5,
-                        "activated": False,
-                        "monday": None,
-                        "tuesday": None,
-                        "wednesday": None,
-                        "thursday": None,
-                        "friday": None,
-                        "saturday": None,
-                        "sunday": None,
-                    },
-                ]
-            },
-            "type": "ChargeSchedule",
-        }
-    }
-    expected_output = "{'schedules': [{'id': 1, 'activated': True, "
-
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
 
-    assert expected_json == request.kwargs["json"]
-    assert result.output.startswith(expected_output)
+    assert request.kwargs["json"] == snapshot
+    assert result.output == snapshot
 
 
-def test_charging_start(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_charging_start(
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
@@ -541,19 +203,14 @@ def test_charging_start(mocked_responses: aioresponses, cli_runner: CliRunner) -
     result = cli_runner.invoke(__main__.main, "charge start")
     assert result.exit_code == 0, result.exception
 
-    expected_json = {
-        "data": {
-            "attributes": {"action": "start"},
-            "type": "ChargingStart",
-        }
-    }
-    expected_output = "{'action': 'start'}\n"
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
-    assert expected_output == result.output
+    assert request.kwargs["json"] == snapshot
+    assert result.output == snapshot
 
 
-def test_charging_stop(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_charging_stop(
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
@@ -562,20 +219,13 @@ def test_charging_stop(mocked_responses: aioresponses, cli_runner: CliRunner) ->
     result = cli_runner.invoke(__main__.main, "charge stop")
     assert result.exit_code == 0, result.exception
 
-    expected_json = {
-        "data": {
-            "attributes": {"action": "stop"},
-            "type": "ChargingStart",
-        }
-    }
-    expected_output = "{'action': 'stop'}\n"
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
-    assert expected_output == result.output
+    assert request.kwargs["json"] == snapshot
+    assert result.output == snapshot
 
 
 def test_charging_dacia_start(
-    mocked_responses: aioresponses, cli_runner: CliRunner
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -585,20 +235,13 @@ def test_charging_dacia_start(
     result = cli_runner.invoke(__main__.main, "charge start")
     assert result.exit_code == 0, result.exception
 
-    expected_json = {
-        "data": {
-            "attributes": {"action": "resume"},
-            "type": "ChargePauseResume",
-        }
-    }
-    expected_output = "{'action': 'resume'}\n"
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
-    assert expected_output == result.output
+    assert request.kwargs["json"] == snapshot
+    assert result.output == snapshot
 
 
 def test_charging_dacia_stop(
-    mocked_responses: aioresponses, cli_runner: CliRunner
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -608,13 +251,6 @@ def test_charging_dacia_stop(
     result = cli_runner.invoke(__main__.main, "charge stop")
     assert result.exit_code == 0, result.exception
 
-    expected_json = {
-        "data": {
-            "attributes": {"action": "pause"},
-            "type": "ChargePauseResume",
-        }
-    }
-    expected_output = "{'action': 'pause'}\n"
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
-    assert expected_output == result.output
+    assert request.kwargs["json"] == snapshot
+    assert result.output == snapshot

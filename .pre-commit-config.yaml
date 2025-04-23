@@ -36,6 +36,7 @@ repos:
       - id: trailing-whitespace
         name: Trim Trailing Whitespace
         entry: trailing-whitespace-fixer
+        exclude: \.ambr$
         language: system
         types: [text]
         stages: [pre-commit, pre-push, manual]

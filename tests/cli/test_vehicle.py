@@ -2,13 +2,13 @@
 
 import json
 import os
-from locale import getdefaultlocale
 from typing import Any
 
 import pytest
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall
 from click.testing import CliRunner
+from syrupy.assertion import SnapshotAssertion
 from typeguard import suppress_type_checks
 from yarl import URL
 
@@ -33,146 +33,10 @@ from renault_api.gigya import GIGYA_JWT
 from renault_api.gigya import GIGYA_LOGIN_TOKEN
 from renault_api.gigya import GIGYA_PERSON_ID
 
-EXPECTED_STATUS = {
-    "captur_ii.1.json": (
-        "--------------------  ----------------------\n"
-        "Total mileage         5566.78 km\n"
-        "Fuel autonomy         35.0 km\n"
-        "Fuel quantity         3.0 L\n"
-        "GPS Latitude          48.1234567\n"
-        "GPS Longitude         11.1234567\n"
-        "GPS last updated      2020-02-18 17:58:38\n"
-        "Lock status           locked\n"
-        "Lock last updated     2022-02-02 14:51:13\n"
-        "Engine state          Stopped, ready for RES\n"
-        "Front left pressure   2460 bar\n"
-        "Front right pressure  2730 bar\n"
-        "Rear left pressure    2790 bar\n"
-        "Rear right pressure   2790 bar\n"
-        "--------------------  ----------------------\n"
-    ),
-    "captur_ii.2.json": (
-        "--------------------  -------------------------\n"
-        "Battery level         50 %\n"
-        "Last updated          2020-11-17 09:06:48\n"
-        "Range estimate        128 km\n"
-        "Plug state            PlugState.UNPLUGGED\n"
-        "Charging state        ChargeState.NOT_IN_CHARGE\n"
-        "Charge mode           always\n"
-        "Total mileage         5566.78 km\n"
-        "Fuel autonomy         35.0 km\n"
-        "Fuel quantity         3.0 L\n"
-        "GPS Latitude          48.1234567\n"
-        "GPS Longitude         11.1234567\n"
-        "GPS last updated      2020-02-18 17:58:38\n"
-        "Lock status           locked\n"
-        "Lock last updated     2022-02-02 14:51:13\n"
-        "Engine state          Stopped, ready for RES\n"
-        "Front left pressure   2460 bar\n"
-        "Front right pressure  2730 bar\n"
-        "Rear left pressure    2790 bar\n"
-        "Rear right pressure   2790 bar\n"
-        "--------------------  -------------------------\n"
-    ),
-    "twingo_ze.1.json": (
-        "--------------------  -------------------------\n"
-        "Battery level         50 %\n"
-        "Last updated          2020-11-17 09:06:48\n"
-        "Range estimate        128 km\n"
-        "Plug state            PlugState.UNPLUGGED\n"
-        "Charging state        ChargeState.NOT_IN_CHARGE\n"
-        "Charge mode           always\n"
-        "Total mileage         49114.27 km\n"
-        "GPS Latitude          48.1234567\n"
-        "GPS Longitude         11.1234567\n"
-        "GPS last updated      2020-02-18 17:58:38\n"
-        "Lock status           locked\n"
-        "Lock last updated     2022-02-02 14:51:13\n"
-        "Engine state          Stopped, ready for RES\n"
-        "HVAC status           on\n"
-        "Front left pressure   2460 bar\n"
-        "Front right pressure  2730 bar\n"
-        "Rear left pressure    2790 bar\n"
-        "Rear right pressure   2790 bar\n"
-        "--------------------  -------------------------\n"
-    ),
-    "zoe_40.1.json": (
-        "--------------------  -------------------------\n"
-        "Battery level         50 %\n"
-        "Last updated          2020-11-17 09:06:48\n"
-        "Range estimate        128 km\n"
-        "Plug state            PlugState.UNPLUGGED\n"
-        "Charging state        ChargeState.NOT_IN_CHARGE\n"
-        "Charge mode           always\n"
-        "Total mileage         49114.27 km\n"
-        "Engine state          Stopped, ready for RES\n"
-        "HVAC status           off\n"
-        "External temperature  8.0 °C\n"
-        "Front left pressure   2460 bar\n"
-        "Front right pressure  2730 bar\n"
-        "Rear left pressure    2790 bar\n"
-        "Rear right pressure   2790 bar\n"
-        "--------------------  -------------------------\n"
-    ),
-    "zoe_40.2.json": (
-        "--------------------  -------------------------\n"
-        "Battery level         50 %\n"
-        "Last updated          2020-11-17 09:06:48\n"
-        "Range estimate        128 km\n"
-        "Plug state            PlugState.UNPLUGGED\n"
-        "Charging state        ChargeState.NOT_IN_CHARGE\n"
-        "Charge mode           always\n"
-        "Total mileage         49114.27 km\n"
-        "Engine state          Stopped, ready for RES\n"
-        "HVAC status           off\n"
-        "External temperature  8.0 °C\n"
-        "Front left pressure   2460 bar\n"
-        "Front right pressure  2730 bar\n"
-        "Rear left pressure    2790 bar\n"
-        "Rear right pressure   2790 bar\n"
-        "--------------------  -------------------------\n"
-    ),
-    "zoe_50.1.json": (
-        "--------------------  -------------------------\n"
-        "Battery level         50 %\n"
-        "Last updated          2020-11-17 09:06:48\n"
-        "Range estimate        128 km\n"
-        "Plug state            PlugState.UNPLUGGED\n"
-        "Charging state        ChargeState.NOT_IN_CHARGE\n"
-        "Charge mode           always\n"
-        "Total mileage         5785.75 km\n"
-        "Fuel autonomy         0.0 km\n"
-        "Fuel quantity         0.0 L\n"
-        "GPS Latitude          48.1234567\n"
-        "GPS Longitude         11.1234567\n"
-        "GPS last updated      2020-02-18 17:58:38\n"
-        "Lock status           locked\n"
-        "Lock last updated     2022-02-02 14:51:13\n"
-        "Engine state          Stopped, ready for RES\n"
-        "HVAC status           on\n"
-        "Front left pressure   2460 bar\n"
-        "Front right pressure  2730 bar\n"
-        "Rear left pressure    2790 bar\n"
-        "Rear right pressure   2790 bar\n"
-        "--------------------  -------------------------\n"
-    ),
-    "zoe_40.1_json.json": (
-        '{"battery-status": {"timestamp": "2020-11-17T09:06:48+01:00", '
-        '"batteryLevel": 50, "batteryAutonomy": 128, "batteryCapacity": 0, '
-        '"batteryAvailableEnergy": 0, "plugStatus": 0, "chargingStatus": -1.0}, '
-        '"charge-mode": {"chargeMode": "always"}, '
-        '"cockpit": {"totalMileage": 49114.27}, '
-        '"res-state": {"details": "Stopped, ready for RES", "code": "10"}, '
-        '"hvac-status": {"externalTemperature": 8.0, "hvacStatus": "off"}, '
-        '"pressure": {"flPressure": 2460, "frPressure": 2730, '
-        '"rlPressure": 2790, "rrPressure": 2790, '
-        '"flStatus": 0, "frStatus": 0, '
-        '"rlStatus": 0, "rrStatus": 0}}\n'
-    ),
-}
 
-
-def test_vehicle_details(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_vehicle_details(
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
     credential_store[CONF_LOCALE] = Credential(TEST_LOCALE)
@@ -187,19 +51,17 @@ def test_vehicle_details(mocked_responses: aioresponses, cli_runner: CliRunner) 
     result = cli_runner.invoke(__main__.main, "vehicle")
     assert result.exit_code == 0, result.exception
 
-    expected_output = (
-        "Registration    Brand    Model    VIN\n"
-        "--------------  -------  -------  -----------------\n"
-        "REG-NUMBER      RENAULT  ZOE      VF1AAAAA555777999\n"
-    )
-    assert expected_output == result.output
+    assert result.output == snapshot
 
 
 @pytest.mark.parametrize(
     "filename", fixtures.get_json_files(f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicles")
 )
 def test_vehicle_status(
-    mocked_responses: aioresponses, cli_runner: CliRunner, filename: str
+    mocked_responses: aioresponses,
+    cli_runner: CliRunner,
+    filename: str,
+    snapshot: SnapshotAssertion,
 ) -> None:
     """It exits with a status code of zero."""
     filename = os.path.basename(filename)
@@ -230,13 +92,11 @@ def test_vehicle_status(
 
     result = cli_runner.invoke(__main__.main, "status")
     assert result.exit_code == 0, result.exception
-
-    if filename in EXPECTED_STATUS:
-        assert EXPECTED_STATUS[filename] == result.output
+    assert result.output == snapshot
 
 
 def test_vehicle_status_prompt(
-    mocked_responses: aioresponses, cli_runner: CliRunner
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     fixtures.inject_gigya_all(mocked_responses)
@@ -264,39 +124,11 @@ def test_vehicle_status_prompt(
         input=f"{TEST_LOCALE}\nN\n{TEST_USERNAME}\n{TEST_PASSWORD}\n1\ny\n1\ny\n",
     )
     assert result.exit_code == 0, result.exception
-
-    default_locale = getdefaultlocale()[0]
-    prompt_default = f" [{default_locale}]" if default_locale else ""
-
-    expected_output = (
-        f"Please select a locale{prompt_default}: {TEST_LOCALE}\n"
-        "Do you want to save the locale to the credential store? [y/N]: N\n"
-        "\n"
-        f"User: {TEST_USERNAME}\n"
-        "Password: \n"
-        "\n"
-        "    ID            Type         Vehicles\n"
-        "--  ------------  ---------  ----------\n"
-        " 1  account-id-1  MYRENAULT           1\n"
-        " 2  account-id-2  SFDC                1\n"
-        "\n"
-        "Please select account [1]: 1\n"
-        "Do you want to save the account ID to the credential store? [y/N]: y\n"
-        "\n"
-        "    Vin                Registration    Brand    Model\n"
-        "--  -----------------  --------------  -------  -------\n"
-        " 1  VF1AAAAA555777999  REG-NUMBER      RENAULT  ZOE\n"
-        "\n"
-        "Please select vehicle [1]: 1\n"
-        "Do you want to save the VIN to the credential store? [y/N]: y\n"
-        "\n"
-        f"{EXPECTED_STATUS['zoe_40.1.json']}"
-    )
-    assert expected_output == result.output
+    assert result.output == snapshot
 
 
 def test_vehicle_status_no_prompt(
-    mocked_responses: aioresponses, cli_runner: CliRunner
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
@@ -313,12 +145,11 @@ def test_vehicle_status_no_prompt(
         __main__.main, f"--account {TEST_ACCOUNT_ID} --vin {TEST_VIN} status"
     )
     assert result.exit_code == 0, result.exception
-
-    assert EXPECTED_STATUS["zoe_40.1.json"] == result.output
+    assert result.output == snapshot
 
 
 def test_vehicle_status_json(
-    mocked_responses: aioresponses, cli_runner: CliRunner
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
@@ -335,12 +166,11 @@ def test_vehicle_status_json(
         __main__.main, f"--account {TEST_ACCOUNT_ID} --vin {TEST_VIN} --json status"
     )
     assert result.exit_code == 0, result.exception
-
-    assert EXPECTED_STATUS["zoe_40.1_json.json"] == result.output
+    assert result.output == snapshot
 
 
 def test_vehicle_contracts(
-    mocked_responses: aioresponses, cli_runner: CliRunner
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
@@ -355,35 +185,12 @@ def test_vehicle_contracts(
 
     result = cli_runner.invoke(__main__.main, "contracts")
     assert result.exit_code == 0, result.exception
-
-    expected_output = (
-        "Type                            Code                  "
-        "Description                       Start       End         Status\n"
-        "------------------------------  --------------------  "
-        "--------------------------------  ----------  ----------  "
-        "------------------\n"
-        "WARRANTY_MAINTENANCE_CONTRACTS  40                    "
-        "CONTRAT LOSANGE                   2018-04-04  2022-04-03  Actif\n"
-        "CONNECTED_SERVICES              ZECONNECTP            "
-        "My Z.E. Connect en série 36 mois  2018-08-23  2021-08-23  Actif\n"
-        "CONNECTED_SERVICES              GBA                   "
-        "Battery Services                  2018-03-23              "
-        "Echec d’activation\n"
-        "WARRANTY                        ManufacturerWarranty  "
-        "Garantie fabricant                            2020-04-03  Expiré\n"
-        "WARRANTY                        PaintingWarranty      "
-        "Garantie peinture                             2021-04-03  Actif\n"
-        "WARRANTY                        CorrosionWarranty     "
-        "Garantie corrosion                            2030-04-03  Actif\n"
-        "WARRANTY                        GMPeWarranty          "
-        "Garantie GMPe                                 2020-04-03  Expiré\n"
-        "WARRANTY                        AssistanceWarranty    "
-        "Garantie assistance                           2020-04-03  Expiré\n"
-    )
-    assert expected_output == result.output
+    assert result.output == snapshot
 
 
-def test_http_get(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_http_get(
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
     credential_store[CONF_LOCALE] = Credential(TEST_LOCALE)
@@ -405,24 +212,12 @@ def test_http_get(mocked_responses: aioresponses, cli_runner: CliRunner) -> None
         f"http get {endpoint}",
     )
     assert result.exit_code == 0, result.exception
-
-    expected_output = (
-        "{'data': {'type': 'Car', 'id': 'VF1AAAAA555777999', 'attributes': {"
-        "'mode': 'scheduled', 'schedules': ["
-        "{'id': 1, 'activated': True, "
-        "'monday': {'startTime': 'T12:00Z', 'duration': 15}, "
-        "'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, "
-        "'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, "
-        "'thursday': {'startTime': 'T22:00Z', 'duration': 420}, "
-        "'friday': {'startTime': 'T12:15Z', 'duration': 15}, "
-        "'saturday': {'startTime': 'T12:30Z', 'duration': 30}, "
-        "'sunday': {'startTime': 'T12:45Z', 'duration': 45}}"
-        "]}}}\n"
-    )
-    assert expected_output == result.output
+    assert result.output == snapshot
 
 
-def test_http_get_list(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_http_get_list(
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
     credential_store[CONF_LOCALE] = Credential(TEST_LOCALE)
@@ -443,23 +238,12 @@ def test_http_get_list(mocked_responses: aioresponses, cli_runner: CliRunner) ->
         f"http get {endpoint}",
     )
     assert result.exit_code == 0, result.exception
-
-    expected_output = (
-        "{'data': [{'notificationId': 'ffcb0310-503f-4bc3-9056-e9d051a089c6', "
-        "'notifDate': '2022-02-01T19:01:51.622', 'vin': '*PRIVATE*', "
-        "'personId': '*PRIVATE*', 'kmrUserId': '*PRIVATE*', "
-        "'actionType': 'COMMAND_RESPONSE', 'commandResponse': {'status': 'CREATED'}, "
-        "'commandType': 'SRP_SETS'}, "
-        "{'notificationId': 'ffcb0310-503f-4bc3-9056-e9d051a089c6', "
-        "'notifDate': '2022-02-01T19:01:51.623', 'vin': '*PRIVATE*', "
-        "'personId': '*PRIVATE*', 'kmrUserId': '*PRIVATE*', "
-        "'actionType': 'SRP_SALT_REQUEST', 'srpResponse': {'status': 'OK', 'loginB': "
-        "'*PRIVATE*', 'loginSalt': '*PRIVATE*'}}]}\n"
-    )
-    assert expected_output == result.output
+    assert result.output == snapshot
 
 
-def test_http_post(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_http_post(
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
     credential_store[CONF_LOCALE] = Credential(TEST_LOCALE)
@@ -483,30 +267,17 @@ def test_http_post(mocked_responses: aioresponses, cli_runner: CliRunner) -> Non
         f"http post {endpoint} '{json_body}'",
     )
     assert result.exit_code == 0, result.exception
-
-    expected_output = (
-        "{'data': {'type': 'ChargeSchedule', 'id': 'guid', "
-        "'attributes': {'schedules': ["
-        "{'id': 1, 'activated': True, "
-        "'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, "
-        "'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, "
-        "'thursday': {'startTime': 'T22:00Z', 'duration': 420}, "
-        "'friday': {'startTime': 'T23:30Z', 'duration': 480}, "
-        "'saturday': {'startTime': 'T18:30Z', 'duration': 120}, "
-        "'sunday': {'startTime': 'T12:45Z', 'duration': 45}}]}}}\n"
-    )
-    assert expected_output == result.output
-
-    expected_json = {
-        "data": {"type": "ChargeSchedule", "attributes": {"schedules": []}}
-    }
+    assert result.output == snapshot
 
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
+    assert request.kwargs["json"] == snapshot
 
 
 def test_http_post_file(
-    tmpdir: Any, mocked_responses: aioresponses, cli_runner: CliRunner
+    tmpdir: Any,
+    mocked_responses: aioresponses,
+    cli_runner: CliRunner,
+    snapshot: SnapshotAssertion,
 ) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
@@ -535,23 +306,7 @@ def test_http_post_file(
             f"http post-file {endpoint} '{json_file}'",
         )
     assert result.exit_code == 0, result.exception
-
-    expected_output = (
-        "{'data': {'type': 'ChargeSchedule', 'id': 'guid', "
-        "'attributes': {'schedules': ["
-        "{'id': 1, 'activated': True, "
-        "'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, "
-        "'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, "
-        "'thursday': {'startTime': 'T22:00Z', 'duration': 420}, "
-        "'friday': {'startTime': 'T23:30Z', 'duration': 480}, "
-        "'saturday': {'startTime': 'T18:30Z', 'duration': 120}, "
-        "'sunday': {'startTime': 'T12:45Z', 'duration': 45}}]}}}\n"
-    )
-    assert expected_output == result.output
-
-    expected_json = {
-        "data": {"type": "ChargeSchedule", "attributes": {"schedules": []}}
-    }
+    assert result.output == snapshot
 
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
+    assert request.kwargs["json"] == snapshot

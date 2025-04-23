@@ -1,7 +1,9 @@
 """Singletons for the CLI."""
 
 import json
-from locale import getdefaultlocale
+from locale import LC_ALL
+from locale import getlocale
+from locale import setlocale
 from typing import Any
 from typing import Optional
 
@@ -30,7 +32,8 @@ async def get_locale(
     if locale:
         return locale
 
-    default_locale = getdefaultlocale()[0]
+    setlocale(LC_ALL, "")
+    default_locale = getlocale()[0]
     while True:
         locale = click.prompt("Please select a locale", default=default_locale)
         if locale:  # pragma: no branch
