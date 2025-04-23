@@ -10,7 +10,7 @@
 # ---
 # name: test_list_accounts_prompt
   '''
-  Please select a locale: fr_FR
+  Please select a locale [fr_CA]: fr_FR
   Do you want to save the locale to the credential store? [y/N]: N
   
   User: test@example.com
@@ -30,7 +30,7 @@
   '''
   User: test@example.com
   Password: 
-  Please select a locale: fr_FR
+  Please select a locale [fr_CA]: fr_FR
   Do you want to save the locale to the credential store? [y/N]: y
   
   
