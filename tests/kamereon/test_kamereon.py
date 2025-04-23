@@ -4,6 +4,7 @@ import aiohttp
 import pytest
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall
+from syrupy.assertion import SnapshotAssertion
 from yarl import URL
 
 from tests import fixtures
@@ -100,7 +101,9 @@ async def test_get_vehicle_data_xml_bad_gateway(
 
 @pytest.mark.asyncio
 async def test_set_vehicle_action(
-    websession: aiohttp.ClientSession, mocked_responses: aioresponses
+    websession: aiohttp.ClientSession,
+    mocked_responses: aioresponses,
+    snapshot: SnapshotAssertion,
 ) -> None:
     """Test set_vehicle_action."""
     url = fixtures.inject_set_hvac_start(mocked_responses, "cancel")
@@ -116,7 +119,5 @@ async def test_set_vehicle_action(
         attributes={"action": "cancel"},
     )
 
-    expected_json = {"data": {"type": "HvacStart", "attributes": {"action": "cancel"}}}
-
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
+    assert request.kwargs["json"] == snapshot

@@ -3,6 +3,7 @@
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall
 from click.testing import CliRunner
+from syrupy.assertion import SnapshotAssertion
 from yarl import URL
 
 from tests import fixtures
@@ -12,7 +13,7 @@ from renault_api.cli import __main__
 
 
 def test_hvac_history_day(
-    mocked_responses: aioresponses, cli_runner: CliRunner
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -24,13 +25,11 @@ def test_hvac_history_day(
         __main__.main, "hvac history --from 2020-11-01 --to 2020-11-30 --period day"
     )
     assert result.exit_code == 0, result.exception
-
-    expected_output = "{}\n"
-    assert expected_output == result.output
+    assert result.output == snapshot
 
 
 def test_hvac_history_month(
-    mocked_responses: aioresponses, cli_runner: CliRunner
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -42,12 +41,12 @@ def test_hvac_history_month(
         __main__.main, "hvac history --from 2020-11-01 --to 2020-11-30"
     )
     assert result.exit_code == 0, result.exception
-
-    expected_output = "{}\n"
-    assert expected_output == result.output
+    assert result.output == snapshot
 
 
-def test_hvac_cancel(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_hvac_cancel(
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     url = fixtures.inject_set_hvac_start(mocked_responses, result="cancel")
@@ -56,15 +55,14 @@ def test_hvac_cancel(mocked_responses: aioresponses, cli_runner: CliRunner) -> N
     result = cli_runner.invoke(__main__.main, "hvac cancel")
     assert result.exit_code == 0, result.exception
 
-    expected_json = {"data": {"attributes": {"action": "cancel"}, "type": "HvacStart"}}
-    expected_output = "{'action': 'cancel'}\n"
-
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
-    assert expected_output == result.output
+    assert request.kwargs["json"] == snapshot
+    assert result.output == snapshot
 
 
-def test_sessions(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_sessions(
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_get_hvac_sessions(
@@ -75,33 +73,25 @@ def test_sessions(mocked_responses: aioresponses, cli_runner: CliRunner) -> None
         __main__.main, "hvac sessions --from 2020-11-01 --to 2020-11-30"
     )
     assert result.exit_code == 0, result.exception
-
-    expected_output = "{}\n"
-    assert expected_output == result.output
+    assert result.output == snapshot
 
 
-def test_hvac_start_now(mocked_responses: aioresponses, cli_runner: CliRunner) -> None:
+def test_hvac_start_now(
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     url = fixtures.inject_set_hvac_start(mocked_responses, "start")
 
     result = cli_runner.invoke(__main__.main, "hvac start --temperature 25")
     assert result.exit_code == 0, result.exception
-
-    expected_json = {
-        "data": {
-            "attributes": {"action": "start", "targetTemperature": 25},
-            "type": "HvacStart",
-        }
-    }
-    expected_output = "{'action': 'start', 'targetTemperature': 21.0}\n"
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
-    assert expected_output == result.output
+    assert request.kwargs["json"] == snapshot
+    assert result.output == snapshot
 
 
 def test_hvac_start_later(
-    mocked_responses: aioresponses, cli_runner: CliRunner
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -111,18 +101,6 @@ def test_hvac_start_later(
         __main__.main, "hvac start --temperature 24 --at '2020-12-25T11:50:00+02:00'"
     )
     assert result.exit_code == 0, result.exception
-
-    expected_json = {
-        "data": {
-            "attributes": {
-                "action": "start",
-                "startDateTime": "2020-12-25T09:50:00Z",
-                "targetTemperature": 24,
-            },
-            "type": "HvacStart",
-        }
-    }
-    expected_output = "{'action': 'start', 'targetTemperature': 21.0}\n"
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
-    assert expected_output == result.output
+    assert request.kwargs["json"] == snapshot
+    assert result.output == snapshot

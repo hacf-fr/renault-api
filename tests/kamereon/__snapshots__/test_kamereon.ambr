@@ -1,0 +1,11 @@
+# serializer version: 1
+# name: test_set_vehicle_action
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'action': 'cancel',
+      }),
+      'type': 'HvacStart',
+    }),
+  })
+# ---

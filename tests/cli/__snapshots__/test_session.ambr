@@ -1,0 +1,13 @@
+# serializer version: 1
+# name: test_get_keys_succeeds
+  '''
+  Key                Value
+  -----------------  ------------------------------------------------------------------
+  locale             fr_FR
+  gigya-root-url     https://accounts.eu1.gigya.com
+  gigya-api-key      3_4LKbCcMMcvjDm3X89LU4z4mNKYKdl_W0oD9w-Jvih21WqgJKtFZAnb9YdUgWT9_a
+  kamereon-root-url  https://api-wired-prod-1-euw1.wrd-aws.com
+  kamereon-api-key   YjkKtHmGfaceeuExUDKGxrLZGGvtVS0J
+  
+  '''
+# ---
