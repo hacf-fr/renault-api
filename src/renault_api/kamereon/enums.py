@@ -26,8 +26,6 @@ class PlugState(Enum):
 
     UNPLUGGED = 0
     PLUGGED = 1
-    # 3 is unconfirmed, as it is currently unsupported on the App (see #1262)
-    PLUGGED_WAITING_FOR_CHARGE = 3
     PLUG_ERROR = -1
     PLUG_UNKNOWN = -2147483648
 
