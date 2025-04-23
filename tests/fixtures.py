@@ -56,7 +56,7 @@ def _jwt_as_string(encoded_jwt: Any) -> str:
 
 def get_json_files(parent_dir: str) -> list[str]:
     """Read fixture text file as string."""
-    return glob(f"{parent_dir}/*.json")
+    return [file.replace("\\", "/") for file in glob(f"{parent_dir}/*.json")]
 
 
 def get_file_content(filename: str) -> str:
