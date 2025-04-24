@@ -54,7 +54,7 @@ async def _get_vin(ctx_data: dict[str, Any], account: RenaultAccount) -> str:
         except (KeyError, IndexError) as exc:
             click.echo(f"Invalid option: {exc}.", err=True)
         else:
-            if click.confirm(  # pragma: no branch
+            if click.confirm(
                 "Do you want to save the VIN to the credential store?",
                 default=False,
             ):
@@ -83,7 +83,7 @@ async def _get_vehicle_prompt(
             ]
         )
 
-    if len(vehicle_table) == 1:  # pragma: no branch
+    if len(vehicle_table) == 1:
         default = "1"
     menu = tabulate(
         vehicle_table, headers=["", "Vin", "Registration", "Brand", "Model"]
@@ -195,11 +195,9 @@ async def update_battery_status(
         click.echo(f"battery-status: {exc.error_details}", err=True)
         return
 
-    if response.batteryAvailableEnergy == 0:  # pragma: no branch
+    if response.batteryAvailableEnergy == 0:
         response.batteryAvailableEnergy = None
-    if (  # pragma: no branch
-        response.chargingStatus == -1.0 and response.plugStatus == 0
-    ):
+    if response.chargingStatus == -1.0 and response.plugStatus == 0:
         response.chargingStatus = 0.0
 
     if ctx_data["json"]:
