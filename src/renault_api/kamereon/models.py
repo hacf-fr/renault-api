@@ -93,7 +93,7 @@ _DEFAULT_ENDPOINTS: dict[str, str] = {
     "charge-mode": "/kca/car-adapter/v1/cars/{vin}/charge-mode",
     "charge-schedule": "/kca/car-adapter/v1/cars/{vin}/charge-schedule",
     "charges": "/kca/car-adapter/v1/cars/{vin}/charges",
-    "charging-settings": "/kca/car-adapter/v1/cars/{vin}/charging-settings",
+    "charge-schedule": "/kca/car-adapter/v1/cars/{vin}/charge-schedule",
     "cockpit": "/kca/car-adapter/v1/cars/{vin}/cockpit",
     "hvac-history": "/kca/car-adapter/v1/cars/{vin}/hvac-history",
     "hvac-sessions": "/kca/car-adapter/v1/cars/{vin}/hvac-sessions",
