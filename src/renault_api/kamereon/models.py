@@ -307,7 +307,6 @@ class KamereonVehicleDetails(BaseModel):
         # Default to True for unknown vehicles
         return self.get_endpoint(endpoint) is not None
 
-
     def controls_action_via_kcm(self, action: str) -> bool:
         """Return True if model uses endpoint via kcm."""
         # Default to False for unknown vehicles
