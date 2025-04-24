@@ -330,7 +330,7 @@ class KamereonVehicleDetails(BaseModel):
         model_code = self.get_model_code()
         if not model_code:
             # Model code not available
-            return _DEFAULT_ENDPOINTS
+            return _DEFAULT_ENDPOINTS  # pragma: no cover
 
         if model_code not in _VEHICLE_ENDPOINTS:
             # Model not documented
