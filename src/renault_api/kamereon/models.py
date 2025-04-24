@@ -47,6 +47,10 @@ COMMON_ERRRORS: list[dict[str, Any]] = [
         "errorCode": "err.func.wired.overloaded",
         "error_type": exceptions.QuotaLimitException,
     },
+    {
+        "errorCode": "err.func.wired.forbidden",
+        "error_type": exceptions.ForbiddenException,
+    },
 ]
 
 VEHICLE_SPECIFICATIONS: dict[str, dict[str, Any]] = {

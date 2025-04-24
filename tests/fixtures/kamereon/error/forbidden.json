@@ -1,0 +1,13 @@
+{
+  "type": "FUNCTIONAL",
+  "messages": [
+    { "code": "err.func.wired.forbidden", "message": "The access is forbidden" }
+  ],
+  "errors": [
+    {
+      "errorCode": "err.func.wired.forbidden",
+      "errorMessage": "The access is forbidden"
+    }
+  ],
+  "error_reference": "FUNCTIONAL"
+}
