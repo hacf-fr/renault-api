@@ -86,6 +86,7 @@ GATEWAY_SPECIFICATIONS: dict[str, dict[str, Any]] = {
 }
 
 _DEFAULT_ENDPOINTS: dict[str, str] = {
+    "alerts": "/vehicles/{vin}/alerts",
     "battery-status": "/kca/car-adapter/v2/cars/{vin}/battery-status",
     "charge-history": "/kca/car-adapter/v1/cars/{vin}/charge-history",
     "charge-mode": "/kca/car-adapter/v1/cars/{vin}/charge-mode",
