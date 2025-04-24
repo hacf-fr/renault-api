@@ -148,9 +148,7 @@ class KamereonResponseError(BaseModel):
             if self.errorCode == common_error["errorCode"]:
                 error_type = common_error["error_type"]
                 raise error_type(self.errorCode, error_details)
-        raise exceptions.KamereonResponseException(
-            self.errorCode, error_details
-        )  # pragma: no cover
+        raise exceptions.KamereonResponseException(self.errorCode, error_details)
 
     def get_error_details(self) -> Optional[str]:
         """Extract the error details sometimes hidden inside nested JSON."""
@@ -296,7 +294,7 @@ class KamereonVehicleDetails(BaseModel):
             return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
                 self.model.code, {}
             ).get("reports-charge-session-durations-in-minutes", False)
-        return False  # pragma: no cover
+        return False
 
     def reports_charging_power_in_watts(self) -> bool:
         """Return True if model reports chargingInstantaneousPower in watts."""
@@ -305,7 +303,7 @@ class KamereonVehicleDetails(BaseModel):
             return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
                 self.model.code, {}
             ).get("reports-in-watts", False)
-        return False  # pragma: no cover
+        return False
 
     def supports_endpoint(self, endpoint: str) -> bool:
         """Return True if model supports specified endpoint."""
@@ -319,7 +317,7 @@ class KamereonVehicleDetails(BaseModel):
             return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
                 self.model.code, {}
             ).get(f"warns-on-method-{method}", None)
-        return None  # pragma: no cover
+        return None
 
     def controls_action_via_kcm(self, action: str) -> bool:
         """Return True if model uses endpoint via kcm."""
@@ -328,14 +326,14 @@ class KamereonVehicleDetails(BaseModel):
             return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
                 self.model.code, {}
             ).get(f"control-{action}-via-kcm", False)
-        return False  # pragma: no cover
+        return False
 
     def get_endpoints(self) -> Mapping[str, Optional[str]]:
         """Return model endpoints."""
         model_code = self.get_model_code()
         if not model_code:
             # Model code not available
-            return _DEFAULT_ENDPOINTS  # pragma: no cover
+            return _DEFAULT_ENDPOINTS
 
         if model_code not in _VEHICLE_ENDPOINTS:
             # Model not documented
@@ -459,7 +457,7 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
                 if self.plugStatus is not None
                 else None
             )
-        except ValueError:  # pragma: no cover
+        except ValueError:
             _LOGGER.warning("Unable to convert `%s` to PlugState.", self.plugStatus)
             return None
 
@@ -471,7 +469,7 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
                 if self.chargingStatus is not None
                 else None
             )
-        except ValueError as err:  # pragma: no cover
+        except ValueError as err:
             # should we return ChargeState.NOT_AVAILABLE?
             raise exceptions.KamereonException(
                 f"Unable to convert `{self.chargingStatus}` to ChargeState."
@@ -603,7 +601,7 @@ class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
             return GATEWAY_SPECIFICATIONS.get(  # type:ignore[no-any-return]
                 self.carGateway, {}
             ).get("reports-in-watts", False)
-        return False  # pragma: no cover
+        return False
 
     def supports_endpoint(self, endpoint: str) -> bool:
         """Return True if model supports specified endpoint."""
@@ -612,7 +610,7 @@ class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
             return GATEWAY_SPECIFICATIONS.get(  # type:ignore[no-any-return]
                 self.carGateway, {}
             ).get(f"support-endpoint-{endpoint}", True)
-        return True  # pragma: no cover
+        return True
 
     def controls_action_via_kcm(self, action: str) -> bool:
         """Return True if model uses endpoint via kcm."""
@@ -621,7 +619,7 @@ class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
             return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
                 self.modelCodeDetail, {}
             ).get(f"control-{action}-via-kcm", False)
-        return False  # pragma: no cover
+        return False
 
 
 @dataclass
@@ -640,7 +638,7 @@ class ChargeDaySchedule(BaseModel):
 
     def get_end_time(self) -> Optional[str]:
         """Get end time."""
-        if self.startTime is None:  # pragma: no cover
+        if self.startTime is None:
             return None
         return helpers.get_end_time(self.startTime, self.duration)
 
@@ -725,15 +723,15 @@ class KamereonVehicleChargingSettingsData(KamereonVehicleDataAttributes):
 
     def update(self, args: dict[str, Any]) -> None:
         """Update schedule."""
-        if "id" not in args:  # pragma: no cover
+        if "id" not in args:
             raise ValueError("id not provided for update.")
-        if self.schedules is None:  # pragma: no cover
+        if self.schedules is None:
             self.schedules = []
         for schedule in self.schedules:
-            if schedule.id == args["id"]:  # pragma: no branch
+            if schedule.id == args["id"]:
                 helpers.update_charge_schedule(schedule, args)
                 return
-        self.schedules.append(helpers.create_charge_schedule(args))  # pragma: no cover
+        self.schedules.append(helpers.create_charge_schedule(args))
 
 
 @dataclass
@@ -745,15 +743,15 @@ class KamereonVehicleHvacSettingsData(KamereonVehicleDataAttributes):
 
     def update(self, args: dict[str, Any]) -> None:
         """Update schedule."""
-        if "id" not in args:  # pragma: no cover
+        if "id" not in args:
             raise ValueError("id not provided for update.")
-        if self.schedules is None:  # pragma: no cover
+        if self.schedules is None:
             self.schedules = []
         for schedule in self.schedules:
-            if schedule.id == args["id"]:  # pragma: no branch
+            if schedule.id == args["id"]:
                 helpers.update_hvac_schedule(schedule, args)
                 return
-        self.schedules.append(helpers.create_hvac_schedule(args))  # pragma: no cover
+        self.schedules.append(helpers.create_hvac_schedule(args))
 
 
 @dataclass
