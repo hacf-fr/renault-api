@@ -22,7 +22,6 @@ Vehicle information endpoints
 Vehicle data endpoints
 ----------------------
 
-.. include:: endpoints/vehicle_data.alerts.rst
 .. include:: endpoints/vehicle_data.battery-status.rst
 .. include:: endpoints/vehicle_data.charge-history.rst
 .. include:: endpoints/vehicle_data.charge-mode.rst
