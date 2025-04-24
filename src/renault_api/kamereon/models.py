@@ -103,6 +103,7 @@ _DEFAULT_ENDPOINTS: dict[str, str] = {
     "notification-settings": "/kca/car-adapter/v1/cars/{vin}/notification-settings",
     "pressure": "/kca/car-adapter/v1/cars/{vin}/pressure",
     "res-state": "/kca/car-adapter/v1/cars/{vin}/res-state",
+    "soc-levels": "/kcm/v1/vehicles/{vin}/ev/soc-levels",
 }
 _KCM_ENDPOINTS: dict[str, str] = {
     "charging-settings": "/kcm/v1/vehicles/{vin}/ev/settings"

@@ -1,0 +1,11 @@
+{
+  "data": {
+    "type": "Car",
+    "id": "VF1AAAAA555777999",
+    "attributes": {
+      "lastEnergyUpdateTimestamp": "2025-02-23T15:25:19Z",
+      "socMin": 20,
+      "socTarget": 80
+    }
+  }
+}
