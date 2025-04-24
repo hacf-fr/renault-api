@@ -2,6 +2,7 @@
 
 import json
 import logging
+from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any
 from typing import Optional
@@ -102,7 +103,7 @@ _DEFAULT_ENDPOINTS: dict[str, str] = {
     "res-state": "/kca/car-adapter/v1/cars/{vin}/res-state",
 }
 
-_VEHICLE_ENDPOINTS: dict[str, dict[str, str]] = {
+_VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[str]]] = {
     "X101VE": {  # ZOE phase 1
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],  # confirmed
         "charge-mode": _DEFAULT_ENDPOINTS["charge-mode"],  # confirmed
@@ -324,7 +325,7 @@ class KamereonVehicleDetails(BaseModel):
             ).get(f"control-{action}-via-kcm", False)
         return False  # pragma: no cover
 
-    def get_endpoints(self) -> dict[str, str]:
+    def get_endpoints(self) -> Mapping[str, Optional[str]]:
         """Return model endpoints."""
         model_code = self.get_model_code()
         if not model_code:
@@ -341,7 +342,7 @@ class KamereonVehicleDetails(BaseModel):
 
         return _VEHICLE_ENDPOINTS[model_code]
 
-    def get_endpoint(self, endpoint: str) -> str | None:
+    def get_endpoint(self, endpoint: str) -> Optional[str]:
         """Return model endpoint"""
         endpoints = self.get_endpoints()
 

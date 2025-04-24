@@ -80,7 +80,7 @@ class RenaultVehicle:
         return self._vin
 
     async def _get_vehicle_data(
-        self, endpoint: str | None
+        self, endpoint: str
     ) -> models.KamereonVehicleDataResponse:
         """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
         details = await self.get_details()
