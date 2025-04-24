@@ -234,7 +234,7 @@ async def update_tyre_pressure(
         click.echo(f"pressure: {exc.error_details}", err=True)
         return
 
-    if ctx_data["json"]:
+    if ctx_data["json"]:  # pragma: no cover
         status_table["pressure"] = response.raw_data
         return
 
@@ -368,7 +368,7 @@ async def update_res_state(
         click.echo(f"res state: {exc.error_details}", err=True)
         return
 
-    if ctx_data["json"]:
+    if ctx_data["json"]:  # pragma: no cover
         status_table["res-state"] = response.raw_data
         return
     items = [
