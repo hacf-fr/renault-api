@@ -68,7 +68,7 @@ def cli_runner(monkeypatch: MonkeyPatch, tmpdir: pathlib.Path) -> CliRunner:
 
 def create_aiohttp_closed_event(
     session: ClientSession,
-) -> asyncio.Event:  # pragma: no cover
+) -> asyncio.Event:
     """Work around aiohttp issue that doesn't properly close transports on exit.
 
     See https://github.com/aio-libs/aiohttp/issues/1925#issuecomment-639080209

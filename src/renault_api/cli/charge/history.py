@@ -32,7 +32,7 @@ async def sessions(
     details = await vehicle.get_details()
     response = await vehicle.get_charges(start=parsed_start, end=parsed_end)
     charges: list[dict[str, Any]] = response.raw_data["charges"]
-    if not charges:  # pragma: no cover
+    if not charges:
         click.echo("No data available.")
         return
 
@@ -100,7 +100,7 @@ async def history(
         start=parsed_start, end=parsed_end, period=period
     )
     charge_summaries: list[dict[str, Any]] = response.raw_data["chargeSummaries"]
-    if not charge_summaries:  # pragma: no cover
+    if not charge_summaries:
         click.echo("No data available.")
         return
 

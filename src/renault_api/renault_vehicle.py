@@ -50,7 +50,7 @@ class RenaultVehicle:
         if session:
             self._session = session
         else:
-            if websession is None:  # pragma: no cover
+            if websession is None:
                 raise RenaultException(
                     "`websession` is required if session is not provided."
                 )
@@ -117,7 +117,7 @@ class RenaultVehicle:
             account_id=self.account_id,
             vin=self.vin,
         )
-        if response.contractList is None:  # pragma: no cover
+        if response.contractList is None:
             raise ValueError("response.contractList is None")
         self._contracts = response.contractList
         return self._contracts
@@ -262,16 +262,16 @@ class RenaultVehicle:
         self, start: datetime, end: datetime, period: str
     ) -> models.KamereonVehicleChargeHistoryData:
         """Get vehicle charge history."""
-        if not isinstance(start, datetime):  # pragma: no cover
+        if not isinstance(start, datetime):
             raise TypeError(
                 "`start` should be an instance of datetime.datetime, "
                 f"not {start.__class__}"
             )
-        if not isinstance(end, datetime):  # pragma: no cover
+        if not isinstance(end, datetime):
             raise TypeError(
                 f"`end` should be an instance of datetime.datetime, not {end.__class__}"
             )
-        if period not in PERIOD_FORMATS.keys():  # pragma: no cover
+        if period not in PERIOD_FORMATS.keys():
             raise TypeError("`period` should be one of `month`, `day`")
 
         params = {
@@ -294,12 +294,12 @@ class RenaultVehicle:
         self, start: datetime, end: datetime
     ) -> models.KamereonVehicleChargesData:
         """Get vehicle charges."""
-        if not isinstance(start, datetime):  # pragma: no cover
+        if not isinstance(start, datetime):
             raise TypeError(
                 "`start` should be an instance of datetime.datetime, "
                 f"not {start.__class__}"
             )
-        if not isinstance(end, datetime):  # pragma: no cover
+        if not isinstance(end, datetime):
             raise TypeError(
                 f"`end` should be an instance of datetime.datetime, not {end.__class__}"
             )
@@ -323,16 +323,16 @@ class RenaultVehicle:
         self, start: datetime, end: datetime, period: str
     ) -> models.KamereonVehicleHvacHistoryData:
         """Get vehicle hvac history."""
-        if not isinstance(start, datetime):  # pragma: no cover
+        if not isinstance(start, datetime):
             raise TypeError(
                 "`start` should be an instance of datetime.datetime, "
                 f"not {start.__class__}"
             )
-        if not isinstance(end, datetime):  # pragma: no cover
+        if not isinstance(end, datetime):
             raise TypeError(
                 f"`end` should be an instance of datetime.datetime, not {end.__class__}"
             )
-        if period not in PERIOD_FORMATS.keys():  # pragma: no cover
+        if period not in PERIOD_FORMATS.keys():
             raise TypeError("`period` should be one of `month`, `day`")
 
         params = {
@@ -355,12 +355,12 @@ class RenaultVehicle:
         self, start: datetime, end: datetime
     ) -> models.KamereonVehicleHvacSessionsData:
         """Get vehicle hvac sessions."""
-        if not isinstance(start, datetime):  # pragma: no cover
+        if not isinstance(start, datetime):
             raise TypeError(
                 "`start` should be an instance of datetime.datetime, "
                 f"not {start.__class__}"
             )
-        if not isinstance(end, datetime):  # pragma: no cover
+        if not isinstance(end, datetime):
             raise TypeError(
                 f"`end` should be an instance of datetime.datetime, not {end.__class__}"
             )
@@ -390,7 +390,7 @@ class RenaultVehicle:
         }
 
         if when:
-            if not isinstance(when, datetime):  # pragma: no cover
+            if not isinstance(when, datetime):
                 raise TypeError(
                     "`when` should be an instance of datetime.datetime, "
                     f"not {when.__class__}"
@@ -430,7 +430,7 @@ class RenaultVehicle:
     ) -> models.KamereonVehicleHvacScheduleActionData:
         """Set vehicle charge schedules."""
         for schedule in schedules:
-            if not isinstance(schedule, models.HvacSchedule):  # pragma: no cover
+            if not isinstance(schedule, models.HvacSchedule):
                 raise TypeError(
                     "`schedules` should be a list of HvacSchedule, "
                     f"not {schedules.__class__}"
@@ -455,7 +455,7 @@ class RenaultVehicle:
     ) -> models.KamereonVehicleChargeScheduleActionData:
         """Set vehicle charge schedules."""
         for schedule in schedules:
-            if not isinstance(schedule, models.ChargeSchedule):  # pragma: no cover
+            if not isinstance(schedule, models.ChargeSchedule):
                 raise TypeError(
                     "`schedules` should be a list of ChargeSchedule, "
                     f"not {schedules.__class__}"
@@ -558,7 +558,7 @@ class RenaultVehicle:
         # "Deprecated in 0.1.3, contract codes are country-specific"
         # " and can't be used to guess requirements."
         warn("This method is deprecated.", DeprecationWarning, stacklevel=2)
-        return True  # pragma: no cover
+        return True
 
     async def warn_on_method(self, method: str) -> None:
         """Log a warning if the method requires it."""

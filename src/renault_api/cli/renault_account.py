@@ -32,7 +32,7 @@ async def _get_account_id(ctx_data: dict[str, Any], client: RenaultClient) -> st
 
     # Third, prompt the user
     response = await client.get_person()
-    if not response.accounts:  # pragma: no cover
+    if not response.accounts:
         raise RenaultException("No account found.")
 
     prompt, default = await _get_account_prompt(response.accounts, client)
@@ -47,10 +47,10 @@ async def _get_account_id(ctx_data: dict[str, Any], client: RenaultClient) -> st
         )
         try:
             account_id = str(response.accounts[i - 1].accountId)
-        except (KeyError, IndexError) as exc:  # pragma: no cover
+        except (KeyError, IndexError) as exc:
             click.echo(f"Invalid option: {exc}.", err=True)
         else:
-            if click.confirm(  # pragma: no branch
+            if click.confirm(
                 "Do you want to save the account ID to the credential store?",
                 default=False,
             ):
@@ -69,7 +69,7 @@ async def _get_account_prompt(
     account_table = []
     default = None
     for i, account in enumerate(accounts):
-        if not account.accountId:  # pragma: no cover
+        if not account.accountId:
             continue
         api_account = await client.get_api_account(account.accountId)
         vehicles = await api_account.get_vehicles()
@@ -107,7 +107,7 @@ async def display_vehicles(
     account = await get_account(websession, ctx_data)
 
     response = await account.get_vehicles()
-    if response.vehicleLinks is None:  # pragma: no cover
+    if response.vehicleLinks is None:
         raise ValueError("response.vehicleLinks is None")
     vehicles = [
         [

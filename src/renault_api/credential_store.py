@@ -49,9 +49,9 @@ class CredentialStore:
 
     def __setitem__(self, name: str, value: Credential) -> None:
         """Add a credential to the credential store."""
-        if not isinstance(name, str):  # pragma: no cover
+        if not isinstance(name, str):
             raise TypeError("`name` must be a string")
-        if not isinstance(value, Credential):  # pragma: no cover
+        if not isinstance(value, Credential):
             raise TypeError("`value` must be a Credential")
 
         self._store[name] = value
@@ -111,7 +111,7 @@ class FileCredentialStore(CredentialStore):
                 if key == "gigya_jwt":
                     try:
                         self[key] = JWTCredential(value)
-                    except jwt.ExpiredSignatureError:  # pragma: no cover
+                    except jwt.ExpiredSignatureError:
                         pass
                 else:
                     self[key] = Credential(value)

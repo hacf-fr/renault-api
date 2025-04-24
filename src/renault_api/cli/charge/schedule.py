@@ -49,7 +49,7 @@ async def show(
 
     # Display mode
     click.echo(f"Mode: {response.mode}")
-    if not response.schedules:  # pragma: no cover
+    if not response.schedules:
         click.echo("\nNo schedules found.")
         return
 
@@ -74,7 +74,7 @@ async def show(
 
 def _format_charge_schedule(schedule: ChargeSchedule, key: str) -> list[str]:
     details: Optional[ChargeDaySchedule] = getattr(schedule, key)
-    if not details:  # pragma: no cover
+    if not details:
         return [key.capitalize(), "-", "-", "-"]
     return [
         key.capitalize(),
@@ -95,16 +95,16 @@ async def _get_schedule(
     )
     response = await vehicle.get_charging_settings()
 
-    if not response.schedules:  # pragma: no cover
+    if not response.schedules:
         raise ValueError("No schedules found.")
 
-    schedule = next(  # pragma: no branch
+    schedule = next(
         (schedule for schedule in response.schedules if id == schedule.id), None
     )
     if schedule:
         return (vehicle, response.schedules, schedule)
 
-    raise IndexError(f"Schedule id {id} not found.")  # pragma: no cover
+    raise IndexError(f"Schedule id {id} not found.")
 
 
 @schedule.command()
@@ -181,7 +181,7 @@ def update_settings(
 ) -> None:
     """Update charging settings."""
     for day in DAYS_OF_WEEK:
-        if day in kwargs:  # pragma: no branch
+        if day in kwargs:
             day_value = kwargs.pop(day)
 
             if day_value == "clear":
@@ -199,26 +199,26 @@ def update_settings(
 
 def _parse_day_schedule(raw: str) -> tuple[str, int]:
     match = _DAY_SCHEDULE_REGEX.match(raw)
-    if not match:  # pragma: no cover
+    if not match:
         raise ValueError(
             f"Invalid specification for charge schedule: `{raw}`. "
             "Should be of the form HH:MM,DURATION or THH:MMZ,DURATION"
         )
 
     hours = int(match.group("hours"))
-    if hours >= _HOURS_PER_DAY:  # pragma: no cover
+    if hours >= _HOURS_PER_DAY:
         raise ValueError(
             f"Invalid specification for charge schedule: `{raw}`. "
             "Hours should be less than 24."
         )
     minutes = int(match.group("minutes"))
-    if (minutes % 15) != 0:  # pragma: no cover
+    if (minutes % 15) != 0:
         raise ValueError(
             f"Invalid specification for charge schedule: `{raw}`. "
             "Minutes should be a multiple of 15."
         )
     duration = int(match.group("duration"))
-    if (duration % 15) != 0:  # pragma: no cover
+    if (duration % 15) != 0:
         raise ValueError(
             f"Invalid specification for charge schedule: `{raw}`. "
             "Duration should be a multiple of 15."
@@ -227,7 +227,7 @@ def _parse_day_schedule(raw: str) -> tuple[str, int]:
         formatted_start_time = f"T{hours:02g}:{minutes:02g}Z"
     elif not (match.group("prefix") or match.group("suffix")):
         formatted_start_time = helpers.convert_minutes_to_tztime(hours * 60 + minutes)
-    else:  # pragma: no cover
+    else:
         raise ValueError(
             f"Invalid specification for charge schedule: `{raw}`. "
             "If provided, both T and Z must be set."

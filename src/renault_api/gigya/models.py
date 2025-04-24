@@ -47,9 +47,9 @@ class GigyaLoginResponse(GigyaResponse):
 
     def get_session_cookie(self) -> str:
         """Return cookie value from session information."""
-        if not self.sessionInfo:  # pragma: no cover
+        if not self.sessionInfo:
             raise exceptions.GigyaException("`sessionInfo` is None in Login response.")
-        if not self.sessionInfo.cookieValue:  # pragma: no cover
+        if not self.sessionInfo.cookieValue:
             raise exceptions.GigyaException(
                 "`sessionInfo.cookieValue` is None in Login response."
             )
@@ -71,11 +71,11 @@ class GigyaGetAccountInfoResponse(GigyaResponse):
 
     def get_person_id(self) -> str:
         """Return person id."""
-        if not self.data:  # pragma: no cover
+        if not self.data:
             raise exceptions.GigyaException(
                 "`data` is None in GetAccountInfo response."
             )
-        if not self.data.personId:  # pragma: no cover
+        if not self.data.personId:
             raise exceptions.GigyaException(
                 "`data.personId` is None in GetAccountInfo response."
             )
@@ -90,6 +90,6 @@ class GigyaGetJWTResponse(GigyaResponse):
 
     def get_jwt(self) -> str:
         """Return jwt token."""
-        if not self.id_token:  # pragma: no cover
+        if not self.id_token:
             raise exceptions.GigyaException("`id_token` is None in GetJWT response.")
         return self.id_token
