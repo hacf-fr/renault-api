@@ -134,6 +134,9 @@ async def http_get_endpoint(
     websession: aiohttp.ClientSession, ctx_data: dict[str, Any], endpoint: str
 ) -> str:
     """Run HTTP GET request."""
+    # In the apk the account string is accountId
+    endpoint = endpoint.replace("{accountId}", "{account_id}")
+
     if "{account_id}" in endpoint:
         account = await renault_account.get_account(
             websession=websession, ctx_data=ctx_data
