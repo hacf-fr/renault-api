@@ -19,6 +19,10 @@ Sample return:
       .. literalinclude:: /../tests/fixtures/kamereon/vehicle_data/charging-settings.multi.json
          :language: JSON
 
-   Alternate:
-      .. literalinclude:: /../tests/fixtures/kamereon/vehicle_data/kcm-ev-settings.json
+   Empty (from ev/settings):
+      .. literalinclude:: /../tests/fixtures/kamereon/vehicle_data/kcm-ev-settings.empty.json
+         :language: JSON
+
+   Scheduled (from ev/settings):
+      .. literalinclude:: /../tests/fixtures/kamereon/vehicle_data/kcm-ev-settings.scheduled.json
          :language: JSON
