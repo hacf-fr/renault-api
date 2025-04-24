@@ -1,0 +1,12 @@
+{
+  "lastSettingsUpdateTimestamp": "2025-04-15T12:06:32.266Z",
+  "delegatedActivated": false,
+  "chargeModeRq": "SCHEDULED",
+  "chargeTimeStart": "00:00",
+  "chargeDuration": 9000,
+  "preconditioningTemperature": 20.0,
+  "preconditioningHeatedStrgWheel": false,
+  "preconditioningHeatedRightSeat": false,
+  "preconditioningHeatedLeftSeat": false,
+  "programs": []
+}

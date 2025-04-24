@@ -104,8 +104,14 @@ _DEFAULT_ENDPOINTS: dict[str, str] = {
     "pressure": "/kca/car-adapter/v1/cars/{vin}/pressure",
     "res-state": "/kca/car-adapter/v1/cars/{vin}/res-state",
 }
+_KCM_ENDPOINTS: dict[str, str] = {
+    "charging-settings": "/kcm/v1/vehicles/{vin}/ev/settings"
+}
 
 _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[str]]] = {
+    "R5E1VE": {  # Renault 5 E-TECH
+        "charging-settings": _KCM_ENDPOINTS["charging-settings"],
+    },
     "X101VE": {  # ZOE phase 1
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],  # confirmed
         "charge-mode": _DEFAULT_ENDPOINTS["charge-mode"],  # confirmed
@@ -126,6 +132,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[str]]] = {
         "lock-status": None,
     },
     "XCB1SE": {  # SCENIC E-TECH
+        "charging-settings": _KCM_ENDPOINTS["charging-settings"],
         "lock-status": None,
     },
 }
