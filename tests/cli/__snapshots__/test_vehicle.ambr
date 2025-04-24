@@ -287,13 +287,8 @@
   Charging state        ChargeState.NOT_IN_CHARGE
   Charge mode           always
   Total mileage         49114.27 km
-  Engine state          Stopped, ready for RES
   HVAC status           off
   External temperature  8.0 °C
-  Front left pressure   2460 bar
-  Front right pressure  2730 bar
-  Rear left pressure    2790 bar
-  Rear right pressure   2790 bar
   --------------------  -------------------------
   
   '''
@@ -308,13 +303,8 @@
   Charging state        ChargeState.NOT_IN_CHARGE
   Charge mode           always
   Total mileage         49114.27 km
-  Engine state          Stopped, ready for RES
   HVAC status           off
   External temperature  8.0 °C
-  Front left pressure   2460 bar
-  Front right pressure  2730 bar
-  Rear left pressure    2790 bar
-  Rear right pressure   2790 bar
   --------------------  -------------------------
   
   '''
@@ -348,7 +338,7 @@
 # ---
 # name: test_vehicle_status_json
   '''
-  {"battery-status": {"timestamp": "2020-11-17T09:06:48+01:00", "batteryLevel": 50, "batteryAutonomy": 128, "batteryCapacity": 0, "batteryAvailableEnergy": 0, "plugStatus": 0, "chargingStatus": -1.0}, "charge-mode": {"chargeMode": "always"}, "cockpit": {"totalMileage": 49114.27}, "res-state": {"details": "Stopped, ready for RES", "code": "10"}, "hvac-status": {"externalTemperature": 8.0, "hvacStatus": "off"}, "pressure": {"flPressure": 2460, "frPressure": 2730, "rlPressure": 2790, "rrPressure": 2790, "flStatus": 0, "frStatus": 0, "rlStatus": 0, "rrStatus": 0}}
+  {"battery-status": {"timestamp": "2020-11-17T09:06:48+01:00", "batteryLevel": 50, "batteryAutonomy": 128, "batteryCapacity": 0, "batteryAvailableEnergy": 0, "plugStatus": 0, "chargingStatus": -1.0}, "charge-mode": {"chargeMode": "always"}, "cockpit": {"totalMileage": 49114.27}, "hvac-status": {"externalTemperature": 8.0, "hvacStatus": "off"}}
   
   '''
 # ---
@@ -362,13 +352,8 @@
   Charging state        ChargeState.NOT_IN_CHARGE
   Charge mode           always
   Total mileage         49114.27 km
-  Engine state          Stopped, ready for RES
   HVAC status           off
   External temperature  8.0 °C
-  Front left pressure   2460 bar
-  Front right pressure  2730 bar
-  Rear left pressure    2790 bar
-  Rear right pressure   2790 bar
   --------------------  -------------------------
   
   '''
@@ -404,13 +389,8 @@
   Charging state        ChargeState.NOT_IN_CHARGE
   Charge mode           always
   Total mileage         49114.27 km
-  Engine state          Stopped, ready for RES
   HVAC status           off
   External temperature  8.0 °C
-  Front left pressure   2460 bar
-  Front right pressure  2730 bar
-  Rear left pressure    2790 bar
-  Rear right pressure   2790 bar
   --------------------  -------------------------
   
   '''

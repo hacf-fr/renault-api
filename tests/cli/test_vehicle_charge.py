@@ -51,6 +51,7 @@ def test_charge_mode_get(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     fixtures.inject_get_charge_mode(mocked_responses)
 
     result = cli_runner.invoke(__main__.main, "charge mode")
@@ -133,6 +134,7 @@ def test_charge_schedule_show(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_charging_settings(mocked_responses, "multi")
 
     result = cli_runner.invoke(__main__.main, "charge schedule show")
@@ -145,6 +147,7 @@ def test_charging_settings_set(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_charging_settings(mocked_responses, "multi")
     url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
 
@@ -165,6 +168,7 @@ def test_charging_settings_activate(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_charging_settings(mocked_responses, "multi")
     url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
 
@@ -181,6 +185,7 @@ def test_charging_settings_deactivate(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_charging_settings(mocked_responses, "multi")
     url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
 

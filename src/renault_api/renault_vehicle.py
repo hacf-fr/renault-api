@@ -10,7 +10,9 @@ from warnings import warn
 import aiohttp
 
 from .credential_store import CredentialStore
+from .exceptions import EndpointNotAvailableError
 from .exceptions import RenaultException
+from .kamereon import ACCOUNT_ENDPOINT_ROOT
 from .kamereon import models
 from .kamereon import schemas
 from .renault_session import RenaultSession
@@ -77,6 +79,25 @@ class RenaultVehicle:
         """Get vin."""
         return self._vin
 
+    async def _get_vehicle_data(
+        self, endpoint: str
+    ) -> models.KamereonVehicleDataResponse:
+        """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
+        details = await self.get_details()
+        full_endpoint = details.get_endpoint(endpoint)
+        if full_endpoint is None:
+            raise EndpointNotAvailableError(endpoint, details.get_model_code())
+
+        full_endpoint = ACCOUNT_ENDPOINT_ROOT.replace(
+            "{account_id}", self.account_id
+        ) + full_endpoint.replace("{vin}", self.vin)
+
+        schema = schemas.KamereonVehicleDataResponseSchema
+        return cast(
+            models.KamereonVehicleDataResponse,
+            await self.session.http_request("GET", full_endpoint, schema=schema),
+        )
+
     async def get_details(self) -> models.KamereonVehicleDetails:
         """Get vehicle details."""
         if self._vehicle_details:
@@ -124,11 +145,7 @@ class RenaultVehicle:
 
     async def get_battery_status(self) -> models.KamereonVehicleBatteryStatusData:
         """Get vehicle battery status."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="battery-status",
-        )
+        response = await self._get_vehicle_data("battery-status")
         return cast(
             models.KamereonVehicleBatteryStatusData,
             response.get_attributes(schemas.KamereonVehicleBatteryStatusDataSchema),
@@ -136,11 +153,7 @@ class RenaultVehicle:
 
     async def get_tyre_pressure(self) -> models.KamereonVehicleTyrePressureData:
         """Get vehicle tyre pressure."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="pressure",
-        )
+        response = await self._get_vehicle_data("pressure")
         return cast(
             models.KamereonVehicleTyrePressureData,
             response.get_attributes(schemas.KamereonVehicleTyrePressureDataSchema),
@@ -148,11 +161,7 @@ class RenaultVehicle:
 
     async def get_location(self) -> models.KamereonVehicleLocationData:
         """Get vehicle location."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="location",
-        )
+        response = await self._get_vehicle_data("location")
         return cast(
             models.KamereonVehicleLocationData,
             response.get_attributes(schemas.KamereonVehicleLocationDataSchema),
@@ -160,11 +169,7 @@ class RenaultVehicle:
 
     async def get_hvac_status(self) -> models.KamereonVehicleHvacStatusData:
         """Get vehicle hvac status."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="hvac-status",
-        )
+        response = await self._get_vehicle_data("hvac-status")
         return cast(
             models.KamereonVehicleHvacStatusData,
             response.get_attributes(schemas.KamereonVehicleHvacStatusDataSchema),
@@ -172,11 +177,7 @@ class RenaultVehicle:
 
     async def get_hvac_settings(self) -> models.KamereonVehicleHvacSettingsData:
         """Get vehicle hvac settings (schedule+mode)."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="hvac-settings",
-        )
+        response = await self._get_vehicle_data("hvac-settings")
         return cast(
             models.KamereonVehicleHvacSettingsData,
             response.get_attributes(schemas.KamereonVehicleHvacSettingsDataSchema),
@@ -184,11 +185,7 @@ class RenaultVehicle:
 
     async def get_charge_mode(self) -> models.KamereonVehicleChargeModeData:
         """Get vehicle charge mode."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="charge-mode",
-        )
+        response = await self._get_vehicle_data("charge-mode")
         return cast(
             models.KamereonVehicleChargeModeData,
             response.get_attributes(schemas.KamereonVehicleChargeModeDataSchema),
@@ -196,11 +193,7 @@ class RenaultVehicle:
 
     async def get_cockpit(self) -> models.KamereonVehicleCockpitData:
         """Get vehicle cockpit."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="cockpit",
-        )
+        response = await self._get_vehicle_data("cockpit")
         return cast(
             models.KamereonVehicleCockpitData,
             response.get_attributes(schemas.KamereonVehicleCockpitDataSchema),
@@ -208,11 +201,7 @@ class RenaultVehicle:
 
     async def get_lock_status(self) -> models.KamereonVehicleLockStatusData:
         """Get vehicle lock status."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="lock-status",
-        )
+        response = await self._get_vehicle_data("lock-status")
         return cast(
             models.KamereonVehicleLockStatusData,
             response.get_attributes(schemas.KamereonVehicleLockStatusDataSchema),
@@ -220,11 +209,7 @@ class RenaultVehicle:
 
     async def get_res_state(self) -> models.KamereonVehicleResStateData:
         """Get vehicle res state."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="res-state",
-        )
+        response = await self._get_vehicle_data("res-state")
         return cast(
             models.KamereonVehicleResStateData,
             response.get_attributes(schemas.KamereonVehicleResStateDataSchema),
@@ -232,11 +217,7 @@ class RenaultVehicle:
 
     async def get_charging_settings(self) -> models.KamereonVehicleChargingSettingsData:
         """Get vehicle charging settings."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="charging-settings",
-        )
+        response = await self._get_vehicle_data("charging-settings")
         return cast(
             models.KamereonVehicleChargingSettingsData,
             response.get_attributes(schemas.KamereonVehicleChargingSettingsDataSchema),
@@ -246,11 +227,7 @@ class RenaultVehicle:
         self,
     ) -> models.KamereonVehicleNotificationSettingsData:
         """Get vehicle notification settings."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="notification-settings",
-        )
+        response = await self._get_vehicle_data("notification-settings")
         return cast(
             models.KamereonVehicleNotificationSettingsData,
             response.get_attributes(
