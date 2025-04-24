@@ -122,6 +122,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[str]]] = {
         "lock-status": None,  # not supported
         "pressure": None,  # not supported
         "res-state": None,  # not supported
+        "soc-levels": None,  # not supported
     },
     "XJA1VP": {  # CLIO V
         "hvac-status": None,

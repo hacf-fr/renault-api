@@ -102,6 +102,7 @@
     'lock-status': None,
     'pressure': None,
     'res-state': None,
+    'soc-levels': None,
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/zoe_40.2.json]
@@ -114,6 +115,7 @@
     'lock-status': None,
     'pressure': None,
     'res-state': None,
+    'soc-levels': None,
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/zoe_50.1.json]
