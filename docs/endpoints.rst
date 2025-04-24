@@ -13,9 +13,16 @@ This is a list of the endpoints available, and their characteristics.
 .. _Contributor Guide: contributing.html
 
 
+Vehicle information endpoints
+----------------------
+
+.. include:: endpoints/vehicle_data.alerts.rst
+
+
 Vehicle data endpoints
 ----------------------
 
+.. include:: endpoints/vehicle_data.alerts.rst
 .. include:: endpoints/vehicle_data.battery-status.rst
 .. include:: endpoints/vehicle_data.charge-history.rst
 .. include:: endpoints/vehicle_data.charge-mode.rst
