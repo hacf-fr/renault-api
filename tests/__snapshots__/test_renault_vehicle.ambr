@@ -1,4 +1,114 @@
 # serializer version: 1
+# name: test_get_charge_settings
+  dict({
+    'mode': 'scheduled',
+    'schedules': list([
+      dict({
+        'activated': True,
+        'friday': dict({
+          'duration': 450,
+          'startTime': 'T00:00Z',
+        }),
+        'id': 1,
+        'monday': dict({
+          'duration': 450,
+          'startTime': 'T00:00Z',
+        }),
+        'saturday': dict({
+          'duration': 450,
+          'startTime': 'T00:00Z',
+        }),
+        'sunday': dict({
+          'duration': 450,
+          'startTime': 'T00:00Z',
+        }),
+        'thursday': dict({
+          'duration': 450,
+          'startTime': 'T00:00Z',
+        }),
+        'tuesday': dict({
+          'duration': 450,
+          'startTime': 'T00:00Z',
+        }),
+        'wednesday': dict({
+          'duration': 450,
+          'startTime': 'T00:00Z',
+        }),
+      }),
+      dict({
+        'activated': True,
+        'friday': dict({
+          'duration': 15,
+          'startTime': 'T23:30Z',
+        }),
+        'id': 2,
+        'monday': dict({
+          'duration': 15,
+          'startTime': 'T23:30Z',
+        }),
+        'saturday': dict({
+          'duration': 15,
+          'startTime': 'T23:30Z',
+        }),
+        'sunday': dict({
+          'duration': 15,
+          'startTime': 'T23:30Z',
+        }),
+        'thursday': dict({
+          'duration': 15,
+          'startTime': 'T23:30Z',
+        }),
+        'tuesday': dict({
+          'duration': 15,
+          'startTime': 'T23:30Z',
+        }),
+        'wednesday': dict({
+          'duration': 15,
+          'startTime': 'T23:30Z',
+        }),
+      }),
+      dict({
+        'activated': False,
+        'id': 3,
+      }),
+      dict({
+        'activated': False,
+        'id': 4,
+      }),
+      dict({
+        'activated': False,
+        'id': 5,
+      }),
+    ]),
+  })
+# ---
+# name: test_get_charge_settings_alternate
+  dict({
+    'chargeDuration': 9000,
+    'chargeModeRq': 'SCHEDULED',
+    'chargeTimeStart': '00:00',
+    'delegatedActivated': False,
+    'lastSettingsUpdateTimestamp': '2025-04-24T12:17:12.247Z',
+    'preconditioningHeatedLeftSeat': False,
+    'preconditioningHeatedRightSeat': False,
+    'preconditioningHeatedStrgWheel': False,
+    'preconditioningTemperature': 20.0,
+    'programs': list([
+      dict({
+        'programActivationFriday': True,
+        'programActivationMonday': True,
+        'programActivationSaturday': True,
+        'programActivationStatus': True,
+        'programActivationSunday': True,
+        'programActivationThursday': True,
+        'programActivationTuesday': True,
+        'programActivationWednesday': True,
+        'programDepartureTime': '02:00',
+        'programType': 'CHARGE_AND_PRECONDITIONING',
+      }),
+    ]),
+  })
+# ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/captur_ii.1.json]
   dict({
     'hvac-status': None,
