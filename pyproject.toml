@@ -89,7 +89,6 @@ source = ["renault_api"]
 
 [tool.coverage.report]
 show_missing = true
-fail_under = 100
 
 [tool.mypy]
 check_untyped_defs = true

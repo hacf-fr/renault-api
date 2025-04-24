@@ -30,7 +30,7 @@ class RenaultClient:
         if session:
             self._session = session
         else:
-            if websession is None:  # pragma: no cover
+            if websession is None:
                 raise RenaultException(
                     "`websession` is required if session is not provided."
                 )
@@ -54,11 +54,11 @@ class RenaultClient:
     async def get_api_accounts(self) -> list[RenaultAccount]:
         """Get account proxies."""
         response = await self.get_person()
-        if response.accounts is None:  # pragma: no cover
+        if response.accounts is None:
             raise ValueError("response.accounts is None")
         result: list[RenaultAccount] = []
         for account in response.accounts:
-            if account.accountId is None:  # pragma: no cover
+            if account.accountId is None:
                 continue
             result.append(
                 RenaultAccount(account_id=account.accountId, session=self.session)

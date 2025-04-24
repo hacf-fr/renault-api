@@ -50,7 +50,7 @@ async def get_api_keys(
             raise RenaultException("aiohttp_session is not set.")
 
         url = f"{LOCALE_BASE_URL}/configuration/android/config_{locale}.json"
-        async with websession.get(url) as response:  # pragma: no cover
+        async with websession.get(url) as response:
             try:
                 response.raise_for_status()
             except aiohttp.ClientResponseError as exc:
@@ -76,7 +76,7 @@ async def get_api_keys(
 
 def create_aiohttp_closed_event(
     websession: aiohttp.ClientSession,
-) -> asyncio.Event:  # pragma: no cover
+) -> asyncio.Event:
     """Work around aiohttp issue that doesn't properly close transports on exit.
 
     See https://github.com/aio-libs/aiohttp/issues/1925#issuecomment-639080209

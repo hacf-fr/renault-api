@@ -145,7 +145,7 @@ class RenaultSession:
                     login_token,
                 )
             except GigyaResponseException as exc:
-                if exc.error_code in [403005, 403013]:  # pragma: no branch
+                if exc.error_code in [403005, 403013]:
                     self._credentials.clear_keys(gigya.GIGYA_KEYS)
                 raise NotAuthenticatedException("Authentication expired.") from exc
             else:
