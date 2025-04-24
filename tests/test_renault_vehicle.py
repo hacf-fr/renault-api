@@ -116,6 +116,7 @@ async def test_get_battery_status(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_battery_status."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     fixtures.inject_get_battery_status(mocked_responses)
     assert await vehicle.get_battery_status()
 
@@ -125,6 +126,7 @@ async def test_get_tyre_pressure(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_tyre_pressure."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_tyre_pressure(mocked_responses)
     assert await vehicle.get_tyre_pressure()
 
@@ -134,6 +136,7 @@ async def test_get_location(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_location."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_location(mocked_responses)
     assert await vehicle.get_location()
 
@@ -143,6 +146,7 @@ async def test_get_hvac_status(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_hvac_status."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_hvac_status(mocked_responses, "zoe")
     assert await vehicle.get_hvac_status()
 
@@ -152,6 +156,7 @@ async def test_get_hvac_settings(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_hvac_settings."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_hvac_settings(mocked_responses)
     data = await vehicle.get_hvac_settings()
 
@@ -178,6 +183,7 @@ async def test_get_charge_mode(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_charge_mode."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_charge_mode(mocked_responses)
     assert await vehicle.get_charge_mode()
 
@@ -187,6 +193,7 @@ async def test_get_cockpit(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_cockpit."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     fixtures.inject_get_cockpit(mocked_responses, "zoe")
     assert await vehicle.get_cockpit()
 
@@ -196,6 +203,7 @@ async def test_get_lock_status(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_lock_status."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_lock_status(mocked_responses)
     assert await vehicle.get_lock_status()
 
@@ -205,6 +213,7 @@ async def test_get_charging_settings(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_charging_settings."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_charging_settings(mocked_responses, "multi")
     assert await vehicle.get_charging_settings()
 
@@ -214,6 +223,7 @@ async def test_get_notification_settings(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_notification_settings."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_notification_settings(mocked_responses)
     assert await vehicle.get_notification_settings()
 

@@ -50,6 +50,8 @@ _KCM_POST_ENDPOINTS: dict[str, Any] = {
 DATA_ENDPOINTS = _KCA_GET_ENDPOINTS
 ACTION_ENDPOINTS = _KCA_POST_ENDPOINTS
 
+ACCOUNT_ENDPOINT_ROOT = "/commerce/v1/accounts/{account_id}/kamereon"
+
 
 def get_commerce_url(root_url: str) -> str:
     """Get the Kamereon base commerce url."""
