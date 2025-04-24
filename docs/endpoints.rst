@@ -13,6 +13,12 @@ This is a list of the endpoints available, and their characteristics.
 .. _Contributor Guide: contributing.html
 
 
+Vehicle information endpoints
+----------------------
+
+.. include:: endpoints/vehicle_data.alerts.rst
+
+
 Vehicle data endpoints
 ----------------------
 
