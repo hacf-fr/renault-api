@@ -106,9 +106,9 @@ def test_battery_status_2() -> None:
 
 
 def test_tyre_pressure() -> None:
-    """Test vehicle data for tyre-pressure.json."""
+    """Test vehicle data for tyre pressure."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
-        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/tyre-pressure.json",
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/pressure.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()

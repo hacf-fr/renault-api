@@ -278,9 +278,9 @@ def inject_get_battery_status(
 
 
 def inject_get_tyre_pressure(
-    mocked_responses: aioresponses, filename: str = "vehicle_data/tyre-pressure.json"
+    mocked_responses: aioresponses, filename: str = "vehicle_data/pressure.json"
 ) -> str:
-    """Inject sample tyre-pressure."""
+    """Inject sample tyre pressure."""
     urlpath = f"{ADAPTER_PATH}/pressure?{DEFAULT_QUERY_STRING}"
     return inject_data(
         mocked_responses,

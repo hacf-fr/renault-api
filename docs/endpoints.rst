@@ -36,6 +36,7 @@ Vehicle data endpoints
 .. include:: endpoints/vehicle_data.location.rst
 .. include:: endpoints/vehicle_data.lock-status.rst
 .. include:: endpoints/vehicle_data.notification-settings.rst
+.. include:: endpoints/vehicle_data.pressure.rst
 .. include:: endpoints/vehicle_data.res-state.rst
 
 
