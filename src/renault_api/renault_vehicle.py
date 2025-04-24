@@ -387,7 +387,6 @@ class RenaultVehicle:
 
     async def set_ac_stop(self) -> models.KamereonVehicleHvacStartActionData:
         """Stop vehicle ac."""
-        await self.warn_on_method("set_ac_stop")
         attributes = {"action": "cancel"}
 
         response = await self.session.set_vehicle_action(
@@ -528,10 +527,3 @@ class RenaultVehicle:
         """Check if vehicle supports endpoint."""
         details = await self.get_details()
         return details.supports_endpoint(endpoint)
-
-    async def warn_on_method(self, method: str) -> None:
-        """Log a warning if the method requires it."""
-        details = await self.get_details()
-        warning = details.warns_on_method(method)
-        if warning:
-            _LOGGER.warning(warning)
