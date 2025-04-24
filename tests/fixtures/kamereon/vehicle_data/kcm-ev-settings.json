@@ -1,0 +1,31 @@
+{
+  "data": {
+    "type": "Car",
+    "id": "VF1AAAAA555777999",
+    "attributes": {
+      "lastSettingsUpdateTimestamp": "2025-01-01T00:00:00",
+      "delegatedActivated": false,
+      "chargeModeRq": "SCHEDULED",
+      "chargeTimeStart": "21:00",
+      "chargeDuration": 465,
+      "preconditioningTemperature": 21.0,
+      "preconditioningHeatedStrgWheel": false,
+      "preconditioningHeatedRightSeat": false,
+      "preconditioningHeatedLeftSeat": false,
+      "programs": [
+        {
+          "programActivationStatus": true,
+          "programType": "CHARGE",
+          "programDepartureTime": "10:00",
+          "programActivationMonday": true,
+          "programActivationTuesday": true,
+          "programActivationWednesday": true,
+          "programActivationThursday": true,
+          "programActivationFriday": true,
+          "programActivationSaturday": true,
+          "programActivationSunday": true
+        }
+      ]
+    }
+  }
+}
