@@ -103,6 +103,7 @@ _DEFAULT_ENDPOINTS: dict[str, str] = {
     "notification-settings": "/kca/car-adapter/v1/cars/{vin}/notification-settings",
     "pressure": "/kca/car-adapter/v1/cars/{vin}/pressure",
     "res-state": "/kca/car-adapter/v1/cars/{vin}/res-state",
+    "soc-levels": "/kcm/v1/vehicles/{vin}/ev/soc-levels",
 }
 _KCM_ENDPOINTS: dict[str, str] = {
     "charging-settings": "/kcm/v1/vehicles/{vin}/ev/settings"
@@ -121,6 +122,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[str]]] = {
         "lock-status": None,  # not supported
         "pressure": None,  # not supported
         "res-state": None,  # not supported
+        "soc-levels": None,  # not supported
     },
     "XJA1VP": {  # CLIO V
         "hvac-status": None,
