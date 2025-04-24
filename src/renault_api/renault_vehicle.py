@@ -86,9 +86,7 @@ class RenaultVehicle:
         details = await self.get_details()
         full_endpoint = details.get_endpoint(endpoint)
         if full_endpoint is None:
-            raise EndpointNotAvailableError(  # pragma: no cover
-                endpoint, details.get_model_code()
-            )
+            raise EndpointNotAvailableError(endpoint, details.get_model_code())
 
         full_endpoint = ACCOUNT_ENDPOINT_ROOT.replace(
             "{account_id}", self.account_id
