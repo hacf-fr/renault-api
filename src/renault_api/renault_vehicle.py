@@ -5,6 +5,7 @@ from datetime import timezone
 from typing import Any
 from typing import Optional
 from typing import cast
+from warnings import warn
 
 import aiohttp
 
@@ -76,9 +77,7 @@ class RenaultVehicle:
         """Get vin."""
         return self._vin
 
-    async def _get_vehicle_data(
-        self, endpoint: str
-    ) -> models.KamereonVehicleDataResponse:
+    async def _get_vehicle_response(self, endpoint: str) -> models.KamereonResponse:
         """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
         details = await self.get_details()
         full_endpoint = details.get_endpoint(endpoint)
@@ -89,10 +88,14 @@ class RenaultVehicle:
             "{account_id}", self.account_id
         ) + full_endpoint.replace("{vin}", self.vin)
 
-        schema = schemas.KamereonVehicleDataResponseSchema
+        return await self.session.http_request("GET", full_endpoint)
+
+    async def _get_vehicle_data(self, endpoint: str) -> models.KamereonResponse:
+        """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
+        response = await self._get_vehicle_response(endpoint)
         return cast(
             models.KamereonVehicleDataResponse,
-            await self.session.http_request("GET", full_endpoint, schema=schema),
+            schemas.KamereonVehicleDataResponseSchema.load(response.raw_data),
         )
 
     async def get_details(self) -> models.KamereonVehicleDetails:
@@ -214,16 +217,24 @@ class RenaultVehicle:
 
     async def get_charging_settings(self) -> models.KamereonVehicleChargingSettingsData:
         """Get vehicle charging settings."""
+        warn(
+            "Method `get_charging_settings` is deprecated, "
+            "please use `get_charge_settings`.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         response = await self._get_vehicle_data("charging-settings")
         return cast(
             models.KamereonVehicleChargingSettingsData,
             response.get_attributes(schemas.KamereonVehicleChargingSettingsDataSchema),
         )
 
-    async def get_charge_schedule(self) -> dict[str, Any]:
-        """Get vehicle charging schedule."""
-        response = await self._get_vehicle_data("charge-schedule")
-        return response.raw_data["data"]["attributes"]  # type:ignore[no-any-return]
+    async def get_charge_settings(self) -> models.KamereonVehicleChargingSettingsData:
+        """Get vehicle charging settings."""
+        response = await self._get_vehicle_response("charging-settings")
+        if "data" in response.raw_data and "attributes" in response.raw_data["data"]:
+            return response.raw_data["data"]["attributes"]
+        return response.raw_data
 
     async def get_notification_settings(
         self,

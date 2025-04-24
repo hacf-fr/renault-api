@@ -389,8 +389,17 @@ def inject_get_charges(
     )
 
 
-def inject_get_charging_settings(mocked_responses: aioresponses, type: str) -> str:
+def inject_get_charging_settings(
+    mocked_responses: aioresponses, type: str, *, alternate: bool = False
+) -> str:
     """Inject sample charges."""
+    if alternate:
+        urlpath = f"{KCM_ADAPTER_PATH}/ev/settings?{DEFAULT_QUERY_STRING}"
+        return inject_data(
+            mocked_responses,
+            urlpath,
+            f"vehicle_data/kcm-ev-settings.{type}.json",
+        )
     urlpath = f"{ADAPTER_PATH}/charging-settings?{DEFAULT_QUERY_STRING}"
     return inject_data(
         mocked_responses,
