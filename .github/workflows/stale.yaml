@@ -5,6 +5,9 @@ on:
     - cron: "47 15 * * *"
   workflow_dispatch:
 
+permissions:
+  issues: write
+
 jobs:
   stale:
     if: github.repository_owner == 'hacf-fr'
