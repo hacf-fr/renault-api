@@ -60,9 +60,6 @@ VEHICLE_SPECIFICATIONS: dict[str, dict[str, Any]] = {
         "support-endpoint-location": False,
         "support-endpoint-lock-status": False,
     },
-    "X102VE": {  # ZOE phase 2
-        "warns-on-method-set_ac_stop": "Action `cancel` on endpoint `hvac-start` may not be supported on this model.",  # noqa
-    },
     "XJA1VP": {  # CLIO V
         "support-endpoint-hvac-status": False,
     },
@@ -309,15 +306,6 @@ class KamereonVehicleDetails(BaseModel):
         """Return True if model supports specified endpoint."""
         # Default to True for unknown vehicles
         return self.get_endpoint(endpoint) is not None
-
-    def warns_on_method(self, method: str) -> Optional[str]:
-        """Return warning message if model trigger a warning on the method call."""
-        # Default to None for unknown vehicles
-        if self.model and self.model.code:
-            return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
-                self.model.code, {}
-            ).get(f"warns-on-method-{method}", None)
-        return None
 
     def controls_action_via_kcm(self, action: str) -> bool:
         """Return True if model uses endpoint via kcm."""
