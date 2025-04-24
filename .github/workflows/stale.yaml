@@ -1,0 +1,30 @@
+name: Stale
+
+on:
+  schedule:
+    - cron: "47 15 * * *"
+  workflow_dispatch:
+
+jobs:
+  stale:
+    if: github.repository_owner == 'hacf-fr'
+    runs-on: ubuntu-latest
+    steps:
+      - name: stale issues
+        uses: actions/stale@v9.1.0
+        with:
+          days-before-stale: 30
+          days-before-close: 15
+          days-before-pr-stale: -1
+          days-before-pr-close: -1
+          remove-stale-when-updated: true
+          stale-issue-label: "stale"
+          stale-issue-message: >
+            There hasn't been any activity on this issue recently.
+
+            Please make sure to update to the Renault API version and
+            check if that solves the issue. Let us know if that works for you by
+            adding a comment 👍
+
+            This issue has now been marked as stale and will be closed if no
+            further activity occurs. Thank you for your contributions.
