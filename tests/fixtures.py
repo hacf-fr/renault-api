@@ -400,11 +400,11 @@ def inject_get_charging_settings(
             urlpath,
             f"vehicle_data/kcm-ev-settings.{type}.json",
         )
-    urlpath = f"{ADAPTER_PATH}/charging-settings?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{ADAPTER_PATH}/charge-schedule?{DEFAULT_QUERY_STRING}"
     return inject_data(
         mocked_responses,
         urlpath,
-        f"vehicle_data/charging-settings.{type}.json",
+        f"vehicle_data/charge-schedule.{type}.json",
     )
 
 
