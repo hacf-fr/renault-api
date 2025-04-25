@@ -181,6 +181,7 @@
   dict({
     'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
     'charge-mode': '/kca/car-adapter/v1/cars/{vin}/charge-mode',
+    'charge-schedule': '/kca/car-adapter/v1/cars/{vin}/charge-schedule',
     'cockpit': '/kca/car-adapter/v1/cars/{vin}/cockpit',
     'hvac-status': '/kca/car-adapter/v1/cars/{vin}/hvac-status',
     'location': None,
@@ -194,6 +195,7 @@
   dict({
     'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
     'charge-mode': '/kca/car-adapter/v1/cars/{vin}/charge-mode',
+    'charge-schedule': '/kca/car-adapter/v1/cars/{vin}/charge-schedule',
     'cockpit': '/kca/car-adapter/v1/cars/{vin}/cockpit',
     'hvac-status': '/kca/car-adapter/v1/cars/{vin}/hvac-status',
     'location': None,
