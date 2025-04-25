@@ -19,6 +19,7 @@ from tests.const import TEST_VIN
 from tests.test_credential_store import get_logged_in_credential_store
 from tests.test_renault_session import get_logged_in_session
 
+from renault_api.exceptions import EndpointNotAvailableError
 from renault_api.kamereon.helpers import DAYS_OF_WEEK
 from renault_api.kamereon.models import ChargeSchedule
 from renault_api.kamereon.models import HvacSchedule
@@ -370,6 +371,46 @@ async def test_set_hvac_schedules(
     assert request.kwargs["json"] == snapshot
 
 
+@pytest.mark.asyncio
+async def test_http_get(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+) -> None:
+    """Test http_get."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
+    endpoint = await vehicle.get_full_endpoint("charge-schedule")
+    url = fixtures.inject_get_charge_schedule(mocked_responses, "single")
+
+    assert await vehicle.http_get(endpoint) == snapshot
+    request: RequestCall = mocked_responses.requests[("GET", URL(url))][0]
+
+    assert request.kwargs["json"] is None
+
+
+@pytest.mark.asyncio
+async def test_http_post(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+) -> None:
+    """Test http_post."""
+    endpoint = (
+        "/commerce/v1/accounts/{account_id}"
+        "/kamereon/kca/car-adapter/v1/cars/{vin}/actions/charging-start"
+    )
+    json = {
+        "data": {
+            "attributes": {
+                "action": "start",
+            },
+            "type": "ChargingStart",
+        },
+    }
+    url = fixtures.inject_set_charging_start(mocked_responses, "start")
+
+    assert await vehicle.http_post(endpoint, json) == snapshot
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+
+    assert request.kwargs["json"] == snapshot
+
+
 @pytest.mark.parametrize(
     "filename", fixtures.get_json_files(f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicles")
 )
@@ -387,3 +428,14 @@ async def test_get_endpoints(
     endpoints = details.get_endpoints()
 
     assert endpoints == snapshot
+
+
+@pytest.mark.asyncio
+async def test_get_full_endpoint_unknown(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
+    """Test http_get."""
+    # Unkown endpoint
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
+    with pytest.raises(EndpointNotAvailableError):
+        await vehicle.get_full_endpoint("random")
