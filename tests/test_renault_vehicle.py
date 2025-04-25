@@ -208,6 +208,16 @@ async def test_get_charge_schedule(
 
 
 @pytest.mark.asyncio
+async def test_get_charge_schedule_alternate(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+) -> None:
+    """Test get_charging_settings."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
+    fixtures.inject_get_ev_settings(mocked_responses, "single")
+    assert await vehicle.get_charge_schedule() == snapshot
+
+
+@pytest.mark.asyncio
 async def test_get_notification_settings(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:

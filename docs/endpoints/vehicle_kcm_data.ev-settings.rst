@@ -8,9 +8,9 @@ Base url:
 
 Sample return:
    Empty:
-      .. literalinclude:: /../tests/fixtures/kamereon/vehicle_kcm_data/kcm-ev-settings.empty.json
+      .. literalinclude:: /../tests/fixtures/kamereon/vehicle_kcm_data/ev-settings.empty.json
          :language: JSON
 
    Single:
-      .. literalinclude:: /../tests/fixtures/kamereon/vehicle_kcm_data/kcm-ev-settings.single.json
+      .. literalinclude:: /../tests/fixtures/kamereon/vehicle_kcm_data/ev-settings.single.json
          :language: JSON
