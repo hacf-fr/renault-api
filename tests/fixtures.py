@@ -399,6 +399,16 @@ def inject_get_charging_settings(mocked_responses: aioresponses, type: str) -> s
     )
 
 
+def inject_get_charge_schedule(mocked_responses: aioresponses, type: str) -> str:
+    """Inject sample charges."""
+    urlpath = f"{ADAPTER_PATH}/charge-schedule?{DEFAULT_QUERY_STRING}"
+    return inject_data(
+        mocked_responses,
+        urlpath,
+        f"vehicle_data/charge-schedule.{type}.json",
+    )
+
+
 def inject_get_cockpit(mocked_responses: aioresponses, vehicle: str) -> str:
     """Inject sample cockpit."""
     urlpath = f"{ADAPTER_PATH}/cockpit?{DEFAULT_QUERY_STRING}"

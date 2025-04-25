@@ -1,4 +1,59 @@
 # serializer version: 1
+# name: test_get_charge_schedule
+  dict({
+    'calendar': dict({
+      'friday': list([
+        dict({
+          'activationState': False,
+          'duration': 480,
+          'startTime': '2300',
+        }),
+      ]),
+      'monday': list([
+        dict({
+          'activationState': False,
+          'duration': 480,
+          'startTime': '2300',
+        }),
+      ]),
+      'saturday': list([
+        dict({
+          'activationState': False,
+          'duration': 480,
+          'startTime': '2300',
+        }),
+      ]),
+      'sunday': list([
+        dict({
+          'activationState': False,
+          'duration': 480,
+          'startTime': '2300',
+        }),
+      ]),
+      'thursday': list([
+        dict({
+          'activationState': False,
+          'duration': 480,
+          'startTime': '2300',
+        }),
+      ]),
+      'tuesday': list([
+        dict({
+          'activationState': False,
+          'duration': 480,
+          'startTime': '2300',
+        }),
+      ]),
+      'wednesday': list([
+        dict({
+          'activationState': False,
+          'duration': 480,
+          'startTime': '2300',
+        }),
+      ]),
+    }),
+  })
+# ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/captur_ii.1.json]
   dict({
     'hvac-status': None,
@@ -20,6 +75,7 @@
     'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
     'charge-history': '/kca/car-adapter/v1/cars/{vin}/charge-history',
     'charge-mode': '/kca/car-adapter/v1/cars/{vin}/charge-mode',
+    'charge-schedule': '/kca/car-adapter/v1/cars/{vin}/charge-schedule',
     'charges': '/kca/car-adapter/v1/cars/{vin}/charges',
     'charging-settings': '/kca/car-adapter/v1/cars/{vin}/charging-settings',
     'cockpit': '/kca/car-adapter/v1/cars/{vin}/cockpit',
@@ -56,6 +112,7 @@
     'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
     'charge-history': '/kca/car-adapter/v1/cars/{vin}/charge-history',
     'charge-mode': '/kca/car-adapter/v1/cars/{vin}/charge-mode',
+    'charge-schedule': '/kca/car-adapter/v1/cars/{vin}/charge-schedule',
     'charges': '/kca/car-adapter/v1/cars/{vin}/charges',
     'charging-settings': '/kca/car-adapter/v1/cars/{vin}/charging-settings',
     'cockpit': '/kca/car-adapter/v1/cars/{vin}/cockpit',
@@ -77,6 +134,7 @@
     'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
     'charge-history': '/kca/car-adapter/v1/cars/{vin}/charge-history',
     'charge-mode': '/kca/car-adapter/v1/cars/{vin}/charge-mode',
+    'charge-schedule': '/kca/car-adapter/v1/cars/{vin}/charge-schedule',
     'charges': '/kca/car-adapter/v1/cars/{vin}/charges',
     'charging-settings': '/kca/car-adapter/v1/cars/{vin}/charging-settings',
     'cockpit': '/kca/car-adapter/v1/cars/{vin}/cockpit',
@@ -124,6 +182,7 @@
     'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
     'charge-history': '/kca/car-adapter/v1/cars/{vin}/charge-history',
     'charge-mode': '/kca/car-adapter/v1/cars/{vin}/charge-mode',
+    'charge-schedule': '/kca/car-adapter/v1/cars/{vin}/charge-schedule',
     'charges': '/kca/car-adapter/v1/cars/{vin}/charges',
     'charging-settings': '/kca/car-adapter/v1/cars/{vin}/charging-settings',
     'cockpit': '/kca/car-adapter/v1/cars/{vin}/cockpit',

@@ -1,8 +1,8 @@
 """Client for Renault API."""
 
-import logging
 from datetime import datetime
 from datetime import timezone
+from typing import Any
 from typing import Optional
 from typing import cast
 
@@ -15,8 +15,6 @@ from .kamereon import ACCOUNT_ENDPOINT_ROOT
 from .kamereon import models
 from .kamereon import schemas
 from .renault_session import RenaultSession
-
-_LOGGER = logging.getLogger(__name__)
 
 PERIOD_DAY_FORMAT = "%Y%m%d"
 PERIOD_MONTH_FORMAT = "%Y%m"
@@ -221,6 +219,11 @@ class RenaultVehicle:
             models.KamereonVehicleChargingSettingsData,
             response.get_attributes(schemas.KamereonVehicleChargingSettingsDataSchema),
         )
+
+    async def get_charge_schedule(self) -> dict[str, Any]:
+        """Get vehicle charging schedule."""
+        response = await self._get_vehicle_data("charge-schedule")
+        return response.raw_data["data"]["attributes"]  # type:ignore[no-any-return]
 
     async def get_notification_settings(
         self,

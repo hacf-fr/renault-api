@@ -91,6 +91,7 @@ _DEFAULT_ENDPOINTS: dict[str, str] = {
     "battery-status": "/kca/car-adapter/v2/cars/{vin}/battery-status",
     "charge-history": "/kca/car-adapter/v1/cars/{vin}/charge-history",
     "charge-mode": "/kca/car-adapter/v1/cars/{vin}/charge-mode",
+    "charge-schedule": "/kca/car-adapter/v1/cars/{vin}/charge-schedule",
     "charges": "/kca/car-adapter/v1/cars/{vin}/charges",
     "charging-settings": "/kca/car-adapter/v1/cars/{vin}/charging-settings",
     "cockpit": "/kca/car-adapter/v1/cars/{vin}/cockpit",
