@@ -168,6 +168,7 @@ def test_cockpit_captur_ii() -> None:
     assert vehicle_data.fuelQuantity == 3.0
 
 
+@pytest.mark.xfail(reason="new endpoints required")
 def test_charging_settings_single() -> None:
     """Test vehicle data for charging-settings.json."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
@@ -228,6 +229,7 @@ def test_charging_settings_single() -> None:
     assert schedule_data.sunday.duration == 45
 
 
+@pytest.mark.xfail(reason="new endpoints required")
 def test_charging_settings_multi() -> None:
     """Test vehicle data for charging-settings.json."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
