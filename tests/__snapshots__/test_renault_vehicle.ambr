@@ -103,7 +103,7 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/renault_5.1.json]
   dict({
-    'charge-schedule': '/kcm/v1/vehicles/{vin}/ev/settings',
+    'charging-settings': '/kcm/v1/vehicles/{vin}/ev/settings',
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/spring.1.json]
