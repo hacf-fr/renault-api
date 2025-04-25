@@ -409,23 +409,13 @@ def inject_get_charge_schedule(mocked_responses: aioresponses, type: str) -> str
     )
 
 
-def inject_get_charge_schedule(mocked_responses: aioresponses, type: str) -> str:
-    """Inject sample charges."""
-    urlpath = f"{ADAPTER_PATH}/charge-schedule?{DEFAULT_QUERY_STRING}"
-    return inject_data(
-        mocked_responses,
-        urlpath,
-        f"vehicle_data/charge-schedule.{type}.json",
-    )
-
-
 def inject_get_ev_settings(mocked_responses: aioresponses, type: str) -> str:
     """Inject sample charges."""
     urlpath = f"{KCM_ADAPTER_PATH}/ev/settings?{DEFAULT_QUERY_STRING}"
     return inject_data(
         mocked_responses,
         urlpath,
-        f"vehicle_data/kcm-ev-settings.{type}.json",
+        f"vehicle_kcm_data/ev-settings.{type}.json",
     )
 
 
