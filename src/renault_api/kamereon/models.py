@@ -91,8 +91,9 @@ _DEFAULT_ENDPOINTS: dict[str, str] = {
     "battery-status": "/kca/car-adapter/v2/cars/{vin}/battery-status",
     "charge-history": "/kca/car-adapter/v1/cars/{vin}/charge-history",
     "charge-mode": "/kca/car-adapter/v1/cars/{vin}/charge-mode",
-    "charges": "/kca/car-adapter/v1/cars/{vin}/charges",
     "charge-schedule": "/kca/car-adapter/v1/cars/{vin}/charge-schedule",
+    "charges": "/kca/car-adapter/v1/cars/{vin}/charges",
+    "charging-settings": "/kca/car-adapter/v1/cars/{vin}/charging-settings",
     "cockpit": "/kca/car-adapter/v1/cars/{vin}/cockpit",
     "hvac-history": "/kca/car-adapter/v1/cars/{vin}/hvac-history",
     "hvac-sessions": "/kca/car-adapter/v1/cars/{vin}/hvac-sessions",
@@ -709,6 +710,26 @@ class HvacSchedule(BaseModel):
             else:
                 result[day] = day_spec.for_json()
         return result
+
+
+@dataclass
+class KamereonVehicleChargingSettingsData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle data charging-settings attributes."""
+
+    mode: Optional[str]
+    schedules: Optional[list[ChargeSchedule]]
+
+    def update(self, args: dict[str, Any]) -> None:
+        """Update schedule."""
+        if "id" not in args:
+            raise ValueError("id not provided for update.")
+        if self.schedules is None:
+            self.schedules = []
+        for schedule in self.schedules:
+            if schedule.id == args["id"]:
+                helpers.update_charge_schedule(schedule, args)
+                return
+        self.schedules.append(helpers.create_charge_schedule(args))
 
 
 @dataclass
