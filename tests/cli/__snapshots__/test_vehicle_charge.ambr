@@ -38,6 +38,67 @@
   
   '''
 # ---
+# name: test_charge_schedule_show
+  '''
+  Mode: scheduled
+  
+  Schedule ID: 1 [Active]
+  Day        Start time    End time    Duration
+  ---------  ------------  ----------  ----------
+  Monday     01:00         08:30       7:30:00
+  Tuesday    01:00         08:30       7:30:00
+  Wednesday  01:00         08:30       7:30:00
+  Thursday   01:00         08:30       7:30:00
+  Friday     01:00         08:30       7:30:00
+  Saturday   01:00         08:30       7:30:00
+  Sunday     01:00         08:30       7:30:00
+  
+  Schedule ID: 2 [Active]
+  Day        Start time    End time    Duration
+  ---------  ------------  ----------  ----------
+  Monday     00:30         00:45       0:15:00
+  Tuesday    00:30         00:45       0:15:00
+  Wednesday  00:30         00:45       0:15:00
+  Thursday   00:30         00:45       0:15:00
+  Friday     00:30         00:45       0:15:00
+  Saturday   00:30         00:45       0:15:00
+  Sunday     00:30         00:45       0:15:00
+  
+  Schedule ID: 3
+  Day        Start time    End time    Duration
+  ---------  ------------  ----------  ----------
+  Monday     -             -           -
+  Tuesday    -             -           -
+  Wednesday  -             -           -
+  Thursday   -             -           -
+  Friday     -             -           -
+  Saturday   -             -           -
+  Sunday     -             -           -
+  
+  Schedule ID: 4
+  Day        Start time    End time    Duration
+  ---------  ------------  ----------  ----------
+  Monday     -             -           -
+  Tuesday    -             -           -
+  Wednesday  -             -           -
+  Thursday   -             -           -
+  Friday     -             -           -
+  Saturday   -             -           -
+  Sunday     -             -           -
+  
+  Schedule ID: 5
+  Day        Start time    End time    Duration
+  ---------  ------------  ----------  ----------
+  Monday     -             -           -
+  Tuesday    -             -           -
+  Wednesday  -             -           -
+  Thursday   -             -           -
+  Friday     -             -           -
+  Saturday   -             -           -
+  Sunday     -             -           -
+  
+  '''
+# ---
 # name: test_charging_dacia_start
   dict({
     'data': dict({

@@ -2,6 +2,7 @@
 
 import re
 from typing import Any
+from typing import Optional
 
 import aiohttp
 import click
@@ -44,62 +45,43 @@ async def show(
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
     )
-    response = await vehicle.get_charge_schedule()
+    response = await vehicle.get_charging_settings()
 
     # Display mode
-    if "chargeModeRq" in response:
-        _show_alternate(response)
-        return
-
-    calendar = response["calendar"]
-    schedule_table: list[list[str]] = []
-    for day in DAYS_OF_WEEK:
-        day_data = calendar[day][0]
-        start_time = day_data["startTime"]
-        end_time = str(
-            int(day_data["startTime"])
-            + int(day_data["duration"] * 100 / 60)
-            + (day_data["duration"] % 60)
-        )
-        schedule_table.append(
-            [
-                day.capitalize(),
-                helpers.get_display_value(
-                    f"T{start_time[0:2]}:{start_time[2:4]}Z", "tztime"
-                ),
-                helpers.get_display_value(
-                    f"T{end_time[0:2]}:{end_time[2:4]}Z", "tztime"
-                ),
-                day_data["duration"],
-                day_data["activationState"],
-            ]
-        )
-
-    headers = ["Day", "Start time", "End time", "Duration", "Active"]
-    click.echo(tabulate(schedule_table, headers=headers))
-
-
-def _show_alternate(response: dict[str, Any]) -> None:
-    """Display charge schedules (alternate)."""
-    click.echo(f"Mode: {response['chargeModeRq'].capitalize()}")
-    if not response["programs"]:
+    click.echo(f"Mode: {response.mode}")
+    if not response.schedules:
         click.echo("\nNo schedules found.")
         return
 
-    for idx, program in enumerate(response["programs"]):
-        active = " [Active]" if program["programActivationStatus"] else ""
-        click.echo(f"\nSchedule ID: {idx}{active}")
+    for schedule in response.schedules:
+        click.echo(
+            f"\nSchedule ID: {schedule.id}{' [Active]' if schedule.activated else ''}"
+        )
 
-        headers = ["Day", "Active"]
+        headers = [
+            "Day",
+            "Start time",
+            "End time",
+            "Duration",
+        ]
         click.echo(
             tabulate(
-                [
-                    [key.capitalize(), program[f"programActivation{key.capitalize()}"]]
-                    for key in DAYS_OF_WEEK
-                ],
+                [_format_charge_schedule(schedule, key) for key in DAYS_OF_WEEK],
                 headers=headers,
             )
         )
+
+
+def _format_charge_schedule(schedule: ChargeSchedule, key: str) -> list[str]:
+    details: Optional[ChargeDaySchedule] = getattr(schedule, key)
+    if not details:
+        return [key.capitalize(), "-", "-", "-"]
+    return [
+        key.capitalize(),
+        helpers.get_display_value(details.startTime, "tztime"),
+        helpers.get_display_value(details.get_end_time(), "tztime"),
+        helpers.get_display_value(details.duration, "minutes"),
+    ]
 
 
 async def _get_schedule(
