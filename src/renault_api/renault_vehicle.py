@@ -76,28 +76,23 @@ class RenaultVehicle:
         """Get vin."""
         return self._vin
 
-    def _convert_variables(self, full_endpoint: str) -> str:
+    def _convert_variables(self, endpoint: str) -> str:
         """Replace account_id / vin"""
-        return full_endpoint.replace("{account_id}", self.account_id).replace(
+        return endpoint.replace("{account_id}", self.account_id).replace(
             "{vin}", self.vin
         )
 
-    async def http_get(self, full_endpoint: str) -> models.KamereonResponse:
+    async def http_get(self, endpoint: str) -> models.KamereonResponse:
         """Run HTTP GET to endpoint."""
-        return await self.session.http_request(
-            "GET",
-            self._convert_variables(full_endpoint),
-        )
+        endpoint = self._convert_variables(endpoint)
+        return await self.session.http_request("GET", endpoint)
 
     async def http_post(
-        self, full_endpoint: str, json: Optional[dict[str, Any]] = None
+        self, endpoint: str, json: Optional[dict[str, Any]] = None
     ) -> models.KamereonResponse:
         """Run HTTP POST to endpoint."""
-        return await self.session.http_request(
-            "POST",
-            self._convert_variables(full_endpoint),
-            json,
-        )
+        endpoint = self._convert_variables(endpoint)
+        return await self.session.http_request("POST", endpoint, json)
 
     async def get_full_endpoint(self, endpoint: str) -> str:
         """From VEHICLE_ENDPOINTS / DEFAULT_ENDPOINT."""
