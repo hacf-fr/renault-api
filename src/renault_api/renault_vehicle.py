@@ -76,24 +76,44 @@ class RenaultVehicle:
         """Get vin."""
         return self._vin
 
-    async def _get_vehicle_response(self, endpoint: str) -> models.KamereonResponse:
-        """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
+    def _convert_variables(self, full_endpoint: str) -> str:
+        """Replace account_id / vin"""
+        return full_endpoint.replace("{account_id}", self.account_id).replace(
+            "{vin}", self.vin
+        )
+
+    async def http_get(self, full_endpoint: str) -> models.KamereonResponse:
+        """Run HTTP GET to endpoint."""
+        return await self.session.http_request(
+            "GET",
+            self._convert_variables(full_endpoint),
+        )
+
+    async def http_post(
+        self, full_endpoint: str, json: dict[str, Any] | None = None
+    ) -> models.KamereonResponse:
+        """Run HTTP POST to endpoint."""
+        return await self.session.http_request(
+            "POST",
+            self._convert_variables(full_endpoint),
+            json,
+        )
+
+    async def get_full_endpoint(self, endpoint: str) -> str:
+        """From VEHICLE_ENDPOINTS / DEFAULT_ENDPOINT."""
         details = await self.get_details()
         full_endpoint = details.get_endpoint(endpoint)
         if full_endpoint is None:
             raise EndpointNotAvailableError(endpoint, details.get_model_code())
 
-        full_endpoint = ACCOUNT_ENDPOINT_ROOT.replace(
-            "{account_id}", self.account_id
-        ) + full_endpoint.replace("{vin}", self.vin)
-
-        return await self.session.http_request("GET", full_endpoint)
+        return ACCOUNT_ENDPOINT_ROOT + full_endpoint
 
     async def _get_vehicle_data(
         self, endpoint: str
     ) -> models.KamereonVehicleDataResponse:
         """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
-        response = await self._get_vehicle_response(endpoint)
+        full_endpoint = await self.get_full_endpoint(endpoint)
+        response = await self.http_get(full_endpoint)
         return cast(
             models.KamereonVehicleDataResponse,
             schemas.KamereonVehicleDataResponseSchema.load(response.raw_data),
@@ -226,7 +246,8 @@ class RenaultVehicle:
 
     async def get_charge_schedule(self) -> dict[str, Any]:
         """Get vehicle charging schedule."""
-        response = await self._get_vehicle_response("charge-schedule")
+        full_endpoint = await self.get_full_endpoint("charge-schedule")
+        response = await self.http_get(full_endpoint)
         if "data" in response.raw_data and "attributes" in response.raw_data["data"]:
             return response.raw_data["data"]["attributes"]  # type:ignore[no-any-return]
         return response.raw_data
