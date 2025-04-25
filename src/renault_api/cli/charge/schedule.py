@@ -111,7 +111,7 @@ async def _get_schedule(
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
     )
-    response = await vehicle.get_charging_settings()
+    response = await vehicle.get_charge_schedule()
 
     if not response.schedules:
         raise ValueError("No schedules found.")

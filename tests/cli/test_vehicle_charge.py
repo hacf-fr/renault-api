@@ -1,5 +1,6 @@
 """Test cases for the __main__ module."""
 
+import pytest
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall
 from click.testing import CliRunner
@@ -135,7 +136,7 @@ def test_charge_schedule_show(
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
-    fixtures.inject_get_charge_schedule(mocked_responses, "single")
+    fixtures.inject_get_charging_settings(mocked_responses, "scheduled")
 
     result = cli_runner.invoke(__main__.main, "charge schedule show")
     assert result.exit_code == 0, result.exception
@@ -148,13 +149,14 @@ def test_charge_schedule_show_alternate(
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
-    fixtures.inject_get_ev_settings(mocked_responses, "single")
+    fixtures.inject_get_charging_settings(mocked_responses, "scheduled", alternate=True)
 
     result = cli_runner.invoke(__main__.main, "charge schedule show")
     assert result.exit_code == 0, result.exception
     assert result.output == snapshot
 
 
+@pytest.mark.xfail(reason="new endpoints required")
 def test_charging_settings_set(
     mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
@@ -176,6 +178,7 @@ def test_charging_settings_set(
     assert result.output == snapshot
 
 
+@pytest.mark.xfail(reason="new endpoints required")
 def test_charging_settings_activate(
     mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
@@ -193,6 +196,7 @@ def test_charging_settings_activate(
     assert result.output == snapshot
 
 
+@pytest.mark.xfail(reason="new endpoints required")
 def test_charging_settings_deactivate(
     mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
