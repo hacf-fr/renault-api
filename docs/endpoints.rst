@@ -52,6 +52,7 @@ Action endpoints
 .. include:: endpoints/vehicle_action.charge-mode.rst
 .. include:: endpoints/vehicle_action.charge-schedule.rst
 .. include:: endpoints/vehicle_action.charging-start.rst
+.. include:: endpoints/vehicle_action.horn-lights.rst
 .. include:: endpoints/vehicle_action.hvac-start.rst
 .. include:: endpoints/vehicle_action.hvac-schedule.rst
 
