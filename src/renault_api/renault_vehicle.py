@@ -220,7 +220,7 @@ class RenaultVehicle:
         """Get vehicle charging schedule."""
         response = await self._get_vehicle_response("charge-schedule")
         if "data" in response.raw_data and "attributes" in response.raw_data["data"]:
-            return response.raw_data["data"]["attributes"]
+            return response.raw_data["data"]["attributes"]  # type:ignore[no-any-return]
         return response.raw_data
 
     async def get_notification_settings(
