@@ -389,17 +389,18 @@ def inject_get_charges(
     )
 
 
-def inject_get_charging_settings(
-    mocked_responses: aioresponses, type: str, *, alternate: bool = False
-) -> str:
+def inject_get_charging_settings(mocked_responses: aioresponses, type: str) -> str:
     """Inject sample charges."""
-    if alternate:
-        urlpath = f"{KCM_ADAPTER_PATH}/ev/settings?{DEFAULT_QUERY_STRING}"
-        return inject_data(
-            mocked_responses,
-            urlpath,
-            f"vehicle_data/kcm-ev-settings.{type}.json",
-        )
+    urlpath = f"{ADAPTER_PATH}/charging-settings?{DEFAULT_QUERY_STRING}"
+    return inject_data(
+        mocked_responses,
+        urlpath,
+        f"vehicle_data/charging-settings.{type}.json",
+    )
+
+
+def inject_get_charge_schedule(mocked_responses: aioresponses, type: str) -> str:
+    """Inject sample charges."""
     urlpath = f"{ADAPTER_PATH}/charge-schedule?{DEFAULT_QUERY_STRING}"
     return inject_data(
         mocked_responses,
@@ -425,6 +426,16 @@ def inject_get_ev_settings(mocked_responses: aioresponses, type: str) -> str:
         mocked_responses,
         urlpath,
         f"vehicle_kcm_data/ev-settings.{type}.json",
+    )
+
+
+def inject_get_ev_settings(mocked_responses: aioresponses, type: str) -> str:
+    """Inject sample charges."""
+    urlpath = f"{KCM_ADAPTER_PATH}/ev/settings?{DEFAULT_QUERY_STRING}"
+    return inject_data(
+        mocked_responses,
+        urlpath,
+        f"vehicle_data/kcm-ev-settings.{type}.json",
     )
 
 

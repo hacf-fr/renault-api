@@ -101,6 +101,345 @@
   
   '''
 # ---
+# name: test_charging_settings_activate
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'schedules': list([
+          dict({
+            'activated': True,
+            'friday': dict({
+              'duration': 450,
+              'startTime': 'T00:00Z',
+            }),
+            'id': 1,
+            'monday': dict({
+              'duration': 450,
+              'startTime': 'T00:00Z',
+            }),
+            'saturday': dict({
+              'duration': 450,
+              'startTime': 'T00:00Z',
+            }),
+            'sunday': dict({
+              'duration': 450,
+              'startTime': 'T00:00Z',
+            }),
+            'thursday': dict({
+              'duration': 450,
+              'startTime': 'T00:00Z',
+            }),
+            'tuesday': dict({
+              'duration': 450,
+              'startTime': 'T00:00Z',
+            }),
+            'wednesday': dict({
+              'duration': 450,
+              'startTime': 'T00:00Z',
+            }),
+          }),
+          dict({
+            'activated': True,
+            'friday': dict({
+              'duration': 15,
+              'startTime': 'T23:30Z',
+            }),
+            'id': 2,
+            'monday': dict({
+              'duration': 15,
+              'startTime': 'T23:30Z',
+            }),
+            'saturday': dict({
+              'duration': 15,
+              'startTime': 'T23:30Z',
+            }),
+            'sunday': dict({
+              'duration': 15,
+              'startTime': 'T23:30Z',
+            }),
+            'thursday': dict({
+              'duration': 15,
+              'startTime': 'T23:30Z',
+            }),
+            'tuesday': dict({
+              'duration': 15,
+              'startTime': 'T23:30Z',
+            }),
+            'wednesday': dict({
+              'duration': 15,
+              'startTime': 'T23:30Z',
+            }),
+          }),
+          dict({
+            'activated': True,
+            'friday': None,
+            'id': 3,
+            'monday': None,
+            'saturday': None,
+            'sunday': None,
+            'thursday': None,
+            'tuesday': None,
+            'wednesday': None,
+          }),
+          dict({
+            'activated': False,
+            'friday': None,
+            'id': 4,
+            'monday': None,
+            'saturday': None,
+            'sunday': None,
+            'thursday': None,
+            'tuesday': None,
+            'wednesday': None,
+          }),
+          dict({
+            'activated': False,
+            'friday': None,
+            'id': 5,
+            'monday': None,
+            'saturday': None,
+            'sunday': None,
+            'thursday': None,
+            'tuesday': None,
+            'wednesday': None,
+          }),
+        ]),
+      }),
+      'type': 'ChargeSchedule',
+    }),
+  })
+# ---
+# name: test_charging_settings_activate.1
+  '''
+  {'schedules': [{'id': 1, 'activated': True, 'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, 'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, 'thursday': {'startTime': 'T22:00Z', 'duration': 420}, 'friday': {'startTime': 'T23:30Z', 'duration': 480}, 'saturday': {'startTime': 'T18:30Z', 'duration': 120}, 'sunday': {'startTime': 'T12:45Z', 'duration': 45}}]}
+  
+  '''
+# ---
+# name: test_charging_settings_deactivate
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'schedules': list([
+          dict({
+            'activated': False,
+            'friday': dict({
+              'duration': 450,
+              'startTime': 'T00:00Z',
+            }),
+            'id': 1,
+            'monday': dict({
+              'duration': 450,
+              'startTime': 'T00:00Z',
+            }),
+            'saturday': dict({
+              'duration': 450,
+              'startTime': 'T00:00Z',
+            }),
+            'sunday': dict({
+              'duration': 450,
+              'startTime': 'T00:00Z',
+            }),
+            'thursday': dict({
+              'duration': 450,
+              'startTime': 'T00:00Z',
+            }),
+            'tuesday': dict({
+              'duration': 450,
+              'startTime': 'T00:00Z',
+            }),
+            'wednesday': dict({
+              'duration': 450,
+              'startTime': 'T00:00Z',
+            }),
+          }),
+          dict({
+            'activated': True,
+            'friday': dict({
+              'duration': 15,
+              'startTime': 'T23:30Z',
+            }),
+            'id': 2,
+            'monday': dict({
+              'duration': 15,
+              'startTime': 'T23:30Z',
+            }),
+            'saturday': dict({
+              'duration': 15,
+              'startTime': 'T23:30Z',
+            }),
+            'sunday': dict({
+              'duration': 15,
+              'startTime': 'T23:30Z',
+            }),
+            'thursday': dict({
+              'duration': 15,
+              'startTime': 'T23:30Z',
+            }),
+            'tuesday': dict({
+              'duration': 15,
+              'startTime': 'T23:30Z',
+            }),
+            'wednesday': dict({
+              'duration': 15,
+              'startTime': 'T23:30Z',
+            }),
+          }),
+          dict({
+            'activated': False,
+            'friday': None,
+            'id': 3,
+            'monday': None,
+            'saturday': None,
+            'sunday': None,
+            'thursday': None,
+            'tuesday': None,
+            'wednesday': None,
+          }),
+          dict({
+            'activated': False,
+            'friday': None,
+            'id': 4,
+            'monday': None,
+            'saturday': None,
+            'sunday': None,
+            'thursday': None,
+            'tuesday': None,
+            'wednesday': None,
+          }),
+          dict({
+            'activated': False,
+            'friday': None,
+            'id': 5,
+            'monday': None,
+            'saturday': None,
+            'sunday': None,
+            'thursday': None,
+            'tuesday': None,
+            'wednesday': None,
+          }),
+        ]),
+      }),
+      'type': 'ChargeSchedule',
+    }),
+  })
+# ---
+# name: test_charging_settings_deactivate.1
+  '''
+  {'schedules': [{'id': 1, 'activated': True, 'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, 'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, 'thursday': {'startTime': 'T22:00Z', 'duration': 420}, 'friday': {'startTime': 'T23:30Z', 'duration': 480}, 'saturday': {'startTime': 'T18:30Z', 'duration': 120}, 'sunday': {'startTime': 'T12:45Z', 'duration': 45}}]}
+  
+  '''
+# ---
+# name: test_charging_settings_set
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'schedules': list([
+          dict({
+            'activated': True,
+            'friday': dict({
+              'duration': 480,
+              'startTime': 'T23:30Z',
+            }),
+            'id': 1,
+            'monday': None,
+            'saturday': dict({
+              'duration': 120,
+              'startTime': 'T18:30Z',
+            }),
+            'sunday': dict({
+              'duration': 450,
+              'startTime': 'T00:00Z',
+            }),
+            'thursday': dict({
+              'duration': 450,
+              'startTime': 'T00:00Z',
+            }),
+            'tuesday': dict({
+              'duration': 450,
+              'startTime': 'T00:00Z',
+            }),
+            'wednesday': dict({
+              'duration': 450,
+              'startTime': 'T00:00Z',
+            }),
+          }),
+          dict({
+            'activated': True,
+            'friday': dict({
+              'duration': 15,
+              'startTime': 'T23:30Z',
+            }),
+            'id': 2,
+            'monday': dict({
+              'duration': 15,
+              'startTime': 'T23:30Z',
+            }),
+            'saturday': dict({
+              'duration': 15,
+              'startTime': 'T23:30Z',
+            }),
+            'sunday': dict({
+              'duration': 15,
+              'startTime': 'T23:30Z',
+            }),
+            'thursday': dict({
+              'duration': 15,
+              'startTime': 'T23:30Z',
+            }),
+            'tuesday': dict({
+              'duration': 15,
+              'startTime': 'T23:30Z',
+            }),
+            'wednesday': dict({
+              'duration': 15,
+              'startTime': 'T23:30Z',
+            }),
+          }),
+          dict({
+            'activated': False,
+            'friday': None,
+            'id': 3,
+            'monday': None,
+            'saturday': None,
+            'sunday': None,
+            'thursday': None,
+            'tuesday': None,
+            'wednesday': None,
+          }),
+          dict({
+            'activated': False,
+            'friday': None,
+            'id': 4,
+            'monday': None,
+            'saturday': None,
+            'sunday': None,
+            'thursday': None,
+            'tuesday': None,
+            'wednesday': None,
+          }),
+          dict({
+            'activated': False,
+            'friday': None,
+            'id': 5,
+            'monday': None,
+            'saturday': None,
+            'sunday': None,
+            'thursday': None,
+            'tuesday': None,
+            'wednesday': None,
+          }),
+        ]),
+      }),
+      'type': 'ChargeSchedule',
+    }),
+  })
+# ---
+# name: test_charging_settings_set.1
+  '''
+  {'schedules': [{'id': 1, 'activated': True, 'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, 'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, 'thursday': {'startTime': 'T22:00Z', 'duration': 420}, 'friday': {'startTime': 'T23:30Z', 'duration': 480}, 'saturday': {'startTime': 'T18:30Z', 'duration': 120}, 'sunday': {'startTime': 'T12:45Z', 'duration': 45}}]}
+  
+  '''
+# ---
 # name: test_charging_start
   dict({
     'data': dict({
