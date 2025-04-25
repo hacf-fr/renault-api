@@ -52,6 +52,23 @@
   
   '''
 # ---
+# name: test_charge_schedule_show_alternate
+  '''
+  Mode: Scheduled
+  
+  Schedule ID: 0 [Active]
+  Day        Active
+  ---------  --------
+  Monday     True
+  Tuesday    True
+  Wednesday  True
+  Thursday   True
+  Friday     True
+  Saturday   True
+  Sunday     True
+  
+  '''
+# ---
 # name: test_charging_dacia_start
   dict({
     'data': dict({
