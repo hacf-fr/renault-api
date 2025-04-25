@@ -57,23 +57,9 @@ VEHICLE_SPECIFICATIONS: dict[str, dict[str, Any]] = {
     "X101VE": {  # ZOE phase 1
         "reports-charge-session-durations-in-minutes": True,
         "reports-in-watts": True,
-        "support-endpoint-location": False,
-        "support-endpoint-lock-status": False,
-    },
-    "XJA1VP": {  # CLIO V
-        "support-endpoint-hvac-status": False,
-    },
-    "XJB1SU": {  # CAPTUR II
-        "support-endpoint-hvac-status": False,
     },
     "XBG1VE": {  # DACIA SPRING
         "control-charge-via-kcm": True,
-    },
-    "XCB1VE": {  # MEGANE E-TECH
-        "support-endpoint-lock-status": False,
-    },
-    "XCB1SE": {  # SCENIC E-TECH
-        "support-endpoint-lock-status": False,
     },
 }
 
@@ -81,8 +67,6 @@ GATEWAY_SPECIFICATIONS: dict[str, dict[str, Any]] = {
     "GDC": {  # ZOE phase 1
         "reports-charge-session-durations-in-minutes": True,
         "reports-in-watts": True,
-        "support-endpoint-location": False,
-        "support-endpoint-lock-status": False,
     },
 }
 
@@ -126,18 +110,23 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[str]]] = {
         "res-state": None,  # not supported
         "soc-levels": None,  # not supported
     },
+    "XBG1VE": {  # DACIA SPRING
+        "lock-status": None,
+        "res-state": None,
+        "charge-mode": None,
+    },
+    "XCB1SE": {  # SCENIC E-TECH
+        "charge-schedule": _KCM_ENDPOINTS["charge-schedule"],
+        "lock-status": None,
+    },
+    "XCB1VE": {  # MEGANE E-TECH
+        "lock-status": None,
+    },
     "XJA1VP": {  # CLIO V
         "hvac-status": None,
     },
     "XJB1SU": {  # CAPTUR II
         "hvac-status": None,
-    },
-    "XCB1VE": {  # MEGANE E-TECH
-        "lock-status": None,
-    },
-    "XCB1SE": {  # SCENIC E-TECH
-        "charge-schedule": _KCM_ENDPOINTS["charge-schedule"],
-        "lock-status": None,
     },
 }
 
@@ -601,15 +590,6 @@ class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
                 self.carGateway, {}
             ).get("reports-in-watts", False)
         return False
-
-    def supports_endpoint(self, endpoint: str) -> bool:
-        """Return True if model supports specified endpoint."""
-        # Default to True for unknown vehicles
-        if self.carGateway:
-            return GATEWAY_SPECIFICATIONS.get(  # type:ignore[no-any-return]
-                self.carGateway, {}
-            ).get(f"support-endpoint-{endpoint}", True)
-        return True
 
     def controls_action_via_kcm(self, action: str) -> bool:
         """Return True if model uses endpoint via kcm."""
