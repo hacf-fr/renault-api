@@ -117,6 +117,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[str]]] = {
     "X101VE": {  # ZOE phase 1
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],  # confirmed
         "charge-mode": _DEFAULT_ENDPOINTS["charge-mode"],  # confirmed
+        "charge-schedule": _DEFAULT_ENDPOINTS["charge-schedule"],  # confirmed
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
         "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],  # confirmed
         "location": None,  # not supported
