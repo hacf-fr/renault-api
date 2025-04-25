@@ -200,12 +200,12 @@ def test_http_get(
     credential_store[GIGYA_PERSON_ID] = Credential(TEST_PERSON_ID)
     credential_store[GIGYA_JWT] = JWTCredential(fixtures.get_jwt())
 
-    fixtures.inject_get_charging_settings(mocked_responses, "single")
+    fixtures.inject_get_charging_settings(mocked_responses, "scheduled")
 
     endpoint = (
         "/commerce/v1/accounts/{account_id}"
         "/kamereon/kca/car-adapter"
-        "/v1/cars/{vin}/charging-settings"
+        "/v1/cars/{vin}/charge-schedule"
     )
     result = cli_runner.invoke(
         __main__.main,
