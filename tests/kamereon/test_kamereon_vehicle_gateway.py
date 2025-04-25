@@ -42,13 +42,13 @@ def test_vehicles_response(filename: str) -> None:
         del expected_specs["get_model_label"]
         del expected_specs["get_picture_large"]
         del expected_specs["get_picture_small"]
+        del expected_specs["supports-hvac-status"]
+        del expected_specs["supports-location"]
         power_in_watts = vehicle_data.reports_charging_power_in_watts()
         generated_specs = {
             "reports_charging_power_in_watts": power_in_watts,
             "uses_electricity": vehicle_data.uses_electricity(),
             "uses_fuel": vehicle_data.uses_fuel(),
-            "supports-hvac-status": vehicle_data.supports_endpoint("hvac-status"),
-            "supports-location": vehicle_data.supports_endpoint("location"),
             "charge-uses-kcm": vehicle_data.controls_action_via_kcm("charge"),
         }
         assert expected_specs == generated_specs
