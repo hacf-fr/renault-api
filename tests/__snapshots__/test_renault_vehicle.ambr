@@ -280,6 +280,22 @@
     }),
   })
 # ---
+# name: test_set_http_get
+  KamereonResponse(raw_data={'data': {'type': 'Car', 'id': 'VF1AAAAA555777999', 'attributes': {'calendar': {'monday': [{'startTime': '2300', 'duration': 480, 'activationState': False}], 'tuesday': [{'startTime': '2300', 'duration': 480, 'activationState': False}], 'wednesday': [{'startTime': '2300', 'duration': 480, 'activationState': False}], 'thursday': [{'startTime': '2300', 'duration': 480, 'activationState': False}], 'friday': [{'startTime': '2300', 'duration': 480, 'activationState': False}], 'saturday': [{'startTime': '2300', 'duration': 480, 'activationState': False}], 'sunday': [{'startTime': '2300', 'duration': 480, 'activationState': False}]}}}}, errors=None)
+# ---
+# name: test_set_http_post
+  KamereonResponse(raw_data={'data': {'type': 'ChargingStart', 'id': 'guid', 'attributes': {'action': 'start'}}}, errors=None)
+# ---
+# name: test_set_http_post.1
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'action': 'start',
+      }),
+      'type': 'ChargingStart',
+    }),
+  })
+# ---
 # name: test_set_hvac_schedules
   dict({
     'data': dict({

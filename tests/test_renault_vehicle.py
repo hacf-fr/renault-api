@@ -370,6 +370,46 @@ async def test_set_hvac_schedules(
     assert request.kwargs["json"] == snapshot
 
 
+@pytest.mark.asyncio
+async def test_set_http_get(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+) -> None:
+    """Test http_get."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
+    endpoint = await vehicle.get_full_endpoint("charge-schedule")
+    url = fixtures.inject_get_charge_schedule(mocked_responses, "single")
+
+    assert await vehicle.http_get(endpoint) == snapshot
+    request: RequestCall = mocked_responses.requests[("GET", URL(url))][0]
+
+    assert request.kwargs["json"] is None
+
+
+@pytest.mark.asyncio
+async def test_set_http_post(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+) -> None:
+    """Test http_post."""
+    endpoint = (
+        "/commerce/v1/accounts/{account_id}"
+        "/kamereon/kca/car-adapter/v1/cars/{vin}/actions/charging-start"
+    )
+    json = {
+        "data": {
+            "attributes": {
+                "action": "start",
+            },
+            "type": "ChargingStart",
+        },
+    }
+    url = fixtures.inject_set_charging_start(mocked_responses, "start")
+
+    assert await vehicle.http_post(endpoint, json) == snapshot
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+
+    assert request.kwargs["json"] == snapshot
+
+
 @pytest.mark.parametrize(
     "filename", fixtures.get_json_files(f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicles")
 )
