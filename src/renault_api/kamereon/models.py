@@ -107,12 +107,12 @@ _DEFAULT_ENDPOINTS: dict[str, str] = {
     "soc-levels": "/kcm/v1/vehicles/{vin}/ev/soc-levels",
 }
 _KCM_ENDPOINTS: dict[str, str] = {
-    "charge-schedule": "/kcm/v1/vehicles/{vin}/ev/settings"
+    "charging-settings": "/kcm/v1/vehicles/{vin}/ev/settings"
 }
 
 _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[str]]] = {
     "R5E1VE": {  # Renault 5 E-TECH
-        "charge-schedule": _KCM_ENDPOINTS["charge-schedule"],
+        "charging-settings": _KCM_ENDPOINTS["charging-settings"],
     },
     "X101VE": {  # ZOE phase 1
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],  # confirmed
@@ -135,7 +135,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[str]]] = {
         "lock-status": None,
     },
     "XCB1SE": {  # SCENIC E-TECH
-        "charge-schedule": _KCM_ENDPOINTS["charge-schedule"],
+        "charging-settings": _KCM_ENDPOINTS["charging-settings"],
         "lock-status": None,
     },
 }
