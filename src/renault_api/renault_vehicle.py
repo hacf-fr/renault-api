@@ -89,7 +89,9 @@ class RenaultVehicle:
 
         return await self.session.http_request("GET", full_endpoint)
 
-    async def _get_vehicle_data(self, endpoint: str) -> models.KamereonResponse:
+    async def _get_vehicle_data(
+        self, endpoint: str
+    ) -> models.KamereonVehicleDataResponse:
         """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
         response = await self._get_vehicle_response(endpoint)
         return cast(
