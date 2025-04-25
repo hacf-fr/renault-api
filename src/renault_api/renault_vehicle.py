@@ -90,7 +90,7 @@ class RenaultVehicle:
         )
 
     async def http_post(
-        self, full_endpoint: str, json: dict[str, Any] | None = None
+        self, full_endpoint: str, json: Optional[dict[str, Any]] = None
     ) -> models.KamereonResponse:
         """Run HTTP POST to endpoint."""
         return await self.session.http_request(
