@@ -19,6 +19,7 @@ from tests.const import TEST_VIN
 from tests.test_credential_store import get_logged_in_credential_store
 from tests.test_renault_session import get_logged_in_session
 
+from renault_api.exceptions import EndpointNotAvailableError
 from renault_api.kamereon.helpers import DAYS_OF_WEEK
 from renault_api.kamereon.models import ChargeSchedule
 from renault_api.kamereon.models import HvacSchedule
@@ -371,7 +372,7 @@ async def test_set_hvac_schedules(
 
 
 @pytest.mark.asyncio
-async def test_set_http_get(
+async def test_http_get(
     vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:
     """Test http_get."""
@@ -386,7 +387,7 @@ async def test_set_http_get(
 
 
 @pytest.mark.asyncio
-async def test_set_http_post(
+async def test_http_post(
     vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:
     """Test http_post."""
@@ -427,3 +428,14 @@ async def test_get_endpoints(
     endpoints = details.get_endpoints()
 
     assert endpoints == snapshot
+
+
+@pytest.mark.asyncio
+async def test_get_full_endpoint_unknown(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
+    """Test http_get."""
+    # Unkown endpoint
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
+    with pytest.raises(EndpointNotAvailableError):
+        await vehicle.get_full_endpoint("random")
