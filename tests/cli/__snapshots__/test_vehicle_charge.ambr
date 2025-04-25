@@ -38,37 +38,6 @@
   
   '''
 # ---
-# name: test_charge_schedule_show
-  '''
-  Day        Start time    End time      Duration  Active
-  ---------  ------------  ----------  ----------  --------
-  Monday     00:00         08:00              480  False
-  Tuesday    00:00         08:00              480  False
-  Wednesday  00:00         08:00              480  False
-  Thursday   00:00         08:00              480  False
-  Friday     00:00         08:00              480  False
-  Saturday   00:00         08:00              480  False
-  Sunday     00:00         08:00              480  False
-  
-  '''
-# ---
-# name: test_charge_schedule_show_alternate
-  '''
-  Mode: Scheduled
-  
-  Schedule ID: 0 [Active]
-  Day        Active
-  ---------  --------
-  Monday     True
-  Tuesday    True
-  Wednesday  True
-  Thursday   True
-  Friday     True
-  Saturday   True
-  Sunday     True
-  
-  '''
-# ---
 # name: test_charging_dacia_start
   dict({
     'data': dict({

@@ -134,21 +134,8 @@ def test_charge_schedule_show(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
-    fixtures.inject_get_charge_schedule(mocked_responses, "scheduled")
-
-    result = cli_runner.invoke(__main__.main, "charge schedule show")
-    assert result.exit_code == 0, result.exception
-    assert result.output == snapshot
-
-
-def test_charge_schedule_show_alternate(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
-) -> None:
-    """It exits with a status code of zero."""
-    initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
-    fixtures.inject_get_ev_settings(mocked_responses, "scheduled")
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
+    fixtures.inject_get_charging_settings(mocked_responses, "multi")
 
     result = cli_runner.invoke(__main__.main, "charge schedule show")
     assert result.exit_code == 0, result.exception
