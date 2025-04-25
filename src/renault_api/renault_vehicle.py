@@ -231,22 +231,6 @@ class RenaultVehicle:
             response.get_attributes(schemas.KamereonVehicleResStateDataSchema),
         )
 
-    async def get_charging_settings(self) -> models.KamereonVehicleChargingSettingsData:
-        """Get vehicle charging settings."""
-        response = await self._get_vehicle_data("charging-settings")
-        return cast(
-            models.KamereonVehicleChargingSettingsData,
-            response.get_attributes(schemas.KamereonVehicleChargingSettingsDataSchema),
-        )
-
-    async def get_charge_schedule(self) -> dict[str, Any]:
-        """Get vehicle charging schedule."""
-        full_endpoint = await self.get_full_endpoint("charge-schedule")
-        response = await self.http_get(full_endpoint)
-        if "data" in response.raw_data and "attributes" in response.raw_data["data"]:
-            return response.raw_data["data"]["attributes"]  # type:ignore[no-any-return]
-        return response.raw_data
-
     async def get_notification_settings(
         self,
     ) -> models.KamereonVehicleNotificationSettingsData:

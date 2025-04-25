@@ -2,6 +2,7 @@
 
 import re
 from typing import Any
+from typing import cast
 
 import aiohttp
 import click
@@ -12,6 +13,8 @@ from renault_api.cli import renault_vehicle
 from renault_api.kamereon.helpers import DAYS_OF_WEEK
 from renault_api.kamereon.models import ChargeDaySchedule
 from renault_api.kamereon.models import ChargeSchedule
+from renault_api.kamereon.models import KamereonVehicleChargingSettingsData
+from renault_api.kamereon.schemas import KamereonVehicleChargingSettingsDataSchema
 from renault_api.renault_vehicle import RenaultVehicle
 
 _DAY_SCHEDULE_REGEX = re.compile(
@@ -44,13 +47,16 @@ async def show(
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
     )
-    response = await vehicle.get_charge_schedule()
+    full_endpoint = await vehicle.get_full_endpoint("charge-schedule")
+    response = await vehicle.http_get(full_endpoint)
+    if "data" in response.raw_data and "attributes" in response.raw_data["data"]:
+        _show_basic(response.raw_data["data"]["attributes"])
+    else:
+        _show_alternate(response.raw_data)
 
-    # Display mode
-    if "chargeModeRq" in response:
-        _show_alternate(response)
-        return
 
+def _show_basic(response: dict[str, Any]) -> None:
+    """Display charge schedules (basic)."""
     calendar = response["calendar"]
     schedule_table: list[list[str]] = []
     for day in DAYS_OF_WEEK:
@@ -111,7 +117,11 @@ async def _get_schedule(
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
     )
-    response = await vehicle.get_charging_settings()
+    response_data = await vehicle._get_vehicle_data("charging-settings")
+    response = cast(
+        KamereonVehicleChargingSettingsData,
+        response_data.get_attributes(KamereonVehicleChargingSettingsDataSchema),
+    )
 
     if not response.schedules:
         raise ValueError("No schedules found.")
