@@ -1,0 +1,70 @@
+# serializer version: 1
+# name: test_hvac_cancel
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'action': 'cancel',
+      }),
+      'type': 'HvacStart',
+    }),
+  })
+# ---
+# name: test_hvac_cancel.1
+  '''
+  {'action': 'cancel'}
+  
+  '''
+# ---
+# name: test_hvac_history_day
+  '''
+  {}
+  
+  '''
+# ---
+# name: test_hvac_history_month
+  '''
+  {}
+  
+  '''
+# ---
+# name: test_hvac_start_later
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'action': 'start',
+        'startDateTime': '2020-12-25T09:50:00Z',
+        'targetTemperature': 24,
+      }),
+      'type': 'HvacStart',
+    }),
+  })
+# ---
+# name: test_hvac_start_later.1
+  '''
+  {'action': 'start', 'targetTemperature': 21.0}
+  
+  '''
+# ---
+# name: test_hvac_start_now
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'action': 'start',
+        'targetTemperature': 25,
+      }),
+      'type': 'HvacStart',
+    }),
+  })
+# ---
+# name: test_hvac_start_now.1
+  '''
+  {'action': 'start', 'targetTemperature': 21.0}
+  
+  '''
+# ---
+# name: test_sessions
+  '''
+  {}
+  
+  '''
+# ---

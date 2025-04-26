@@ -6,6 +6,7 @@ from typing import Any
 from typing import Optional
 
 import aiohttp
+from marshmallow.schema import Schema
 
 from . import gigya
 from . import kamereon
@@ -145,7 +146,7 @@ class RenaultSession:
                     login_token,
                 )
             except GigyaResponseException as exc:
-                if exc.error_code in [403005, 403013]:  # pragma: no branch
+                if exc.error_code in [403005, 403013]:
                     self._credentials.clear_keys(gigya.GIGYA_KEYS)
                 raise NotAuthenticatedException("Authentication expired.") from exc
             else:
@@ -154,7 +155,12 @@ class RenaultSession:
                 return jwt
 
     async def http_request(
-        self, method: str, endpoint: str, json: Optional[dict[str, Any]] = None
+        self,
+        method: str,
+        endpoint: str,
+        json: Optional[dict[str, Any]] = None,
+        *,
+        schema: Optional[Schema] = None,
     ) -> models.KamereonResponse:
         """GET to specified endpoint."""
         url = (await self._get_kamereon_root_url()) + endpoint
@@ -167,6 +173,7 @@ class RenaultSession:
             gigya_jwt=await self._get_jwt(),
             params=params,
             json=json,
+            schema=schema,
         )
 
     async def get_person(self) -> models.KamereonPersonResponse:

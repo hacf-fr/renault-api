@@ -1,0 +1,393 @@
+# serializer version: 1
+# name: test_http_get
+  '''
+  {'data': {'type': 'Car', 'id': 'VF1AAAAA555777999', 'attributes': {'mode': 'scheduled', 'schedules': [{'id': 1, 'activated': True, 'monday': {'startTime': 'T12:00Z', 'duration': 15}, 'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, 'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, 'thursday': {'startTime': 'T22:00Z', 'duration': 420}, 'friday': {'startTime': 'T12:15Z', 'duration': 15}, 'saturday': {'startTime': 'T12:30Z', 'duration': 30}, 'sunday': {'startTime': 'T12:45Z', 'duration': 45}}]}}}
+  
+  '''
+# ---
+# name: test_http_get_list
+  '''
+  {'data': [{'notificationId': 'ffcb0310-503f-4bc3-9056-e9d051a089c6', 'notifDate': '2022-02-01T19:01:51.622', 'vin': '*PRIVATE*', 'personId': '*PRIVATE*', 'kmrUserId': '*PRIVATE*', 'actionType': 'COMMAND_RESPONSE', 'commandResponse': {'status': 'CREATED'}, 'commandType': 'SRP_SETS'}, {'notificationId': 'ffcb0310-503f-4bc3-9056-e9d051a089c6', 'notifDate': '2022-02-01T19:01:51.623', 'vin': '*PRIVATE*', 'personId': '*PRIVATE*', 'kmrUserId': '*PRIVATE*', 'actionType': 'SRP_SALT_REQUEST', 'srpResponse': {'status': 'OK', 'loginB': '*PRIVATE*', 'loginSalt': '*PRIVATE*'}}]}
+  
+  '''
+# ---
+# name: test_http_post
+  '''
+  {'data': {'type': 'ChargeSchedule', 'id': 'guid', 'attributes': {'schedules': [{'id': 1, 'activated': True, 'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, 'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, 'thursday': {'startTime': 'T22:00Z', 'duration': 420}, 'friday': {'startTime': 'T23:30Z', 'duration': 480}, 'saturday': {'startTime': 'T18:30Z', 'duration': 120}, 'sunday': {'startTime': 'T12:45Z', 'duration': 45}}]}}}
+  
+  '''
+# ---
+# name: test_http_post.1
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'schedules': list([
+        ]),
+      }),
+      'type': 'ChargeSchedule',
+    }),
+  })
+# ---
+# name: test_http_post_file
+  '''
+  {'data': {'type': 'ChargeSchedule', 'id': 'guid', 'attributes': {'schedules': [{'id': 1, 'activated': True, 'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, 'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, 'thursday': {'startTime': 'T22:00Z', 'duration': 420}, 'friday': {'startTime': 'T23:30Z', 'duration': 480}, 'saturday': {'startTime': 'T18:30Z', 'duration': 120}, 'sunday': {'startTime': 'T12:45Z', 'duration': 45}}]}}}
+  
+  '''
+# ---
+# name: test_http_post_file.1
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'schedules': list([
+        ]),
+      }),
+      'type': 'ChargeSchedule',
+    }),
+  })
+# ---
+# name: test_vehicle_contracts
+  '''
+  Type                            Code                  Description                       Start       End         Status
+  ------------------------------  --------------------  --------------------------------  ----------  ----------  ------------------
+  WARRANTY_MAINTENANCE_CONTRACTS  40                    CONTRAT LOSANGE                   2018-04-04  2022-04-03  Actif
+  CONNECTED_SERVICES              ZECONNECTP            My Z.E. Connect en série 36 mois  2018-08-23  2021-08-23  Actif
+  CONNECTED_SERVICES              GBA                   Battery Services                  2018-03-23              Echec d’activation
+  WARRANTY                        ManufacturerWarranty  Garantie fabricant                            2020-04-03  Expiré
+  WARRANTY                        PaintingWarranty      Garantie peinture                             2021-04-03  Actif
+  WARRANTY                        CorrosionWarranty     Garantie corrosion                            2030-04-03  Actif
+  WARRANTY                        GMPeWarranty          Garantie GMPe                                 2020-04-03  Expiré
+  WARRANTY                        AssistanceWarranty    Garantie assistance                           2020-04-03  Expiré
+  
+  '''
+# ---
+# name: test_vehicle_details
+  '''
+  Registration    Brand    Model    VIN
+  --------------  -------  -------  -----------------
+  REG-NUMBER      RENAULT  ZOE      VF1AAAAA555777999
+  
+  '''
+# ---
+# name: test_vehicle_status[tests/fixtures/kamereon/vehicles/captur_ii.1.json]
+  '''
+  --------------------  ----------------------
+  Total mileage         5566.78 km
+  Fuel autonomy         35.0 km
+  Fuel quantity         3.0 L
+  GPS Latitude          48.1234567
+  GPS Longitude         11.1234567
+  GPS last updated      2020-02-18 17:58:38
+  Lock status           locked
+  Lock last updated     2022-02-02 14:51:13
+  Engine state          Stopped, ready for RES
+  Front left pressure   2460 bar
+  Front right pressure  2730 bar
+  Rear left pressure    2790 bar
+  Rear right pressure   2790 bar
+  --------------------  ----------------------
+  
+  '''
+# ---
+# name: test_vehicle_status[tests/fixtures/kamereon/vehicles/captur_ii.2.json]
+  '''
+  --------------------  -------------------------
+  Battery level         50 %
+  Last updated          2020-11-17 09:06:48
+  Range estimate        128 km
+  Plug state            PlugState.UNPLUGGED
+  Charging state        ChargeState.NOT_IN_CHARGE
+  Charge mode           always
+  Total mileage         5566.78 km
+  Fuel autonomy         35.0 km
+  Fuel quantity         3.0 L
+  GPS Latitude          48.1234567
+  GPS Longitude         11.1234567
+  GPS last updated      2020-02-18 17:58:38
+  Lock status           locked
+  Lock last updated     2022-02-02 14:51:13
+  Engine state          Stopped, ready for RES
+  Front left pressure   2460 bar
+  Front right pressure  2730 bar
+  Rear left pressure    2790 bar
+  Rear right pressure   2790 bar
+  --------------------  -------------------------
+  
+  '''
+# ---
+# name: test_vehicle_status[tests/fixtures/kamereon/vehicles/clio_v.1.json]
+  '''
+  --------------------  ----------------------
+  Total mileage         49114.27 km
+  GPS Latitude          48.1234567
+  GPS Longitude         11.1234567
+  GPS last updated      2020-02-18 17:58:38
+  Lock status           locked
+  Lock last updated     2022-02-02 14:51:13
+  Engine state          Stopped, ready for RES
+  Front left pressure   2460 bar
+  Front right pressure  2730 bar
+  Rear left pressure    2790 bar
+  Rear right pressure   2790 bar
+  --------------------  ----------------------
+  
+  '''
+# ---
+# name: test_vehicle_status[tests/fixtures/kamereon/vehicles/duster.1.json]
+  '''
+  --------------------  ----------------------
+  Total mileage         49114.27 km
+  GPS Latitude          48.1234567
+  GPS Longitude         11.1234567
+  GPS last updated      2020-02-18 17:58:38
+  Lock status           locked
+  Lock last updated     2022-02-02 14:51:13
+  Engine state          Stopped, ready for RES
+  HVAC status           off
+  External temperature  8.0 °C
+  Front left pressure   2460 bar
+  Front right pressure  2730 bar
+  Rear left pressure    2790 bar
+  Rear right pressure   2790 bar
+  --------------------  ----------------------
+  
+  '''
+# ---
+# name: test_vehicle_status[tests/fixtures/kamereon/vehicles/megane_e-tech.1.json]
+  '''
+  --------------------  -------------------------
+  Battery level         50 %
+  Last updated          2020-11-17 09:06:48
+  Range estimate        128 km
+  Plug state            PlugState.UNPLUGGED
+  Charging state        ChargeState.NOT_IN_CHARGE
+  Charge mode           always
+  Total mileage         49114.27 km
+  GPS Latitude          48.1234567
+  GPS Longitude         11.1234567
+  GPS last updated      2020-02-18 17:58:38
+  Engine state          Stopped, ready for RES
+  HVAC status           off
+  External temperature  8.0 °C
+  Front left pressure   2460 bar
+  Front right pressure  2730 bar
+  Rear left pressure    2790 bar
+  Rear right pressure   2790 bar
+  --------------------  -------------------------
+  
+  '''
+# ---
+# name: test_vehicle_status[tests/fixtures/kamereon/vehicles/megane_e-tech.2.json]
+  '''
+  --------------------  -------------------------
+  Battery level         50 %
+  Last updated          2020-11-17 09:06:48
+  Range estimate        128 km
+  Plug state            PlugState.UNPLUGGED
+  Charging state        ChargeState.NOT_IN_CHARGE
+  Charge mode           always
+  Total mileage         49114.27 km
+  GPS Latitude          48.1234567
+  GPS Longitude         11.1234567
+  GPS last updated      2020-02-18 17:58:38
+  Engine state          Stopped, ready for RES
+  HVAC status           off
+  External temperature  8.0 °C
+  Front left pressure   2460 bar
+  Front right pressure  2730 bar
+  Rear left pressure    2790 bar
+  Rear right pressure   2790 bar
+  --------------------  -------------------------
+  
+  '''
+# ---
+# name: test_vehicle_status[tests/fixtures/kamereon/vehicles/renault_5.1.json]
+  '''
+  --------------------  -------------------------
+  Battery level         50 %
+  Last updated          2020-11-17 09:06:48
+  Range estimate        128 km
+  Plug state            PlugState.UNPLUGGED
+  Charging state        ChargeState.NOT_IN_CHARGE
+  Charge mode           always
+  Total mileage         49114.27 km
+  GPS Latitude          48.1234567
+  GPS Longitude         11.1234567
+  GPS last updated      2020-02-18 17:58:38
+  Lock status           locked
+  Lock last updated     2022-02-02 14:51:13
+  Engine state          Stopped, ready for RES
+  HVAC status           off
+  External temperature  8.0 °C
+  Front left pressure   2460 bar
+  Front right pressure  2730 bar
+  Rear left pressure    2790 bar
+  Rear right pressure   2790 bar
+  --------------------  -------------------------
+  
+  '''
+# ---
+# name: test_vehicle_status[tests/fixtures/kamereon/vehicles/spring.1.json]
+  '''
+  --------------------  -------------------------
+  Battery level         50 %
+  Last updated          2020-11-17 09:06:48
+  Range estimate        128 km
+  Plug state            PlugState.UNPLUGGED
+  Charging state        ChargeState.NOT_IN_CHARGE
+  Total mileage         49114.27 km
+  GPS Latitude          48.1234567
+  GPS Longitude         11.1234567
+  GPS last updated      2020-02-18 17:58:38
+  HVAC status           off
+  External temperature  8.0 °C
+  Front left pressure   2460 bar
+  Front right pressure  2730 bar
+  Rear left pressure    2790 bar
+  Rear right pressure   2790 bar
+  --------------------  -------------------------
+  
+  '''
+# ---
+# name: test_vehicle_status[tests/fixtures/kamereon/vehicles/twingo_ze.1.json]
+  '''
+  --------------------  -------------------------
+  Battery level         50 %
+  Last updated          2020-11-17 09:06:48
+  Range estimate        128 km
+  Plug state            PlugState.UNPLUGGED
+  Charging state        ChargeState.NOT_IN_CHARGE
+  Charge mode           always
+  Total mileage         49114.27 km
+  GPS Latitude          48.1234567
+  GPS Longitude         11.1234567
+  GPS last updated      2020-02-18 17:58:38
+  Lock status           locked
+  Lock last updated     2022-02-02 14:51:13
+  Engine state          Stopped, ready for RES
+  HVAC status           on
+  Front left pressure   2460 bar
+  Front right pressure  2730 bar
+  Rear left pressure    2790 bar
+  Rear right pressure   2790 bar
+  --------------------  -------------------------
+  
+  '''
+# ---
+# name: test_vehicle_status[tests/fixtures/kamereon/vehicles/zoe_40.1.json]
+  '''
+  --------------------  -------------------------
+  Battery level         50 %
+  Last updated          2020-11-17 09:06:48
+  Range estimate        128 km
+  Plug state            PlugState.UNPLUGGED
+  Charging state        ChargeState.NOT_IN_CHARGE
+  Charge mode           always
+  Total mileage         49114.27 km
+  HVAC status           off
+  External temperature  8.0 °C
+  --------------------  -------------------------
+  
+  '''
+# ---
+# name: test_vehicle_status[tests/fixtures/kamereon/vehicles/zoe_40.2.json]
+  '''
+  --------------------  -------------------------
+  Battery level         50 %
+  Last updated          2020-11-17 09:06:48
+  Range estimate        128 km
+  Plug state            PlugState.UNPLUGGED
+  Charging state        ChargeState.NOT_IN_CHARGE
+  Charge mode           always
+  Total mileage         49114.27 km
+  HVAC status           off
+  External temperature  8.0 °C
+  --------------------  -------------------------
+  
+  '''
+# ---
+# name: test_vehicle_status[tests/fixtures/kamereon/vehicles/zoe_50.1.json]
+  '''
+  --------------------  -------------------------
+  Battery level         50 %
+  Last updated          2020-11-17 09:06:48
+  Range estimate        128 km
+  Plug state            PlugState.UNPLUGGED
+  Charging state        ChargeState.NOT_IN_CHARGE
+  Charge mode           always
+  Total mileage         5785.75 km
+  Fuel autonomy         0.0 km
+  Fuel quantity         0.0 L
+  GPS Latitude          48.1234567
+  GPS Longitude         11.1234567
+  GPS last updated      2020-02-18 17:58:38
+  Lock status           locked
+  Lock last updated     2022-02-02 14:51:13
+  Engine state          Stopped, ready for RES
+  HVAC status           on
+  Front left pressure   2460 bar
+  Front right pressure  2730 bar
+  Rear left pressure    2790 bar
+  Rear right pressure   2790 bar
+  --------------------  -------------------------
+  
+  '''
+# ---
+# name: test_vehicle_status_json
+  '''
+  {"battery-status": {"timestamp": "2020-11-17T09:06:48+01:00", "batteryLevel": 50, "batteryAutonomy": 128, "batteryCapacity": 0, "batteryAvailableEnergy": 0, "plugStatus": 0, "chargingStatus": -1.0}, "charge-mode": {"chargeMode": "always"}, "cockpit": {"totalMileage": 49114.27}, "hvac-status": {"externalTemperature": 8.0, "hvacStatus": "off"}}
+  
+  '''
+# ---
+# name: test_vehicle_status_no_prompt
+  '''
+  --------------------  -------------------------
+  Battery level         50 %
+  Last updated          2020-11-17 09:06:48
+  Range estimate        128 km
+  Plug state            PlugState.UNPLUGGED
+  Charging state        ChargeState.NOT_IN_CHARGE
+  Charge mode           always
+  Total mileage         49114.27 km
+  HVAC status           off
+  External temperature  8.0 °C
+  --------------------  -------------------------
+  
+  '''
+# ---
+# name: test_vehicle_status_prompt
+  '''
+  Please select a locale [fr_CA]: fr_FR
+  Do you want to save the locale to the credential store? [y/N]: N
+  
+  User: test@example.com
+  Password: 
+  
+      ID            Type         Vehicles
+  --  ------------  ---------  ----------
+   1  account-id-1  MYRENAULT           1
+   2  account-id-2  SFDC                1
+  
+  Please select account [1]: 1
+  Do you want to save the account ID to the credential store? [y/N]: y
+  
+      Vin                Registration    Brand    Model
+  --  -----------------  --------------  -------  -------
+   1  VF1AAAAA555777999  REG-NUMBER      RENAULT  ZOE
+  
+  Please select vehicle [1]: 1
+  Do you want to save the VIN to the credential store? [y/N]: y
+  
+  --------------------  -------------------------
+  Battery level         50 %
+  Last updated          2020-11-17 09:06:48
+  Range estimate        128 km
+  Plug state            PlugState.UNPLUGGED
+  Charging state        ChargeState.NOT_IN_CHARGE
+  Charge mode           always
+  Total mileage         49114.27 km
+  HVAC status           off
+  External temperature  8.0 °C
+  --------------------  -------------------------
+  
+  '''
+# ---

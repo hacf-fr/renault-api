@@ -1,5 +1,6 @@
 """Test cases for the Renault client API keys."""
 
+import os
 from datetime import datetime
 from datetime import timezone
 
@@ -7,6 +8,7 @@ import aiohttp
 import pytest
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall
+from syrupy.assertion import SnapshotAssertion
 from yarl import URL
 
 from tests import fixtures
@@ -17,6 +19,7 @@ from tests.const import TEST_VIN
 from tests.test_credential_store import get_logged_in_credential_store
 from tests.test_renault_session import get_logged_in_session
 
+from renault_api.exceptions import EndpointNotAvailableError
 from renault_api.kamereon.helpers import DAYS_OF_WEEK
 from renault_api.kamereon.models import ChargeSchedule
 from renault_api.kamereon.models import HvacSchedule
@@ -89,31 +92,11 @@ async def test_get_contracts(
 
 
 @pytest.mark.asyncio
-async def test_has_contract_for_endpoint_1(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
-) -> None:
-    """Test has_contract_for_endpoint."""
-    fixtures.inject_get_vehicle_contracts(mocked_responses, "fr_FR.2.json")
-
-    assert await vehicle.has_contract_for_endpoint("battery-status")
-    assert await vehicle.has_contract_for_endpoint("hvac-status")
-    assert await vehicle.has_contract_for_endpoint("charge-mode")
-
-
-@pytest.mark.asyncio
-async def test_has_contract_for_endpoint_2(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
-) -> None:
-    """Test has_contract_for_endpoint."""
-    fixtures.inject_get_vehicle_contracts(mocked_responses, "fr_FR.1.json")
-    assert await vehicle.has_contract_for_endpoint("battery-status")
-
-
-@pytest.mark.asyncio
 async def test_get_battery_status(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_battery_status."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     fixtures.inject_get_battery_status(mocked_responses)
     assert await vehicle.get_battery_status()
 
@@ -123,6 +106,7 @@ async def test_get_tyre_pressure(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_tyre_pressure."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_tyre_pressure(mocked_responses)
     assert await vehicle.get_tyre_pressure()
 
@@ -132,6 +116,7 @@ async def test_get_location(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_location."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_location(mocked_responses)
     assert await vehicle.get_location()
 
@@ -141,6 +126,7 @@ async def test_get_hvac_status(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_hvac_status."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_hvac_status(mocked_responses, "zoe")
     assert await vehicle.get_hvac_status()
 
@@ -150,6 +136,7 @@ async def test_get_hvac_settings(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_hvac_settings."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_hvac_settings(mocked_responses)
     data = await vehicle.get_hvac_settings()
 
@@ -176,6 +163,7 @@ async def test_get_charge_mode(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_charge_mode."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_charge_mode(mocked_responses)
     assert await vehicle.get_charge_mode()
 
@@ -185,6 +173,7 @@ async def test_get_cockpit(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_cockpit."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     fixtures.inject_get_cockpit(mocked_responses, "zoe")
     assert await vehicle.get_cockpit()
 
@@ -194,17 +183,9 @@ async def test_get_lock_status(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_lock_status."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_lock_status(mocked_responses)
     assert await vehicle.get_lock_status()
-
-
-@pytest.mark.asyncio
-async def test_get_charging_settings(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
-) -> None:
-    """Test get_charging_settings."""
-    fixtures.inject_get_charging_settings(mocked_responses, "multi")
-    assert await vehicle.get_charging_settings()
 
 
 @pytest.mark.asyncio
@@ -212,6 +193,7 @@ async def test_get_notification_settings(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_notification_settings."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_notification_settings(mocked_responses)
     assert await vehicle.get_notification_settings()
 
@@ -281,7 +263,7 @@ async def test_get_hvac_sessions(
 
 @pytest.mark.asyncio
 async def test_set_ac_start(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_ac_start."""
     url = fixtures.inject_set_hvac_start(mocked_responses, "start")
@@ -289,55 +271,38 @@ async def test_set_ac_start(
         21, datetime(2020, 11, 24, 6, 30, tzinfo=timezone.utc)
     )
 
-    expected_json = {
-        "data": {
-            "type": "HvacStart",
-            "attributes": {
-                "action": "start",
-                "targetTemperature": 21,
-                "startDateTime": "2020-11-24T06:30:00Z",
-            },
-        }
-    }
-
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
+    assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
 async def test_set_ac_stop(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_ac_stop."""
     url = fixtures.inject_set_hvac_start(mocked_responses, "cancel")
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     assert await vehicle.set_ac_stop()
 
-    expected_json = {"data": {"type": "HvacStart", "attributes": {"action": "cancel"}}}
-
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
+    assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
 async def test_set_charge_mode(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_charge_mode."""
     url = fixtures.inject_set_charge_mode(mocked_responses, "schedule_mode")
     assert await vehicle.set_charge_mode("schedule_mode")
 
-    expected_json = {
-        "data": {"type": "ChargeMode", "attributes": {"action": "schedule_mode"}}
-    }
-
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
+    assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
 async def test_set_charge_schedules(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_charge_schedules."""
     url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
@@ -345,34 +310,26 @@ async def test_set_charge_schedules(
     schedules: list[ChargeSchedule] = []
     assert await vehicle.set_charge_schedules(schedules)
 
-    expected_json = {
-        "data": {"type": "ChargeSchedule", "attributes": {"schedules": []}}
-    }
-
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
+    assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
 async def test_set_charge_start(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_charge_start."""
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     url = fixtures.inject_set_charging_start(mocked_responses, "start")
 
-    expected_json = {
-        "data": {"type": "ChargingStart", "attributes": {"action": "start"}}
-    }
-
     assert await vehicle.set_charge_start()
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert expected_json == request.kwargs["json"]
+    assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
 async def test_set_hvac_schedules(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_hvac_schedules."""
     schedules: list[HvacSchedule] = []
@@ -381,6 +338,74 @@ async def test_set_hvac_schedules(
     assert await vehicle.set_hvac_schedules(schedules)
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
 
-    assert request.kwargs["json"] == {
-        "data": {"type": "HvacSchedule", "attributes": {"schedules": []}}
+    assert request.kwargs["json"] == snapshot
+
+
+@pytest.mark.asyncio
+async def test_http_get(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+) -> None:
+    """Test http_get."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
+    endpoint = await vehicle.get_full_endpoint("charge-schedule")
+    url = fixtures.inject_get_charge_schedule(mocked_responses, "single")
+
+    assert await vehicle.http_get(endpoint) == snapshot
+    request: RequestCall = mocked_responses.requests[("GET", URL(url))][0]
+
+    assert request.kwargs["json"] is None
+
+
+@pytest.mark.asyncio
+async def test_http_post(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+) -> None:
+    """Test http_post."""
+    endpoint = (
+        "/commerce/v1/accounts/{account_id}"
+        "/kamereon/kca/car-adapter/v1/cars/{vin}/actions/charging-start"
+    )
+    json = {
+        "data": {
+            "attributes": {
+                "action": "start",
+            },
+            "type": "ChargingStart",
+        },
     }
+    url = fixtures.inject_set_charging_start(mocked_responses, "start")
+
+    assert await vehicle.http_post(endpoint, json) == snapshot
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+
+    assert request.kwargs["json"] == snapshot
+
+
+@pytest.mark.parametrize(
+    "filename", fixtures.get_json_files(f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicles")
+)
+@pytest.mark.asyncio
+async def test_get_endpoints(
+    vehicle: RenaultVehicle,
+    mocked_responses: aioresponses,
+    filename: str,
+    snapshot: SnapshotAssertion,
+) -> None:
+    """Test get_endpoints."""
+    filename = os.path.basename(filename)
+    fixtures.inject_get_vehicle_details(mocked_responses, filename)
+    details = await vehicle.get_details()
+    endpoints = details.get_endpoints()
+
+    assert endpoints == snapshot
+
+
+@pytest.mark.asyncio
+async def test_get_full_endpoint_unknown(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
+    """Test http_get."""
+    # Unkown endpoint
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
+    with pytest.raises(EndpointNotAvailableError):
+        await vehicle.get_full_endpoint("random")

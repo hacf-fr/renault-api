@@ -1,6 +1,8 @@
 """Kamereon models."""
 
 import json
+import logging
+from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any
 from typing import Optional
@@ -13,6 +15,8 @@ from . import exceptions
 from . import helpers
 from .enums import AssetPictureSize
 from renault_api.models import BaseModel
+
+_LOGGER = logging.getLogger(__name__)
 
 COMMON_ERRRORS: list[dict[str, Any]] = [
     {
@@ -43,32 +47,19 @@ COMMON_ERRRORS: list[dict[str, Any]] = [
         "errorCode": "err.func.wired.overloaded",
         "error_type": exceptions.QuotaLimitException,
     },
+    {
+        "errorCode": "err.func.wired.forbidden",
+        "error_type": exceptions.ForbiddenException,
+    },
 ]
 
 VEHICLE_SPECIFICATIONS: dict[str, dict[str, Any]] = {
     "X101VE": {  # ZOE phase 1
         "reports-charge-session-durations-in-minutes": True,
         "reports-in-watts": True,
-        "support-endpoint-location": False,
-        "support-endpoint-lock-status": False,
-    },
-    "X102VE": {  # ZOE phase 2
-        "warns-on-method-set_ac_stop": "Action `cancel` on endpoint `hvac-start` may not be supported on this model.",  # noqa
-    },
-    "XJA1VP": {  # CLIO V
-        "support-endpoint-hvac-status": False,
-    },
-    "XJB1SU": {  # CAPTUR II
-        "support-endpoint-hvac-status": False,
     },
     "XBG1VE": {  # DACIA SPRING
         "control-charge-via-kcm": True,
-    },
-    "XCB1VE": {  # MEGANE E-TECH
-        "support-endpoint-lock-status": False,
-    },
-    "XCB1SE": {  # SCENIC E-TECH
-        "support-endpoint-lock-status": False,
     },
 }
 
@@ -76,8 +67,66 @@ GATEWAY_SPECIFICATIONS: dict[str, dict[str, Any]] = {
     "GDC": {  # ZOE phase 1
         "reports-charge-session-durations-in-minutes": True,
         "reports-in-watts": True,
-        "support-endpoint-location": False,
-        "support-endpoint-lock-status": False,
+    },
+}
+
+_DEFAULT_ENDPOINTS: dict[str, str] = {
+    "alerts": "/vehicles/{vin}/alerts",
+    "battery-status": "/kca/car-adapter/v2/cars/{vin}/battery-status",
+    "charge-history": "/kca/car-adapter/v1/cars/{vin}/charge-history",
+    "charge-mode": "/kca/car-adapter/v1/cars/{vin}/charge-mode",
+    "charge-schedule": "/kca/car-adapter/v1/cars/{vin}/charge-schedule",
+    "charges": "/kca/car-adapter/v1/cars/{vin}/charges",
+    "charging-settings": "/kca/car-adapter/v1/cars/{vin}/charging-settings",
+    "cockpit": "/kca/car-adapter/v1/cars/{vin}/cockpit",
+    "hvac-history": "/kca/car-adapter/v1/cars/{vin}/hvac-history",
+    "hvac-sessions": "/kca/car-adapter/v1/cars/{vin}/hvac-sessions",
+    "hvac-settings": "/kca/car-adapter/v1/cars/{vin}/hvac-settings",
+    "hvac-status": "/kca/car-adapter/v1/cars/{vin}/hvac-status",
+    "location": "/kca/car-adapter/v1/cars/{vin}/location",
+    "lock-status": "/kca/car-adapter/v1/cars/{vin}/lock-status",
+    "notification-settings": "/kca/car-adapter/v1/cars/{vin}/notification-settings",
+    "pressure": "/kca/car-adapter/v1/cars/{vin}/pressure",
+    "res-state": "/kca/car-adapter/v1/cars/{vin}/res-state",
+    "soc-levels": "/kcm/v1/vehicles/{vin}/ev/soc-levels",
+}
+_KCM_ENDPOINTS: dict[str, str] = {
+    "charge-schedule": "/kcm/v1/vehicles/{vin}/ev/settings"
+}
+
+_VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[str]]] = {
+    "R5E1VE": {  # Renault 5 E-TECH
+        "charge-schedule": _KCM_ENDPOINTS["charge-schedule"],
+    },
+    "X101VE": {  # ZOE phase 1
+        "battery-status": _DEFAULT_ENDPOINTS["battery-status"],  # confirmed
+        "charge-mode": _DEFAULT_ENDPOINTS["charge-mode"],  # confirmed
+        "charge-schedule": _DEFAULT_ENDPOINTS["charge-schedule"],  # confirmed
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
+        "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],  # confirmed
+        "location": None,  # not supported
+        "lock-status": None,  # not supported
+        "pressure": None,  # not supported
+        "res-state": None,  # not supported
+        "soc-levels": None,  # not supported
+    },
+    "XBG1VE": {  # DACIA SPRING
+        "lock-status": None,
+        "res-state": None,
+        "charge-mode": None,
+    },
+    "XCB1SE": {  # SCENIC E-TECH
+        "charge-schedule": _KCM_ENDPOINTS["charge-schedule"],
+        "lock-status": None,
+    },
+    "XCB1VE": {  # MEGANE E-TECH
+        "lock-status": None,
+    },
+    "XJA1VP": {  # CLIO V
+        "hvac-status": None,
+    },
+    "XJB1SU": {  # CAPTUR II
+        "hvac-status": None,
     },
 }
 
@@ -96,9 +145,7 @@ class KamereonResponseError(BaseModel):
             if self.errorCode == common_error["errorCode"]:
                 error_type = common_error["error_type"]
                 raise error_type(self.errorCode, error_details)
-        raise exceptions.KamereonResponseException(
-            self.errorCode, error_details
-        )  # pragma: no cover
+        raise exceptions.KamereonResponseException(self.errorCode, error_details)
 
     def get_error_details(self) -> Optional[str]:
         """Extract the error details sometimes hidden inside nested JSON."""
@@ -244,7 +291,7 @@ class KamereonVehicleDetails(BaseModel):
             return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
                 self.model.code, {}
             ).get("reports-charge-session-durations-in-minutes", False)
-        return False  # pragma: no cover
+        return False
 
     def reports_charging_power_in_watts(self) -> bool:
         """Return True if model reports chargingInstantaneousPower in watts."""
@@ -253,25 +300,12 @@ class KamereonVehicleDetails(BaseModel):
             return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
                 self.model.code, {}
             ).get("reports-in-watts", False)
-        return False  # pragma: no cover
+        return False
 
     def supports_endpoint(self, endpoint: str) -> bool:
         """Return True if model supports specified endpoint."""
         # Default to True for unknown vehicles
-        if self.model and self.model.code:
-            return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
-                self.model.code, {}
-            ).get(f"support-endpoint-{endpoint}", True)
-        return True  # pragma: no cover
-
-    def warns_on_method(self, method: str) -> Optional[str]:
-        """Return warning message if model trigger a warning on the method call."""
-        # Default to None for unknown vehicles
-        if self.model and self.model.code:
-            return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
-                self.model.code, {}
-            ).get(f"warns-on-method-{method}", None)
-        return None  # pragma: no cover
+        return self.get_endpoint(endpoint) is not None
 
     def controls_action_via_kcm(self, action: str) -> bool:
         """Return True if model uses endpoint via kcm."""
@@ -280,7 +314,39 @@ class KamereonVehicleDetails(BaseModel):
             return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
                 self.model.code, {}
             ).get(f"control-{action}-via-kcm", False)
-        return False  # pragma: no cover
+        return False
+
+    def get_endpoints(self) -> Mapping[str, Optional[str]]:
+        """Return model endpoints."""
+        model_code = self.get_model_code()
+        if not model_code:
+            # Model code not available
+            return _DEFAULT_ENDPOINTS
+
+        if model_code not in _VEHICLE_ENDPOINTS:
+            # Model not documented
+            _LOGGER.warning(
+                "Model %s is not documented, using default endpoints",
+                self.get_model_code(),
+            )
+            return _DEFAULT_ENDPOINTS
+
+        return _VEHICLE_ENDPOINTS[model_code]
+
+    def get_endpoint(self, endpoint: str) -> Optional[str]:
+        """Return model endpoint"""
+        endpoints = self.get_endpoints()
+
+        if endpoint not in endpoints:
+            # Endpoint not documented
+            _LOGGER.warning(
+                "Endpoint %s for model %s is not documented, using default endpoints",
+                endpoint,
+                self.get_model_code(),
+            )
+            return _DEFAULT_ENDPOINTS.get(endpoint)
+
+        return endpoints[endpoint]
 
 
 @dataclass
@@ -379,11 +445,9 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
                 if self.plugStatus is not None
                 else None
             )
-        except ValueError as err:  # pragma: no cover
-            # should we return PlugState.NOT_AVAILABLE?
-            raise exceptions.KamereonException(
-                f"Unable to convert `{self.plugStatus}` to PlugState."
-            ) from err
+        except ValueError:
+            _LOGGER.warning("Unable to convert `%s` to PlugState.", self.plugStatus)
+            return None
 
     def get_charging_status(self) -> Optional[enums.ChargeState]:
         """Return charging status."""
@@ -393,7 +457,7 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
                 if self.chargingStatus is not None
                 else None
             )
-        except ValueError as err:  # pragma: no cover
+        except ValueError as err:
             # should we return ChargeState.NOT_AVAILABLE?
             raise exceptions.KamereonException(
                 f"Unable to convert `{self.chargingStatus}` to ChargeState."
@@ -525,16 +589,7 @@ class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
             return GATEWAY_SPECIFICATIONS.get(  # type:ignore[no-any-return]
                 self.carGateway, {}
             ).get("reports-in-watts", False)
-        return False  # pragma: no cover
-
-    def supports_endpoint(self, endpoint: str) -> bool:
-        """Return True if model supports specified endpoint."""
-        # Default to True for unknown vehicles
-        if self.carGateway:
-            return GATEWAY_SPECIFICATIONS.get(  # type:ignore[no-any-return]
-                self.carGateway, {}
-            ).get(f"support-endpoint-{endpoint}", True)
-        return True  # pragma: no cover
+        return False
 
     def controls_action_via_kcm(self, action: str) -> bool:
         """Return True if model uses endpoint via kcm."""
@@ -543,7 +598,7 @@ class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
             return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
                 self.modelCodeDetail, {}
             ).get(f"control-{action}-via-kcm", False)
-        return False  # pragma: no cover
+        return False
 
 
 @dataclass
@@ -562,7 +617,7 @@ class ChargeDaySchedule(BaseModel):
 
     def get_end_time(self) -> Optional[str]:
         """Get end time."""
-        if self.startTime is None:  # pragma: no cover
+        if self.startTime is None:
             return None
         return helpers.get_end_time(self.startTime, self.duration)
 
@@ -647,15 +702,15 @@ class KamereonVehicleChargingSettingsData(KamereonVehicleDataAttributes):
 
     def update(self, args: dict[str, Any]) -> None:
         """Update schedule."""
-        if "id" not in args:  # pragma: no cover
+        if "id" not in args:
             raise ValueError("id not provided for update.")
-        if self.schedules is None:  # pragma: no cover
+        if self.schedules is None:
             self.schedules = []
         for schedule in self.schedules:
-            if schedule.id == args["id"]:  # pragma: no branch
+            if schedule.id == args["id"]:
                 helpers.update_charge_schedule(schedule, args)
                 return
-        self.schedules.append(helpers.create_charge_schedule(args))  # pragma: no cover
+        self.schedules.append(helpers.create_charge_schedule(args))
 
 
 @dataclass
@@ -667,15 +722,15 @@ class KamereonVehicleHvacSettingsData(KamereonVehicleDataAttributes):
 
     def update(self, args: dict[str, Any]) -> None:
         """Update schedule."""
-        if "id" not in args:  # pragma: no cover
+        if "id" not in args:
             raise ValueError("id not provided for update.")
-        if self.schedules is None:  # pragma: no cover
+        if self.schedules is None:
             self.schedules = []
         for schedule in self.schedules:
-            if schedule.id == args["id"]:  # pragma: no branch
+            if schedule.id == args["id"]:
                 helpers.update_hvac_schedule(schedule, args)
                 return
-        self.schedules.append(helpers.create_hvac_schedule(args))  # pragma: no cover
+        self.schedules.append(helpers.create_hvac_schedule(args))
 
 
 @dataclass

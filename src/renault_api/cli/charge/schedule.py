@@ -2,7 +2,7 @@
 
 import re
 from typing import Any
-from typing import Optional
+from typing import cast
 
 import aiohttp
 import click
@@ -13,6 +13,8 @@ from renault_api.cli import renault_vehicle
 from renault_api.kamereon.helpers import DAYS_OF_WEEK
 from renault_api.kamereon.models import ChargeDaySchedule
 from renault_api.kamereon.models import ChargeSchedule
+from renault_api.kamereon.models import KamereonVehicleChargingSettingsData
+from renault_api.kamereon.schemas import KamereonVehicleChargingSettingsDataSchema
 from renault_api.renault_vehicle import RenaultVehicle
 
 _DAY_SCHEDULE_REGEX = re.compile(
@@ -45,43 +47,65 @@ async def show(
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
     )
-    response = await vehicle.get_charging_settings()
+    full_endpoint = await vehicle.get_full_endpoint("charge-schedule")
+    response = await vehicle.http_get(full_endpoint)
+    if "data" in response.raw_data and "attributes" in response.raw_data["data"]:
+        _show_basic(response.raw_data["data"]["attributes"])
+    else:
+        _show_alternate(response.raw_data)
 
-    # Display mode
-    click.echo(f"Mode: {response.mode}")
-    if not response.schedules:  # pragma: no cover
+
+def _show_basic(response: dict[str, Any]) -> None:
+    """Display charge schedules (basic)."""
+    calendar = response["calendar"]
+    schedule_table: list[list[str]] = []
+    for day in DAYS_OF_WEEK:
+        day_data = calendar[day][0]
+        start_time = day_data["startTime"]
+        end_time = str(
+            int(day_data["startTime"])
+            + int(day_data["duration"] * 100 / 60)
+            + (day_data["duration"] % 60)
+        )
+        schedule_table.append(
+            [
+                day.capitalize(),
+                helpers.get_display_value(
+                    f"T{start_time[0:2]}:{start_time[2:4]}Z", "tztime"
+                ),
+                helpers.get_display_value(
+                    f"T{end_time[0:2]}:{end_time[2:4]}Z", "tztime"
+                ),
+                day_data["duration"],
+                day_data["activationState"],
+            ]
+        )
+
+    headers = ["Day", "Start time", "End time", "Duration", "Active"]
+    click.echo(tabulate(schedule_table, headers=headers))
+
+
+def _show_alternate(response: dict[str, Any]) -> None:
+    """Display charge schedules (alternate)."""
+    click.echo(f"Mode: {response['chargeModeRq'].capitalize()}")
+    if not response["programs"]:
         click.echo("\nNo schedules found.")
         return
 
-    for schedule in response.schedules:
-        click.echo(
-            f"\nSchedule ID: {schedule.id}{' [Active]' if schedule.activated else ''}"
-        )
+    for idx, program in enumerate(response["programs"]):
+        active = " [Active]" if program["programActivationStatus"] else ""
+        click.echo(f"\nSchedule ID: {idx}{active}")
 
-        headers = [
-            "Day",
-            "Start time",
-            "End time",
-            "Duration",
-        ]
+        headers = ["Day", "Active"]
         click.echo(
             tabulate(
-                [_format_charge_schedule(schedule, key) for key in DAYS_OF_WEEK],
+                [
+                    [key.capitalize(), program[f"programActivation{key.capitalize()}"]]
+                    for key in DAYS_OF_WEEK
+                ],
                 headers=headers,
             )
         )
-
-
-def _format_charge_schedule(schedule: ChargeSchedule, key: str) -> list[str]:
-    details: Optional[ChargeDaySchedule] = getattr(schedule, key)
-    if not details:  # pragma: no cover
-        return [key.capitalize(), "-", "-", "-"]
-    return [
-        key.capitalize(),
-        helpers.get_display_value(details.startTime, "tztime"),
-        helpers.get_display_value(details.get_end_time(), "tztime"),
-        helpers.get_display_value(details.duration, "minutes"),
-    ]
 
 
 async def _get_schedule(
@@ -93,18 +117,22 @@ async def _get_schedule(
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
     )
-    response = await vehicle.get_charging_settings()
+    response_data = await vehicle._get_vehicle_data("charging-settings")
+    response = cast(
+        KamereonVehicleChargingSettingsData,
+        response_data.get_attributes(KamereonVehicleChargingSettingsDataSchema),
+    )
 
-    if not response.schedules:  # pragma: no cover
+    if not response.schedules:
         raise ValueError("No schedules found.")
 
-    schedule = next(  # pragma: no branch
+    schedule = next(
         (schedule for schedule in response.schedules if id == schedule.id), None
     )
     if schedule:
         return (vehicle, response.schedules, schedule)
 
-    raise IndexError(f"Schedule id {id} not found.")  # pragma: no cover
+    raise IndexError(f"Schedule id {id} not found.")
 
 
 @schedule.command()
@@ -181,7 +209,7 @@ def update_settings(
 ) -> None:
     """Update charging settings."""
     for day in DAYS_OF_WEEK:
-        if day in kwargs:  # pragma: no branch
+        if day in kwargs:
             day_value = kwargs.pop(day)
 
             if day_value == "clear":
@@ -199,26 +227,26 @@ def update_settings(
 
 def _parse_day_schedule(raw: str) -> tuple[str, int]:
     match = _DAY_SCHEDULE_REGEX.match(raw)
-    if not match:  # pragma: no cover
+    if not match:
         raise ValueError(
             f"Invalid specification for charge schedule: `{raw}`. "
             "Should be of the form HH:MM,DURATION or THH:MMZ,DURATION"
         )
 
     hours = int(match.group("hours"))
-    if hours >= _HOURS_PER_DAY:  # pragma: no cover
+    if hours >= _HOURS_PER_DAY:
         raise ValueError(
             f"Invalid specification for charge schedule: `{raw}`. "
             "Hours should be less than 24."
         )
     minutes = int(match.group("minutes"))
-    if (minutes % 15) != 0:  # pragma: no cover
+    if (minutes % 15) != 0:
         raise ValueError(
             f"Invalid specification for charge schedule: `{raw}`. "
             "Minutes should be a multiple of 15."
         )
     duration = int(match.group("duration"))
-    if (duration % 15) != 0:  # pragma: no cover
+    if (duration % 15) != 0:
         raise ValueError(
             f"Invalid specification for charge schedule: `{raw}`. "
             "Duration should be a multiple of 15."
@@ -227,7 +255,7 @@ def _parse_day_schedule(raw: str) -> tuple[str, int]:
         formatted_start_time = f"T{hours:02g}:{minutes:02g}Z"
     elif not (match.group("prefix") or match.group("suffix")):
         formatted_start_time = helpers.convert_minutes_to_tztime(hours * 60 + minutes)
-    else:  # pragma: no cover
+    else:
         raise ValueError(
             f"Invalid specification for charge schedule: `{raw}`. "
             "If provided, both T and Z must be set."

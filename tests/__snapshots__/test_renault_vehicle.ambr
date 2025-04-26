@@ -1,0 +1,212 @@
+# serializer version: 1
+# name: test_get_endpoints[tests/fixtures/kamereon/vehicles/captur_ii.1.json]
+  dict({
+    'hvac-status': None,
+  })
+# ---
+# name: test_get_endpoints[tests/fixtures/kamereon/vehicles/captur_ii.2.json]
+  dict({
+    'hvac-status': None,
+  })
+# ---
+# name: test_get_endpoints[tests/fixtures/kamereon/vehicles/clio_v.1.json]
+  dict({
+    'hvac-status': None,
+  })
+# ---
+# name: test_get_endpoints[tests/fixtures/kamereon/vehicles/duster.1.json]
+  dict({
+    'alerts': '/vehicles/{vin}/alerts',
+    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
+    'charge-history': '/kca/car-adapter/v1/cars/{vin}/charge-history',
+    'charge-mode': '/kca/car-adapter/v1/cars/{vin}/charge-mode',
+    'charge-schedule': '/kca/car-adapter/v1/cars/{vin}/charge-schedule',
+    'charges': '/kca/car-adapter/v1/cars/{vin}/charges',
+    'charging-settings': '/kca/car-adapter/v1/cars/{vin}/charging-settings',
+    'cockpit': '/kca/car-adapter/v1/cars/{vin}/cockpit',
+    'hvac-history': '/kca/car-adapter/v1/cars/{vin}/hvac-history',
+    'hvac-sessions': '/kca/car-adapter/v1/cars/{vin}/hvac-sessions',
+    'hvac-settings': '/kca/car-adapter/v1/cars/{vin}/hvac-settings',
+    'hvac-status': '/kca/car-adapter/v1/cars/{vin}/hvac-status',
+    'location': '/kca/car-adapter/v1/cars/{vin}/location',
+    'lock-status': '/kca/car-adapter/v1/cars/{vin}/lock-status',
+    'notification-settings': '/kca/car-adapter/v1/cars/{vin}/notification-settings',
+    'pressure': '/kca/car-adapter/v1/cars/{vin}/pressure',
+    'res-state': '/kca/car-adapter/v1/cars/{vin}/res-state',
+    'soc-levels': '/kcm/v1/vehicles/{vin}/ev/soc-levels',
+  })
+# ---
+# name: test_get_endpoints[tests/fixtures/kamereon/vehicles/megane_e-tech.1.json]
+  dict({
+    'lock-status': None,
+  })
+# ---
+# name: test_get_endpoints[tests/fixtures/kamereon/vehicles/megane_e-tech.2.json]
+  dict({
+    'lock-status': None,
+  })
+# ---
+# name: test_get_endpoints[tests/fixtures/kamereon/vehicles/renault_5.1.json]
+  dict({
+    'charge-schedule': '/kcm/v1/vehicles/{vin}/ev/settings',
+  })
+# ---
+# name: test_get_endpoints[tests/fixtures/kamereon/vehicles/spring.1.json]
+  dict({
+    'charge-mode': None,
+    'lock-status': None,
+    'res-state': None,
+  })
+# ---
+# name: test_get_endpoints[tests/fixtures/kamereon/vehicles/twingo_ze.1.json]
+  dict({
+    'alerts': '/vehicles/{vin}/alerts',
+    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
+    'charge-history': '/kca/car-adapter/v1/cars/{vin}/charge-history',
+    'charge-mode': '/kca/car-adapter/v1/cars/{vin}/charge-mode',
+    'charge-schedule': '/kca/car-adapter/v1/cars/{vin}/charge-schedule',
+    'charges': '/kca/car-adapter/v1/cars/{vin}/charges',
+    'charging-settings': '/kca/car-adapter/v1/cars/{vin}/charging-settings',
+    'cockpit': '/kca/car-adapter/v1/cars/{vin}/cockpit',
+    'hvac-history': '/kca/car-adapter/v1/cars/{vin}/hvac-history',
+    'hvac-sessions': '/kca/car-adapter/v1/cars/{vin}/hvac-sessions',
+    'hvac-settings': '/kca/car-adapter/v1/cars/{vin}/hvac-settings',
+    'hvac-status': '/kca/car-adapter/v1/cars/{vin}/hvac-status',
+    'location': '/kca/car-adapter/v1/cars/{vin}/location',
+    'lock-status': '/kca/car-adapter/v1/cars/{vin}/lock-status',
+    'notification-settings': '/kca/car-adapter/v1/cars/{vin}/notification-settings',
+    'pressure': '/kca/car-adapter/v1/cars/{vin}/pressure',
+    'res-state': '/kca/car-adapter/v1/cars/{vin}/res-state',
+    'soc-levels': '/kcm/v1/vehicles/{vin}/ev/soc-levels',
+  })
+# ---
+# name: test_get_endpoints[tests/fixtures/kamereon/vehicles/zoe_40.1.json]
+  dict({
+    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
+    'charge-mode': '/kca/car-adapter/v1/cars/{vin}/charge-mode',
+    'charge-schedule': '/kca/car-adapter/v1/cars/{vin}/charge-schedule',
+    'cockpit': '/kca/car-adapter/v1/cars/{vin}/cockpit',
+    'hvac-status': '/kca/car-adapter/v1/cars/{vin}/hvac-status',
+    'location': None,
+    'lock-status': None,
+    'pressure': None,
+    'res-state': None,
+    'soc-levels': None,
+  })
+# ---
+# name: test_get_endpoints[tests/fixtures/kamereon/vehicles/zoe_40.2.json]
+  dict({
+    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
+    'charge-mode': '/kca/car-adapter/v1/cars/{vin}/charge-mode',
+    'charge-schedule': '/kca/car-adapter/v1/cars/{vin}/charge-schedule',
+    'cockpit': '/kca/car-adapter/v1/cars/{vin}/cockpit',
+    'hvac-status': '/kca/car-adapter/v1/cars/{vin}/hvac-status',
+    'location': None,
+    'lock-status': None,
+    'pressure': None,
+    'res-state': None,
+    'soc-levels': None,
+  })
+# ---
+# name: test_get_endpoints[tests/fixtures/kamereon/vehicles/zoe_50.1.json]
+  dict({
+    'alerts': '/vehicles/{vin}/alerts',
+    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
+    'charge-history': '/kca/car-adapter/v1/cars/{vin}/charge-history',
+    'charge-mode': '/kca/car-adapter/v1/cars/{vin}/charge-mode',
+    'charge-schedule': '/kca/car-adapter/v1/cars/{vin}/charge-schedule',
+    'charges': '/kca/car-adapter/v1/cars/{vin}/charges',
+    'charging-settings': '/kca/car-adapter/v1/cars/{vin}/charging-settings',
+    'cockpit': '/kca/car-adapter/v1/cars/{vin}/cockpit',
+    'hvac-history': '/kca/car-adapter/v1/cars/{vin}/hvac-history',
+    'hvac-sessions': '/kca/car-adapter/v1/cars/{vin}/hvac-sessions',
+    'hvac-settings': '/kca/car-adapter/v1/cars/{vin}/hvac-settings',
+    'hvac-status': '/kca/car-adapter/v1/cars/{vin}/hvac-status',
+    'location': '/kca/car-adapter/v1/cars/{vin}/location',
+    'lock-status': '/kca/car-adapter/v1/cars/{vin}/lock-status',
+    'notification-settings': '/kca/car-adapter/v1/cars/{vin}/notification-settings',
+    'pressure': '/kca/car-adapter/v1/cars/{vin}/pressure',
+    'res-state': '/kca/car-adapter/v1/cars/{vin}/res-state',
+    'soc-levels': '/kcm/v1/vehicles/{vin}/ev/soc-levels',
+  })
+# ---
+# name: test_http_get
+  KamereonResponse(raw_data={'data': {'type': 'Car', 'id': 'VF1AAAAA555777999', 'attributes': {'calendar': {'monday': [{'startTime': '2300', 'duration': 480, 'activationState': False}], 'tuesday': [{'startTime': '2300', 'duration': 480, 'activationState': False}], 'wednesday': [{'startTime': '2300', 'duration': 480, 'activationState': False}], 'thursday': [{'startTime': '2300', 'duration': 480, 'activationState': False}], 'friday': [{'startTime': '2300', 'duration': 480, 'activationState': False}], 'saturday': [{'startTime': '2300', 'duration': 480, 'activationState': False}], 'sunday': [{'startTime': '2300', 'duration': 480, 'activationState': False}]}}}}, errors=None)
+# ---
+# name: test_http_post
+  KamereonResponse(raw_data={'data': {'type': 'ChargingStart', 'id': 'guid', 'attributes': {'action': 'start'}}}, errors=None)
+# ---
+# name: test_http_post.1
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'action': 'start',
+      }),
+      'type': 'ChargingStart',
+    }),
+  })
+# ---
+# name: test_set_ac_start
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'action': 'start',
+        'startDateTime': '2020-11-24T06:30:00Z',
+        'targetTemperature': 21,
+      }),
+      'type': 'HvacStart',
+    }),
+  })
+# ---
+# name: test_set_ac_stop
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'action': 'cancel',
+      }),
+      'type': 'HvacStart',
+    }),
+  })
+# ---
+# name: test_set_charge_mode
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'action': 'schedule_mode',
+      }),
+      'type': 'ChargeMode',
+    }),
+  })
+# ---
+# name: test_set_charge_schedules
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'schedules': list([
+        ]),
+      }),
+      'type': 'ChargeSchedule',
+    }),
+  })
+# ---
+# name: test_set_charge_start
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'action': 'start',
+      }),
+      'type': 'ChargingStart',
+    }),
+  })
+# ---
+# name: test_set_hvac_schedules
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'schedules': list([
+        ]),
+      }),
+      'type': 'HvacSchedule',
+    }),
+  })
+# ---

@@ -50,6 +50,8 @@ _KCM_POST_ENDPOINTS: dict[str, Any] = {
 DATA_ENDPOINTS = _KCA_GET_ENDPOINTS
 ACTION_ENDPOINTS = _KCA_POST_ENDPOINTS
 
+ACCOUNT_ENDPOINT_ROOT = "/commerce/v1/accounts/{account_id}/kamereon"
+
 
 def get_commerce_url(root_url: str) -> str:
     """Get the Kamereon base commerce url."""
@@ -82,7 +84,7 @@ def get_contracts_url(root_url: str, account_id: str, vin: str) -> str:
     return f"{account_url}/vehicles/{vin}/contracts"
 
 
-def get_required_contracts(endpoint: str) -> str:  # pragma: no cover
+def get_required_contracts(endpoint: str) -> str:
     """Get the required contracts for the specified endpoint."""
     # "Deprecated in 0.1.3, contract codes are country-specific"
     # " and can't be used to guess requirements."
@@ -97,7 +99,7 @@ def has_required_contracts(
     # "Deprecated in 0.1.3, contract codes are country-specific"
     # " and can't be used to guess requirements."
     warn("This method is deprecated.", DeprecationWarning, stacklevel=2)
-    return True  # pragma: no cover
+    return True
 
 
 async def request(

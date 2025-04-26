@@ -3,6 +3,7 @@
 import pytest
 from aiohttp import ClientSession
 from aioresponses import aioresponses
+from syrupy.assertion import SnapshotAssertion
 
 from renault_api.const import AVAILABLE_LOCALES
 from renault_api.const import CONF_GIGYA_APIKEY
@@ -16,12 +17,10 @@ from renault_api.helpers import get_api_keys
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("locale", AVAILABLE_LOCALES.keys())
-async def test_available_locales(locale: str) -> None:
+async def test_available_locales(locale: str, snapshot: SnapshotAssertion) -> None:
     """Ensure all items AVAILABLE_LOCALES have correct data."""
-    expected_api_keys = AVAILABLE_LOCALES[locale]
-
     api_keys = await get_api_keys(locale)
-    assert api_keys == expected_api_keys
+    assert api_keys == snapshot
     for key in [
         CONF_GIGYA_APIKEY,
         CONF_GIGYA_URL,
@@ -44,23 +43,23 @@ async def test_missing_aiohttp_session() -> None:
 @pytest.mark.asyncio
 @pytest.mark.parametrize("locale", AVAILABLE_LOCALES.keys())
 @pytest.mark.skip(reason="Makes real calls to Renault servers")
-async def test_preload_force_api_keys(websession: ClientSession, locale: str) -> None:
+async def test_preload_force_api_keys(
+    websession: ClientSession, locale: str, snapshot: SnapshotAssertion
+) -> None:
     """Ensure is able to parse a valid locale from Renault servers."""
-    expected_api_keys = AVAILABLE_LOCALES[locale]
-
     api_keys = await get_api_keys(locale, True, websession)
 
-    assert api_keys == expected_api_keys
+    assert api_keys == snapshot
 
 
 @pytest.mark.asyncio
 @pytest.mark.skip("API keys are out of date.")
 async def test_preload_unknown_api_keys(
-    websession: ClientSession, mocked_responses: aioresponses
+    websession: ClientSession,
+    mocked_responses: aioresponses,
+    snapshot: SnapshotAssertion,
 ) -> None:
     """Ensure is able to parse a known known."""
-    expected_api_keys = AVAILABLE_LOCALES["fr_FR"]
-
     fake_locale = "invalid"
     fake_url = f"{LOCALE_BASE_URL}/configuration/android/config_{fake_locale}.json"
     with open("tests/fixtures/config_sample.txt") as f:
@@ -70,7 +69,7 @@ async def test_preload_unknown_api_keys(
 
     api_keys = await get_api_keys(fake_locale, websession=websession)
 
-    assert api_keys == expected_api_keys
+    assert api_keys == snapshot
 
 
 @pytest.mark.asyncio

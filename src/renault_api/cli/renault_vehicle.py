@@ -36,7 +36,7 @@ async def _get_vin(ctx_data: dict[str, Any], account: RenaultAccount) -> str:
 
     # Third, prompt the user
     response = await account.get_vehicles()
-    if not response.vehicleLinks:  # pragma: no cover
+    if not response.vehicleLinks:
         raise RenaultException("No vehicle found.")
 
     prompt, default = await _get_vehicle_prompt(response.vehicleLinks, account)
@@ -51,10 +51,10 @@ async def _get_vin(ctx_data: dict[str, Any], account: RenaultAccount) -> str:
         )
         try:
             vin = str(response.vehicleLinks[i - 1].vin)
-        except (KeyError, IndexError) as exc:  # pragma: no cover
+        except (KeyError, IndexError) as exc:
             click.echo(f"Invalid option: {exc}.", err=True)
         else:
-            if click.confirm(  # pragma: no branch
+            if click.confirm(
                 "Do you want to save the VIN to the credential store?",
                 default=False,
             ):
@@ -70,7 +70,7 @@ async def _get_vehicle_prompt(
     vehicle_table = []
     default = None
     for i, vehicle in enumerate(vehicle_links):
-        if not vehicle.vehicleDetails:  # pragma: no cover
+        if not vehicle.vehicleDetails:
             continue
         vehicle_details = vehicle.vehicleDetails
         vehicle_table.append(
@@ -83,7 +83,7 @@ async def _get_vehicle_prompt(
             ]
         )
 
-    if len(vehicle_table) == 1:  # pragma: no branch
+    if len(vehicle_table) == 1:
         default = "1"
     menu = tabulate(
         vehicle_table, headers=["", "Vin", "Registration", "Brand", "Model"]
@@ -186,20 +186,18 @@ async def update_battery_status(
     try:
         if not (await vehicle.get_details()).uses_electricity():
             return
-        if not await vehicle.supports_endpoint("battery-status"):  # pragma: no cover
+        if not await vehicle.supports_endpoint("battery-status"):
             return
         response = await vehicle.get_battery_status()
-    except QuotaLimitException as exc:  # pragma: no cover
+    except QuotaLimitException as exc:
         raise click.ClickException(repr(exc)) from exc
-    except KamereonResponseException as exc:  # pragma: no cover
+    except KamereonResponseException as exc:
         click.echo(f"battery-status: {exc.error_details}", err=True)
         return
 
-    if response.batteryAvailableEnergy == 0:  # pragma: no branch
+    if response.batteryAvailableEnergy == 0:
         response.batteryAvailableEnergy = None
-    if (  # pragma: no branch
-        response.chargingStatus == -1.0 and response.plugStatus == 0
-    ):
+    if response.chargingStatus == -1.0 and response.plugStatus == 0:
         response.chargingStatus = 0.0
 
     if ctx_data["json"]:
@@ -225,12 +223,12 @@ async def update_tyre_pressure(
 ) -> None:
     """Update status table from get_tyre_pressure."""
     try:
-        if not await vehicle.supports_endpoint("pressure"):  # pragma: no cover
+        if not await vehicle.supports_endpoint("pressure"):
             return
         response = await vehicle.get_tyre_pressure()
-    except QuotaLimitException as exc:  # pragma: no cover
+    except QuotaLimitException as exc:
         raise click.ClickException(repr(exc)) from exc
-    except KamereonResponseException as exc:  # pragma: no cover
+    except KamereonResponseException as exc:
         click.echo(f"pressure: {exc.error_details}", err=True)
         return
 
@@ -256,12 +254,12 @@ async def update_charge_mode(
     try:
         if not (await vehicle.get_details()).uses_electricity():
             return
-        if not await vehicle.supports_endpoint("charge-mode"):  # pragma: no cover
+        if not await vehicle.supports_endpoint("charge-mode"):
             return
         response = await vehicle.get_charge_mode()
-    except QuotaLimitException as exc:  # pragma: no cover
+    except QuotaLimitException as exc:
         raise click.ClickException(repr(exc)) from exc
-    except KamereonResponseException as exc:  # pragma: no cover
+    except KamereonResponseException as exc:
         click.echo(f"charge-mode: {exc.error_details}", err=True)
         return
 
@@ -279,12 +277,12 @@ async def update_cockpit(
 ) -> None:
     """Update status table from get_vehicle_cockpit."""
     try:
-        if not await vehicle.supports_endpoint("cockpit"):  # pragma: no cover
+        if not await vehicle.supports_endpoint("cockpit"):
             return
         response = await vehicle.get_cockpit()
-    except QuotaLimitException as exc:  # pragma: no cover
+    except QuotaLimitException as exc:
         raise click.ClickException(repr(exc)) from exc
-    except KamereonResponseException as exc:  # pragma: no cover
+    except KamereonResponseException as exc:
         click.echo(f"cockpit: {exc.error_details}", err=True)
         return
 
@@ -309,13 +307,13 @@ async def update_location(
         if not await vehicle.supports_endpoint("location"):
             return
         response = await vehicle.get_location()
-    except QuotaLimitException as exc:  # pragma: no cover
+    except QuotaLimitException as exc:
         raise click.ClickException(repr(exc)) from exc
-    except KamereonResponseException as exc:  # pragma: no cover
+    except KamereonResponseException as exc:
         click.echo(f"location: {exc.error_details}", err=True)
         return
 
-    if ctx_data["json"]:  # pragma: no cover
+    if ctx_data["json"]:
         status_table["location"] = response.raw_data
         return
     items = [
@@ -336,13 +334,13 @@ async def update_lock_status(
         if not await vehicle.supports_endpoint("lock-status"):
             return
         response = await vehicle.get_lock_status()
-    except QuotaLimitException as exc:  # pragma: no cover
+    except QuotaLimitException as exc:
         raise click.ClickException(repr(exc)) from exc
-    except KamereonResponseException as exc:  # pragma: no cover
+    except KamereonResponseException as exc:
         click.echo(f"lock status: {exc.error_details}", err=True)
         return
 
-    if ctx_data["json"]:  # pragma: no cover
+    if ctx_data["json"]:
         status_table["lock-status"] = response.raw_data
         return
     items = [
@@ -359,12 +357,12 @@ async def update_res_state(
 ) -> None:
     """Update status table from get_vehicle_res_state."""
     try:
-        if not await vehicle.supports_endpoint("res-state"):  # pragma: no cover
+        if not await vehicle.supports_endpoint("res-state"):
             return
         response = await vehicle.get_res_state()
-    except QuotaLimitException as exc:  # pragma: no cover
+    except QuotaLimitException as exc:
         raise click.ClickException(repr(exc)) from exc
-    except KamereonResponseException as exc:  # pragma: no cover
+    except KamereonResponseException as exc:
         click.echo(f"res state: {exc.error_details}", err=True)
         return
 
@@ -387,9 +385,9 @@ async def update_hvac_status(
         if not await vehicle.supports_endpoint("hvac-status"):
             return
         response = await vehicle.get_hvac_status()
-    except QuotaLimitException as exc:  # pragma: no cover
+    except QuotaLimitException as exc:
         raise click.ClickException(repr(exc)) from exc
-    except KamereonResponseException as exc:  # pragma: no cover
+    except KamereonResponseException as exc:
         click.echo(f"hvac-status: {exc.error_details}", err=True)
         return
 

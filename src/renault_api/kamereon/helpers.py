@@ -18,9 +18,7 @@ DAYS_OF_WEEK = [
 ]
 
 
-def update_schedule(
-    schedule: models.ChargeSchedule, settings: dict[str, Any]
-) -> None:  # pragma: no cover
+def update_schedule(schedule: models.ChargeSchedule, settings: dict[str, Any]) -> None:
     """Update charge schedule."""
     warn(
         "This method is deprecated, please use update_charge_schedule.",
@@ -42,7 +40,7 @@ def update_charge_schedule(
 
             if day_settings is None:
                 setattr(schedule, day, None)
-            elif day_settings:  # pragma: no branch
+            elif day_settings:
                 start_time = day_settings["startTime"]
                 duration = day_settings["duration"]
 
@@ -65,7 +63,7 @@ def update_hvac_schedule(
 
             if day_settings is None:
                 setattr(schedule, day, None)
-            elif day_settings:  # pragma: no branch
+            elif day_settings:
                 ready_at_time = day_settings["readyAtTime"]
 
                 setattr(
@@ -77,7 +75,7 @@ def update_hvac_schedule(
 
 def create_schedule(
     settings: dict[str, Any],
-) -> models.ChargeSchedule:  # pragma: no cover
+) -> models.ChargeSchedule:
     warn(
         "This method is deprecated, please use create_charge_schedule.",
         DeprecationWarning,
@@ -88,14 +86,14 @@ def create_schedule(
 
 def create_charge_schedule(
     settings: dict[str, Any],
-) -> models.ChargeSchedule:  # pragma: no cover
+) -> models.ChargeSchedule:
     """Update schedule."""
     raise NotImplementedError
 
 
 def create_hvac_schedule(
     settings: dict[str, Any],
-) -> models.HvacSchedule:  # pragma: no cover
+) -> models.HvacSchedule:
     """Update schedule."""
     raise NotImplementedError
 
@@ -115,6 +113,6 @@ def format_time(total_minutes: int) -> str:
 
 def get_total_minutes(start_time: str | None, duration: int | None = None) -> int:
     """Get total minutes from a `Thh:mmZ` formatted time."""
-    if not start_time:  # pragma: no cover
+    if not start_time:
         return 0
     return int(start_time[1:3]) * 60 + int(start_time[4:6]) + (duration or 0)

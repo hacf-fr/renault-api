@@ -56,7 +56,7 @@ def _jwt_as_string(encoded_jwt: Any) -> str:
 
 def get_json_files(parent_dir: str) -> list[str]:
     """Read fixture text file as string."""
-    return glob(f"{parent_dir}/*.json")
+    return [file.replace("\\", "/") for file in glob(f"{parent_dir}/*.json")]
 
 
 def get_file_content(filename: str) -> str:
@@ -278,9 +278,9 @@ def inject_get_battery_status(
 
 
 def inject_get_tyre_pressure(
-    mocked_responses: aioresponses, filename: str = "vehicle_data/tyre-pressure.json"
+    mocked_responses: aioresponses, filename: str = "vehicle_data/pressure.json"
 ) -> str:
-    """Inject sample tyre-pressure."""
+    """Inject sample tyre pressure."""
     urlpath = f"{ADAPTER_PATH}/pressure?{DEFAULT_QUERY_STRING}"
     return inject_data(
         mocked_responses,
@@ -396,6 +396,26 @@ def inject_get_charging_settings(mocked_responses: aioresponses, type: str) -> s
         mocked_responses,
         urlpath,
         f"vehicle_data/charging-settings.{type}.json",
+    )
+
+
+def inject_get_charge_schedule(mocked_responses: aioresponses, type: str) -> str:
+    """Inject sample charges."""
+    urlpath = f"{ADAPTER_PATH}/charge-schedule?{DEFAULT_QUERY_STRING}"
+    return inject_data(
+        mocked_responses,
+        urlpath,
+        f"vehicle_data/charge-schedule.{type}.json",
+    )
+
+
+def inject_get_ev_settings(mocked_responses: aioresponses, type: str) -> str:
+    """Inject sample charges."""
+    urlpath = f"{KCM_ADAPTER_PATH}/ev/settings?{DEFAULT_QUERY_STRING}"
+    return inject_data(
+        mocked_responses,
+        urlpath,
+        f"vehicle_kcm_data/ev-settings.{type}.json",
     )
 
 

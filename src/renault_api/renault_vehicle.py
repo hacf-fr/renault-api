@@ -1,21 +1,20 @@
 """Client for Renault API."""
 
-import logging
 from datetime import datetime
 from datetime import timezone
+from typing import Any
 from typing import Optional
 from typing import cast
-from warnings import warn
 
 import aiohttp
 
 from .credential_store import CredentialStore
+from .exceptions import EndpointNotAvailableError
 from .exceptions import RenaultException
+from .kamereon import ACCOUNT_ENDPOINT_ROOT
 from .kamereon import models
 from .kamereon import schemas
 from .renault_session import RenaultSession
-
-_LOGGER = logging.getLogger(__name__)
 
 PERIOD_DAY_FORMAT = "%Y%m%d"
 PERIOD_MONTH_FORMAT = "%Y%m"
@@ -50,7 +49,7 @@ class RenaultVehicle:
         if session:
             self._session = session
         else:
-            if websession is None:  # pragma: no cover
+            if websession is None:
                 raise RenaultException(
                     "`websession` is required if session is not provided."
                 )
@@ -76,6 +75,44 @@ class RenaultVehicle:
     def vin(self) -> str:
         """Get vin."""
         return self._vin
+
+    def _convert_variables(self, endpoint: str) -> str:
+        """Replace account_id / vin"""
+        return endpoint.replace("{account_id}", self.account_id).replace(
+            "{vin}", self.vin
+        )
+
+    async def http_get(self, endpoint: str) -> models.KamereonResponse:
+        """Run HTTP GET to endpoint."""
+        endpoint = self._convert_variables(endpoint)
+        return await self.session.http_request("GET", endpoint)
+
+    async def http_post(
+        self, endpoint: str, json: Optional[dict[str, Any]] = None
+    ) -> models.KamereonResponse:
+        """Run HTTP POST to endpoint."""
+        endpoint = self._convert_variables(endpoint)
+        return await self.session.http_request("POST", endpoint, json)
+
+    async def get_full_endpoint(self, endpoint: str) -> str:
+        """From VEHICLE_ENDPOINTS / DEFAULT_ENDPOINT."""
+        details = await self.get_details()
+        full_endpoint = details.get_endpoint(endpoint)
+        if full_endpoint is None:
+            raise EndpointNotAvailableError(endpoint, details.get_model_code())
+
+        return ACCOUNT_ENDPOINT_ROOT + full_endpoint
+
+    async def _get_vehicle_data(
+        self, endpoint: str
+    ) -> models.KamereonVehicleDataResponse:
+        """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
+        full_endpoint = await self.get_full_endpoint(endpoint)
+        response = await self.http_get(full_endpoint)
+        return cast(
+            models.KamereonVehicleDataResponse,
+            schemas.KamereonVehicleDataResponseSchema.load(response.raw_data),
+        )
 
     async def get_details(self) -> models.KamereonVehicleDetails:
         """Get vehicle details."""
@@ -117,18 +154,14 @@ class RenaultVehicle:
             account_id=self.account_id,
             vin=self.vin,
         )
-        if response.contractList is None:  # pragma: no cover
+        if response.contractList is None:
             raise ValueError("response.contractList is None")
         self._contracts = response.contractList
         return self._contracts
 
     async def get_battery_status(self) -> models.KamereonVehicleBatteryStatusData:
         """Get vehicle battery status."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="battery-status",
-        )
+        response = await self._get_vehicle_data("battery-status")
         return cast(
             models.KamereonVehicleBatteryStatusData,
             response.get_attributes(schemas.KamereonVehicleBatteryStatusDataSchema),
@@ -136,11 +169,7 @@ class RenaultVehicle:
 
     async def get_tyre_pressure(self) -> models.KamereonVehicleTyrePressureData:
         """Get vehicle tyre pressure."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="pressure",
-        )
+        response = await self._get_vehicle_data("pressure")
         return cast(
             models.KamereonVehicleTyrePressureData,
             response.get_attributes(schemas.KamereonVehicleTyrePressureDataSchema),
@@ -148,11 +177,7 @@ class RenaultVehicle:
 
     async def get_location(self) -> models.KamereonVehicleLocationData:
         """Get vehicle location."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="location",
-        )
+        response = await self._get_vehicle_data("location")
         return cast(
             models.KamereonVehicleLocationData,
             response.get_attributes(schemas.KamereonVehicleLocationDataSchema),
@@ -160,11 +185,7 @@ class RenaultVehicle:
 
     async def get_hvac_status(self) -> models.KamereonVehicleHvacStatusData:
         """Get vehicle hvac status."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="hvac-status",
-        )
+        response = await self._get_vehicle_data("hvac-status")
         return cast(
             models.KamereonVehicleHvacStatusData,
             response.get_attributes(schemas.KamereonVehicleHvacStatusDataSchema),
@@ -172,11 +193,7 @@ class RenaultVehicle:
 
     async def get_hvac_settings(self) -> models.KamereonVehicleHvacSettingsData:
         """Get vehicle hvac settings (schedule+mode)."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="hvac-settings",
-        )
+        response = await self._get_vehicle_data("hvac-settings")
         return cast(
             models.KamereonVehicleHvacSettingsData,
             response.get_attributes(schemas.KamereonVehicleHvacSettingsDataSchema),
@@ -184,11 +201,7 @@ class RenaultVehicle:
 
     async def get_charge_mode(self) -> models.KamereonVehicleChargeModeData:
         """Get vehicle charge mode."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="charge-mode",
-        )
+        response = await self._get_vehicle_data("charge-mode")
         return cast(
             models.KamereonVehicleChargeModeData,
             response.get_attributes(schemas.KamereonVehicleChargeModeDataSchema),
@@ -196,11 +209,7 @@ class RenaultVehicle:
 
     async def get_cockpit(self) -> models.KamereonVehicleCockpitData:
         """Get vehicle cockpit."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="cockpit",
-        )
+        response = await self._get_vehicle_data("cockpit")
         return cast(
             models.KamereonVehicleCockpitData,
             response.get_attributes(schemas.KamereonVehicleCockpitDataSchema),
@@ -208,11 +217,7 @@ class RenaultVehicle:
 
     async def get_lock_status(self) -> models.KamereonVehicleLockStatusData:
         """Get vehicle lock status."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="lock-status",
-        )
+        response = await self._get_vehicle_data("lock-status")
         return cast(
             models.KamereonVehicleLockStatusData,
             response.get_attributes(schemas.KamereonVehicleLockStatusDataSchema),
@@ -220,37 +225,17 @@ class RenaultVehicle:
 
     async def get_res_state(self) -> models.KamereonVehicleResStateData:
         """Get vehicle res state."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="res-state",
-        )
+        response = await self._get_vehicle_data("res-state")
         return cast(
             models.KamereonVehicleResStateData,
             response.get_attributes(schemas.KamereonVehicleResStateDataSchema),
-        )
-
-    async def get_charging_settings(self) -> models.KamereonVehicleChargingSettingsData:
-        """Get vehicle charging settings."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="charging-settings",
-        )
-        return cast(
-            models.KamereonVehicleChargingSettingsData,
-            response.get_attributes(schemas.KamereonVehicleChargingSettingsDataSchema),
         )
 
     async def get_notification_settings(
         self,
     ) -> models.KamereonVehicleNotificationSettingsData:
         """Get vehicle notification settings."""
-        response = await self.session.get_vehicle_data(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="notification-settings",
-        )
+        response = await self._get_vehicle_data("notification-settings")
         return cast(
             models.KamereonVehicleNotificationSettingsData,
             response.get_attributes(
@@ -262,16 +247,16 @@ class RenaultVehicle:
         self, start: datetime, end: datetime, period: str
     ) -> models.KamereonVehicleChargeHistoryData:
         """Get vehicle charge history."""
-        if not isinstance(start, datetime):  # pragma: no cover
+        if not isinstance(start, datetime):
             raise TypeError(
                 "`start` should be an instance of datetime.datetime, "
                 f"not {start.__class__}"
             )
-        if not isinstance(end, datetime):  # pragma: no cover
+        if not isinstance(end, datetime):
             raise TypeError(
                 f"`end` should be an instance of datetime.datetime, not {end.__class__}"
             )
-        if period not in PERIOD_FORMATS.keys():  # pragma: no cover
+        if period not in PERIOD_FORMATS.keys():
             raise TypeError("`period` should be one of `month`, `day`")
 
         params = {
@@ -294,12 +279,12 @@ class RenaultVehicle:
         self, start: datetime, end: datetime
     ) -> models.KamereonVehicleChargesData:
         """Get vehicle charges."""
-        if not isinstance(start, datetime):  # pragma: no cover
+        if not isinstance(start, datetime):
             raise TypeError(
                 "`start` should be an instance of datetime.datetime, "
                 f"not {start.__class__}"
             )
-        if not isinstance(end, datetime):  # pragma: no cover
+        if not isinstance(end, datetime):
             raise TypeError(
                 f"`end` should be an instance of datetime.datetime, not {end.__class__}"
             )
@@ -323,16 +308,16 @@ class RenaultVehicle:
         self, start: datetime, end: datetime, period: str
     ) -> models.KamereonVehicleHvacHistoryData:
         """Get vehicle hvac history."""
-        if not isinstance(start, datetime):  # pragma: no cover
+        if not isinstance(start, datetime):
             raise TypeError(
                 "`start` should be an instance of datetime.datetime, "
                 f"not {start.__class__}"
             )
-        if not isinstance(end, datetime):  # pragma: no cover
+        if not isinstance(end, datetime):
             raise TypeError(
                 f"`end` should be an instance of datetime.datetime, not {end.__class__}"
             )
-        if period not in PERIOD_FORMATS.keys():  # pragma: no cover
+        if period not in PERIOD_FORMATS.keys():
             raise TypeError("`period` should be one of `month`, `day`")
 
         params = {
@@ -355,12 +340,12 @@ class RenaultVehicle:
         self, start: datetime, end: datetime
     ) -> models.KamereonVehicleHvacSessionsData:
         """Get vehicle hvac sessions."""
-        if not isinstance(start, datetime):  # pragma: no cover
+        if not isinstance(start, datetime):
             raise TypeError(
                 "`start` should be an instance of datetime.datetime, "
                 f"not {start.__class__}"
             )
-        if not isinstance(end, datetime):  # pragma: no cover
+        if not isinstance(end, datetime):
             raise TypeError(
                 f"`end` should be an instance of datetime.datetime, not {end.__class__}"
             )
@@ -390,7 +375,7 @@ class RenaultVehicle:
         }
 
         if when:
-            if not isinstance(when, datetime):  # pragma: no cover
+            if not isinstance(when, datetime):
                 raise TypeError(
                     "`when` should be an instance of datetime.datetime, "
                     f"not {when.__class__}"
@@ -411,7 +396,6 @@ class RenaultVehicle:
 
     async def set_ac_stop(self) -> models.KamereonVehicleHvacStartActionData:
         """Stop vehicle ac."""
-        await self.warn_on_method("set_ac_stop")
         attributes = {"action": "cancel"}
 
         response = await self.session.set_vehicle_action(
@@ -430,7 +414,7 @@ class RenaultVehicle:
     ) -> models.KamereonVehicleHvacScheduleActionData:
         """Set vehicle charge schedules."""
         for schedule in schedules:
-            if not isinstance(schedule, models.HvacSchedule):  # pragma: no cover
+            if not isinstance(schedule, models.HvacSchedule):
                 raise TypeError(
                     "`schedules` should be a list of HvacSchedule, "
                     f"not {schedules.__class__}"
@@ -455,7 +439,7 @@ class RenaultVehicle:
     ) -> models.KamereonVehicleChargeScheduleActionData:
         """Set vehicle charge schedules."""
         for schedule in schedules:
-            if not isinstance(schedule, models.ChargeSchedule):  # pragma: no cover
+            if not isinstance(schedule, models.ChargeSchedule):
                 raise TypeError(
                     "`schedules` should be a list of ChargeSchedule, "
                     f"not {schedules.__class__}"
@@ -552,17 +536,3 @@ class RenaultVehicle:
         """Check if vehicle supports endpoint."""
         details = await self.get_details()
         return details.supports_endpoint(endpoint)
-
-    async def has_contract_for_endpoint(self, endpoint: str) -> bool:
-        """Check if vehicle has contract for endpoint."""
-        # "Deprecated in 0.1.3, contract codes are country-specific"
-        # " and can't be used to guess requirements."
-        warn("This method is deprecated.", DeprecationWarning, stacklevel=2)
-        return True  # pragma: no cover
-
-    async def warn_on_method(self, method: str) -> None:
-        """Log a warning if the method requires it."""
-        details = await self.get_details()
-        warning = details.warns_on_method(method)
-        if warning:
-            _LOGGER.warning(warning)

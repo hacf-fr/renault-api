@@ -1,0 +1,39 @@
+# serializer version: 1
+# name: test_list_vehicles_no_prompt
+  '''
+  Registration    Brand    Model    VIN
+  --------------  -------  -------  -----------------
+  REG-NUMBER      RENAULT  ZOE      VF1AAAAA555777999
+  
+  '''
+# ---
+# name: test_list_vehicles_prompt
+  '''
+  Please select a locale [fr_CA]: fr_FR
+  Do you want to save the locale to the credential store? [y/N]: N
+  
+  User: test@example.com
+  Password: 
+  
+      ID            Type         Vehicles
+  --  ------------  ---------  ----------
+   1  account-id-1  MYRENAULT           1
+   2  account-id-2  SFDC                1
+  
+  Please select account [1]: 1
+  Do you want to save the account ID to the credential store? [y/N]: y
+  
+  Registration    Brand    Model    VIN
+  --------------  -------  -------  -----------------
+  REG-NUMBER      RENAULT  ZOE      VF1AAAAA555777999
+  
+  '''
+# ---
+# name: test_list_vehicles_store
+  '''
+  Registration    Brand    Model    VIN
+  --------------  -------  -------  -----------------
+  REG-NUMBER      RENAULT  ZOE      VF1AAAAA555777999
+  
+  '''
+# ---

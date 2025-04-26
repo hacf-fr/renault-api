@@ -13,12 +13,19 @@ This is a list of the endpoints available, and their characteristics.
 .. _Contributor Guide: contributing.html
 
 
+Vehicle information endpoints
+----------------------
+
+.. include:: endpoints/vehicle_data.alerts.rst
+
+
 Vehicle data endpoints
 ----------------------
 
 .. include:: endpoints/vehicle_data.battery-status.rst
 .. include:: endpoints/vehicle_data.charge-history.rst
 .. include:: endpoints/vehicle_data.charge-mode.rst
+.. include:: endpoints/vehicle_data.charge-schedule.rst
 .. include:: endpoints/vehicle_data.charges.rst
 .. include:: endpoints/vehicle_data.charging-settings.rst
 .. include:: endpoints/vehicle_data.cockpit.rst
@@ -29,7 +36,14 @@ Vehicle data endpoints
 .. include:: endpoints/vehicle_data.location.rst
 .. include:: endpoints/vehicle_data.lock-status.rst
 .. include:: endpoints/vehicle_data.notification-settings.rst
+.. include:: endpoints/vehicle_data.pressure.rst
 .. include:: endpoints/vehicle_data.res-state.rst
+
+Vehicle KCM data endpoints
+----------------------
+
+.. include:: endpoints/vehicle_kcm_data.ev-settings.rst
+.. include:: endpoints/vehicle_kcm_data.soc-levels.rst
 
 
 Action endpoints
@@ -38,6 +52,7 @@ Action endpoints
 .. include:: endpoints/vehicle_action.charge-mode.rst
 .. include:: endpoints/vehicle_action.charge-schedule.rst
 .. include:: endpoints/vehicle_action.charging-start.rst
+.. include:: endpoints/vehicle_action.horn-lights.rst
 .. include:: endpoints/vehicle_action.hvac-start.rst
 .. include:: endpoints/vehicle_action.hvac-schedule.rst
 

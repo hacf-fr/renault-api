@@ -3,10 +3,10 @@
 import os
 
 from click.testing import CliRunner
+from syrupy.assertion import SnapshotAssertion
 
 from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_LOCALE
-from tests.const import TEST_LOCALE_DETAILS
 from tests.const import TEST_VIN
 
 from renault_api.cli import __main__
@@ -89,7 +89,7 @@ def test_set_vin(cli_runner: CliRunner) -> None:
     assert "" == result.output
 
 
-def test_get_keys_succeeds(cli_runner: CliRunner) -> None:
+def test_get_keys_succeeds(cli_runner: CliRunner, snapshot: SnapshotAssertion) -> None:
     """It exits with a status code of zero."""
     result = cli_runner.invoke(__main__.main, f"set --locale {TEST_LOCALE}")
     assert result.exit_code == 0
@@ -97,16 +97,7 @@ def test_get_keys_succeeds(cli_runner: CliRunner) -> None:
     result = cli_runner.invoke(__main__.main, "settings")
     assert result.exit_code == 0
 
-    expected_output = (
-        "Key                Value\n"
-        f"{'-' * 17}  {'-' * 66}\n"
-        f"locale             {TEST_LOCALE}\n"
-        f"{CONF_GIGYA_URL}     {TEST_LOCALE_DETAILS[CONF_GIGYA_URL]}\n"
-        f"{CONF_GIGYA_APIKEY}      {TEST_LOCALE_DETAILS[CONF_GIGYA_APIKEY]}\n"
-        f"{CONF_KAMEREON_URL}  {TEST_LOCALE_DETAILS[CONF_KAMEREON_URL]}\n"
-        f"{CONF_KAMEREON_APIKEY}   {TEST_LOCALE_DETAILS[CONF_KAMEREON_APIKEY]}\n"
-    )
-    assert expected_output == result.output
+    assert result.output == snapshot
 
 
 def test_reset(cli_runner: CliRunner) -> None:

@@ -39,7 +39,7 @@ def _check_for_debug(debug: bool, log: bool) -> None:
             # create directory
             try:
                 os.makedirs("logs")
-            except OSError as e:  # pragma: no cover
+            except OSError as e:
                 if e.errno != errno.EEXIST:
                     raise
 
@@ -96,7 +96,7 @@ def main(
         ctx.obj["locale"] = locale
     if account:
         ctx.obj["account"] = account
-    if vin:  # pragma: no branch
+    if vin:
         ctx.obj["vin"] = vin
 
 
@@ -269,5 +269,5 @@ async def http_post(
     )
 
 
-if __name__ == "__main__":  # pragma: no cover
+if __name__ == "__main__":
     main(prog_name="renault-api")
