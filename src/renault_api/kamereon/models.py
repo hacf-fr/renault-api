@@ -466,7 +466,9 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
                 else None
             )
         except ValueError:
-            _LOGGER.warning("Unable to convert `%s` to ChargeState.", self.chargingStatus)
+            _LOGGER.warning(
+                "Unable to convert `%s` to ChargeState.", self.chargingStatus
+            )
             return None
 
 
