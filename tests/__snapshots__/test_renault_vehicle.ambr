@@ -60,24 +60,8 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/twingo_ze.1.json]
   dict({
-    'alerts': '/vehicles/{vin}/alerts',
-    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
-    'charge-history': '/kca/car-adapter/v1/cars/{vin}/charge-history',
-    'charge-mode': '/kca/car-adapter/v1/cars/{vin}/charge-mode',
-    'charge-schedule': '/kca/car-adapter/v1/cars/{vin}/charge-schedule',
-    'charges': '/kca/car-adapter/v1/cars/{vin}/charges',
-    'charging-settings': '/kca/car-adapter/v1/cars/{vin}/charging-settings',
-    'cockpit': '/kca/car-adapter/v1/cars/{vin}/cockpit',
-    'hvac-history': '/kca/car-adapter/v1/cars/{vin}/hvac-history',
-    'hvac-sessions': '/kca/car-adapter/v1/cars/{vin}/hvac-sessions',
-    'hvac-settings': '/kca/car-adapter/v1/cars/{vin}/hvac-settings',
-    'hvac-status': '/kca/car-adapter/v1/cars/{vin}/hvac-status',
-    'location': '/kca/car-adapter/v1/cars/{vin}/location',
-    'lock-status': '/kca/car-adapter/v1/cars/{vin}/lock-status',
-    'notification-settings': '/kca/car-adapter/v1/cars/{vin}/notification-settings',
-    'pressure': '/kca/car-adapter/v1/cars/{vin}/pressure',
-    'res-state': '/kca/car-adapter/v1/cars/{vin}/res-state',
-    'soc-levels': '/kcm/v1/vehicles/{vin}/ev/soc-levels',
+    'lock-status': None,
+    'res-state': None,
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/zoe_40.1.json]
@@ -110,24 +94,8 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/zoe_50.1.json]
   dict({
-    'alerts': '/vehicles/{vin}/alerts',
-    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
-    'charge-history': '/kca/car-adapter/v1/cars/{vin}/charge-history',
-    'charge-mode': '/kca/car-adapter/v1/cars/{vin}/charge-mode',
-    'charge-schedule': '/kca/car-adapter/v1/cars/{vin}/charge-schedule',
-    'charges': '/kca/car-adapter/v1/cars/{vin}/charges',
-    'charging-settings': '/kca/car-adapter/v1/cars/{vin}/charging-settings',
-    'cockpit': '/kca/car-adapter/v1/cars/{vin}/cockpit',
-    'hvac-history': '/kca/car-adapter/v1/cars/{vin}/hvac-history',
-    'hvac-sessions': '/kca/car-adapter/v1/cars/{vin}/hvac-sessions',
-    'hvac-settings': '/kca/car-adapter/v1/cars/{vin}/hvac-settings',
-    'hvac-status': '/kca/car-adapter/v1/cars/{vin}/hvac-status',
-    'location': '/kca/car-adapter/v1/cars/{vin}/location',
-    'lock-status': '/kca/car-adapter/v1/cars/{vin}/lock-status',
-    'notification-settings': '/kca/car-adapter/v1/cars/{vin}/notification-settings',
-    'pressure': '/kca/car-adapter/v1/cars/{vin}/pressure',
-    'res-state': '/kca/car-adapter/v1/cars/{vin}/res-state',
-    'soc-levels': '/kcm/v1/vehicles/{vin}/ev/soc-levels',
+    'lock-status': None,
+    'res-state': None,
   })
 # ---
 # name: test_http_get

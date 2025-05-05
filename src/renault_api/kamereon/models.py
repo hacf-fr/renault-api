@@ -98,6 +98,10 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[str]]] = {
     "R5E1VE": {  # Renault 5 E-TECH
         "charge-schedule": _KCM_ENDPOINTS["charge-schedule"],
     },
+    "X071VE": {  # TWINGO III
+        "res-state": None,  # not supported
+        "lock-status": None,  # seems not supported (404)
+    },
     "X101VE": {  # ZOE phase 1
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],  # confirmed
         "charge-mode": _DEFAULT_ENDPOINTS["charge-mode"],  # confirmed
@@ -109,6 +113,10 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[str]]] = {
         "pressure": None,  # not supported
         "res-state": None,  # not supported
         "soc-levels": None,  # not supported
+    },
+    "X102VE": {  # ZOE phase 2
+        "res-state": None,  # not supported
+        "lock-status": None,  # seems not supported (404)
     },
     "XBG1VE": {  # DACIA SPRING
         "lock-status": None,
