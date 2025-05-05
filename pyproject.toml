@@ -20,13 +20,13 @@ classifiers = [
 Changelog = "https://github.com/hacf-fr/renault-api/releases"
 
 [tool.poetry.dependencies]
-python = ">=3.9,<4.0"
+python = ">=3.9.2,<4.0" # 3.9.0, 3.9.1 have issues with cryptography https://github.com/pyca/cryptography/pull/12045
 # Warning: as of 2024-04-23, aiohttp is pinned to 3.9.5 on HA-core
 aiohttp = ">=3.9.5"
 # Warning: as of 2023-07-19, pyjwt is pinned to 2.8.0 on HA-core
 PyJWT = ">=2.8.0"
-#ensure cryptography (for pyjwt) is greater than 42.0.5 to account for PVE-2024-65647
-cryptography = ">=42.0.5"
+#ensure cryptography (for pyjwt) is greater than 44.0.0 to account for CVE-2024-12797
+cryptography = ">=44.0.0"
 #ensure cffi (for cryptography) is greater than 1.17.0 for python 3.13 compatibility
 cffi = ">=1.17.0"
 
