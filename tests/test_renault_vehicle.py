@@ -188,7 +188,7 @@ async def test_get_lock_status(
     assert await vehicle.get_lock_status()
 
 @pytest.mark.asyncio
-async def test_get_lock_status(
+async def test_get_lock_status_no_endpoint(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_lock_status."""
