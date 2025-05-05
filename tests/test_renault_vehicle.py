@@ -185,12 +185,11 @@ async def test_get_lock_status(
     """Test get_lock_status."""
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_lock_status(mocked_responses)
-    try:
+
+    with pytest.raises(EndpointNotAvailableError,
+                       match=f"{EndpointNotAvailableError('lock-status','X102VE' )}"):
         await vehicle.get_lock_status()
-    except EndpointNotAvailableError as err:
-        assert f"{err}" == f"{EndpointNotAvailableError('lock-status','X102VE' )}"
-    else:
-        assert False, "Expected EndpointNotAvailableError not raised"
+
 
 
 
