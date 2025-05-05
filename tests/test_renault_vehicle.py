@@ -187,6 +187,7 @@ async def test_get_lock_status(
     fixtures.inject_get_lock_status(mocked_responses)
     assert await vehicle.get_lock_status()
 
+
 @pytest.mark.asyncio
 async def test_get_lock_status_no_endpoint(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
