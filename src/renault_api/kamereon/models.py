@@ -457,11 +457,11 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
                 if self.chargingStatus is not None
                 else None
             )
-        except ValueError as err:
-            # should we return ChargeState.NOT_AVAILABLE?
-            raise exceptions.KamereonException(
-                f"Unable to convert `{self.chargingStatus}` to ChargeState."
-            ) from err
+        except ValueError:
+            _LOGGER.warning(
+                "Unable to convert `%s` to ChargeState.", self.chargingStatus
+            )
+            return None
 
 
 @dataclass
