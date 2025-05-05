@@ -193,9 +193,6 @@ async def test_get_lock_status(
         await vehicle.get_lock_status()
 
 
-
-
-
 @pytest.mark.asyncio
 async def test_get_notification_settings(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
