@@ -197,7 +197,7 @@ async def test_get_lock_status_no_endpoint(
 
     with pytest.raises(
         EndpointNotAvailableError,
-        match=f"{EndpointNotAvailableError('lock-status','X102VE')}"
+        match=f"{EndpointNotAvailableError('lock-status', 'X102VE')}"
     ):
         await vehicle.get_lock_status()
 
