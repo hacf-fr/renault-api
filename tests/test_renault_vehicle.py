@@ -183,6 +183,15 @@ async def test_get_lock_status(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
     """Test get_lock_status."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "duster.1.json")
+    fixtures.inject_get_lock_status(mocked_responses)
+    assert await vehicle.get_lock_status()
+
+@pytest.mark.asyncio
+async def test_get_lock_status(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses
+) -> None:
+    """Test get_lock_status."""
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_lock_status(mocked_responses)
 
