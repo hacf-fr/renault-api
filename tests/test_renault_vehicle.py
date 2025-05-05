@@ -8,7 +8,6 @@ import aiohttp
 import pytest
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall
-from sqlalchemy.testing import assert_raises
 from syrupy.assertion import SnapshotAssertion
 from yarl import URL
 
