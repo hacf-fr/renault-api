@@ -100,7 +100,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[str]]] = {
     },
     "X071VE": {  # TWINGO III
         "res-state": None,  # not supported
-        # "lock-status": None,  # seems not supported 404, need to verify
+        "lock-status": None,  # seems not supported (404)
     },
     "X101VE": {  # ZOE phase 1
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],  # confirmed
