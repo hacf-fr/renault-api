@@ -8,6 +8,7 @@ import aiohttp
 import pytest
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall
+from sqlalchemy.testing import assert_raises
 from syrupy.assertion import SnapshotAssertion
 from yarl import URL
 
@@ -185,7 +186,14 @@ async def test_get_lock_status(
     """Test get_lock_status."""
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     fixtures.inject_get_lock_status(mocked_responses)
-    assert await vehicle.get_lock_status()
+    try:
+        await vehicle.get_lock_status()
+    except EndpointNotAvailableError as err:
+        assert f"{err}" == f"{EndpointNotAvailableError('lock-status','X102VE' )}"
+    else:
+        assert False, "Expected EndpointNotAvailableError not raised"
+
+
 
 
 @pytest.mark.asyncio

@@ -60,6 +60,7 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/twingo_ze.1.json]
   dict({
+    'lock-status': None,
     'res-state': None,
   })
 # ---
@@ -93,6 +94,7 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/zoe_50.1.json]
   dict({
+    'lock-status': None,
     'res-state': None,
   })
 # ---
