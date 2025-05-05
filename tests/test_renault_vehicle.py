@@ -187,8 +187,8 @@ async def test_get_lock_status(
     fixtures.inject_get_lock_status(mocked_responses)
 
     with pytest.raises(
-            EndpointNotAvailableError,
-            match=f"{EndpointNotAvailableError('lock-status','X102VE' )}"
+        EndpointNotAvailableError,
+        match=f"{EndpointNotAvailableError('lock-status','X102VE' )}"
     ):
         await vehicle.get_lock_status()
 
