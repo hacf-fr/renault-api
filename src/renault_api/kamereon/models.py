@@ -138,6 +138,46 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[str]]] = {
     },
 }
 
+_ALREADY_WARNED_VEHICLE: set[str] = set()
+_ALREADY_WARNED_VEHICLE_ENDPOINT: set[str] = set()
+
+
+def get_model_endpoints(model_code: Optional[str]) -> Mapping[str, Optional[str]]:
+    """Return model endpoints."""
+    if not model_code:
+        # Model code not available
+        return _DEFAULT_ENDPOINTS
+
+    if model_code not in _VEHICLE_ENDPOINTS:
+        # Model not documented
+        if model_code not in _ALREADY_WARNED_VEHICLE:
+            _ALREADY_WARNED_VEHICLE.add(model_code)
+            _LOGGER.warning(
+                "Model %s is not documented, using default endpoints", model_code
+            )
+        return _DEFAULT_ENDPOINTS
+
+    return _VEHICLE_ENDPOINTS[model_code]
+
+
+def get_model_endpoint(model_code: Optional[str], endpoint: str) -> Optional[str]:
+    """Return model endpoint"""
+    endpoints = get_model_endpoints(model_code)
+
+    if endpoint not in endpoints:
+        # Endpoint not documented
+        key = f"{model_code}:{endpoint}"
+        if key not in _ALREADY_WARNED_VEHICLE_ENDPOINT:
+            _ALREADY_WARNED_VEHICLE_ENDPOINT.add(key)
+            _LOGGER.warning(
+                "Endpoint %s for model %s is not documented, using default endpoints",
+                endpoint,
+                model_code,
+            )
+        return _DEFAULT_ENDPOINTS.get(endpoint)
+
+    return endpoints[endpoint]
+
 
 @dataclass
 class KamereonResponseError(BaseModel):
@@ -326,35 +366,11 @@ class KamereonVehicleDetails(BaseModel):
 
     def get_endpoints(self) -> Mapping[str, Optional[str]]:
         """Return model endpoints."""
-        model_code = self.get_model_code()
-        if not model_code:
-            # Model code not available
-            return _DEFAULT_ENDPOINTS
-
-        if model_code not in _VEHICLE_ENDPOINTS:
-            # Model not documented
-            _LOGGER.warning(
-                "Model %s is not documented, using default endpoints",
-                self.get_model_code(),
-            )
-            return _DEFAULT_ENDPOINTS
-
-        return _VEHICLE_ENDPOINTS[model_code]
+        return get_model_endpoints(self.get_model_code())
 
     def get_endpoint(self, endpoint: str) -> Optional[str]:
         """Return model endpoint"""
-        endpoints = self.get_endpoints()
-
-        if endpoint not in endpoints:
-            # Endpoint not documented
-            _LOGGER.warning(
-                "Endpoint %s for model %s is not documented, using default endpoints",
-                endpoint,
-                self.get_model_code(),
-            )
-            return _DEFAULT_ENDPOINTS.get(endpoint)
-
-        return endpoints[endpoint]
+        return get_model_endpoint(self.get_model_code(), endpoint)
 
 
 @dataclass
