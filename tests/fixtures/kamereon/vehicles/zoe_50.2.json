@@ -2,160 +2,284 @@
   "country": "GB",
   "vehicleLinks": [
     {
-      "preferredDealer": {
-        "brand": "RENAULT",
-        "createdDate": "2019-05-23T20:42:01.086661Z",
-        "lastModifiedDate": "2019-05-23T20:42:01.086662Z",
-        "dealerId": "dealer-id-1"
-      },
+      "brand": "RENAULT",
+      "vin": "VF1AAAAA555777988",
+      "status": "ACTIVE",
+      "linkType": "OWNER",
       "garageBrand": "RENAULT",
+      "startDate": "2020-10-05",
+      "createdDate": "2020-10-05T13:47:46.377706Z",
+      "lastModifiedDate": "2023-04-06T05:21:06.505052Z",
+      "ownershipStartDate": "2020-10-05",
+      "ownershipEndDate": "2020-10-05",
+      "cancellationReason": {},
+      "connectedDriver": {
+        "role": "MAIN_DRIVER",
+        "createdDate": "2020-10-07T16:39:52.314153Z",
+        "lastModifiedDate": "2020-10-07T16:40:48.470055Z"
+      },
       "vehicleDetails": {
-        "assets": [
-          {
-            "assetType": "PICTURE",
-            "renditions": [
-              {
-                "resolutionType": "ONE_MYRENAULT_LARGE",
-                "url": "https://3dv2.renault.com/ImageFromBookmark?configuration=DLIGM2%2FKITPOU%2FDANGMO%2FITPK4%2FVOLNCH%2FREACTI%2FSSAEBS%2FPRAHL%2FRRCAM%2FX10%2FB10%2FEA3%2FDG%2FCAREG%2FVSTLAR%2FRET03%2FPROJAB%2FRALU16%2FDRAP13%2F3ATRPH%2FTELNJ%2FALEVA%2FVLCUIR%2FRETRCR%2FRETC%2FLVAREL%2FSGSCHA%2FNA418%2FRDIF01%2FTL01A%2FNBT022&databaseId=a864e752-b1b9-405e-9c3e-880073e36cc9&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_LARGE"
-              },
-              {
-                "resolutionType": "ONE_MYRENAULT_SMALL",
-                "url": "https://3dv2.renault.com/ImageFromBookmark?configuration=DLIGM2%2FKITPOU%2FDANGMO%2FITPK4%2FVOLNCH%2FREACTI%2FSSAEBS%2FPRAHL%2FRRCAM%2FX10%2FB10%2FEA3%2FDG%2FCAREG%2FVSTLAR%2FRET03%2FPROJAB%2FRALU16%2FDRAP13%2F3ATRPH%2FTELNJ%2FALEVA%2FVLCUIR%2FRETRCR%2FRETC%2FLVAREL%2FSGSCHA%2FNA418%2FRDIF01%2FTL01A%2FNBT022&databaseId=a864e752-b1b9-405e-9c3e-880073e36cc9&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_SMALL_V2"
-              }
-            ]
-          },
-          {
-            "title": "PDF Guide",
-            "description": "",
-            "assetType": "PDF",
-            "assetRole": "GUIDE",
-            "renditions": [
-              {
-                "url": "https://cdn.group.renault.com/ren/gb/myr/assets/x102ve/manual.pdf.asset.pdf/1558696740707.pdf"
-              }
-            ]
-          },
-          {
-            "title": "e-guide",
-            "description": "",
-            "assetType": "URL",
-            "assetRole": "GUIDE",
-            "renditions": [
-              {
-                "url": "https://gb.e-guide.renault.com/eng/Zoe-ph2"
-              }
-            ]
-          },
-          {
-            "title": "All-New ZOE: Welcome to your new car",
-            "description": "",
-            "assetType": "VIDEO",
-            "assetRole": "CAR",
-            "renditions": [
-              {
-                "url": "1OGwwmWHB6o"
-              }
-            ]
-          },
-          {
-            "title": "Renault ZOE: All you need to know",
-            "description": "",
-            "assetType": "VIDEO",
-            "assetRole": "CAR",
-            "renditions": [
-              {
-                "url": "_BVH-Rd6e5I"
-              }
-            ]
-          }
-        ],
+        "vin": "VF1AAAAA555777988",
+        "registrationDate": "2020-10-05",
+        "firstRegistrationDate": "2020-10-05",
         "engineType": "5AQ",
-        "registrationCountry": {
-          "code": "FR"
+        "engineRatio": "605",
+        "modelSCR": "ZOE",
+        "passToSalesDate": "2020-09-07",
+        "deliveryCountry": {
+          "code": "GB",
+          "label": "GREAT BRITAIN"
         },
-        "radioType": {
-          "group": "425",
-          "code": "NA418",
-          "label": "  FULL NAV DAB ETH - AUDI"
+        "family": {
+          "code": "X10",
+          "label": "",
+          "group": "007"
         },
         "tcu": {
-          "group": "E70",
           "code": "AIVCT",
-          "label": "AVEC BOITIER CONNECT AIVC"
+          "label": "WITH AIVC CONNECTION UNIT",
+          "group": "E70"
+        },
+        "navigationAssistanceLevel": {
+          "code": "SAN408",
+          "label": "CRITERE DE CONTEXTE",
+          "group": "408"
+        },
+        "battery": {
+          "code": "BT4AR1",
+          "label": "BT4AR1 BATTERY",
+          "group": "968"
+        },
+        "radioType": {
+          "code": "NA418",
+          "label": "FULL NAV DAB ETH - AUDI",
+          "group": "425"
+        },
+        "registrationCountry": {
+          "code": "GB"
         },
         "brand": {
           "label": "RENAULT"
         },
-        "deliveryDate": "2020-01-22",
-        "engineEnergyType": "ELEC",
-        "registrationDate": "2020-01-13",
-        "gearbox": {
-          "group": "427",
-          "code": "BVEL",
-          "label": "BOITE A VARIATEUR ELECTRIQUE"
-        },
         "model": {
-          "group": "971",
           "code": "X102VE",
-          "label": "ZOE"
+          "label": "ZOE",
+          "group": "971"
         },
-        "electrical": true,
-        "energy": {
-          "group": "019",
-          "code": "ELEC",
-          "label": "ELECTRIQUE"
-        },
-        "navigationAssistanceLevel": {
-          "group": "408",
-          "code": "SAN408",
-          "label": "CRITERE DE CONTEXTE"
-        },
-        "yearsOfMaintenance": 12,
-        "rlinkStore": false,
-        "radioCode": "1234",
-        "registrationNumber": "REG-NUMBER",
-        "modelSCR": "ZOE",
-        "easyConnectStore": false,
-        "engineRatio": "605",
-        "battery": {
-          "group": "968",
-          "code": "BT4AR1",
-          "label": "BATTERIE BT4AR1"
-        },
-        "vin": "VF1AAAAA555777999",
-        "retrievedFromDhs": false,
-        "vcd": "ASCOD0/DLIGM2/SSTINC/KITPOU/SKTPGR/SSCCPC/SDPSEC/FDIU2/SSMAP/SSCALL/FACBA1/DANGMO/SSRCAR/SSCABD/AIVCT/AVGSI/ITPK4/VOLNCH/REACTI/AVOSP1/SWALBO/SSDWGE/1234Y/SSAEBS/PRAHL/RRCAM/STANDA/X10/B10/EA3/MD/ELEC/DG/TEMP/TR4X2/AFURGE/RV/ABS/CAREG/LAC/VSTLAR/CPETIR/RET03/PROJAB/RALU16/CEAVRH/ADAC/AIRBA2/SERIE/DRA/DRAP13/HARM02/3ATRPH/SGAV01/BARRAB/TELNJ/SFBANA/KM/DPRPN/AVREPL/SSDECA/ABLAV/ASRESP/ALEVA/SCACBA/SOP02C/STHPLG/SKTGRV/VLCUIR/RETRCR/TRSEV1/RETC/LVAVIP/LVAREL/SASURV/KTGREP/SGSCHA/FRA01/APL03/FSTPO/ALOUC5/CMAR3P/SAN408/NA418/BVEL/AUTAUG/SPREST/RDIF01/ISOFIX/EQPEUR/HRGM01/SDPCLV/CHASTD/TL01A/SPRODI/SAN613/AIRBDE/PSMREC/ELC1/SSPTLP/SANCML/SEXTIN/PE2019/PHAS2/SAN913/THABT2/SSTYAD/SSHYB/052KWH/BT4AR1/VEC018/X102VE/NBT022/5AQ",
-        "firstRegistrationDate": "2020-01-13",
-        "deliveryCountry": {
-          "code": "FR",
-          "label": "FRANCE"
-        },
-        "connectivityTechnology": "RLINK1",
-        "family": {
-          "group": "007",
-          "code": "X10",
-          "label": "FAMILLE X10"
+        "gearbox": {
+          "code": "BVEL",
+          "label": "ELEC.VAR.GEARBOX",
+          "group": "427"
         },
         "version": {
-          "code": "INT A MD 1L"
-        }
-      },
-      "status": "ACTIVE",
-      "createdDate": "2020-08-21T16:48:00.243967Z",
-      "cancellationReason": {},
-      "linkType": "OWNER",
-      "connectedDriver": {
-        "role": "MAIN_DRIVER",
-        "lastModifiedDate": "2020-08-22T09:41:53.477398Z",
-        "createdDate": "2020-08-22T09:41:53.477398Z"
-      },
-      "vin": "VF1AAAAA555777999",
-      "lastModifiedDate": "2020-11-29T22:01:21.162572Z",
-      "brand": "RENAULT",
-      "startDate": "2020-08-21",
-      "ownershipStartDate": "2020-01-13",
-      "ownershipEndDate": "2020-08-21"
+          "code": "IND B MC 1LP"
+        },
+        "energy": {
+          "code": "ELEC",
+          "label": "ELECTRICITY",
+          "group": "019"
+        },
+        "bodyType": {
+          "code": "B10",
+          "label": "",
+          "group": "008"
+        },
+        "steeringSide": {
+          "code": "DD",
+          "label": "RIGHT-HAND DRIVE",
+          "group": "027"
+        },
+        "additionalEngineType": {
+          "code": "SSTYAD",
+          "label": "WITHOUT ADDITIONAL ENGINE TYPE",
+          "group": "948"
+        },
+        "hybridation": {
+          "code": "SSHYB",
+          "label": "NO HYBRIDISATION LEVEL",
+          "group": "956"
+        },
+        "registrationNumber": "REG-NUMBER",
+        "vcd": "STANDA/X10/B10/EA3/MC/ELEC/DD/TEMP/TR4X2/AFURGE/RV/ABS/CAREG/LAC/VSTLAR/SUPCPE/RET03/PROJAB/RALU16/CEAVRH/ADAC/AIRBA2/SERIE/DRA/DRAP13/HARM02/3ATRPH/SGAV01/BARRAB/TELNJ/SFBANA/MILES/DPRPN/AVREPL/SSDECA/ABLAV/ASRESP/ALEVA/CACBL2/SOP02C/STHPLG/SKTGRV/VLCUI2/RETRCR/TRSEV1/RETC/LVAVIP/LVAREL/SASURV/KTGREP/SGACHA/GBR01/APL03/FSTPO/ALOUC5/CMAR3P/SAN408/NA418/BVEL/AUTAUG/SPREST/RDIF01/PNSTRD/ISOFIX/EQPEUR/HRGM01/PREALA/CHARAP/TL06A/SPRODI/SAN613/AIRBDE/PSMREC/ELC1/SSPTLP/SANCML/SEXTIN/PE2019/PHAS2/SAN913/THABT2/SSTYAD/SSHYB/052KWH/BT4AR1/VEC114/X102VE/NBT022/5AQ/ASCOD0/DLIGM2/SSTINC/KITPOU/SKTPGR/SSCCPC/SDPSEC/FDIU2/SSMAP/SSCALL/FACBA1/DANGMO/AVRCAR/SSCABD/AIVCT/AVGSI/ITPK4/VOLCHA/REACTI/AVOSP1/SWALBO/SSDWGE/1234Y/AEBS07/TCHA0/PRAHL/RRCAM",
+        "manufacturingDate": "2020-09-04",
+        "assets": [
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "mybrand_2",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=X10%2FB10%2FEA3%2FDD%2FCAREG%2FVSTLAR%2FRET03%2FPROJAB%2FRALU16%2FDRAP13%2FHARM02%2F3ATRPH%2FTELNJ%2FALEVA%2FVLCUI2%2FRETRCR%2FRETC%2FLVAREL%2FSGACHA%2FNA418%2FRDIF01%2FTL06A%2FNBT022%2FDLIGM2%2FKITPOU%2FDANGMO%2FITPK4%2FVOLCHA%2FREACTI%2FAEBS07%2FPRAHL%2FRRCAM&databaseId=7f3eb877-27db-4506-b0e1-b4a381659b25&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=X10%2FB10%2FEA3%2FDD%2FCAREG%2FVSTLAR%2FRET03%2FPROJAB%2FRALU16%2FDRAP13%2FHARM02%2F3ATRPH%2FTELNJ%2FALEVA%2FVLCUI2%2FRETRCR%2FRETC%2FLVAREL%2FSGACHA%2FNA418%2FRDIF01%2FTL06A%2FNBT022%2FDLIGM2%2FKITPOU%2FDANGMO%2FITPK4%2FVOLCHA%2FREACTI%2FAEBS07%2FPRAHL%2FRRCAM&databaseId=7f3eb877-27db-4506-b0e1-b4a381659b25&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_LARGE"
+              }
+            ],
+            "viewPointInLowerCase": "mybrand_2"
+          },
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "mybrand_5",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=X10%2FB10%2FEA3%2FDD%2FCAREG%2FVSTLAR%2FRET03%2FPROJAB%2FRALU16%2FDRAP13%2FHARM02%2F3ATRPH%2FTELNJ%2FALEVA%2FVLCUI2%2FRETRCR%2FRETC%2FLVAREL%2FSGACHA%2FNA418%2FRDIF01%2FTL06A%2FNBT022%2FDLIGM2%2FKITPOU%2FDANGMO%2FITPK4%2FVOLCHA%2FREACTI%2FAEBS07%2FPRAHL%2FRRCAM&databaseId=7f3eb877-27db-4506-b0e1-b4a381659b25&bookmarkSet=RSITE&bookmark=EXT_34_AV&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=X10%2FB10%2FEA3%2FDD%2FCAREG%2FVSTLAR%2FRET03%2FPROJAB%2FRALU16%2FDRAP13%2FHARM02%2F3ATRPH%2FTELNJ%2FALEVA%2FVLCUI2%2FRETRCR%2FRETC%2FLVAREL%2FSGACHA%2FNA418%2FRDIF01%2FTL06A%2FNBT022%2FDLIGM2%2FKITPOU%2FDANGMO%2FITPK4%2FVOLCHA%2FREACTI%2FAEBS07%2FPRAHL%2FRRCAM&databaseId=7f3eb877-27db-4506-b0e1-b4a381659b25&bookmarkSet=RSITE&bookmark=EXT_34_AV&profile=HELIOS_OWNERSERVICES_LARGE"
+              }
+            ],
+            "viewPointInLowerCase": "mybrand_5"
+          },
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "myb_car_selector",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=X10%2FB10%2FEA3%2FDD%2FCAREG%2FVSTLAR%2FRET03%2FPROJAB%2FRALU16%2FDRAP13%2FHARM02%2F3ATRPH%2FTELNJ%2FALEVA%2FVLCUI2%2FRETRCR%2FRETC%2FLVAREL%2FSGACHA%2FNA418%2FRDIF01%2FTL06A%2FNBT022%2FDLIGM2%2FKITPOU%2FDANGMO%2FITPK4%2FVOLCHA%2FREACTI%2FAEBS07%2FPRAHL%2FRRCAM&databaseId=7f3eb877-27db-4506-b0e1-b4a381659b25&bookmarkSet=CARPICKER&bookmark=EXT_RIGHT_SIDE&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=X10%2FB10%2FEA3%2FDD%2FCAREG%2FVSTLAR%2FRET03%2FPROJAB%2FRALU16%2FDRAP13%2FHARM02%2F3ATRPH%2FTELNJ%2FALEVA%2FVLCUI2%2FRETRCR%2FRETC%2FLVAREL%2FSGACHA%2FNA418%2FRDIF01%2FTL06A%2FNBT022%2FDLIGM2%2FKITPOU%2FDANGMO%2FITPK4%2FVOLCHA%2FREACTI%2FAEBS07%2FPRAHL%2FRRCAM&databaseId=7f3eb877-27db-4506-b0e1-b4a381659b25&bookmarkSet=CARPICKER&bookmark=EXT_RIGHT_SIDE&profile=HELIOS_OWNERSERVICES_LARGE"
+              }
+            ],
+            "viewPointInLowerCase": "myb_car_selector"
+          },
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "myb_car_page_dashboard",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=X10%2FB10%2FEA3%2FDD%2FCAREG%2FVSTLAR%2FRET03%2FPROJAB%2FRALU16%2FDRAP13%2FHARM02%2F3ATRPH%2FTELNJ%2FALEVA%2FVLCUI2%2FRETRCR%2FRETC%2FLVAREL%2FSGACHA%2FNA418%2FRDIF01%2FTL06A%2FNBT022%2FDLIGM2%2FKITPOU%2FDANGMO%2FITPK4%2FVOLCHA%2FREACTI%2FAEBS07%2FPRAHL%2FRRCAM&databaseId=7f3eb877-27db-4506-b0e1-b4a381659b25&bookmarkSet=CARPICKER&bookmark=EXT_LEFT_SIDE&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=X10%2FB10%2FEA3%2FDD%2FCAREG%2FVSTLAR%2FRET03%2FPROJAB%2FRALU16%2FDRAP13%2FHARM02%2F3ATRPH%2FTELNJ%2FALEVA%2FVLCUI2%2FRETRCR%2FRETC%2FLVAREL%2FSGACHA%2FNA418%2FRDIF01%2FTL06A%2FNBT022%2FDLIGM2%2FKITPOU%2FDANGMO%2FITPK4%2FVOLCHA%2FREACTI%2FAEBS07%2FPRAHL%2FRRCAM&databaseId=7f3eb877-27db-4506-b0e1-b4a381659b25&bookmarkSet=CARPICKER&bookmark=EXT_LEFT_SIDE&profile=HELIOS_OWNERSERVICES_LARGE"
+              }
+            ],
+            "viewPointInLowerCase": "myb_car_page_dashboard"
+          },
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "myb_program_settings_page",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=X10%2FB10%2FEA3%2FDD%2FCAREG%2FVSTLAR%2FRET03%2FPROJAB%2FRALU16%2FDRAP13%2FHARM02%2F3ATRPH%2FTELNJ%2FALEVA%2FVLCUI2%2FRETRCR%2FRETC%2FLVAREL%2FSGACHA%2FNA418%2FRDIF01%2FTL06A%2FNBT022%2FDLIGM2%2FKITPOU%2FDANGMO%2FITPK4%2FVOLCHA%2FREACTI%2FAEBS07%2FPRAHL%2FRRCAM&databaseId=7f3eb877-27db-4506-b0e1-b4a381659b25&bookmarkSet=CARPICKER&bookmark=EXT_LEFT_SIDE&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=X10%2FB10%2FEA3%2FDD%2FCAREG%2FVSTLAR%2FRET03%2FPROJAB%2FRALU16%2FDRAP13%2FHARM02%2F3ATRPH%2FTELNJ%2FALEVA%2FVLCUI2%2FRETRCR%2FRETC%2FLVAREL%2FSGACHA%2FNA418%2FRDIF01%2FTL06A%2FNBT022%2FDLIGM2%2FKITPOU%2FDANGMO%2FITPK4%2FVOLCHA%2FREACTI%2FAEBS07%2FPRAHL%2FRRCAM&databaseId=7f3eb877-27db-4506-b0e1-b4a381659b25&bookmarkSet=CARPICKER&bookmark=EXT_LEFT_SIDE&profile=HELIOS_OWNERSERVICES_LARGE"
+              }
+            ],
+            "viewPointInLowerCase": "myb_program_settings_page"
+          },
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "myb_plug_and_charge_activation",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=X10%2FB10%2FEA3%2FDD%2FCAREG%2FVSTLAR%2FRET03%2FPROJAB%2FRALU16%2FDRAP13%2FHARM02%2F3ATRPH%2FTELNJ%2FALEVA%2FVLCUI2%2FRETRCR%2FRETC%2FLVAREL%2FSGACHA%2FNA418%2FRDIF01%2FTL06A%2FNBT022%2FDLIGM2%2FKITPOU%2FDANGMO%2FITPK4%2FVOLCHA%2FREACTI%2FAEBS07%2FPRAHL%2FRRCAM&databaseId=7f3eb877-27db-4506-b0e1-b4a381659b25&bookmarkSet=CARPICKER&bookmark=EXT_RIGHT_SIDE&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=X10%2FB10%2FEA3%2FDD%2FCAREG%2FVSTLAR%2FRET03%2FPROJAB%2FRALU16%2FDRAP13%2FHARM02%2F3ATRPH%2FTELNJ%2FALEVA%2FVLCUI2%2FRETRCR%2FRETC%2FLVAREL%2FSGACHA%2FNA418%2FRDIF01%2FTL06A%2FNBT022%2FDLIGM2%2FKITPOU%2FDANGMO%2FITPK4%2FVOLCHA%2FREACTI%2FAEBS07%2FPRAHL%2FRRCAM&databaseId=7f3eb877-27db-4506-b0e1-b4a381659b25&bookmarkSet=CARPICKER&bookmark=EXT_RIGHT_SIDE&profile=HELIOS_OWNERSERVICES_LARGE"
+              }
+            ],
+            "viewPointInLowerCase": "myb_plug_and_charge_activation"
+          },
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "myb_plug_and_charge_my_car",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=X10%2FB10%2FEA3%2FDD%2FCAREG%2FVSTLAR%2FRET03%2FPROJAB%2FRALU16%2FDRAP13%2FHARM02%2F3ATRPH%2FTELNJ%2FALEVA%2FVLCUI2%2FRETRCR%2FRETC%2FLVAREL%2FSGACHA%2FNA418%2FRDIF01%2FTL06A%2FNBT022%2FDLIGM2%2FKITPOU%2FDANGMO%2FITPK4%2FVOLCHA%2FREACTI%2FAEBS07%2FPRAHL%2FRRCAM&databaseId=7f3eb877-27db-4506-b0e1-b4a381659b25&bookmarkSet=CARPICKER&bookmark=EXT_LEFT_SIDE&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=X10%2FB10%2FEA3%2FDD%2FCAREG%2FVSTLAR%2FRET03%2FPROJAB%2FRALU16%2FDRAP13%2FHARM02%2F3ATRPH%2FTELNJ%2FALEVA%2FVLCUI2%2FRETRCR%2FRETC%2FLVAREL%2FSGACHA%2FNA418%2FRDIF01%2FTL06A%2FNBT022%2FDLIGM2%2FKITPOU%2FDANGMO%2FITPK4%2FVOLCHA%2FREACTI%2FAEBS07%2FPRAHL%2FRRCAM&databaseId=7f3eb877-27db-4506-b0e1-b4a381659b25&bookmarkSet=CARPICKER&bookmark=EXT_LEFT_SIDE&profile=HELIOS_OWNERSERVICES_LARGE"
+              }
+            ],
+            "viewPointInLowerCase": "myb_plug_and_charge_my_car"
+          },
+          {
+            "assetType": "PDF",
+            "assetRole": "GUIDE",
+            "title": "PDF Guide",
+            "description": "",
+            "renditions": [
+              {
+                "url": "https://cdn.group.renault.com/ren/gb/myr/assets/x102ve/manual.pdf.asset.pdf/29100d3cba.pdf",
+                "size": "90"
+              }
+            ]
+          },
+          {
+            "assetType": "URL",
+            "assetRole": "GUIDE",
+            "title": "e-guide",
+            "description": "",
+            "renditions": [
+              {
+                "url": "https://gb.e-guide.renault.com/eng/Zoe-ph2",
+                "size": "42"
+              }
+            ]
+          },
+          {
+            "assetType": "URL",
+            "assetRole": "CAR",
+            "title": "More videos",
+            "description": "",
+            "renditions": [
+              {
+                "url": "https://www.youtube.com/playlist?list=PLlH1HNPlQbpP3G82bMkzyh3-l3AzeZ0r5",
+                "size": "72"
+              }
+            ]
+          },
+          {
+            "assetType": "VIDEO",
+            "assetRole": "CAR",
+            "title": "All-New ZOE: Welcome to your new car",
+            "description": "",
+            "renditions": [
+              {
+                "url": "1OGwwmWHB6o",
+                "size": "11"
+              }
+            ]
+          },
+          {
+            "assetType": "VIDEO",
+            "assetRole": "CAR",
+            "title": "Renault ZOE: All you need to know",
+            "description": "",
+            "renditions": [
+              {
+                "url": "_BVH-Rd6e5I",
+                "size": "11"
+              }
+            ]
+          }
+        ],
+        "yearsOfMaintenance": 12,
+        "connectivityTechnology": "RLINK1",
+        "easyConnectStore": true,
+        "electrical": true,
+        "deliveryDate": "2020-10-05",
+        "retrievedFromDhs": false,
+        "engineEnergyType": "ELEC",
+        "radioCode": "",
+        "premiumSubscribed": false,
+        "batteryType": "NMC"
+      }
     }
-  ],
-  "accountId": "account-id-1"
+  ]
 }
