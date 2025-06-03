@@ -19,6 +19,9 @@ classifiers = [
 [tool.poetry.urls]
 Changelog = "https://github.com/hacf-fr/renault-api/releases"
 
+[tool.poetry.requires-plugins]
+poetry-plugin-export = ">=1.8"
+
 [tool.poetry.dependencies]
 python = ">=3.9.2,<4.0" # 3.9.0, 3.9.1 have issues with cryptography https://github.com/pyca/cryptography/pull/12045
 # Warning: as of 2024-04-23, aiohttp is pinned to 3.9.5 on HA-core
