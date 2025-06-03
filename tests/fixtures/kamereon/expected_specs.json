@@ -10,8 +10,7 @@
     "uses_electricity": false,
     "uses_fuel": true,
     "supports-hvac-status": false,
-    "supports-location": true,
-    "charge-uses-kcm": false
+    "supports-location": true
   },
   "captur_ii.2.json": {
     "get_brand_label": "RENAULT",
@@ -24,8 +23,7 @@
     "uses_electricity": true,
     "uses_fuel": true,
     "supports-hvac-status": false,
-    "supports-location": true,
-    "charge-uses-kcm": false
+    "supports-location": true
   },
   "clio_v.1.json": {
     "get_brand_label": "RENAULT",
@@ -38,8 +36,7 @@
     "uses_electricity": false,
     "uses_fuel": true,
     "supports-hvac-status": false,
-    "supports-location": true,
-    "charge-uses-kcm": false
+    "supports-location": true
   },
   "duster.1.json": {
     "get_brand_label": "RENAULT",
@@ -52,8 +49,7 @@
     "uses_electricity": false,
     "uses_fuel": true,
     "supports-hvac-status": true,
-    "supports-location": true,
-    "charge-uses-kcm": false
+    "supports-location": true
   },
   "twingo_ze.1.json": {
     "get_brand_label": "RENAULT",
@@ -66,8 +62,7 @@
     "uses_electricity": true,
     "uses_fuel": false,
     "supports-hvac-status": true,
-    "supports-location": true,
-    "charge-uses-kcm": false
+    "supports-location": true
   },
   "zoe_40.1.json": {
     "get_brand_label": "RENAULT",
@@ -80,8 +75,7 @@
     "uses_electricity": true,
     "uses_fuel": false,
     "supports-hvac-status": true,
-    "supports-location": false,
-    "charge-uses-kcm": false
+    "supports-location": false
   },
   "zoe_40.2.json": {
     "get_brand_label": "RENAULT",
@@ -94,8 +88,7 @@
     "uses_electricity": true,
     "uses_fuel": false,
     "supports-hvac-status": true,
-    "supports-location": false,
-    "charge-uses-kcm": false
+    "supports-location": false
   },
   "zoe_50.1.json": {
     "get_brand_label": "RENAULT",
@@ -108,8 +101,7 @@
     "uses_electricity": true,
     "uses_fuel": false,
     "supports-hvac-status": true,
-    "supports-location": true,
-    "charge-uses-kcm": false
+    "supports-location": true
   },
   "spring.1.json": {
     "get_brand_label": "DACIA",
@@ -122,8 +114,7 @@
     "uses_electricity": true,
     "uses_fuel": false,
     "supports-hvac-status": true,
-    "supports-location": true,
-    "charge-uses-kcm": true
+    "supports-location": true
   },
   "megane_e-tech.1.json": {
     "get_brand_label": "RENAULT",
@@ -136,8 +127,7 @@
     "uses_electricity": true,
     "uses_fuel": false,
     "supports-hvac-status": true,
-    "supports-location": true,
-    "charge-uses-kcm": false
+    "supports-location": true
   },
   "megane_e-tech.2.json": {
     "get_brand_label": "RENAULT",
@@ -150,7 +140,6 @@
     "uses_electricity": true,
     "uses_fuel": false,
     "supports-hvac-status": true,
-    "supports-location": true,
-    "charge-uses-kcm": false
+    "supports-location": true
   }
 }

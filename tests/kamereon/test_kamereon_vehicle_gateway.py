@@ -49,6 +49,5 @@ def test_vehicles_response(filename: str) -> None:
             "reports_charging_power_in_watts": power_in_watts,
             "uses_electricity": vehicle_data.uses_electricity(),
             "uses_fuel": vehicle_data.uses_fuel(),
-            "charge-uses-kcm": vehicle_data.controls_action_via_kcm("charge"),
         }
         assert expected_specs == generated_specs

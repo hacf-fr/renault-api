@@ -55,6 +55,5 @@ def test_vehicles_response(filename: str) -> None:
                     "hvac-status"
                 ),
                 "supports-location": vehicle_details.supports_endpoint("location"),
-                "charge-uses-kcm": vehicle_details.controls_action_via_kcm("charge"),
             }
             assert EXPECTED_SPECS[os.path.basename(filename)] == generated_specs

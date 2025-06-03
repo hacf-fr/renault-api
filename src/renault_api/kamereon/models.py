@@ -407,15 +407,6 @@ class KamereonVehicleDetails(BaseModel):
         # Default to True for unknown vehicles
         return self.get_endpoint(endpoint) is not None
 
-    def controls_action_via_kcm(self, action: str) -> bool:
-        """Return True if model uses endpoint via kcm."""
-        # Default to False for unknown vehicles
-        if self.model and self.model.code:
-            return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
-                self.model.code, {}
-            ).get(f"control-{action}-via-kcm", False)
-        return False
-
     def get_endpoints(self) -> Mapping[str, Optional[EndpointDefinition]]:
         """Return model endpoints."""
         return get_model_endpoints(self.get_model_code())
@@ -665,15 +656,6 @@ class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
             return GATEWAY_SPECIFICATIONS.get(  # type:ignore[no-any-return]
                 self.carGateway, {}
             ).get("reports-in-watts", False)
-        return False
-
-    def controls_action_via_kcm(self, action: str) -> bool:
-        """Return True if model uses endpoint via kcm."""
-        # Default to False for unknown vehicles
-        if self.modelCodeDetail:
-            return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
-                self.modelCodeDetail, {}
-            ).get(f"control-{action}-via-kcm", False)
         return False
 
 
