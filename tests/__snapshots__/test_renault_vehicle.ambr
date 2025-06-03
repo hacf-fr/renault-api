@@ -111,7 +111,6 @@
     'charge-mode': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charge-mode', mode='default'),
     'charge-schedule': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charge-schedule', mode='default'),
     'charges': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charges', mode='default'),
-    'charging-settings': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charging-settings', mode='default'),
     'cockpit': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/cockpit', mode='default'),
     'hvac-history': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/hvac-history', mode='default'),
     'hvac-sessions': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/hvac-sessions', mode='default'),
