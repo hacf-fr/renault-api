@@ -4,6 +4,7 @@ from datetime import datetime
 from datetime import timezone
 from typing import Any
 from typing import Optional
+from typing import Union
 from typing import cast
 
 import aiohttp
@@ -120,21 +121,15 @@ class RenaultVehicle:
         )
 
     async def _set_vehicle_data(
-        self, endpoint: str, json: Optional[dict[str, Any]]
+        self,
+        endpoint: Union[str, models.EndpointDefinition],
+        json: Optional[dict[str, Any]],
     ) -> models.KamereonVehicleDataResponse:
         """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
-        full_endpoint = await self.get_full_endpoint(endpoint)
-        response = await self.http_post(full_endpoint, json)
-        return cast(
-            models.KamereonVehicleDataResponse,
-            schemas.KamereonVehicleDataResponseSchema.load(response.raw_data),
-        )
-
-    async def _set_vehicle_data_from_endpoint(
-        self, endpoint: str, json: Optional[dict[str, Any]]
-    ) -> models.KamereonVehicleDataResponse:
-        """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
-        full_endpoint = await self.get_full_endpoint(endpoint)
+        if isinstance(endpoint, models.EndpointDefinition):
+            full_endpoint = ACCOUNT_ENDPOINT_ROOT + endpoint.endpoint
+        else:
+            full_endpoint = await self.get_full_endpoint(endpoint)
         response = await self.http_post(full_endpoint, json)
         return cast(
             models.KamereonVehicleDataResponse,
@@ -534,16 +529,10 @@ class RenaultVehicle:
                     },
                 }
             }
-        response = await self.http_post(
-            ACCOUNT_ENDPOINT_ROOT + endpoint_definition.endpoint, json
-        )
-        data_response = cast(
-            models.KamereonVehicleDataResponse,
-            schemas.KamereonVehicleDataResponseSchema.load(response.raw_data),
-        )
+        response = await self._set_vehicle_data(endpoint_definition, json)
         return cast(
             models.KamereonVehicleChargingStartActionData,
-            data_response.get_attributes(
+            response.get_attributes(
                 schemas.KamereonVehicleChargingStartActionDataSchema
             ),
         )
@@ -570,16 +559,10 @@ class RenaultVehicle:
                     },
                 }
             }
-        response = await self.http_post(
-            ACCOUNT_ENDPOINT_ROOT + endpoint_definition.endpoint, json
-        )
-        data_response = cast(
-            models.KamereonVehicleDataResponse,
-            schemas.KamereonVehicleDataResponseSchema.load(response.raw_data),
-        )
+        response = await self._set_vehicle_data(endpoint_definition, json)
         return cast(
             models.KamereonVehicleChargingStartActionData,
-            data_response.get_attributes(
+            response.get_attributes(
                 schemas.KamereonVehicleChargingStartActionDataSchema
             ),
         )
