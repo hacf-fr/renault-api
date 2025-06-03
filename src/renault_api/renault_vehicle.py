@@ -130,6 +130,17 @@ class RenaultVehicle:
             schemas.KamereonVehicleDataResponseSchema.load(response.raw_data),
         )
 
+    async def _set_vehicle_data_from_endpoint(
+        self, endpoint: str, json: Optional[dict[str, Any]]
+    ) -> models.KamereonVehicleDataResponse:
+        """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
+        full_endpoint = await self.get_full_endpoint(endpoint)
+        response = await self.http_post(full_endpoint, json)
+        return cast(
+            models.KamereonVehicleDataResponse,
+            schemas.KamereonVehicleDataResponseSchema.load(response.raw_data),
+        )
+
     async def get_details(self) -> models.KamereonVehicleDetails:
         """Get vehicle details."""
         if self._vehicle_details:
