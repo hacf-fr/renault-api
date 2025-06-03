@@ -79,6 +79,12 @@ class EndpointDefinition:
 
 
 _DEFAULT_ENDPOINTS: dict[str, EndpointDefinition] = {
+    "actions/horn-start": EndpointDefinition(
+        "/kca/car-adapter/v1/cars/{vin}/actions/horn-lights"
+    ),
+    "actions/lights-start": EndpointDefinition(
+        "/kca/car-adapter/v1/cars/{vin}/actions/horn-lights"
+    ),
     "actions/charge-set-mode": EndpointDefinition(
         "/kca/car-adapter/v1/cars/{vin}/actions/charge-mode"
     ),
