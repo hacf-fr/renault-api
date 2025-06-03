@@ -1,0 +1,7 @@
+{
+   "data": {
+      "id": "guid",
+      "type": "HornLights",
+      "attributes": {"action": "start", "target": "horn"}
+   }
+}

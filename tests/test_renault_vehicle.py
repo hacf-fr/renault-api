@@ -381,6 +381,30 @@ async def test_set_hvac_schedules(
 
 
 @pytest.mark.asyncio
+async def test_start_horn(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+) -> None:
+    """Test start_horn."""
+    url = fixtures.inject_start_horn(mocked_responses)
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
+    assert await vehicle.start_horn()
+
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    assert request.kwargs["json"] == snapshot
+
+@pytest.mark.asyncio
+async def test_start_lights(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+) -> None:
+    """Test start_lights."""
+    url = fixtures.inject_start_lights(mocked_responses)
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
+    assert await vehicle.start_lights()
+
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    assert request.kwargs["json"] == snapshot
+
+@pytest.mark.asyncio
 async def test_http_get(
     vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:
