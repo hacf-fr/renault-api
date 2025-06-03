@@ -169,9 +169,9 @@ def test_cockpit_captur_ii() -> None:
 
 
 def test_charging_settings_single() -> None:
-    """Test vehicle data for charging-settings.json."""
+    """Test vehicle data for ev-settings.json."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
-        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/charging-settings.single.json",
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_kcm_data/ev-settings.single.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
@@ -229,9 +229,9 @@ def test_charging_settings_single() -> None:
 
 
 def test_charging_settings_multi() -> None:
-    """Test vehicle data for charging-settings.json."""
+    """Test vehicle data for ev-settings.json."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
-        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/charging-settings.multi.json",
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_kcm_data/ev-settings.multi.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
