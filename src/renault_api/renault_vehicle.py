@@ -470,7 +470,6 @@ class RenaultVehicle:
         }
 
         response = await self._set_vehicle_data("actions/charge-set-schedule", json)
-
         return cast(
             models.KamereonVehicleChargeScheduleActionData,
             response.get_attributes(
