@@ -28,7 +28,7 @@ async def get_locale(
 ) -> str:
     """Prompt the user for locale."""
     credential_store: CredentialStore = ctx_data["credential_store"]
-    locale = credential_store.get_value(CONF_LOCALE)
+    locale: str | None = credential_store.get_value(CONF_LOCALE)
     if locale:
         return locale
 
