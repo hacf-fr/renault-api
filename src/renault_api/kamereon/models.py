@@ -58,9 +58,6 @@ VEHICLE_SPECIFICATIONS: dict[str, dict[str, Any]] = {
         "reports-charge-session-durations-in-minutes": True,
         "reports-in-watts": True,
     },
-    "XBG1VE": {  # DACIA SPRING
-        "control-charge-via-kcm": True,
-    },
 }
 
 GATEWAY_SPECIFICATIONS: dict[str, dict[str, Any]] = {
