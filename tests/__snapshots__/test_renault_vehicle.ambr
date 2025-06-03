@@ -1,4 +1,86 @@
 # serializer version: 1
+# name: test_get_charge_schedule
+  dict({
+    'calendar': dict({
+      'friday': list([
+        dict({
+          'activationState': False,
+          'duration': 480,
+          'startTime': '2300',
+        }),
+      ]),
+      'monday': list([
+        dict({
+          'activationState': False,
+          'duration': 480,
+          'startTime': '2300',
+        }),
+      ]),
+      'saturday': list([
+        dict({
+          'activationState': False,
+          'duration': 480,
+          'startTime': '2300',
+        }),
+      ]),
+      'sunday': list([
+        dict({
+          'activationState': False,
+          'duration': 480,
+          'startTime': '2300',
+        }),
+      ]),
+      'thursday': list([
+        dict({
+          'activationState': False,
+          'duration': 480,
+          'startTime': '2300',
+        }),
+      ]),
+      'tuesday': list([
+        dict({
+          'activationState': False,
+          'duration': 480,
+          'startTime': '2300',
+        }),
+      ]),
+      'wednesday': list([
+        dict({
+          'activationState': False,
+          'duration': 480,
+          'startTime': '2300',
+        }),
+      ]),
+    }),
+  })
+# ---
+# name: test_get_charge_schedule_kcm
+  dict({
+    'chargeDuration': 9000,
+    'chargeModeRq': 'SCHEDULED',
+    'chargeTimeStart': '00:00',
+    'delegatedActivated': False,
+    'lastSettingsUpdateTimestamp': '2025-04-24T12:17:12.247Z',
+    'preconditioningHeatedLeftSeat': False,
+    'preconditioningHeatedRightSeat': False,
+    'preconditioningHeatedStrgWheel': False,
+    'preconditioningTemperature': 20.0,
+    'programs': list([
+      dict({
+        'programActivationFriday': True,
+        'programActivationMonday': True,
+        'programActivationSaturday': True,
+        'programActivationStatus': True,
+        'programActivationSunday': True,
+        'programActivationThursday': True,
+        'programActivationTuesday': True,
+        'programActivationWednesday': True,
+        'programDepartureTime': '02:00',
+        'programType': 'CHARGE_AND_PRECONDITIONING',
+      }),
+    ]),
+  })
+# ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/captur_ii.1.json]
   dict({
     'hvac-status': None,
@@ -55,7 +137,7 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/renault_5.1.json]
   dict({
-    'charge-schedule': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/ev/settings', mode='default'),
+    'charge-schedule': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/ev/settings', mode='kcm'),
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/spring.1.json]
