@@ -87,9 +87,9 @@ class CredentialStore:
 class CredentialEncoder(json.JSONEncoder):
     """Custom encoder for Credential class."""
 
-    def default(self, obj: Credential) -> str:
+    def default(self, o: Credential) -> str:
         """Store the value."""
-        return obj.value
+        return o.value
 
 
 class FileCredentialStore(CredentialStore):
