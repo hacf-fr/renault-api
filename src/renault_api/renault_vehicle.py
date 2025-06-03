@@ -578,22 +578,6 @@ class RenaultVehicle:
             ),
         )
 
-    async def start_horn_lights(self, target: str):
-        if target not in ["horn", "lights"]:
-            raise ValueError("Target must be either 'horn' or 'lights'")
-
-        endpoint_definition = await self.get_endpoint_definition(
-            f"actions/{target}-start"
-        )
-        json: dict[str, Any] = {
-            "data": {
-                "type": "HornLights",
-                "attributes": {"action": "start", "target": target},
-            }
-        }
-        response = await self._set_vehicle_data(endpoint_definition, json)
-        return response
-
     async def start_horn(self) -> dict[str, Any]:
         json: dict[str, Any] = {
             "data": {
@@ -605,7 +589,6 @@ class RenaultVehicle:
         return response.raw_data
 
     async def start_lights(self) -> dict[str, Any]:
-        ```suggestion
         json: dict[str, Any] = {
             "data": {
                 "type": "HornLights",
