@@ -79,12 +79,7 @@ class EndpointDefinition:
 
 
 _DEFAULT_ENDPOINTS: dict[str, EndpointDefinition] = {
-    "actions/horn-start": EndpointDefinition(
-        "/kca/car-adapter/v1/cars/{vin}/actions/horn-lights"
-    ),
-    "actions/lights-start": EndpointDefinition(
-        "/kca/car-adapter/v1/cars/{vin}/actions/horn-lights"
-    ),
+    "alerts": EndpointDefinition("/vehicles/{vin}/alerts"),
     "actions/charge-set-mode": EndpointDefinition(
         "/kca/car-adapter/v1/cars/{vin}/actions/charge-mode"
     ),
@@ -97,6 +92,9 @@ _DEFAULT_ENDPOINTS: dict[str, EndpointDefinition] = {
     "actions/charge-stop": EndpointDefinition(
         "/kca/car-adapter/v1/cars/{vin}/actions/charging-start"
     ),
+    "actions/horn-start": EndpointDefinition(
+        "/kca/car-adapter/v1/cars/{vin}/actions/horn-lights"
+    ),
     "actions/hvac-set-schedule": EndpointDefinition(
         "/kca/car-adapter/v2/cars/{vin}/actions/hvac-schedule"
     ),
@@ -106,7 +104,9 @@ _DEFAULT_ENDPOINTS: dict[str, EndpointDefinition] = {
     "actions/hvac-stop": EndpointDefinition(
         "/kca/car-adapter/v1/cars/{vin}/actions/hvac-start"
     ),
-    "alerts": EndpointDefinition("/vehicles/{vin}/alerts"),
+    "actions/lights-start": EndpointDefinition(
+        "/kca/car-adapter/v1/cars/{vin}/actions/horn-lights"
+    ),
     "battery-status": EndpointDefinition(
         "/kca/car-adapter/v2/cars/{vin}/battery-status"
     ),
