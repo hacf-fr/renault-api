@@ -18,6 +18,8 @@
   dict({
     'actions/charge-set-mode': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/charge-mode', mode='default'),
     'actions/charge-set-schedule': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/actions/charge-schedule', mode='default'),
+    'actions/charge-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/charging-start', mode='default'),
+    'actions/charge-stop': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/charging-start', mode='default'),
     'actions/hvac-set-schedule': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/actions/hvac-schedule', mode='default'),
     'actions/hvac-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
     'actions/hvac-stop': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
@@ -58,6 +60,8 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/spring.1.json]
   dict({
+    'actions/charge-start': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/charge/pause-resume', mode='kcm'),
+    'actions/charge-stop': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/charge/pause-resume', mode='kcm'),
     'charge-mode': None,
     'lock-status': None,
     'res-state': None,

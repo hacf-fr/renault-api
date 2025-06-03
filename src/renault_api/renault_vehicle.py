@@ -96,12 +96,17 @@ class RenaultVehicle:
 
     async def get_full_endpoint(self, endpoint: str) -> str:
         """From VEHICLE_ENDPOINTS / DEFAULT_ENDPOINT."""
+        endpoint_definition = await self.get_endpoint_definition(endpoint)
+        return ACCOUNT_ENDPOINT_ROOT + endpoint_definition.endpoint
+
+    async def get_endpoint_definition(self, endpoint: str) -> models.EndpointDefinition:
+        """From VEHICLE_ENDPOINTS / DEFAULT_ENDPOINT."""
         details = await self.get_details()
         full_endpoint = details.get_endpoint(endpoint)
         if full_endpoint is None:
             raise EndpointNotAvailableError(endpoint, details.get_model_code())
 
-        return ACCOUNT_ENDPOINT_ROOT + full_endpoint.endpoint
+        return full_endpoint
 
     async def _get_vehicle_data(
         self, endpoint: str
@@ -115,6 +120,17 @@ class RenaultVehicle:
         )
 
     async def _set_vehicle_data(
+        self, endpoint: str, json: Optional[dict[str, Any]]
+    ) -> models.KamereonVehicleDataResponse:
+        """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
+        full_endpoint = await self.get_full_endpoint(endpoint)
+        response = await self.http_post(full_endpoint, json)
+        return cast(
+            models.KamereonVehicleDataResponse,
+            schemas.KamereonVehicleDataResponseSchema.load(response.raw_data),
+        )
+
+    async def _set_vehicle_data_from_endpoint(
         self, endpoint: str, json: Optional[dict[str, Any]]
     ) -> models.KamereonVehicleDataResponse:
         """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
@@ -498,56 +514,72 @@ class RenaultVehicle:
 
     async def set_charge_start(self) -> models.KamereonVehicleChargingStartActionData:
         """Start vehicle charge."""
-        details = await self.get_details()
-
-        if details.controls_action_via_kcm("charge"):
-            attributes = {"action": "resume"}
-            response = await self.session.set_vehicle_action(
-                account_id=self.account_id,
-                vin=self.vin,
-                endpoint="charge/pause-resume",
-                attributes=attributes,
-                adapter_type="kcm",
-            )
+        endpoint_definition = await self.get_endpoint_definition("actions/charge-start")
+        json: dict[str, Any]
+        if endpoint_definition.mode == "kcm":
+            json = {
+                "data": {
+                    "type": "ChargePauseResume",
+                    "attributes": {
+                        "action": "resume",
+                    },
+                }
+            }
         else:
-            attributes = {"action": "start"}
-            response = await self.session.set_vehicle_action(
-                account_id=self.account_id,
-                vin=self.vin,
-                endpoint="actions/charging-start",
-                attributes=attributes,
-            )
+            json = {
+                "data": {
+                    "type": "ChargingStart",
+                    "attributes": {
+                        "action": "start",
+                    },
+                }
+            }
+        response = await self.http_post(
+            ACCOUNT_ENDPOINT_ROOT + endpoint_definition.endpoint, json
+        )
+        data_response = cast(
+            models.KamereonVehicleDataResponse,
+            schemas.KamereonVehicleDataResponseSchema.load(response.raw_data),
+        )
         return cast(
             models.KamereonVehicleChargingStartActionData,
-            response.get_attributes(
+            data_response.get_attributes(
                 schemas.KamereonVehicleChargingStartActionDataSchema
             ),
         )
 
     async def set_charge_stop(self) -> models.KamereonVehicleChargingStartActionData:
         """Start vehicle charge."""
-        details = await self.get_details()
-
-        if details.controls_action_via_kcm("charge"):
-            attributes = {"action": "pause"}
-            response = await self.session.set_vehicle_action(
-                account_id=self.account_id,
-                vin=self.vin,
-                endpoint="charge/pause-resume",
-                attributes=attributes,
-                adapter_type="kcm",
-            )
+        endpoint_definition = await self.get_endpoint_definition("actions/charge-stop")
+        json: dict[str, Any]
+        if endpoint_definition.mode == "kcm":
+            json = {
+                "data": {
+                    "type": "ChargePauseResume",
+                    "attributes": {
+                        "action": "pause",
+                    },
+                }
+            }
         else:
-            attributes = {"action": "stop"}
-            response = await self.session.set_vehicle_action(
-                account_id=self.account_id,
-                vin=self.vin,
-                endpoint="actions/charging-start",
-                attributes=attributes,
-            )
+            json = {
+                "data": {
+                    "type": "ChargingStart",
+                    "attributes": {
+                        "action": "stop",
+                    },
+                }
+            }
+        response = await self.http_post(
+            ACCOUNT_ENDPOINT_ROOT + endpoint_definition.endpoint, json
+        )
+        data_response = cast(
+            models.KamereonVehicleDataResponse,
+            schemas.KamereonVehicleDataResponseSchema.load(response.raw_data),
+        )
         return cast(
             models.KamereonVehicleChargingStartActionData,
-            response.get_attributes(
+            data_response.get_attributes(
                 schemas.KamereonVehicleChargingStartActionDataSchema
             ),
         )

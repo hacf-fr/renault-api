@@ -84,6 +84,12 @@ _DEFAULT_ENDPOINTS: dict[str, EndpointDefinition] = {
     "actions/charge-set-schedule": EndpointDefinition(
         "/kca/car-adapter/v2/cars/{vin}/actions/charge-schedule"
     ),
+    "actions/charge-start": EndpointDefinition(
+        "/kca/car-adapter/v1/cars/{vin}/actions/charging-start"
+    ),
+    "actions/charge-stop": EndpointDefinition(
+        "/kca/car-adapter/v1/cars/{vin}/actions/charging-start"
+    ),
     "actions/hvac-set-schedule": EndpointDefinition(
         "/kca/car-adapter/v2/cars/{vin}/actions/hvac-schedule"
     ),
@@ -123,7 +129,13 @@ _DEFAULT_ENDPOINTS: dict[str, EndpointDefinition] = {
     "soc-levels": EndpointDefinition("/kcm/v1/vehicles/{vin}/ev/soc-levels"),
 }
 _KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
-    "charge-schedule": EndpointDefinition("/kcm/v1/vehicles/{vin}/ev/settings")
+    "actions/charge-start": EndpointDefinition(
+        "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm"
+    ),
+    "actions/charge-stop": EndpointDefinition(
+        "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm"
+    ),
+    "charge-schedule": EndpointDefinition("/kcm/v1/vehicles/{vin}/ev/settings"),
 }
 
 _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[EndpointDefinition]]] = {
@@ -154,6 +166,8 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[EndpointDefinition]]] = {
         "lock-status": None,
         "res-state": None,
         "charge-mode": None,
+        "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start"],
+        "actions/charge-stop": _KCM_ENDPOINTS["actions/charge-stop"],
     },
     "XCB1SE": {  # SCENIC E-TECH
         "charge-schedule": _KCM_ENDPOINTS["charge-schedule"],
