@@ -23,6 +23,6 @@ def test_vehicle_contract_response(filename: str) -> None:
     assert response.contractList is not None
     for contract in response.contractList:
         if contract.contractId:
-            assert contract.contractId.startswith(
-                "AB1234"
-            ), "Ensure contractId is obfuscated."
+            assert contract.contractId.startswith("AB1234"), (
+                "Ensure contractId is obfuscated."
+            )
