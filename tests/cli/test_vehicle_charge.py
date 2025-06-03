@@ -64,6 +64,7 @@ def test_charge_mode_set(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     url = fixtures.inject_set_charge_mode(mocked_responses, mode="schedule_mode")
 
     result = cli_runner.invoke(__main__.main, "charge mode --set schedule_mode")

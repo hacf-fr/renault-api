@@ -17,6 +17,8 @@
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/duster.1.json]
   dict({
     'actions/ac-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
+    'actions/ac-stop': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
+    'actions/charge-mode-set': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/charge-mode', mode='default'),
     'alerts': EndpointDefinition(endpoint='/vehicles/{vin}/alerts', mode='default'),
     'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
     'charge-history': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charge-history', mode='default'),

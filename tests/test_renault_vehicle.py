@@ -281,6 +281,7 @@ async def test_set_ac_start(
     vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_ac_start."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     url = fixtures.inject_set_hvac_start(mocked_responses, "start")
     assert await vehicle.set_ac_start(
         21, datetime(2020, 11, 24, 6, 30, tzinfo=timezone.utc)
@@ -308,6 +309,7 @@ async def test_set_charge_mode(
     vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_charge_mode."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     url = fixtures.inject_set_charge_mode(mocked_responses, "schedule_mode")
     assert await vehicle.set_charge_mode("schedule_mode")
 
