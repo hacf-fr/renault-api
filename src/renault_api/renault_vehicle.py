@@ -115,7 +115,7 @@ class RenaultVehicle:
         )
 
     async def _set_vehicle_data(
-        self, endpoint: str, json: dict[str, Any] | None
+        self, endpoint: str, json: Optional[dict[str, Any]]
     ) -> models.KamereonVehicleDataResponse:
         """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
         full_endpoint = await self.get_full_endpoint(endpoint)
