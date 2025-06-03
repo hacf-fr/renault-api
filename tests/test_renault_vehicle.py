@@ -350,6 +350,7 @@ async def test_set_hvac_schedules(
 ) -> None:
     """Test set_hvac_schedules."""
     schedules: list[HvacSchedule] = []
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     url = fixtures.inject_set_hvac_schedules(mocked_responses)
 
     assert await vehicle.set_hvac_schedules(schedules)
