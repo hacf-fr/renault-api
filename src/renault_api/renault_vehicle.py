@@ -110,10 +110,13 @@ class RenaultVehicle:
         return full_endpoint
 
     async def _get_vehicle_data(
-        self, endpoint: str
+        self, endpoint: Union[str, models.EndpointDefinition]
     ) -> models.KamereonVehicleDataResponse:
         """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
-        full_endpoint = await self.get_full_endpoint(endpoint)
+        if isinstance(endpoint, models.EndpointDefinition):
+            full_endpoint = ACCOUNT_ENDPOINT_ROOT + endpoint.endpoint
+        else:
+            full_endpoint = await self.get_full_endpoint(endpoint)
         response = await self.http_get(full_endpoint)
         return cast(
             models.KamereonVehicleDataResponse,
@@ -252,6 +255,14 @@ class RenaultVehicle:
             models.KamereonVehicleResStateData,
             response.get_attributes(schemas.KamereonVehicleResStateDataSchema),
         )
+
+    async def get_charge_schedule(self) -> dict[str, Any]:
+        """Get vehicle charge schedule."""
+        endpoint_definition = await self.get_endpoint_definition("charge-schedule")
+        response = await self._get_vehicle_data(endpoint_definition)
+        if endpoint_definition.mode == "kcm":
+            return response.raw_data
+        return response.raw_data["data"]["attributes"]  # type:ignore[no-any-return]
 
     async def get_notification_settings(
         self,

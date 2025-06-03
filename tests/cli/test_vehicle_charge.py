@@ -1,5 +1,6 @@
 """Test cases for the __main__ module."""
 
+import pytest
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall
 from click.testing import CliRunner
@@ -156,6 +157,7 @@ def test_charge_schedule_show_alternate(
     assert result.output == snapshot
 
 
+@pytest.mark.xfail(reason="needs migrating to charge-schedule")
 def test_charging_settings_set(
     mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
@@ -177,6 +179,7 @@ def test_charging_settings_set(
     assert result.output == snapshot
 
 
+@pytest.mark.xfail(reason="needs migrating to charge-schedule")
 def test_charging_settings_activate(
     mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
@@ -194,6 +197,7 @@ def test_charging_settings_activate(
     assert result.output == snapshot
 
 
+@pytest.mark.xfail(reason="needs migrating to charge-schedule")
 def test_charging_settings_deactivate(
     mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:

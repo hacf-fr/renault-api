@@ -47,15 +47,15 @@ async def show(
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
     )
-    full_endpoint = await vehicle.get_full_endpoint("charge-schedule")
-    response = await vehicle.http_get(full_endpoint)
-    if "data" in response.raw_data and "attributes" in response.raw_data["data"]:
-        _show_basic(response.raw_data["data"]["attributes"])
-    else:
-        _show_alternate(response.raw_data)
+    endpoint_definition = await vehicle.get_endpoint_definition("charge-schedule")
+    response = await vehicle.get_charge_schedule()
+    if endpoint_definition.mode == "kcm":
+        _show_kcm(response)
+    else:  # default
+        _show_kca(response)
 
 
-def _show_basic(response: dict[str, Any]) -> None:
+def _show_kca(response: dict[str, Any]) -> None:
     """Display charge schedules (basic)."""
     calendar = response["calendar"]
     schedule_table: list[list[str]] = []
@@ -85,7 +85,7 @@ def _show_basic(response: dict[str, Any]) -> None:
     click.echo(tabulate(schedule_table, headers=headers))
 
 
-def _show_alternate(response: dict[str, Any]) -> None:
+def _show_kcm(response: dict[str, Any]) -> None:
     """Display charge schedules (alternate)."""
     click.echo(f"Mode: {response['chargeModeRq'].capitalize()}")
     if not response["programs"]:
@@ -117,7 +117,7 @@ async def _get_schedule(
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
     )
-    response_data = await vehicle._get_vehicle_data("charging-settings")
+    response_data = await vehicle._get_vehicle_data("charge-schedule")
     response = cast(
         KamereonVehicleChargingSettingsData,
         response_data.get_attributes(KamereonVehicleChargingSettingsDataSchema),

@@ -136,7 +136,9 @@ _KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
     "actions/charge-stop": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm"
     ),
-    "charge-schedule": EndpointDefinition("/kcm/v1/vehicles/{vin}/ev/settings"),
+    "charge-schedule": EndpointDefinition(
+        "/kcm/v1/vehicles/{vin}/ev/settings", mode="kcm"
+    ),
 }
 
 _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[EndpointDefinition]]] = {
