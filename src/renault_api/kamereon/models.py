@@ -110,11 +110,11 @@ _DEFAULT_ENDPOINTS: dict[str, EndpointDefinition] = {
     "res-state": EndpointDefinition("/kca/car-adapter/v1/cars/{vin}/res-state"),
     "soc-levels": EndpointDefinition("/kcm/v1/vehicles/{vin}/ev/soc-levels"),
 }
-_KCM_ENDPOINTS: dict[str, str] = {
-    "charge-schedule": "/kcm/v1/vehicles/{vin}/ev/settings"
+_KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
+    "charge-schedule": EndpointDefinition("/kcm/v1/vehicles/{vin}/ev/settings")
 }
 
-_VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[str]]] = {
+_VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[EndpointDefinition]]] = {
     "R5E1VE": {  # Renault 5 E-TECH
         "charge-schedule": _KCM_ENDPOINTS["charge-schedule"],
     },

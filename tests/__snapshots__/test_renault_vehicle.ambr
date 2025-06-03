@@ -49,7 +49,7 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/renault_5.1.json]
   dict({
-    'charge-schedule': '/kcm/v1/vehicles/{vin}/ev/settings',
+    'charge-schedule': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/ev/settings', mode='default'),
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/spring.1.json]
