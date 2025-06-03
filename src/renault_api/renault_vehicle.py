@@ -459,14 +459,18 @@ class RenaultVehicle:
                     "`schedules` should be a list of ChargeSchedule, "
                     f"not {schedules.__class__}"
                 )
-        attributes = {"schedules": [schedule.for_json() for schedule in schedules]}
 
-        response = await self.session.set_vehicle_action(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="actions/charge-schedule",
-            attributes=attributes,
-        )
+        json: dict[str, Any] = {
+            "data": {
+                "type": "ChargeSchedule",
+                "attributes": {
+                    "schedules": [schedule.for_json() for schedule in schedules]
+                },
+            }
+        }
+
+        response = await self._set_vehicle_data("actions/charge-set-schedule", json)
+
         return cast(
             models.KamereonVehicleChargeScheduleActionData,
             response.get_attributes(
@@ -487,7 +491,7 @@ class RenaultVehicle:
             }
         }
 
-        response = await self._set_vehicle_data("actions/charge-mode-set", json)
+        response = await self._set_vehicle_data("actions/charge-set-mode", json)
         return cast(
             models.KamereonVehicleChargeModeActionData,
             response.get_attributes(schemas.KamereonVehicleChargeModeActionDataSchema),

@@ -322,6 +322,7 @@ async def test_set_charge_schedules(
     vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_charge_schedules."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
 
     schedules: list[ChargeSchedule] = []
