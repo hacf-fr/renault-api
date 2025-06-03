@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from typing import Any
 from typing import Optional
 from typing import cast
+from warnings import warn
 
 from marshmallow.schema import Schema
 
@@ -409,6 +410,11 @@ class KamereonVehicleDetails(BaseModel):
 
     def controls_action_via_kcm(self, action: str) -> bool:
         """Return True if model uses endpoint via kcm."""
+        warn(  # Deprecated in v0.3.2
+            "This method is deprecated, please use get_endpoint.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         # Default to False for unknown vehicles
         if self.model and self.model.code:
             return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
@@ -669,6 +675,11 @@ class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
 
     def controls_action_via_kcm(self, action: str) -> bool:
         """Return True if model uses endpoint via kcm."""
+        warn(  # Deprecated in v0.3.2
+            "This method is deprecated, please use get_endpoint.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         # Default to False for unknown vehicles
         if self.modelCodeDetail:
             return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
