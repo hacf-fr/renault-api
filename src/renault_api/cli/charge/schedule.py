@@ -117,7 +117,7 @@ async def _get_schedule(
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
     )
-    response_data = await vehicle._get_vehicle_data("charge-schedule")
+    response_data = await vehicle._get_vehicle_data("charging-settings")
     response = cast(
         KamereonVehicleChargingSettingsData,
         response_data.get_attributes(KamereonVehicleChargingSettingsDataSchema),
