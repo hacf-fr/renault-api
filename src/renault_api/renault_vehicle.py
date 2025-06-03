@@ -515,8 +515,9 @@ class RenaultVehicle:
     async def set_charge_start(self) -> models.KamereonVehicleChargingStartActionData:
         """Start vehicle charge."""
         endpoint_definition = await self.get_endpoint_definition("actions/charge-start")
+        json: dict[str, Any]
         if endpoint_definition.mode == "kcm":
-            json: dict[str, Any] = {
+            json = {
                 "data": {
                     "type": "ChargePauseResume",
                     "attributes": {
@@ -525,7 +526,7 @@ class RenaultVehicle:
                 }
             }
         else:
-            json: dict[str, Any] = {
+            json = {
                 "data": {
                     "type": "ChargingStart",
                     "attributes": {
@@ -550,8 +551,9 @@ class RenaultVehicle:
     async def set_charge_stop(self) -> models.KamereonVehicleChargingStartActionData:
         """Start vehicle charge."""
         endpoint_definition = await self.get_endpoint_definition("actions/charge-stop")
+        json: dict[str, Any]
         if endpoint_definition.mode == "kcm":
-            json: dict[str, Any] = {
+            json = {
                 "data": {
                     "type": "ChargePauseResume",
                     "attributes": {
@@ -560,7 +562,7 @@ class RenaultVehicle:
                 }
             }
         else:
-            json: dict[str, Any] = {
+            json = {
                 "data": {
                     "type": "ChargingStart",
                     "attributes": {
