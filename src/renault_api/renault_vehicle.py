@@ -594,11 +594,26 @@ class RenaultVehicle:
         response = await self._set_vehicle_data(endpoint_definition, json)
         return response
 
-    async def start_horn(self):
-        return self.start_horn_lights("horn")
+    async def start_horn(self) -> dict[str, Any]:
+        json: dict[str, Any] = {
+            "data": {
+                "type": "HornLights",
+                "attributes": {"action": "start", "target": "horn"},
+            }
+        }
+        response = await self._set_vehicle_data("actions/horn-start", json)
+        return response.raw_data
 
-    async def start_lights(self):
-        return self.start_horn_lights("lights")
+    async def start_lights(self) -> dict[str, Any]:
+        ```suggestion
+        json: dict[str, Any] = {
+            "data": {
+                "type": "HornLights",
+                "attributes": {"action": "start", "target": "lights"},
+            }
+        }
+        response = await self._set_vehicle_data("actions/lights-start", json)
+        return response.raw_data
 
     async def supports_endpoint(self, endpoint: str) -> bool:
         """Check if vehicle supports endpoint."""
