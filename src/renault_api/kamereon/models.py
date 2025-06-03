@@ -70,31 +70,51 @@ GATEWAY_SPECIFICATIONS: dict[str, dict[str, Any]] = {
     },
 }
 
-_DEFAULT_ENDPOINTS: dict[str, str] = {
-    "alerts": "/vehicles/{vin}/alerts",
-    "battery-status": "/kca/car-adapter/v2/cars/{vin}/battery-status",
-    "charge-history": "/kca/car-adapter/v1/cars/{vin}/charge-history",
-    "charge-mode": "/kca/car-adapter/v1/cars/{vin}/charge-mode",
-    "charge-schedule": "/kca/car-adapter/v1/cars/{vin}/charge-schedule",
-    "charges": "/kca/car-adapter/v1/cars/{vin}/charges",
-    "charging-settings": "/kca/car-adapter/v1/cars/{vin}/charging-settings",
-    "cockpit": "/kca/car-adapter/v1/cars/{vin}/cockpit",
-    "hvac-history": "/kca/car-adapter/v1/cars/{vin}/hvac-history",
-    "hvac-sessions": "/kca/car-adapter/v1/cars/{vin}/hvac-sessions",
-    "hvac-settings": "/kca/car-adapter/v1/cars/{vin}/hvac-settings",
-    "hvac-status": "/kca/car-adapter/v1/cars/{vin}/hvac-status",
-    "location": "/kca/car-adapter/v1/cars/{vin}/location",
-    "lock-status": "/kca/car-adapter/v1/cars/{vin}/lock-status",
-    "notification-settings": "/kca/car-adapter/v1/cars/{vin}/notification-settings",
-    "pressure": "/kca/car-adapter/v1/cars/{vin}/pressure",
-    "res-state": "/kca/car-adapter/v1/cars/{vin}/res-state",
-    "soc-levels": "/kcm/v1/vehicles/{vin}/ev/soc-levels",
+
+@dataclass
+class EndpointDefinition:
+    endpoint: str
+    mode: str = "default"
+
+
+_DEFAULT_ENDPOINTS: dict[str, EndpointDefinition] = {
+    "actions/ac-start": EndpointDefinition(
+        "/kca/car-adapter/v1/cars/{vin}/actions/hvac-start"
+    ),
+    "alerts": EndpointDefinition("/vehicles/{vin}/alerts"),
+    "battery-status": EndpointDefinition(
+        "/kca/car-adapter/v2/cars/{vin}/battery-status"
+    ),
+    "charge-history": EndpointDefinition(
+        "/kca/car-adapter/v1/cars/{vin}/charge-history"
+    ),
+    "charge-mode": EndpointDefinition("/kca/car-adapter/v1/cars/{vin}/charge-mode"),
+    "charge-schedule": EndpointDefinition(
+        "/kca/car-adapter/v1/cars/{vin}/charge-schedule"
+    ),
+    "charges": EndpointDefinition("/kca/car-adapter/v1/cars/{vin}/charges"),
+    "charging-settings": EndpointDefinition(
+        "/kca/car-adapter/v1/cars/{vin}/charging-settings"
+    ),
+    "cockpit": EndpointDefinition("/kca/car-adapter/v1/cars/{vin}/cockpit"),
+    "hvac-history": EndpointDefinition("/kca/car-adapter/v1/cars/{vin}/hvac-history"),
+    "hvac-sessions": EndpointDefinition("/kca/car-adapter/v1/cars/{vin}/hvac-sessions"),
+    "hvac-settings": EndpointDefinition("/kca/car-adapter/v1/cars/{vin}/hvac-settings"),
+    "hvac-status": EndpointDefinition("/kca/car-adapter/v1/cars/{vin}/hvac-status"),
+    "location": EndpointDefinition("/kca/car-adapter/v1/cars/{vin}/location"),
+    "lock-status": EndpointDefinition("/kca/car-adapter/v1/cars/{vin}/lock-status"),
+    "notification-settings": EndpointDefinition(
+        "/kca/car-adapter/v1/cars/{vin}/notification-settings"
+    ),
+    "pressure": EndpointDefinition("/kca/car-adapter/v1/cars/{vin}/pressure"),
+    "res-state": EndpointDefinition("/kca/car-adapter/v1/cars/{vin}/res-state"),
+    "soc-levels": EndpointDefinition("/kcm/v1/vehicles/{vin}/ev/soc-levels"),
 }
-_KCM_ENDPOINTS: dict[str, str] = {
-    "charge-schedule": "/kcm/v1/vehicles/{vin}/ev/settings"
+_KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
+    "charge-schedule": EndpointDefinition("/kcm/v1/vehicles/{vin}/ev/settings")
 }
 
-_VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[str]]] = {
+_VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[EndpointDefinition]]] = {
     "R5E1VE": {  # Renault 5 E-TECH
         "charge-schedule": _KCM_ENDPOINTS["charge-schedule"],
     },
@@ -142,7 +162,9 @@ _ALREADY_WARNED_VEHICLE: set[str] = set()
 _ALREADY_WARNED_VEHICLE_ENDPOINT: set[str] = set()
 
 
-def get_model_endpoints(model_code: Optional[str]) -> Mapping[str, Optional[str]]:
+def get_model_endpoints(
+    model_code: Optional[str],
+) -> Mapping[str, Optional[EndpointDefinition]]:
     """Return model endpoints."""
     if not model_code:
         # Model code not available
@@ -153,14 +175,18 @@ def get_model_endpoints(model_code: Optional[str]) -> Mapping[str, Optional[str]
         if model_code not in _ALREADY_WARNED_VEHICLE:
             _ALREADY_WARNED_VEHICLE.add(model_code)
             _LOGGER.warning(
-                "Model %s is not documented, using default endpoints", model_code
+                "Model %s is not documented, using default endpoints."
+                " Please open an issue in https://github.com/hacf-fr/renault-api",
+                model_code,
             )
         return _DEFAULT_ENDPOINTS
 
     return _VEHICLE_ENDPOINTS[model_code]
 
 
-def get_model_endpoint(model_code: Optional[str], endpoint: str) -> Optional[str]:
+def get_model_endpoint(
+    model_code: Optional[str], endpoint: str
+) -> Optional[EndpointDefinition]:
     """Return model endpoint"""
     endpoints = get_model_endpoints(model_code)
 
@@ -364,11 +390,11 @@ class KamereonVehicleDetails(BaseModel):
             ).get(f"control-{action}-via-kcm", False)
         return False
 
-    def get_endpoints(self) -> Mapping[str, Optional[str]]:
+    def get_endpoints(self) -> Mapping[str, Optional[EndpointDefinition]]:
         """Return model endpoints."""
         return get_model_endpoints(self.get_model_code())
 
-    def get_endpoint(self, endpoint: str) -> Optional[str]:
+    def get_endpoint(self, endpoint: str) -> Optional[EndpointDefinition]:
         """Return model endpoint"""
         return get_model_endpoint(self.get_model_code(), endpoint)
 
