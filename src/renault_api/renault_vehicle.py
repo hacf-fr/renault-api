@@ -101,7 +101,7 @@ class RenaultVehicle:
         if full_endpoint is None:
             raise EndpointNotAvailableError(endpoint, details.get_model_code())
 
-        return ACCOUNT_ENDPOINT_ROOT + full_endpoint
+        return ACCOUNT_ENDPOINT_ROOT + full_endpoint.endpoint
 
     async def _get_vehicle_data(
         self, endpoint: str

@@ -16,24 +16,25 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/duster.1.json]
   dict({
-    'alerts': '/vehicles/{vin}/alerts',
-    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
-    'charge-history': '/kca/car-adapter/v1/cars/{vin}/charge-history',
-    'charge-mode': '/kca/car-adapter/v1/cars/{vin}/charge-mode',
-    'charge-schedule': '/kca/car-adapter/v1/cars/{vin}/charge-schedule',
-    'charges': '/kca/car-adapter/v1/cars/{vin}/charges',
-    'charging-settings': '/kca/car-adapter/v1/cars/{vin}/charging-settings',
-    'cockpit': '/kca/car-adapter/v1/cars/{vin}/cockpit',
-    'hvac-history': '/kca/car-adapter/v1/cars/{vin}/hvac-history',
-    'hvac-sessions': '/kca/car-adapter/v1/cars/{vin}/hvac-sessions',
-    'hvac-settings': '/kca/car-adapter/v1/cars/{vin}/hvac-settings',
-    'hvac-status': '/kca/car-adapter/v1/cars/{vin}/hvac-status',
-    'location': '/kca/car-adapter/v1/cars/{vin}/location',
-    'lock-status': '/kca/car-adapter/v1/cars/{vin}/lock-status',
-    'notification-settings': '/kca/car-adapter/v1/cars/{vin}/notification-settings',
-    'pressure': '/kca/car-adapter/v1/cars/{vin}/pressure',
-    'res-state': '/kca/car-adapter/v1/cars/{vin}/res-state',
-    'soc-levels': '/kcm/v1/vehicles/{vin}/ev/soc-levels',
+    'actions/ac-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
+    'alerts': EndpointDefinition(endpoint='/vehicles/{vin}/alerts', mode='default'),
+    'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
+    'charge-history': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charge-history', mode='default'),
+    'charge-mode': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charge-mode', mode='default'),
+    'charge-schedule': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charge-schedule', mode='default'),
+    'charges': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charges', mode='default'),
+    'charging-settings': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charging-settings', mode='default'),
+    'cockpit': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/cockpit', mode='default'),
+    'hvac-history': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/hvac-history', mode='default'),
+    'hvac-sessions': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/hvac-sessions', mode='default'),
+    'hvac-settings': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/hvac-settings', mode='default'),
+    'hvac-status': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/hvac-status', mode='default'),
+    'location': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/location', mode='default'),
+    'lock-status': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/lock-status', mode='default'),
+    'notification-settings': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/notification-settings', mode='default'),
+    'pressure': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/pressure', mode='default'),
+    'res-state': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/res-state', mode='default'),
+    'soc-levels': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/ev/soc-levels', mode='default'),
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/megane_e-tech.1.json]
@@ -66,11 +67,11 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/zoe_40.1.json]
   dict({
-    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
-    'charge-mode': '/kca/car-adapter/v1/cars/{vin}/charge-mode',
-    'charge-schedule': '/kca/car-adapter/v1/cars/{vin}/charge-schedule',
-    'cockpit': '/kca/car-adapter/v1/cars/{vin}/cockpit',
-    'hvac-status': '/kca/car-adapter/v1/cars/{vin}/hvac-status',
+    'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
+    'charge-mode': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charge-mode', mode='default'),
+    'charge-schedule': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charge-schedule', mode='default'),
+    'cockpit': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/cockpit', mode='default'),
+    'hvac-status': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/hvac-status', mode='default'),
     'location': None,
     'lock-status': None,
     'pressure': None,
@@ -80,11 +81,11 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/zoe_40.2.json]
   dict({
-    'battery-status': '/kca/car-adapter/v2/cars/{vin}/battery-status',
-    'charge-mode': '/kca/car-adapter/v1/cars/{vin}/charge-mode',
-    'charge-schedule': '/kca/car-adapter/v1/cars/{vin}/charge-schedule',
-    'cockpit': '/kca/car-adapter/v1/cars/{vin}/cockpit',
-    'hvac-status': '/kca/car-adapter/v1/cars/{vin}/hvac-status',
+    'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
+    'charge-mode': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charge-mode', mode='default'),
+    'charge-schedule': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charge-schedule', mode='default'),
+    'cockpit': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/cockpit', mode='default'),
+    'hvac-status': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/hvac-status', mode='default'),
     'location': None,
     'lock-status': None,
     'pressure': None,
