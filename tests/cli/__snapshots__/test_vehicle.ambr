@@ -1,7 +1,7 @@
 # serializer version: 1
 # name: test_http_get
   '''
-  {'data': {'type': 'Car', 'id': 'VF1AAAAA555777999', 'attributes': {'mode': 'scheduled', 'schedules': [{'id': 1, 'activated': True, 'monday': {'startTime': 'T12:00Z', 'duration': 15}, 'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, 'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, 'thursday': {'startTime': 'T22:00Z', 'duration': 420}, 'friday': {'startTime': 'T12:15Z', 'duration': 15}, 'saturday': {'startTime': 'T12:30Z', 'duration': 30}, 'sunday': {'startTime': 'T12:45Z', 'duration': 45}}]}}}
+  {'data': {'type': 'Car', 'id': 'VF1AAAAA555777999', 'attributes': {'calendar': {'monday': [{'startTime': '2300', 'duration': 480, 'activationState': False}], 'tuesday': [{'startTime': '2300', 'duration': 480, 'activationState': False}], 'wednesday': [{'startTime': '2300', 'duration': 480, 'activationState': False}], 'thursday': [{'startTime': '2300', 'duration': 480, 'activationState': False}], 'friday': [{'startTime': '2300', 'duration': 480, 'activationState': False}], 'saturday': [{'startTime': '2300', 'duration': 480, 'activationState': False}], 'sunday': [{'startTime': '2300', 'duration': 480, 'activationState': False}]}}}}
   
   '''
 # ---
