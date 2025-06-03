@@ -81,6 +81,7 @@ def test_hvac_start_now(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     url = fixtures.inject_set_hvac_start(mocked_responses, "start")
 
     result = cli_runner.invoke(__main__.main, "hvac start --temperature 25")
@@ -95,6 +96,7 @@ def test_hvac_start_later(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     url = fixtures.inject_set_hvac_start(mocked_responses, "start")
 
     result = cli_runner.invoke(

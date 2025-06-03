@@ -114,6 +114,17 @@ class RenaultVehicle:
             schemas.KamereonVehicleDataResponseSchema.load(response.raw_data),
         )
 
+    async def _set_vehicle_data(
+        self, endpoint: str, json: Optional[dict[str, Any]]
+    ) -> models.KamereonVehicleDataResponse:
+        """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
+        full_endpoint = await self.get_full_endpoint(endpoint)
+        response = await self.http_post(full_endpoint, json)
+        return cast(
+            models.KamereonVehicleDataResponse,
+            schemas.KamereonVehicleDataResponseSchema.load(response.raw_data),
+        )
+
     async def get_details(self) -> models.KamereonVehicleDetails:
         """Get vehicle details."""
         if self._vehicle_details:
@@ -369,9 +380,14 @@ class RenaultVehicle:
         self, temperature: float, when: Optional[datetime] = None
     ) -> models.KamereonVehicleHvacStartActionData:
         """Start vehicle ac."""
-        attributes = {
-            "action": "start",
-            "targetTemperature": temperature,
+        json: dict[str, Any] = {
+            "data": {
+                "type": "HvacStart",
+                "attributes": {
+                    "action": "start",
+                    "targetTemperature": temperature,
+                },
+            }
         }
 
         if when:
@@ -381,14 +397,9 @@ class RenaultVehicle:
                     f"not {when.__class__}"
                 )
             start_date_time = when.astimezone(timezone.utc).strftime(PERIOD_TZ_FORMAT)
-            attributes["startDateTime"] = start_date_time
+            json["data"]["attributes"]["startDateTime"] = start_date_time
 
-        response = await self.session.set_vehicle_action(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="actions/hvac-start",
-            attributes=attributes,
-        )
+        response = await self._set_vehicle_data("actions/hvac-start", json)
         return cast(
             models.KamereonVehicleHvacStartActionData,
             response.get_attributes(schemas.KamereonVehicleHvacStartActionDataSchema),
@@ -396,14 +407,16 @@ class RenaultVehicle:
 
     async def set_ac_stop(self) -> models.KamereonVehicleHvacStartActionData:
         """Stop vehicle ac."""
-        attributes = {"action": "cancel"}
+        json: dict[str, Any] = {
+            "data": {
+                "type": "HvacStart",
+                "attributes": {
+                    "action": "cancel",
+                },
+            }
+        }
 
-        response = await self.session.set_vehicle_action(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="actions/hvac-start",
-            attributes=attributes,
-        )
+        response = await self._set_vehicle_data("actions/hvac-stop", json)
         return cast(
             models.KamereonVehicleHvacStartActionData,
             response.get_attributes(schemas.KamereonVehicleHvacStartActionDataSchema),
@@ -419,14 +432,16 @@ class RenaultVehicle:
                     "`schedules` should be a list of HvacSchedule, "
                     f"not {schedules.__class__}"
                 )
-        attributes = {"schedules": [schedule.for_json() for schedule in schedules]}
+        json: dict[str, Any] = {
+            "data": {
+                "type": "HvacSchedule",
+                "attributes": {
+                    "schedules": [schedule.for_json() for schedule in schedules]
+                },
+            }
+        }
 
-        response = await self.session.set_vehicle_action(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="actions/hvac-schedule",
-            attributes=attributes,
-        )
+        response = await self._set_vehicle_data("actions/hvac-set-schedule", json)
         return cast(
             models.KamereonVehicleHvacScheduleActionData,
             response.get_attributes(
@@ -444,14 +459,17 @@ class RenaultVehicle:
                     "`schedules` should be a list of ChargeSchedule, "
                     f"not {schedules.__class__}"
                 )
-        attributes = {"schedules": [schedule.for_json() for schedule in schedules]}
 
-        response = await self.session.set_vehicle_action(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="actions/charge-schedule",
-            attributes=attributes,
-        )
+        json: dict[str, Any] = {
+            "data": {
+                "type": "ChargeSchedule",
+                "attributes": {
+                    "schedules": [schedule.for_json() for schedule in schedules]
+                },
+            }
+        }
+
+        response = await self._set_vehicle_data("actions/charge-set-schedule", json)
         return cast(
             models.KamereonVehicleChargeScheduleActionData,
             response.get_attributes(
@@ -463,14 +481,16 @@ class RenaultVehicle:
         self, charge_mode: str
     ) -> models.KamereonVehicleChargeModeActionData:
         """Set vehicle charge mode."""
-        attributes = {"action": charge_mode}
+        json: dict[str, Any] = {
+            "data": {
+                "type": "ChargeMode",
+                "attributes": {
+                    "action": charge_mode,
+                },
+            }
+        }
 
-        response = await self.session.set_vehicle_action(
-            account_id=self.account_id,
-            vin=self.vin,
-            endpoint="actions/charge-mode",
-            attributes=attributes,
-        )
+        response = await self._set_vehicle_data("actions/charge-set-mode", json)
         return cast(
             models.KamereonVehicleChargeModeActionData,
             response.get_attributes(schemas.KamereonVehicleChargeModeActionDataSchema),

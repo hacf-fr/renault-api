@@ -78,7 +78,19 @@ class EndpointDefinition:
 
 
 _DEFAULT_ENDPOINTS: dict[str, EndpointDefinition] = {
-    "actions/ac-start": EndpointDefinition(
+    "actions/charge-set-mode": EndpointDefinition(
+        "/kca/car-adapter/v1/cars/{vin}/actions/charge-mode"
+    ),
+    "actions/charge-set-schedule": EndpointDefinition(
+        "/kca/car-adapter/v2/cars/{vin}/actions/charge-schedule"
+    ),
+    "actions/hvac-set-schedule": EndpointDefinition(
+        "/kca/car-adapter/v2/cars/{vin}/actions/hvac-schedule"
+    ),
+    "actions/hvac-start": EndpointDefinition(
+        "/kca/car-adapter/v1/cars/{vin}/actions/hvac-start"
+    ),
+    "actions/hvac-stop": EndpointDefinition(
         "/kca/car-adapter/v1/cars/{vin}/actions/hvac-start"
     ),
     "alerts": EndpointDefinition("/vehicles/{vin}/alerts"),
