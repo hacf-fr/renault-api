@@ -91,6 +91,9 @@ _DEFAULT_ENDPOINTS: dict[str, EndpointDefinition] = {
     "actions/charge-stop": EndpointDefinition(
         "/kca/car-adapter/v1/cars/{vin}/actions/charging-start"
     ),
+    "actions/horn-start": EndpointDefinition(
+        "/kca/car-adapter/v1/cars/{vin}/actions/horn-lights"
+    ),
     "actions/hvac-set-schedule": EndpointDefinition(
         "/kca/car-adapter/v2/cars/{vin}/actions/hvac-schedule"
     ),
@@ -99,6 +102,9 @@ _DEFAULT_ENDPOINTS: dict[str, EndpointDefinition] = {
     ),
     "actions/hvac-stop": EndpointDefinition(
         "/kca/car-adapter/v1/cars/{vin}/actions/hvac-start"
+    ),
+    "actions/lights-start": EndpointDefinition(
+        "/kca/car-adapter/v1/cars/{vin}/actions/horn-lights"
     ),
     "alerts": EndpointDefinition("/vehicles/{vin}/alerts"),
     "battery-status": EndpointDefinition(

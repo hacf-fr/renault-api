@@ -524,6 +524,26 @@ def inject_set_hvac_schedules(mocked_responses: aioresponses) -> str:
     )
 
 
+def inject_start_horn(mocked_responses: aioresponses) -> str:
+    """Inject sample horn-lights horn."""
+    urlpath = f"{ADAPTER_PATH}/actions/horn-lights?{DEFAULT_QUERY_STRING}"
+    return inject_action(
+        mocked_responses,
+        urlpath,
+        "vehicle_action/horn-lights.horn.json",
+    )
+
+
+def inject_start_lights(mocked_responses: aioresponses) -> str:
+    """Inject sample horn-lights lights."""
+    urlpath = f"{ADAPTER_PATH}/actions/horn-lights?{DEFAULT_QUERY_STRING}"
+    return inject_action(
+        mocked_responses,
+        urlpath,
+        "vehicle_action/horn-lights.lights.json",
+    )
+
+
 def inject_vehicle_status(mocked_responses: aioresponses, vehicle: str) -> None:
     """Inject Kamereon vehicle status data."""
     inject_get_battery_status(mocked_responses)
