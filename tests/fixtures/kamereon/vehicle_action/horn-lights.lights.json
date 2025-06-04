@@ -1,7 +1,7 @@
 {
-   "data": {
-      "id": "guid",
-      "type": "HornLights",
-      "attributes": {"action": "start", "target": "lights"}
-   }
+  "data": {
+    "id": "guid",
+    "type": "HornLights",
+    "attributes": { "action": "start", "target": "lights" }
+  }
 }

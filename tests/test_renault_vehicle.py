@@ -392,6 +392,7 @@ async def test_start_horn(
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
 
+
 @pytest.mark.asyncio
 async def test_start_lights(
     vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
@@ -403,6 +404,7 @@ async def test_start_lights(
 
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
+
 
 @pytest.mark.asyncio
 async def test_http_get(
