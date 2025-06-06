@@ -556,6 +556,15 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
 
 
 @dataclass
+class KamereonVehicleBatterySocData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle battery state of charge limits data."""
+
+    lastEnergyUpdateTimestamp: Optional[str]
+    socMin: Optional[int]
+    socTarget: Optional[int]
+
+
+@dataclass
 class KamereonVehicleTyrePressureData(KamereonVehicleDataAttributes):
     """Kamereon vehicle tyre-pressure data."""
 
