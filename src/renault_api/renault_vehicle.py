@@ -192,6 +192,14 @@ class RenaultVehicle:
             response.get_attributes(schemas.KamereonVehicleBatteryStatusDataSchema),
         )
 
+    async def get_battery_soc(self) -> models.KamereonVehicleBatterySocData:
+        """Get vehicle battery state of charge limits"""
+        response = await self._get_vehicle_data("soc-levels")
+        return cast(
+            models.KamereonVehicleBatterySocData,
+            response.get_attributes(schemas.KamereonVehicleBatterySocDataSchema)
+        )
+
     async def get_tyre_pressure(self) -> models.KamereonVehicleTyrePressureData:
         """Get vehicle tyre pressure."""
         response = await self._get_vehicle_data("pressure")
