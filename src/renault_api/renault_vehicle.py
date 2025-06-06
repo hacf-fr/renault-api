@@ -197,7 +197,7 @@ class RenaultVehicle:
         response = await self._get_vehicle_data("soc-levels")
         return cast(
             models.KamereonVehicleBatterySocData,
-            response.get_attributes(schemas.KamereonVehicleBatterySocDataSchema),
+            schemas.KamereonVehicleBatterySocDataSchema.load(response.raw_data),
         )
 
     async def get_tyre_pressure(self) -> models.KamereonVehicleTyrePressureData:

@@ -1,6 +1,6 @@
 # serializer version: 1
 # name: test_get_battery_soc
-  KamereonVehicleBatterySocData(raw_data={}, lastEnergyUpdateTimestamp=None, socMin=None, socTarget=None)
+  KamereonVehicleBatterySocData(raw_data={'lastEnergyUpdateTimestamp': '2025-04-18T06:51:09Z', 'socMin': 20, 'socTarget': 80}, lastEnergyUpdateTimestamp='2025-04-18T06:51:09Z', socMin=20, socTarget=80)
 # ---
 # name: test_get_charge_schedule
   dict({
