@@ -102,6 +102,16 @@ async def test_get_battery_status(
 
 
 @pytest.mark.asyncio
+async def test_get_battery_soc(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+) -> None:
+    """Test get_battery_soc."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
+    fixtures.inject_get_battery_soc(mocked_responses)
+    assert await vehicle.get_battery_soc() == snapshot
+
+
+@pytest.mark.asyncio
 async def test_get_tyre_pressure(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
 ) -> None:
