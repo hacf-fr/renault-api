@@ -277,6 +277,19 @@ def inject_get_battery_status(
     )
 
 
+def inject_get_battery_soc(
+    mocked_responses: aioresponses,
+    filename: str = "vehicle_kcm_data/ev-soc-levels.json",
+) -> str:
+    """Inject sample battery state of charge limits."""
+    urlpath = f"{KCM_ADAPTER_PATH}/ev/soc-levels?{DEFAULT_QUERY_STRING}"
+    return inject_data(
+        mocked_responses,
+        urlpath,
+        filename,
+    )
+
+
 def inject_get_tyre_pressure(
     mocked_responses: aioresponses, filename: str = "vehicle_data/pressure.json"
 ) -> str:
