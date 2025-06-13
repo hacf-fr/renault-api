@@ -153,7 +153,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[EndpointDefinition]]] = {
         "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
         "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
-        "charge-history": None,  # Reason: "you should not be there but well done for the effort"
+        "charge-history": None,  # Reason: "you should not be there..."
         "charge-mode": None,  # Reason: The access is forbidden
         "charge-schedule": _KCM_ENDPOINTS["charge-schedule"],
         "charges": _DEFAULT_ENDPOINTS["charges"],
