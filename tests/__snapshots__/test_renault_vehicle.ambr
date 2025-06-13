@@ -142,7 +142,22 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/renault_5.1.json]
   dict({
+    'actions/horn-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
+    'actions/hvac-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
+    'actions/lights-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
+    'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
+    'charge-history': None,
+    'charge-mode': None,
     'charge-schedule': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/ev/settings', mode='kcm'),
+    'charges': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charges', mode='default'),
+    'cockpit': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/cockpit', mode='default'),
+    'hvac-settings': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/hvac-settings', mode='default'),
+    'hvac-status': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/hvac-status', mode='default'),
+    'location': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/location', mode='default'),
+    'lock-status': None,
+    'pressure': None,
+    'res-state': None,
+    'soc-levels': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/ev/soc-levels', mode='default'),
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/spring.1.json]
