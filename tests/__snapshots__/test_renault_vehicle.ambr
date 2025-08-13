@@ -84,6 +84,16 @@
     ]),
   })
 # ---
+# name: test_get_endpoints[tests/fixtures/kamereon/vehicles/austral_XHN1SU.1.json]
+  dict({
+    'cockpit': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/cockpit', mode='default'),
+    'hvac-status': None,
+    'location': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/location', mode='default'),
+    'lock-status': None,
+    'pressure': None,
+    'res-state': None,
+  })
+# ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/captur_ii.1.json]
   dict({
     'hvac-status': None,

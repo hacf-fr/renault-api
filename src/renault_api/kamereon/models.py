@@ -200,6 +200,14 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[EndpointDefinition]]] = {
     "XCB1VE": {  # MEGANE E-TECH
         "lock-status": None,
     },
+    "XHN1SU": {  # AUSTRAL
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
+        "hvac-status": None,
+        "location": _DEFAULT_ENDPOINTS["location"],
+        "lock-status": None,
+        "pressure": None,  # Reason: 404
+        "res-state": None,
+    },
     "XJA1VP": {  # CLIO V
         "hvac-status": None,
     },

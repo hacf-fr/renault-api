@@ -68,6 +68,17 @@
   
   '''
 # ---
+# name: test_vehicle_status[tests/fixtures/kamereon/vehicles/austral_XHN1SU.1.json]
+  '''
+  ----------------  -------------------
+  Total mileage     49114.27 km
+  GPS Latitude      48.1234567
+  GPS Longitude     11.1234567
+  GPS last updated  2020-02-18 17:58:38
+  ----------------  -------------------
+  
+  '''
+# ---
 # name: test_vehicle_status[tests/fixtures/kamereon/vehicles/captur_ii.1.json]
   '''
   --------------------  ----------------------
