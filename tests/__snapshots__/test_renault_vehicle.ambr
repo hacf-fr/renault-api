@@ -84,6 +84,37 @@
     ]),
   })
 # ---
+# name: test_get_endpoints[tests/fixtures/kamereon/vehicles/austral_XHN1SU.1.json]
+  dict({
+    'actions/charge-set-mode': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/charge-mode', mode='default'),
+    'actions/charge-set-schedule': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/actions/charge-schedule', mode='default'),
+    'actions/charge-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/charging-start', mode='default'),
+    'actions/charge-stop': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/charging-start', mode='default'),
+    'actions/horn-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
+    'actions/hvac-set-schedule': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/actions/hvac-schedule', mode='default'),
+    'actions/hvac-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
+    'actions/hvac-stop': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
+    'actions/lights-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
+    'alerts': EndpointDefinition(endpoint='/vehicles/{vin}/alerts', mode='default'),
+    'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
+    'charge-history': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charge-history', mode='default'),
+    'charge-mode': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charge-mode', mode='default'),
+    'charge-schedule': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charge-schedule', mode='default'),
+    'charges': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charges', mode='default'),
+    'charging-settings': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charging-settings', mode='default'),
+    'cockpit': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/cockpit', mode='default'),
+    'hvac-history': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/hvac-history', mode='default'),
+    'hvac-sessions': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/hvac-sessions', mode='default'),
+    'hvac-settings': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/hvac-settings', mode='default'),
+    'hvac-status': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/hvac-status', mode='default'),
+    'location': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/location', mode='default'),
+    'lock-status': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/lock-status', mode='default'),
+    'notification-settings': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/notification-settings', mode='default'),
+    'pressure': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/pressure', mode='default'),
+    'res-state': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/res-state', mode='default'),
+    'soc-levels': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/ev/soc-levels', mode='default'),
+  })
+# ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/captur_ii.1.json]
   dict({
     'hvac-status': None,
