@@ -205,7 +205,16 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[EndpointDefinition]]] = {
         "res-state": None,
     },
     "XCB1VE": {  # MEGANE E-TECH
+        "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
+        "charge-mode": None,
+        "charge-schedule": _KCM_ENDPOINTS["charge-schedule"],
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
+        "hvac-settings": _DEFAULT_ENDPOINTS["hvac-settings"],
+        "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
+        "location": _DEFAULT_ENDPOINTS["location"],
         "lock-status": None,
+		"pressure": None,  # Reason: 404
+        "res-state": None,
     },
     "XHN1SU": {  # AUSTRAL
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
