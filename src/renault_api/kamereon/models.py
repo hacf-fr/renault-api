@@ -213,7 +213,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[EndpointDefinition]]] = {
         "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
         "location": _DEFAULT_ENDPOINTS["location"],
         "lock-status": None,
-		"pressure": None,  # Reason: 404
+        "pressure": None,  # Reason: 404
         "res-state": None,
     },
     "XHN1SU": {  # AUSTRAL
