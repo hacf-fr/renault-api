@@ -199,9 +199,11 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[EndpointDefinition]]] = {
     "XBG1VE": {  # DACIA SPRING
         "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start"],
         "actions/charge-stop": _KCM_ENDPOINTS["actions/charge-stop"],
+        "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
+        "charge-mode": None,
+        "location": _DEFAULT_ENDPOINTS["location"],
         "lock-status": None,
         "res-state": None,
-        "charge-mode": None,
     },
     "XCB1SE": {  # SCENIC E-TECH
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
