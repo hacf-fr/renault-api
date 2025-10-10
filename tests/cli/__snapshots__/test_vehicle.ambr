@@ -290,7 +290,6 @@
   Range estimate        128 km
   Plug state            PlugState.UNPLUGGED
   Charging state        ChargeState.NOT_IN_CHARGE
-  Charge mode           always
   Total mileage         5785.75 km
   Fuel autonomy         0.0 km
   Fuel quantity         0.0 L

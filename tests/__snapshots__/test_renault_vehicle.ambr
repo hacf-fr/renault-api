@@ -261,6 +261,14 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/zoe_50.1.json]
   dict({
+    'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
+    'charge-mode': None,
+    'charge-schedule': None,
+    'charging-settings': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charging-settings', mode='default'),
+    'cockpit': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/cockpit', mode='default'),
+    'hvac-settings': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/hvac-settings', mode='default'),
+    'hvac-status': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/hvac-status', mode='default'),
+    'location': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/location', mode='default'),
     'lock-status': None,
     'res-state': None,
   })

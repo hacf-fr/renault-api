@@ -183,8 +183,16 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[EndpointDefinition]]] = {
         "soc-levels": None,  # not supported
     },
     "X102VE": {  # ZOE phase 2
-        "res-state": None,  # not supported
-        "lock-status": None,  # seems not supported (404)
+        "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
+        "charge-mode": None,  # default => 400 Bad Request
+        "charge-schedule": None,  # default and _KCM_ENDPOINTS["charge-schedule"] => 404
+        "charging-settings": _DEFAULT_ENDPOINTS["charging-settings"],
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
+        "hvac-settings": _DEFAULT_ENDPOINTS["hvac-settings"],
+        "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
+        "location": _DEFAULT_ENDPOINTS["location"],
+        "lock-status": None,  # default => 404
+        "res-state": None,  # default => 404
     },
     "XBG1VE": {  # DACIA SPRING
         "lock-status": None,
