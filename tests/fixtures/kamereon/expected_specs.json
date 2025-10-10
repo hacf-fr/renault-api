@@ -9,7 +9,7 @@
     "reports_charging_power_in_watts": false,
     "uses_electricity": false,
     "uses_fuel": true,
-    "supports-hvac-status": false,
+    "supports-hvac-status": true,
     "supports-location": true,
     "charge-uses-kcm": false
   },
@@ -23,7 +23,7 @@
     "reports_charging_power_in_watts": false,
     "uses_electricity": true,
     "uses_fuel": true,
-    "supports-hvac-status": false,
+    "supports-hvac-status": true,
     "supports-location": true,
     "charge-uses-kcm": false
   },

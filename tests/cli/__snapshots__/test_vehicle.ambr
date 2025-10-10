@@ -81,21 +81,16 @@
 # ---
 # name: test_vehicle_status[tests/fixtures/kamereon/vehicles/captur_ii.1.json]
   '''
-  --------------------  ----------------------
+  --------------------  -------------------
   Total mileage         5566.78 km
   Fuel autonomy         35.0 km
   Fuel quantity         3.0 L
   GPS Latitude          48.1234567
   GPS Longitude         11.1234567
   GPS last updated      2020-02-18 17:58:38
-  Lock status           locked
-  Lock last updated     2022-02-02 14:51:13
-  Engine state          Stopped, ready for RES
-  Front left pressure   2460 bar
-  Front right pressure  2730 bar
-  Rear left pressure    2790 bar
-  Rear right pressure   2790 bar
-  --------------------  ----------------------
+  HVAC status           off
+  External temperature  8.0 °C
+  --------------------  -------------------
   
   '''
 # ---
@@ -107,20 +102,14 @@
   Range estimate        128 km
   Plug state            PlugState.UNPLUGGED
   Charging state        ChargeState.NOT_IN_CHARGE
-  Charge mode           always
   Total mileage         5566.78 km
   Fuel autonomy         35.0 km
   Fuel quantity         3.0 L
   GPS Latitude          48.1234567
   GPS Longitude         11.1234567
   GPS last updated      2020-02-18 17:58:38
-  Lock status           locked
-  Lock last updated     2022-02-02 14:51:13
-  Engine state          Stopped, ready for RES
-  Front left pressure   2460 bar
-  Front right pressure  2730 bar
-  Rear left pressure    2790 bar
-  Rear right pressure   2790 bar
+  HVAC status           off
+  External temperature  8.0 °C
   --------------------  -------------------------
   
   '''

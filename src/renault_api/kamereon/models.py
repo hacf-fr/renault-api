@@ -228,7 +228,21 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[EndpointDefinition]]] = {
         "hvac-status": None,
     },
     "XJB1SU": {  # CAPTUR II
-        "hvac-status": None,
+        "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
+        "charge-history": None,  # Reason: "err.func.wired.not-found"
+        "charge-mode": None,  # Reason: "err.func.vcps.ev.charge-mode.error"
+        "charge-schedule": None,  # Reason: "err.func.vcps.ev.charge-schedule.error"
+        "charging-settings": _DEFAULT_ENDPOINTS["charging-settings"],
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
+        "hvac-history": None,  # Reason: "err.func.wired.not-found"
+        "hvac-sessions": None,  # Reason: "err.func.wired.not-found"
+        "hvac-settings": _DEFAULT_ENDPOINTS["hvac-settings"],
+        "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
+        "location": _DEFAULT_ENDPOINTS["location"],
+        "lock-status": None,  # Reason: "err.func.wired.notFound"
+        "notification-settings": None,  # Reason: "err.func.vcps.users-helper.get-notification-settings.error"  # noqa: E501
+        "pressure": None,  # Reason: "err.func.wired.notFound"
+        "res-state": None,  # Reason: "err.func.wired.notFound"
     },
 }
 
