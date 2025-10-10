@@ -171,6 +171,8 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[EndpointDefinition]]] = {
         "lock-status": None,  # seems not supported (404)
     },
     "X101VE": {  # ZOE phase 1
+        "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
+        "actions/charge-start": _DEFAULT_ENDPOINTS["actions/charge-start"],
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],  # confirmed
         "charge-mode": _DEFAULT_ENDPOINTS["charge-mode"],  # confirmed
         "charge-schedule": _DEFAULT_ENDPOINTS["charge-schedule"],  # confirmed
@@ -195,11 +197,11 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[EndpointDefinition]]] = {
         "res-state": None,  # default => 404
     },
     "XBG1VE": {  # DACIA SPRING
+        "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start"],
+        "actions/charge-stop": _KCM_ENDPOINTS["actions/charge-stop"],
         "lock-status": None,
         "res-state": None,
         "charge-mode": None,
-        "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start"],
-        "actions/charge-stop": _KCM_ENDPOINTS["actions/charge-stop"],
     },
     "XCB1SE": {  # SCENIC E-TECH
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
