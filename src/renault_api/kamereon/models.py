@@ -256,6 +256,13 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, Optional[EndpointDefinition]]] = {
     "XJA1VP": {  # CLIO V
         "hvac-status": None,
     },
+    "XJB2CP": {  # Renault Symbioz 2025
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
+        "hvac-status": None,
+        "location": _DEFAULT_ENDPOINTS["location"],
+        "lock-status": None,
+        "res-state": None,
+    },
     "XJB1SU": {  # CAPTUR II
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: "err.func.wired.not-found"
