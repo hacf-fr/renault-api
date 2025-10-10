@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "renault-api"
-version = "0.4.1"
+version = "0.4.2"
 description = "Renault API"
 authors = ["epenet"]
 license = "MIT"
