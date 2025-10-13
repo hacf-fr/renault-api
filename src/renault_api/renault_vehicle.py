@@ -3,8 +3,6 @@
 from datetime import datetime
 from datetime import timezone
 from typing import Any
-from typing import Optional
-from typing import Union
 from typing import cast
 
 import aiohttp
@@ -31,21 +29,21 @@ class RenaultVehicle:
         account_id: str,
         vin: str,
         *,
-        session: Optional[RenaultSession] = None,
-        websession: Optional[aiohttp.ClientSession] = None,
-        locale: Optional[str] = None,
-        country: Optional[str] = None,
-        locale_details: Optional[dict[str, str]] = None,
-        credential_store: Optional[CredentialStore] = None,
-        vehicle_details: Optional[models.KamereonVehicleDetails] = None,
-        car_adapter: Optional[models.KamereonVehicleCarAdapterData] = None,
+        session: RenaultSession | None = None,
+        websession: aiohttp.ClientSession | None = None,
+        locale: str | None = None,
+        country: str | None = None,
+        locale_details: dict[str, str] | None = None,
+        credential_store: CredentialStore | None = None,
+        vehicle_details: models.KamereonVehicleDetails | None = None,
+        car_adapter: models.KamereonVehicleCarAdapterData | None = None,
     ) -> None:
         """Initialise Renault vehicle."""
         self._account_id = account_id
         self._vin = vin
         self._vehicle_details = vehicle_details
         self._car_adapter = car_adapter
-        self._contracts: Optional[list[models.KamereonVehicleContract]] = None
+        self._contracts: list[models.KamereonVehicleContract] | None = None
 
         if session:
             self._session = session
@@ -89,7 +87,7 @@ class RenaultVehicle:
         return await self.session.http_request("GET", endpoint)
 
     async def http_post(
-        self, endpoint: str, json: Optional[dict[str, Any]] = None
+        self, endpoint: str, json: dict[str, Any] | None = None
     ) -> models.KamereonResponse:
         """Run HTTP POST to endpoint."""
         endpoint = self._convert_variables(endpoint)
@@ -110,7 +108,7 @@ class RenaultVehicle:
         return full_endpoint
 
     async def _get_vehicle_data(
-        self, endpoint: Union[str, models.EndpointDefinition]
+        self, endpoint: str | models.EndpointDefinition
     ) -> models.KamereonVehicleDataResponse:
         """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
         if isinstance(endpoint, models.EndpointDefinition):
@@ -125,8 +123,8 @@ class RenaultVehicle:
 
     async def _set_vehicle_data(
         self,
-        endpoint: Union[str, models.EndpointDefinition],
-        json: Optional[dict[str, Any]],
+        endpoint: str | models.EndpointDefinition,
+        json: dict[str, Any] | None,
     ) -> models.KamereonVehicleDataResponse:
         """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
         if isinstance(endpoint, models.EndpointDefinition):
@@ -407,7 +405,7 @@ class RenaultVehicle:
         )
 
     async def set_ac_start(
-        self, temperature: float, when: Optional[datetime] = None
+        self, temperature: float, when: datetime | None = None
     ) -> models.KamereonVehicleHvacStartActionData:
         """Start vehicle ac."""
         json: dict[str, Any] = {
