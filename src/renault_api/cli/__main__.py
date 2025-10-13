@@ -7,7 +7,6 @@ import os
 from datetime import datetime
 from io import TextIOWrapper
 from typing import Any
-from typing import Optional
 
 import aiohttp
 import click
@@ -81,9 +80,9 @@ def main(
     debug: bool,
     log: bool,
     json: bool,
-    locale: Optional[str] = None,
-    account: Optional[str] = None,
-    vin: Optional[str] = None,
+    locale: str | None = None,
+    account: str | None = None,
+    vin: str | None = None,
 ) -> None:
     """Main entry point for the Renault CLI."""
     ctx.ensure_object(dict)
@@ -149,9 +148,9 @@ def reset() -> None:
 async def set(
     ctx_data: dict[str, Any],
     *,
-    locale: Optional[str] = None,
-    account: Optional[str] = None,
-    vin: Optional[str] = None,
+    locale: str | None = None,
+    account: str | None = None,
+    vin: str | None = None,
     websession: aiohttp.ClientSession,
 ) -> None:
     """Store specified settings into credential store."""

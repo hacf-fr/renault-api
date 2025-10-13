@@ -2,11 +2,10 @@
 
 import asyncio
 import functools
+from collections.abc import Callable
 from datetime import datetime
 from datetime import timedelta
 from typing import Any
-from typing import Callable
-from typing import Optional
 
 import aiohttp
 import click
@@ -183,8 +182,8 @@ def _format_seconds(secs: float) -> str:
 
 
 def get_display_value(
-    value: Optional[Any] = None,
-    unit: Optional[str] = None,
+    value: Any | None = None,
+    unit: str | None = None,
 ) -> str:
     """Get a display for value."""
     if value is None:

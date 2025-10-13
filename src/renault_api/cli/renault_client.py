@@ -5,7 +5,6 @@ from locale import LC_ALL
 from locale import getlocale
 from locale import setlocale
 from typing import Any
-from typing import Optional
 
 import aiohttp
 import click
@@ -28,7 +27,7 @@ async def get_locale(
 ) -> str:
     """Prompt the user for locale."""
     credential_store: CredentialStore = ctx_data["credential_store"]
-    locale: Optional[str] = credential_store.get_value(CONF_LOCALE)
+    locale: str | None = credential_store.get_value(CONF_LOCALE)
     if locale:
         return locale
 
@@ -152,7 +151,7 @@ async def http_request(
     ctx_data: dict[str, Any],
     method: str,
     endpoint: str,
-    json_body: Optional[dict[str, Any]] = None,
+    json_body: dict[str, Any] | None = None,
 ) -> None:
     """Run HTTP request."""
     endpoint = await http_get_endpoint(websession, ctx_data, endpoint)
