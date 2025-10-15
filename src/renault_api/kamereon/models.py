@@ -200,21 +200,21 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "actions/charge-stop": _KCM_ENDPOINTS["actions/charge-stop"],
         "alerts": None,  # Reason: "err.func.wired.not-found"
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
-        "charge-history": None, # Reason: "err.func.wired.not-found"
-        "charge-mode": None, # Reason: "err.func.wired.forbidden"
-        "charge-schedule": None, # Reason: "err.func.wired.forbidden"
-        "charging-settings": None, # Reason: "err.func.wired.forbidden"
+        "charge-history": None,  # Reason: "err.func.wired.not-found"
+        "charge-mode": None,  # Reason: "err.func.wired.forbidden"
+        "charge-schedule": None,  # Reason: "err.func.wired.forbidden"
+        "charging-settings": None,  # Reason: "err.func.wired.forbidden"
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
         "hvac-history": None,  # Reason: "err.func.wired.not-found"
         "hvac-sessions": None,  # Reason: "err.func.wired.not-found"
         "hvac-settings": None,  # Reason: "err.tech.vcps.ev.hvac-settings.error"
         "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
         "location": _DEFAULT_ENDPOINTS["location"],
-        "lock-status": None, # Reason: "err.func.wired.notFound"
-        "notification-settings": None, # Reason: "err.func.vcps.users-helper.get-notification-settings.error"
-        "pressure": None, # Reason: "err.func.wired.notFound"
-        "res-state": None, # Reason: "err.func.wired.notFound"
-        "soc-levels": None, # Reason: "err.func.wired.forbidden"
+        "lock-status": None,  # Reason: "err.func.wired.notFound"
+        "notification-settings": None,  # Reason: "err.func.vcps.users-helper.get-notification-settings.error"  # noqa: E501
+        "pressure": None,  # Reason: "err.func.wired.notFound"
+        "res-state": None,  # Reason: "err.func.wired.notFound"
+        "soc-levels": None,  # Reason: "err.func.wired.forbidden"
     },
     "XCB1SE": {  # SCENIC E-TECH
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
