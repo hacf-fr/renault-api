@@ -215,7 +215,6 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "pressure": None, # Reason: "err.func.wired.notFound"
         "res-state": None, # Reason: "err.func.wired.notFound"
         "soc-levels": None, # Reason: "err.func.wired.forbidden"
-        "pause-resume": None, # Reason: "err.func.wired.forbidden"
     },
     "XCB1SE": {  # SCENIC E-TECH
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
