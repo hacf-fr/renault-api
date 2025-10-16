@@ -247,6 +247,7 @@
   dict({
     'actions/charge-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/charging-start', mode='default'),
     'actions/hvac-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
+    'actions/hvac-stop': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
     'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
     'charge-mode': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charge-mode', mode='default'),
     'charge-schedule': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charge-schedule', mode='default'),
@@ -263,6 +264,7 @@
   dict({
     'actions/charge-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/charging-start', mode='default'),
     'actions/hvac-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
+    'actions/hvac-stop': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
     'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
     'charge-mode': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charge-mode', mode='default'),
     'charge-schedule': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charge-schedule', mode='default'),
