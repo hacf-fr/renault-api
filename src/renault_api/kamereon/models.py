@@ -171,6 +171,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
     },
     "X101VE": {  # ZOE phase 1
         "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
+        "actions/hvac-stop": _DEFAULT_ENDPOINTS["actions/hvac-stop"],
         "actions/charge-start": _DEFAULT_ENDPOINTS["actions/charge-start"],
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],  # confirmed
         "charge-mode": _DEFAULT_ENDPOINTS["charge-mode"],  # confirmed
