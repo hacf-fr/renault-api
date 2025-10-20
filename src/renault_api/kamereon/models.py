@@ -147,6 +147,28 @@ _KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
 }
 
 _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
+    "XHN1ML": {  # Renault Espace VI (OpenRLink)
+        "actions/hvac-start": None,  # err.func.wired.forbidden
+        "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
+        "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
+        "battery-status": None,  # err.func.wired.notFound: There is no data for this vin and uid
+        "charge-history": None,  # err.func.wired.not-found: The specified url does not exist
+        "charge-mode": None,  # err.func.wired.forbidden: The access is forbidden
+        "charge-schedule": None,  # err.func.wired.forbidden: The access is forbidden
+        "charges": None,  # err.func.wired.forbidden: The access is forbidden
+        "charging-settings": None,  # err.func.wired.forbidden: The access is forbidden
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
+        "hvac-history": None,  # err.func.wired.not-found: The specified url does not exist
+        "hvac-sessions": None,  # err.func.wired.not-found: The specified url does not exist
+        "hvac-settings": None,  # err.func.wired.forbidden: The access is forbidden
+        "hvac-status": None,  # err.func.wired.notFound: There is no data for this vin and uid
+        "location": _DEFAULT_ENDPOINTS["location"],
+        "notification-settings": None,  # err.func.vcps.users-helper.get-notification-settings.error: The vehicle does not have a GDC gateway.
+        "lock-status": None,  # err.func.wired.notFound
+        "pressure": None,  # err.func.wired.notFound
+        "res-state": None,  # err.func.wired.notFound
+        "soc-levels": None,  # err.func.wired.notFound
+    },
     "R5E1VE": {  # Renault 5 E-TECH
         "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
         "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
