@@ -274,19 +274,19 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "actions/hvac-start": None,  # err.func.wired.forbidden
         "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
         "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
-        "battery-status": None,  # err.func.wired.notFound: There is no data for this vin and uid
-        "charge-history": None,  # err.func.wired.not-found: The specified url does not exist
-        "charge-mode": None,  # err.func.wired.forbidden: The access is forbidden
-        "charge-schedule": None,  # err.func.wired.forbidden: The access is forbidden
-        "charges": None,  # err.func.wired.forbidden: The access is forbidden
-        "charging-settings": None,  # err.func.wired.forbidden: The access is forbidden
+        "battery-status": None,  # err.func.wired.notFound
+        "charge-history": None,  # err.func.wired.not-found
+        "charge-mode": None,  # err.func.wired.forbidden
+        "charge-schedule": None,  # err.func.wired.forbidden
+        "charges": None,  # err.func.wired.forbidden
+        "charging-settings": None,  # err.func.wired.forbidden
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
-        "hvac-history": None,  # err.func.wired.not-found: The specified url does not exist
-        "hvac-sessions": None,  # err.func.wired.not-found: The specified url does not exist
-        "hvac-settings": None,  # err.func.wired.forbidden: The access is forbidden
-        "hvac-status": None,  # err.func.wired.notFound: There is no data for this vin and uid
+        "hvac-history": None,  # err.func.wired.not-found
+        "hvac-sessions": None,  # err.func.wired.not-found
+        "hvac-settings": None,  # err.func.wired.forbidden
+        "hvac-status": None,  # err.func.wired.notFound
         "location": _DEFAULT_ENDPOINTS["location"],
-        "notification-settings": None,  # err.func.vcps.users-helper.get-notification-settings.error: The vehicle does not have a GDC gateway.
+        "notification-settings": None,  # err.func.vcps.users-helper.get-notification-settings.error  # noqa: E501
         "lock-status": None,  # err.func.wired.notFound
         "pressure": None,  # err.func.wired.notFound
         "res-state": None,  # err.func.wired.notFound
