@@ -86,6 +86,11 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/austral_XHN1SU.1.json]
   dict({
+    'actions/horn-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
+    'actions/lights-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
+    'battery-status': None,
+    'charge-history': None,
+    'charge-mode': None,
     'cockpit': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/cockpit', mode='default'),
     'hvac-status': None,
     'location': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/location', mode='default'),
