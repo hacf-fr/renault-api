@@ -270,6 +270,28 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "pressure": None,  # Reason: 404
         "res-state": None,
     },
+    "XHN1ML": {  # Renault Espace VI (OpenRLink)
+        "actions/hvac-start": None,  # err.func.wired.forbidden
+        "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
+        "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
+        "battery-status": None,  # err.func.wired.notFound
+        "charge-history": None,  # err.func.wired.not-found
+        "charge-mode": None,  # err.func.wired.forbidden
+        "charge-schedule": None,  # err.func.wired.forbidden
+        "charges": None,  # err.func.wired.forbidden
+        "charging-settings": None,  # err.func.wired.forbidden
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
+        "hvac-history": None,  # err.func.wired.not-found
+        "hvac-sessions": None,  # err.func.wired.not-found
+        "hvac-settings": None,  # err.func.wired.forbidden
+        "hvac-status": None,  # err.func.wired.notFound
+        "location": _DEFAULT_ENDPOINTS["location"],
+        "notification-settings": None,  # err.func.vcps.users-helper.get-notification-settings.error  # noqa: E501
+        "lock-status": None,  # err.func.wired.notFound
+        "pressure": None,  # err.func.wired.notFound
+        "res-state": None,  # err.func.wired.notFound
+        "soc-levels": None,  # err.func.wired.notFound
+    },
     "XJA1VP": {  # CLIO V
         "hvac-status": None,
     },
