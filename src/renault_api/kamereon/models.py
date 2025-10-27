@@ -276,6 +276,11 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "res-state": None,  # Reason: "err.func.wired.notFound"
     },
     "XHN1SU": {  # AUSTRAL
+        "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
+        "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
+        "battery-status": None,  # Reason: "err.func.wired.notFound"
+        "charge-history": None,  # Reason: "err.func.wired.not-found"
+        "charge-mode": None,  # Reason: "err.func.wired.forbidden"
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
         "hvac-status": None,
         "location": _DEFAULT_ENDPOINTS["location"],
