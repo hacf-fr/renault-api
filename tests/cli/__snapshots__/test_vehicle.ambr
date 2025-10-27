@@ -226,23 +226,18 @@
 # ---
 # name: test_vehicle_status[tests/fixtures/kamereon/vehicles/twingo_ze.1.json]
   '''
-  --------------------  -------------------------
-  Battery level         50 %
-  Last updated          2020-11-17 09:06:48
-  Range estimate        128 km
-  Plug state            PlugState.UNPLUGGED
-  Charging state        ChargeState.NOT_IN_CHARGE
-  Charge mode           always
-  Total mileage         49114.27 km
-  GPS Latitude          48.1234567
-  GPS Longitude         11.1234567
-  GPS last updated      2020-02-18 17:58:38
-  HVAC status           on
-  Front left pressure   2460 bar
-  Front right pressure  2730 bar
-  Rear left pressure    2790 bar
-  Rear right pressure   2790 bar
-  --------------------  -------------------------
+  ----------------  -------------------------
+  Battery level     50 %
+  Last updated      2020-11-17 09:06:48
+  Range estimate    128 km
+  Plug state        PlugState.UNPLUGGED
+  Charging state    ChargeState.NOT_IN_CHARGE
+  Total mileage     49114.27 km
+  GPS Latitude      48.1234567
+  GPS Longitude     11.1234567
+  GPS last updated  2020-02-18 17:58:38
+  HVAC status       on
+  ----------------  -------------------------
   
   '''
 # ---
