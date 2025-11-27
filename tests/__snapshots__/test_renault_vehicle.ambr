@@ -286,6 +286,7 @@
     'hvac-status': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/hvac-status', mode='default'),
     'location': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/location', mode='default'),
     'lock-status': None,
+    'pressure': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/pressure', mode='default'),
     'res-state': None,
   })
 # ---
