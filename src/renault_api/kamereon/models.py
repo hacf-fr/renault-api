@@ -207,6 +207,8 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
         "location": _DEFAULT_ENDPOINTS["location"],
         "lock-status": None,  # default => 404
+        # pressure not supported by all vehicles - but confirmed to be working on some
+        "pressure": _DEFAULT_ENDPOINTS["pressure"],
         "res-state": None,  # default => 404
     },
     "XBG1VE": {  # DACIA SPRING
