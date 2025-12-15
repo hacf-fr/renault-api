@@ -345,7 +345,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "charge-mode": None,  # Reason: "err.func.wired.forbidden"
         "charge-schedule": None,  # Reason: "err.func.wired.forbidden"
         "charging-settings": None,  # Reason: "err.func.wired.forbidden"
-        "hvac-status": None, # Reason: "err.func.wired.notFound"
+        "hvac-status": None,  # Reason: "err.func.wired.notFound"
         "hvac-history": None,  # Reason: "err.func.wired.not-found"
         "hvac-settings": None,  # Reason: "err.func.wired.not-found"
         "hvac-sessions": None,  # Reason: "err.func.wired.not-found"
