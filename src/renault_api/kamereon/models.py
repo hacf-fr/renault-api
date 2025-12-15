@@ -339,6 +339,23 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "pressure": None,  # Reason: "err.func.wired.notFound"
         "res-state": None,  # Reason: "err.func.wired.notFound"
     },
+    "XJL2TR": {  # Arkana E-tech full hybrid
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
+        "charge-history": None,  # Reason: "err.func.wired.not-found"
+        "charge-mode": None,  # Reason: "err.func.wired.forbidden"
+        "charge-schedule": None,  # Reason: "err.func.wired.forbidden"
+        "charging-settings": None,  # Reason: "err.func.wired.forbidden"
+        "hvac-status": None, # Reason: "err.func.wired.notFound"
+        "hvac-history": None,  # Reason: "err.func.wired.not-found"
+        "hvac-settings": None,  # Reason: "err.func.wired.not-found"
+        "hvac-sessions": None,  # Reason: "err.func.wired.not-found"
+        "hvac-start": None,  # Reason: "Request method 'GET' is not supported"
+        "hvac-schedule": None,  # Reason: "Request method 'GET' is not supported"
+        "location": _DEFAULT_ENDPOINTS["location"],
+        "lock-status": None,  # Reason: "err.func.wired.notFound"
+        "res-state": None,  # Reason: "err.func.wired.notFound"
+        "pressure": None,  # Reason: "err.func.wired.notFound"
+    },
 }
 
 _ALREADY_WARNED_VEHICLE: set[str] = set()
