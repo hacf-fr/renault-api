@@ -320,7 +320,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "charge-schedule": None, # err.func.wired.forbidden
         # "charges": None, # err.func.wired.notFound: Not Found: There is no rows charge history for the vin xxx
         "charging-settings": None, # err.func.wired.forbidden
-        # "charging-start": None, # err.tech.wired.unknown-error
+        "charging-start": None, # err.func.wired.forbidden
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
         "horn-lights": None, # err.func.wired.forbidden
         "hvac-history": None, # err.func.wired.not-found
