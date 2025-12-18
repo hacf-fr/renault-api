@@ -327,7 +327,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "hvac-schedule": None, # err.func.wired.not-found
         "hvac-sessions": None, # err.func.wired.not-found
         "hvac-settings": None, # err.func.wired.forbidden
-        # "hvac-start": None, # err.func.wired.forbidden
+        "hvac-start": None, # err.func.wired.forbidden
         # "hvac-status": None, # err.func.wired.notFound: There is no data for this vin and uid
         "location": _DEFAULT_ENDPOINTS["location"],
         # "lock-status": None, # err.func.wired.notFound: There is no data for this vin and uid
