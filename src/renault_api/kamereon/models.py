@@ -313,7 +313,9 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "soc-levels": None,  # err.func.wired.notFound
     },
     "XJA1VP": {  # CLIO V
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
         "hvac-status": None,
+        "location": _DEFAULT_ENDPOINTS["location"],
     },
     "XJB2CP": {  # Renault Symbioz 2025
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
