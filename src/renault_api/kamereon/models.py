@@ -313,9 +313,21 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "soc-levels": None,  # err.func.wired.notFound
     },
     "XJA1VP": {  # CLIO V
+        "alerts": None, # err.func.wired.not-found
+        "charge-mode": None, # err.func.wired.forbidden
+        "charge-history": None, # err.func.wired.not-found
+        "charge-schedule": None, # err.func.wired.forbidden
+        "charging-settings": None, # err.func.wired.forbidden
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
-        "hvac-status": None,
+        "horn-lights": None, # err.func.wired.forbidden
+        "hvac-history": None, # err.func.wired.not-found
+        "hvac-schedule": None, # err.func.wired.not-found
+        "hvac-sessions": None, # err.func.wired.not-found
+        "hvac-settings": None, # err.func.wired.forbidden
         "location": _DEFAULT_ENDPOINTS["location"],
+        "notification-settings": None, # err.func.vcps.users-helper.get-notification-settings.error  # noqa: E501
+        "pause-resume": None, # err.func.wired.not-found
+        "soc-levels": None, # err.func.wired.forbidden
     },
     "XJB2CP": {  # Renault Symbioz 2025
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
