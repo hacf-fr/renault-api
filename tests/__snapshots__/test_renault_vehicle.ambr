@@ -275,6 +275,7 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/zoe_40.1.json]
   dict({
+    'actions/charge-set-schedule': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/actions/charge-schedule', mode='default'),
     'actions/charge-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/charging-start', mode='default'),
     'actions/hvac-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
     'actions/hvac-stop': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
@@ -292,6 +293,7 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/zoe_40.2.json]
   dict({
+    'actions/charge-set-schedule': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/actions/charge-schedule', mode='default'),
     'actions/charge-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/charging-start', mode='default'),
     'actions/hvac-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
     'actions/hvac-stop': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
