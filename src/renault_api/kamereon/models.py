@@ -186,6 +186,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
         "actions/hvac-stop": _DEFAULT_ENDPOINTS["actions/hvac-stop"],
         "actions/charge-start": _DEFAULT_ENDPOINTS["actions/charge-start"],
+        "actions/charge-set-schedule": _DEFAULT_ENDPOINTS["actions/charge-set-schedule"], # confirmed
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],  # confirmed
         "charge-mode": _DEFAULT_ENDPOINTS["charge-mode"],  # confirmed
         "charge-schedule": _DEFAULT_ENDPOINTS["charge-schedule"],  # confirmed
