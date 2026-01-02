@@ -318,6 +318,31 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
     "XJA1VP": {  # CLIO V
         "hvac-status": None,
     },
+    "XJA2VP": {  # CLIO V
+        "alerts": None,  # err.func.wired.not-found
+        "battery-status": None,  # err.func.wired.notFound
+        "charge-mode": None,  # err.func.wired.forbidden
+        "charge-history": None,  # err.func.wired.not-found
+        "charge-schedule": None,  # err.func.wired.forbidden
+        "charges": None,  # err.func.wired.notFound: Not Found
+        "charging-settings": None,  # err.func.wired.forbidden
+        "charging-start": None,  # err.func.wired.forbidden
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
+        "horn-lights": None,  # err.func.wired.forbidden
+        "hvac-history": None,  # err.func.wired.not-found
+        "hvac-schedule": None,  # err.func.wired.not-found
+        "hvac-sessions": None,  # err.func.wired.not-found
+        "hvac-settings": None,  # err.func.wired.forbidden
+        "hvac-start": None,  # err.func.wired.forbidden
+        "hvac-status": None,  # err.func.wired.notFound
+        "location": _DEFAULT_ENDPOINTS["location"],
+        "lock-status": None,  # err.func.wired.notFound
+        "notification-settings": None,  # err.func.vcps.users-helper.get-notification-settings.error  # noqa: E501
+        "pause-resume": None,  # err.func.wired.not-found
+        "pressure": None,  # err.func.wired.notFound
+        "res-state": None,  # err.func.wired.notFound
+        "soc-levels": None,  # err.func.wired.forbidden
+    },
     "XJB2CP": {  # Renault Symbioz 2025
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
         "hvac-status": None,

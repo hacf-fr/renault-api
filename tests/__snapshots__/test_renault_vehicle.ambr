@@ -142,6 +142,33 @@
     'hvac-status': None,
   })
 # ---
+# name: test_get_endpoints[tests/fixtures/kamereon/vehicles/clio_v.2.json]
+  dict({
+    'alerts': None,
+    'battery-status': None,
+    'charge-history': None,
+    'charge-mode': None,
+    'charge-schedule': None,
+    'charges': None,
+    'charging-settings': None,
+    'charging-start': None,
+    'cockpit': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/cockpit', mode='default'),
+    'horn-lights': None,
+    'hvac-history': None,
+    'hvac-schedule': None,
+    'hvac-sessions': None,
+    'hvac-settings': None,
+    'hvac-start': None,
+    'hvac-status': None,
+    'location': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/location', mode='default'),
+    'lock-status': None,
+    'notification-settings': None,
+    'pause-resume': None,
+    'pressure': None,
+    'res-state': None,
+    'soc-levels': None,
+  })
+# ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/duster.1.json]
   dict({
     'actions/charge-set-mode': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/charge-mode', mode='default'),
