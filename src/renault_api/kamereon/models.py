@@ -337,6 +337,9 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "soc-levels": None,  # err.func.wired.notFound
     },
     "XJA1VP": {  # CLIO V
+        "hvac-status": None,
+    },
+    "XJA2VP": {  # CLIO V
         "alerts": None,  # err.func.wired.not-found
         "battery-status": None,  # err.func.wired.notFound
         "charge-mode": None,  # err.func.wired.forbidden

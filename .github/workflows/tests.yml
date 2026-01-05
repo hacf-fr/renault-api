@@ -39,7 +39,7 @@ jobs:
 
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v6.0.0
+        uses: actions/checkout@v6.0.1
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v6.1.0
@@ -70,7 +70,7 @@ jobs:
           echo "result=${{ runner.os }}-$(python --version | cut -d ' ' -f 2)" >> $GITHUB_OUTPUT
 
       - name: Restore pre-commit cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5.0.1
         if: matrix.session == 'pre-commit'
         with:
           path: ~/.cache/pre-commit
@@ -84,7 +84,7 @@ jobs:
 
       - name: Upload coverage data
         if: always() && matrix.session == 'tests'
-        uses: actions/upload-artifact@v5.0.0
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: coverage-data-${{ matrix.python-version }}-${{ matrix.os }}
           path: ".coverage.*"
@@ -92,7 +92,7 @@ jobs:
 
       - name: Upload documentation
         if: matrix.session == 'docs-build'
-        uses: actions/upload-artifact@v5.0.0
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: docs
           path: docs/_build
@@ -102,7 +102,7 @@ jobs:
     needs: tests
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v6.0.0
+        uses: actions/checkout@v6.0.1
 
       - name: Set up Python
         uses: actions/setup-python@v6.1.0
@@ -127,7 +127,7 @@ jobs:
           nox --version
 
       - name: Download coverage data
-        uses: actions/download-artifact@v6.0.0
+        uses: actions/download-artifact@v7.0.0
         with:
           pattern: coverage-data-*
           merge-multiple: true
@@ -141,6 +141,6 @@ jobs:
           nox --force-color --session=coverage -- xml
 
       - name: Upload coverage report
-        uses: codecov/codecov-action@v5.5.1
+        uses: codecov/codecov-action@v5.5.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
