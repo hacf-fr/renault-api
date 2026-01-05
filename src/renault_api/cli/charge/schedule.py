@@ -88,13 +88,36 @@ def _show_kca(response: dict[str, Any]) -> None:
 def _show_kcm(response: dict[str, Any]) -> None:
     """Display charge schedules (alternate)."""
     click.echo(f"Mode: {response['chargeModeRq'].capitalize()}")
+    click.echo(f"Charge Time Start: {response['chargeTimeStart']}")
+    click.echo(f"Charge Duration in minutes: {response['chargeDuration']}")
+    click.echo(
+        f"Preconditioning temperature in °C: {response['preconditioningTemperature']}"
+    )
+    click.echo(
+        f"Preconditioning Steering Wheel? {response['preconditioningHeatedStrgWheel']}"
+    )
+    click.echo(
+        f"Preconditioning Left Seat? {response['preconditioningHeatedLeftSeat']}"
+    )
+    click.echo(
+        f"Preconditioning Right Seat? {response['preconditioningHeatedRightSeat']}"
+    )
     if not response["programs"]:
         click.echo("\nNo schedules found.")
         return
 
     for idx, program in enumerate(response["programs"]):
-        active = " [Active]" if program["programActivationStatus"] else ""
-        click.echo(f"\nSchedule ID: {idx}{active}")
+        active = (
+            " [Status=Active]"
+            if program["programActivationStatus"]
+            else " [Status=Inactive]"
+        )
+        type = " [Type=" + program["programType"] + "]"
+        departure_time = (
+            " [DepartureTime=" + program.get("programDepartureTime", "N/A") + "]"
+        )
+
+        click.echo(f"\nSchedule ID: {idx}{active}{type}{departure_time}")
 
         headers = ["Day", "Active"]
         click.echo(

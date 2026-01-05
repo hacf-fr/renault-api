@@ -1,0 +1,25 @@
+{
+  "lastSettingsUpdateTimestamp": "2025-04-24T12:17:12.247Z",
+  "delegatedActivated": false,
+  "chargeModeRq": "SCHEDULED",
+  "chargeTimeStart": "00:00",
+  "chargeDuration": 9000,
+  "preconditioningTemperature": 20.0,
+  "preconditioningHeatedStrgWheel": false,
+  "preconditioningHeatedRightSeat": false,
+  "preconditioningHeatedLeftSeat": false,
+  "programs": [
+    {
+      "programActivationStatus": false,
+      "programType": "CHARGE_AND_PRECONDITIONING",
+      "programDepartureTime": "02:00",
+      "programActivationMonday": true,
+      "programActivationTuesday": true,
+      "programActivationWednesday": true,
+      "programActivationThursday": true,
+      "programActivationFriday": true,
+      "programActivationSaturday": true,
+      "programActivationSunday": true
+    }
+  ]
+}

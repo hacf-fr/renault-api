@@ -143,13 +143,39 @@ def test_charge_schedule_show(
     assert result.output == snapshot
 
 
-def test_charge_schedule_show_alternate(
+def test_charge_schedule_show_alternate_single_active(
     mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
-    fixtures.inject_get_ev_settings(mocked_responses, "single")
+    fixtures.inject_get_ev_settings(mocked_responses, "single", "active")
+
+    result = cli_runner.invoke(__main__.main, "charge schedule show")
+    assert result.exit_code == 0, result.exception
+    assert result.output == snapshot
+
+
+def test_charge_schedule_show_alternate_single_inactive(
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+) -> None:
+    """It exits with a status code of zero."""
+    initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
+    fixtures.inject_get_ev_settings(mocked_responses, "single", "inactive")
+
+    result = cli_runner.invoke(__main__.main, "charge schedule show")
+    assert result.exit_code == 0, result.exception
+    assert result.output == snapshot
+
+
+def test_charge_schedule_show_alternate_multi_active(
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+) -> None:
+    """It exits with a status code of zero."""
+    initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
+    fixtures.inject_get_ev_settings(mocked_responses, "multi", "active")
 
     result = cli_runner.invoke(__main__.main, "charge schedule show")
     assert result.exit_code == 0, result.exception
