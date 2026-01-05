@@ -62,7 +62,7 @@ syrupy = ">=4.9.1"
 #ensure urllib3 (for requests/sphinx) is greater than 1.26.5 to account for CVE-2021-33503
 urllib3 = ">=1.26.15,<3.0.0"
 #ensure certifi (for requests/sphinx) is greater than 2023.7.22 to account for CVE-2023-37920
-certifi = ">=2023.7.22,<2026.0.0"
+certifi = ">=2023.7.22,<2027.0.0"
 #ensure requests (for sphinx) is greater than 2.31.0 to account for CVE-2023-32681
 requests = "^2.31.0"
 #ensure tornado (for sphinx) is greater than 6.3.3 to account for GHSA-qppv-j76h-2rpx
