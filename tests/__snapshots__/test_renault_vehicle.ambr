@@ -139,6 +139,11 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/clio_v.1.json]
   dict({
+    'hvac-status': None,
+  })
+# ---
+# name: test_get_endpoints[tests/fixtures/kamereon/vehicles/clio_v.2.json]
+  dict({
     'alerts': None,
     'battery-status': None,
     'charge-history': None,
