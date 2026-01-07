@@ -71,7 +71,7 @@ tornado = "6.5.4"
 #ensure PyYAML (for sphinx) is greater than 6.0.1 to fix Cython wheel
 PyYAML = "6.0.3"
 #ensure virtualenv (for pre-commit) is greater than 20.21.0 to account for PVE-2024-68477
-virtualenv = "==20.35.4"
+virtualenv = "==20.36.0"
 #ensure nodeenv (for pre-commit) is greater than 1.9.0 for python 3.13 compatibility
 nodeenv = "==1.10.0"
 #ensure typing-extensions (for safety>pydantic) is greater than 4.12.2 for python 3.13 compatibility
