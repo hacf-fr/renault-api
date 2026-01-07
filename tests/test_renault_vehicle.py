@@ -223,23 +223,30 @@ async def test_get_charge_schedule(
     assert await vehicle.get_charge_schedule() == snapshot
 
 
+@pytest.mark.parametrize(
+    ("ev_schedule_type", "ev_schedule_status"),
+    [
+        ("single", "active"),
+        ("single", "inactive"),
+    ],
+    # This 'ids' list tells Pytest (and Syrupy) what to call each test case
+    ids=[
+        "test_charge_schedule_show_alternate_single_active",
+        "test_charge_schedule_show_alternate_single_inactive",
+    ],
+)
 @pytest.mark.asyncio
-async def test_get_charge_schedule_kcm_active(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+async def test_get_charge_schedule_kcm(
+    vehicle: RenaultVehicle,
+    mocked_responses: aioresponses,
+    snapshot: SnapshotAssertion,
+    ev_schedule_type: str,
+    ev_schedule_status: str,
 ) -> None:
     """Test get_charging_settings."""
     fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
-    fixtures.inject_get_ev_settings(mocked_responses, "single", "active")
-    assert await vehicle.get_charge_schedule() == snapshot
-
-
-@pytest.mark.asyncio
-async def test_get_charge_schedule_kcm_inactive(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
-) -> None:
-    """Test get_charging_settings."""
-    fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
-    fixtures.inject_get_ev_settings(mocked_responses, "single", "inactive")
+    ev_settings_file = f"{ev_schedule_type}.{ev_schedule_status}"
+    fixtures.inject_get_ev_settings(mocked_responses, ev_settings_file)
     assert await vehicle.get_charge_schedule() == snapshot
 
 

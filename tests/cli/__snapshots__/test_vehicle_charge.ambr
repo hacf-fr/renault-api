@@ -52,7 +52,7 @@
   
   '''
 # ---
-# name: test_charge_schedule_show_alternate_single_active
+# name: test_charge_schedule_show_alternate[test_charge_schedule_show_alternate_single_active]
   '''
   Mode: Scheduled
   Charge Time Start: 00:00
@@ -75,7 +75,7 @@
   
   '''
 # ---
-# name: test_charge_schedule_show_alternate_single_inactive
+# name: test_charge_schedule_show_alternate[test_charge_schedule_show_alternate_single_inactive]
   '''
   Mode: Scheduled
   Charge Time Start: 00:00
@@ -98,7 +98,7 @@
   
   '''
 # ---
-# name: test_charge_schedule_show_alternate_multi_active
+# name: test_charge_schedule_show_alternate[test_charge_schedule_show_alternate_multi_active]
   '''
   Mode: Scheduled
   Charge Time Start: 01:55
