@@ -168,6 +168,31 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "actions/charge-start": None,  # Reason: The access is forbidden,
         "actions/charge-stop": None,  # Reason: The access is forbidden,
     },
+    "DU31SU": {  # Dacia Duster III
+        "actions/horn-start": None,  # err.func.wired.forbidden
+        "actions/lights-start": None,  # err.func.wired.forbidden
+        "battery-status": None,  # err.func.wired.notFound
+        "charge-mode": None,  # err.func.wired.forbidden
+        "charge-history": None,  # err.func.wired.not-found
+        "charge-schedule": None,  # err.func.wired.forbidden
+        "charges": None,  # err.func.wired.notFound: Not Found
+        "charging-settings": None,  # err.func.wired.forbidden
+        "charging-start": None,  # err.func.wired.forbidden
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
+        "horn-lights": None,  # err.func.wired.forbidden
+        "hvac-history": None,  # err.func.wired.not-found
+        "hvac-schedule": None,  # err.func.wired.not-found
+        "hvac-sessions": None,  # err.func.wired.not-found
+        "hvac-settings": None,  # err.func.wired.forbidden
+        "hvac-start": None,  # err.func.wired.forbidden
+        "hvac-status": None,  # err.func.wired.notFound
+        "location": _DEFAULT_ENDPOINTS["location"],
+        "lock-status": None,  # err.func.wired.notFound
+        "pause-resume": None,  # err.func.wired.not-found
+        "pressure": None,  # err.func.wired.notFound
+        "res-state": None,  # err.func.wired.notFound
+        "soc-levels": None,  # err.func.wired.forbidden
+    },
     "R5E1VE": {  # Renault 5 E-TECH
         "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
         "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],

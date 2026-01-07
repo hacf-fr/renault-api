@@ -13,6 +13,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
 
 [tool.poetry.urls]
@@ -60,7 +61,7 @@ aioresponses = "0.7.8"
 pytest-cov = "==7.0.0"
 syrupy = "==5.0.0"
 #ensure urllib3 (for requests/sphinx) is greater than 1.26.5 to account for CVE-2021-33503
-urllib3 = "==2.6.2"
+urllib3 = "==2.6.3"
 #ensure certifi (for requests/sphinx) is greater than 2023.7.22 to account for CVE-2023-37920
 certifi = "==2026.1.4"
 #ensure requests (for sphinx) is greater than 2.31.0 to account for CVE-2023-32681
@@ -70,7 +71,7 @@ tornado = "6.5.4"
 #ensure PyYAML (for sphinx) is greater than 6.0.1 to fix Cython wheel
 PyYAML = "6.0.3"
 #ensure virtualenv (for pre-commit) is greater than 20.21.0 to account for PVE-2024-68477
-virtualenv = "==20.35.4"
+virtualenv = "==20.36.0"
 #ensure nodeenv (for pre-commit) is greater than 1.9.0 for python 3.13 compatibility
 nodeenv = "==1.10.0"
 #ensure typing-extensions (for safety>pydantic) is greater than 4.12.2 for python 3.13 compatibility
