@@ -60,7 +60,7 @@ aioresponses = "0.7.8"
 pytest-cov = "==7.0.0"
 syrupy = "==5.0.0"
 #ensure urllib3 (for requests/sphinx) is greater than 1.26.5 to account for CVE-2021-33503
-urllib3 = "==2.6.2"
+urllib3 = "==2.6.3"
 #ensure certifi (for requests/sphinx) is greater than 2023.7.22 to account for CVE-2023-37920
 certifi = "==2026.1.4"
 #ensure requests (for sphinx) is greater than 2.31.0 to account for CVE-2023-32681
