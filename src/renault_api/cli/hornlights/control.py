@@ -40,6 +40,5 @@ async def horn(
     )
     await vehicle.start_horn()
     click.echo(
-        "Request to horn 3 times sent. "
-        "It may take a few seconds to take effect."
+        "Request to horn 3 times sent. It may take a few seconds to take effect."
     )
