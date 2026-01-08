@@ -28,17 +28,11 @@ python = ">=3.10,<4.0"
 aiohttp = ">=3.9.5"
 # Warning: as of 2023-07-19, pyjwt is pinned to 2.8.0 on HA-core
 PyJWT = ">=2.8.0"
-#ensure cryptography (for pyjwt) is greater than 44.0.0 to account for CVE-2024-12797
-cryptography = ">=44.0.0"
-#ensure cffi (for cryptography) is greater than 1.17.0 for python 3.13 compatibility
-cffi = ">=1.17.0"
 
 marshmallow-dataclass = ">=8.2.0"
 click = { version = ">=8.0.1", optional = true }
 tabulate = { version = ">=0.8.7", optional = true }
 dateparser = {version = ">=1.0.0", optional = true}
-#ensure six (for dateparser) is greater than 1.16 for python 3.12 compatibility
-six = {version = "^1.16", optional = true}
 
 [tool.poetry.group.dev.dependencies]
 pytest = "==9.0.2"
@@ -59,22 +53,6 @@ pytest-asyncio = "==1.3.0"
 aioresponses = "0.7.8"
 pytest-cov = "==7.0.0"
 syrupy = "==5.0.0"
-#ensure urllib3 (for requests/sphinx) is greater than 1.26.5 to account for CVE-2021-33503
-urllib3 = "==2.6.3"
-#ensure certifi (for requests/sphinx) is greater than 2023.7.22 to account for CVE-2023-37920
-certifi = "==2026.1.4"
-#ensure requests (for sphinx) is greater than 2.31.0 to account for CVE-2023-32681
-requests = "2.32.5"
-#ensure tornado (for sphinx) is greater than 6.3.3 to account for GHSA-qppv-j76h-2rpx
-tornado = "6.5.4"
-#ensure PyYAML (for sphinx) is greater than 6.0.1 to fix Cython wheel
-PyYAML = "6.0.3"
-#ensure virtualenv (for pre-commit) is greater than 20.21.0 to account for PVE-2024-68477
-virtualenv = "==20.36.0"
-#ensure nodeenv (for pre-commit) is greater than 1.9.0 for python 3.13 compatibility
-nodeenv = "==1.10.0"
-#ensure typing-extensions (for safety>pydantic) is greater than 4.12.2 for python 3.13 compatibility
-typing-extensions = "==4.15.0"
 
 [tool.poetry.extras]
 cli = ["click", "tabulate", "dateparser"]
