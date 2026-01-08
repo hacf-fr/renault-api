@@ -31,3 +31,5 @@ Sample payload:
 
 
    Please check the `Contributor Guide`_ to provide extra samples.
+
+.. _Contributor Guide: contributing.html

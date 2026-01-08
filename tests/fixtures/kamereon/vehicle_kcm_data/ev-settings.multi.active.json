@@ -1,0 +1,49 @@
+{
+  "lastSettingsUpdateTimestamp": "2025-12-30T17:03:18.644879Z",
+  "delegatedActivated": false,
+  "chargeModeRq": "SCHEDULED",
+  "chargeTimeStart": "01:55",
+  "chargeDuration": 300,
+  "preconditioningTemperature": 19,
+  "preconditioningHeatedStrgWheel": true,
+  "preconditioningHeatedRightSeat": false,
+  "preconditioningHeatedLeftSeat": false,
+  "programs": [
+    {
+      "programActivationStatus": true,
+      "programType": "CHARGE",
+      "programDepartureTime": "07:30",
+      "programActivationMonday": true,
+      "programActivationTuesday": true,
+      "programActivationWednesday": false,
+      "programActivationThursday": false,
+      "programActivationFriday": true,
+      "programActivationSaturday": false,
+      "programActivationSunday": false
+    },
+    {
+      "programActivationStatus": true,
+      "programType": "PRECONDITIONING",
+      "programDepartureTime": "08:30",
+      "programActivationMonday": false,
+      "programActivationTuesday": false,
+      "programActivationWednesday": false,
+      "programActivationThursday": true,
+      "programActivationFriday": false,
+      "programActivationSaturday": false,
+      "programActivationSunday": false
+    },
+    {
+      "programActivationStatus": true,
+      "programType": "CHARGE_AND_PRECONDITIONING",
+      "programDepartureTime": "10:50",
+      "programActivationMonday": false,
+      "programActivationTuesday": false,
+      "programActivationWednesday": true,
+      "programActivationThursday": false,
+      "programActivationFriday": false,
+      "programActivationSaturday": true,
+      "programActivationSunday": false
+    }
+  ]
+}

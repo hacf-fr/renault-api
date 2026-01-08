@@ -18,21 +18,22 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { python-version: "3.13", os: ubuntu-latest, session: "pre-commit" }
-          - { python-version: "3.13", os: ubuntu-latest, session: "safety" }
+          - { python-version: "3.14", os: ubuntu-latest, session: "pre-commit" }
+          - { python-version: "3.14", os: ubuntu-latest, session: "safety" }
+          - { python-version: "3.14", os: ubuntu-latest, session: "mypy" }
           - { python-version: "3.13", os: ubuntu-latest, session: "mypy" }
           - { python-version: "3.12", os: ubuntu-latest, session: "mypy" }
           - { python-version: "3.11", os: ubuntu-latest, session: "mypy" }
           - { python-version: "3.10", os: ubuntu-latest, session: "mypy" }
+          - { python-version: "3.14", os: ubuntu-latest, session: "tests" }
           - { python-version: "3.13", os: ubuntu-latest, session: "tests" }
           - { python-version: "3.12", os: ubuntu-latest, session: "tests" }
           - { python-version: "3.11", os: ubuntu-latest, session: "tests" }
           - { python-version: "3.10", os: ubuntu-latest, session: "tests" }
-          - { python-version: "3.13", os: windows-latest, session: "tests" }
-          - { python-version: "3.13", os: macos-latest, session: "tests" }
-          - { python-version: "3.13", os: ubuntu-latest, session: "typeguard" }
-          - { python-version: "3.13", os: ubuntu-latest, session: "xdoctest" }
-          - { python-version: "3.13", os: ubuntu-latest, session: "docs-build" }
+          - { python-version: "3.14", os: windows-latest, session: "tests" }
+          - { python-version: "3.14", os: macos-latest, session: "tests" }
+          - { python-version: "3.14", os: ubuntu-latest, session: "typeguard" }
+          - { python-version: "3.14", os: ubuntu-latest, session: "docs-build" }
 
     env:
       NOXSESSION: ${{ matrix.session }}
@@ -107,7 +108,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6.1.0
         with:
-          python-version: "3.13"
+          python-version: "3.14.2"
 
       - name: Upgrade pip
         run: |

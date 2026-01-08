@@ -10,3 +10,5 @@ Sample return:
    Sample data is not yet available for this endpoint.
 
    Please check the `Contributor Guide`_ to provide a sample.
+
+.. _Contributor Guide: contributing.html

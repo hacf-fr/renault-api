@@ -1,5 +1,6 @@
 """Test cases for the __main__ module."""
 
+import pytest
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall
 from click.testing import CliRunner
@@ -143,13 +144,24 @@ def test_charge_schedule_show(
     assert result.output == snapshot
 
 
+@pytest.mark.parametrize(
+    "ev_schedule_type",
+    [
+        "single.active",
+        "single.inactive",
+        "multi.active",
+    ],
+)
 def test_charge_schedule_show_alternate(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aioresponses,
+    cli_runner: CliRunner,
+    snapshot: SnapshotAssertion,
+    ev_schedule_type: str,
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
-    fixtures.inject_get_ev_settings(mocked_responses, "single")
+    fixtures.inject_get_ev_settings(mocked_responses, ev_schedule_type)
 
     result = cli_runner.invoke(__main__.main, "charge schedule show")
     assert result.exit_code == 0, result.exception

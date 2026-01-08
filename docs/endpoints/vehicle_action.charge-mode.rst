@@ -40,3 +40,5 @@ Sample payload:
 
    On newer vehicles, such as Zoe50 (model code X102VE):
       This DOES NOT match the ``vehicle_data.charge-mode`` return values which are: ``always`` and ``scheduled``.
+
+.. _Contributor Guide: contributing.html

@@ -1,10 +1,6 @@
 Renault high-level API Reference
 ================================
 
-.. contents::
-    :local:
-    :backlinks: none
-
 
 Session
 ---------------

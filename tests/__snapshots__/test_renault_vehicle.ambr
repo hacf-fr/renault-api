@@ -57,7 +57,7 @@
     }),
   })
 # ---
-# name: test_get_charge_schedule_kcm
+# name: test_get_charge_schedule_kcm[single.active]
   dict({
     'chargeDuration': 9000,
     'chargeModeRq': 'SCHEDULED',
@@ -74,6 +74,33 @@
         'programActivationMonday': True,
         'programActivationSaturday': True,
         'programActivationStatus': True,
+        'programActivationSunday': True,
+        'programActivationThursday': True,
+        'programActivationTuesday': True,
+        'programActivationWednesday': True,
+        'programDepartureTime': '02:00',
+        'programType': 'CHARGE_AND_PRECONDITIONING',
+      }),
+    ]),
+  })
+# ---
+# name: test_get_charge_schedule_kcm[single.inactive]
+  dict({
+    'chargeDuration': 9000,
+    'chargeModeRq': 'SCHEDULED',
+    'chargeTimeStart': '00:00',
+    'delegatedActivated': False,
+    'lastSettingsUpdateTimestamp': '2025-04-24T12:17:12.247Z',
+    'preconditioningHeatedLeftSeat': False,
+    'preconditioningHeatedRightSeat': False,
+    'preconditioningHeatedStrgWheel': False,
+    'preconditioningTemperature': 20.0,
+    'programs': list([
+      dict({
+        'programActivationFriday': True,
+        'programActivationMonday': True,
+        'programActivationSaturday': True,
+        'programActivationStatus': False,
         'programActivationSunday': True,
         'programActivationThursday': True,
         'programActivationTuesday': True,
@@ -338,6 +365,8 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/zoe_50.1.json]
   dict({
+    'actions/charge-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/charging-start', mode='default'),
+    'actions/charge-stop': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/charge/pause-resume', mode='kcm'),
     'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
     'charge-mode': None,
     'charge-schedule': None,
