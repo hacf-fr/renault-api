@@ -57,7 +57,7 @@
     }),
   })
 # ---
-# name: test_get_charge_schedule_kcm[test_charge_schedule_show_alternate_single_active]
+# name: test_get_charge_schedule_kcm[single.active]
   dict({
     'chargeDuration': 9000,
     'chargeModeRq': 'SCHEDULED',
@@ -84,7 +84,7 @@
     ]),
   })
 # ---
-# name: test_get_charge_schedule_kcm[test_charge_schedule_show_alternate_single_inactive]
+# name: test_get_charge_schedule_kcm[single.inactive]
   dict({
     'chargeDuration': 9000,
     'chargeModeRq': 'SCHEDULED',

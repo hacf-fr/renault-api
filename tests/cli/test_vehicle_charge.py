@@ -145,17 +145,11 @@ def test_charge_schedule_show(
 
 
 @pytest.mark.parametrize(
-    ("ev_schedule_type", "ev_schedule_status"),
+    "ev_schedule_type",
     [
-        ("single", "active"),
-        ("single", "inactive"),
-        ("multi", "active"),
-    ],
-    # This 'ids' list tells Pytest (and Syrupy) what to call each test case
-    ids=[
-        "test_charge_schedule_show_alternate_single_active",
-        "test_charge_schedule_show_alternate_single_inactive",
-        "test_charge_schedule_show_alternate_multi_active",
+        "single.active",
+        "single.inactive",
+        "multi.active",
     ],
 )
 def test_charge_schedule_show_alternate(
@@ -163,19 +157,15 @@ def test_charge_schedule_show_alternate(
     cli_runner: CliRunner,
     snapshot: SnapshotAssertion,
     ev_schedule_type: str,
-    ev_schedule_status: str,
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
-    fixtures.inject_get_ev_settings(
-        mocked_responses, ev_schedule_type + "." + ev_schedule_status
-    )
+    fixtures.inject_get_ev_settings(mocked_responses, ev_schedule_type)
 
     result = cli_runner.invoke(__main__.main, "charge schedule show")
     assert result.exit_code == 0, result.exception
-
-    snapshot.assert_match(result.output)
+    assert result.output == snapshot
 
 
 def test_charging_settings_set(

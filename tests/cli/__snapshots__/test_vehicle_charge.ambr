@@ -52,53 +52,7 @@
   
   '''
 # ---
-# name: test_charge_schedule_show_alternate[test_charge_schedule_show_alternate_single_active]
-  '''
-  Mode: Scheduled
-  Charge Time Start: 00:00
-  Charge Duration in minutes: 9000
-  Preconditioning temperature in °C: 20.0
-  Preconditioning Steering Wheel? False
-  Preconditioning Left Seat? False
-  Preconditioning Right Seat? False
-  
-  Schedule ID: 0 [Status=Active] [Type=CHARGE_AND_PRECONDITIONING] [DepartureTime=02:00]
-  Day        Active
-  ---------  --------
-  Monday     True
-  Tuesday    True
-  Wednesday  True
-  Thursday   True
-  Friday     True
-  Saturday   True
-  Sunday     True
-  
-  '''
-# ---
-# name: test_charge_schedule_show_alternate[test_charge_schedule_show_alternate_single_inactive]
-  '''
-  Mode: Scheduled
-  Charge Time Start: 00:00
-  Charge Duration in minutes: 9000
-  Preconditioning temperature in °C: 20.0
-  Preconditioning Steering Wheel? False
-  Preconditioning Left Seat? False
-  Preconditioning Right Seat? False
-  
-  Schedule ID: 0 [Status=Inactive] [Type=CHARGE_AND_PRECONDITIONING] [DepartureTime=02:00]
-  Day        Active
-  ---------  --------
-  Monday     True
-  Tuesday    True
-  Wednesday  True
-  Thursday   True
-  Friday     True
-  Saturday   True
-  Sunday     True
-  
-  '''
-# ---
-# name: test_charge_schedule_show_alternate[test_charge_schedule_show_alternate_multi_active]
+# name: test_charge_schedule_show_alternate[multi.active]
   '''
   Mode: Scheduled
   Charge Time Start: 01:55
@@ -140,6 +94,52 @@
   Friday     False
   Saturday   True
   Sunday     False
+  
+  '''
+# ---
+# name: test_charge_schedule_show_alternate[single.active]
+  '''
+  Mode: Scheduled
+  Charge Time Start: 00:00
+  Charge Duration in minutes: 9000
+  Preconditioning temperature in °C: 20.0
+  Preconditioning Steering Wheel? False
+  Preconditioning Left Seat? False
+  Preconditioning Right Seat? False
+  
+  Schedule ID: 0 [Status=Active] [Type=CHARGE_AND_PRECONDITIONING] [DepartureTime=02:00]
+  Day        Active
+  ---------  --------
+  Monday     True
+  Tuesday    True
+  Wednesday  True
+  Thursday   True
+  Friday     True
+  Saturday   True
+  Sunday     True
+  
+  '''
+# ---
+# name: test_charge_schedule_show_alternate[single.inactive]
+  '''
+  Mode: Scheduled
+  Charge Time Start: 00:00
+  Charge Duration in minutes: 9000
+  Preconditioning temperature in °C: 20.0
+  Preconditioning Steering Wheel? False
+  Preconditioning Left Seat? False
+  Preconditioning Right Seat? False
+  
+  Schedule ID: 0 [Status=Inactive] [Type=CHARGE_AND_PRECONDITIONING] [DepartureTime=02:00]
+  Day        Active
+  ---------  --------
+  Monday     True
+  Tuesday    True
+  Wednesday  True
+  Thursday   True
+  Friday     True
+  Saturday   True
+  Sunday     True
   
   '''
 # ---
