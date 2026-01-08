@@ -1,5 +1,6 @@
 """Nox sessions."""
 
+import os
 import shutil
 import sys
 from pathlib import Path
@@ -178,8 +179,11 @@ def typeguard(session: Session) -> None:
 def docs_build(session: Session) -> None:
     """Build the documentation."""
     args = session.posargs or ["docs", "docs/_build"]
-    session.run("python", "-m", "pip", "install", "-r", "docs/requirements.txt")
+    if not session.posargs and "FORCE_COLOR" in os.environ:
+        args.insert(0, "--color")
+
     session.install(".[cli]")
+    session.install("sphinx", "sphinx-click", "furo", "myst-parser")
 
     build_dir = Path("docs", "_build")
     if build_dir.exists():
@@ -192,9 +196,8 @@ def docs_build(session: Session) -> None:
 def docs(session: Session) -> None:
     """Build and serve the documentation with live reloading on file changes."""
     args = session.posargs or ["--open-browser", "docs", "docs/_build"]
-    session.run("python", "-m", "pip", "install", "-r", "docs/requirements.txt")
     session.install(".[cli]")
-    session.install("sphinx-autobuild")
+    session.install("sphinx", "sphinx-autobuild", "sphinx-click", "furo", "myst-parser")
 
     build_dir = Path("docs", "_build")
     if build_dir.exists():
