@@ -223,13 +223,23 @@ async def test_get_charge_schedule(
     assert await vehicle.get_charge_schedule() == snapshot
 
 
+@pytest.mark.parametrize(
+    "ev_schedule_type",
+    [
+        "single.active",
+        "single.inactive",
+    ],
+)
 @pytest.mark.asyncio
 async def test_get_charge_schedule_kcm(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+    vehicle: RenaultVehicle,
+    mocked_responses: aioresponses,
+    snapshot: SnapshotAssertion,
+    ev_schedule_type: str,
 ) -> None:
     """Test get_charging_settings."""
     fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
-    fixtures.inject_get_ev_settings(mocked_responses, "single")
+    fixtures.inject_get_ev_settings(mocked_responses, ev_schedule_type)
     assert await vehicle.get_charge_schedule() == snapshot
 
 

@@ -52,11 +52,85 @@
   
   '''
 # ---
-# name: test_charge_schedule_show_alternate
+# name: test_charge_schedule_show_alternate[multi.active]
   '''
   Mode: Scheduled
+  Charge Time Start: 01:55
+  Charge Duration in minutes: 300
+  Preconditioning temperature in °C: 19
+  Preconditioning Steering Wheel? True
+  Preconditioning Left Seat? False
+  Preconditioning Right Seat? False
   
-  Schedule ID: 0 [Active]
+  Schedule ID: 0 [Status=Active] [Type=CHARGE] [DepartureTime=07:30]
+  Day        Active
+  ---------  --------
+  Monday     True
+  Tuesday    True
+  Wednesday  False
+  Thursday   False
+  Friday     True
+  Saturday   False
+  Sunday     False
+  
+  Schedule ID: 1 [Status=Active] [Type=PRECONDITIONING] [DepartureTime=08:30]
+  Day        Active
+  ---------  --------
+  Monday     False
+  Tuesday    False
+  Wednesday  False
+  Thursday   True
+  Friday     False
+  Saturday   False
+  Sunday     False
+  
+  Schedule ID: 2 [Status=Active] [Type=CHARGE_AND_PRECONDITIONING] [DepartureTime=10:50]
+  Day        Active
+  ---------  --------
+  Monday     False
+  Tuesday    False
+  Wednesday  True
+  Thursday   False
+  Friday     False
+  Saturday   True
+  Sunday     False
+  
+  '''
+# ---
+# name: test_charge_schedule_show_alternate[single.active]
+  '''
+  Mode: Scheduled
+  Charge Time Start: 00:00
+  Charge Duration in minutes: 9000
+  Preconditioning temperature in °C: 20.0
+  Preconditioning Steering Wheel? False
+  Preconditioning Left Seat? False
+  Preconditioning Right Seat? False
+  
+  Schedule ID: 0 [Status=Active] [Type=CHARGE_AND_PRECONDITIONING] [DepartureTime=02:00]
+  Day        Active
+  ---------  --------
+  Monday     True
+  Tuesday    True
+  Wednesday  True
+  Thursday   True
+  Friday     True
+  Saturday   True
+  Sunday     True
+  
+  '''
+# ---
+# name: test_charge_schedule_show_alternate[single.inactive]
+  '''
+  Mode: Scheduled
+  Charge Time Start: 00:00
+  Charge Duration in minutes: 9000
+  Preconditioning temperature in °C: 20.0
+  Preconditioning Steering Wheel? False
+  Preconditioning Left Seat? False
+  Preconditioning Right Seat? False
+  
+  Schedule ID: 0 [Status=Inactive] [Type=CHARGE_AND_PRECONDITIONING] [DepartureTime=02:00]
   Day        Active
   ---------  --------
   Monday     True

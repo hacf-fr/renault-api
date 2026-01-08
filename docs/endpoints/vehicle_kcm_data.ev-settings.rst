@@ -14,3 +14,7 @@ Sample return:
    Single:
       .. literalinclude:: /../tests/fixtures/kamereon/vehicle_kcm_data/ev-settings.single.json
          :language: JSON
+
+   Multi:
+      .. literalinclude:: /../tests/fixtures/kamereon/vehicle_kcm_data/ev-settings.multi.active.json
+         :language: JSON
