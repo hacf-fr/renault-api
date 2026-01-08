@@ -152,6 +152,8 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
         "actions/hvac-stop": _DEFAULT_ENDPOINTS["actions/hvac-stop"],
         "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
+        "actions/charge-start": None,  # Reason: The access is forbidden,
+        "actions/charge-stop": None,  # Reason: The access is forbidden,
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: "you should not be there..."
         "charge-mode": None,  # Reason: The access is forbidden
@@ -165,8 +167,6 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "pressure": None,  # Reason: 404
         "res-state": None,  # Reason: The access is forbidden
         "soc-levels": _DEFAULT_ENDPOINTS["soc-levels"],
-        "actions/charge-start": None,  # Reason: The access is forbidden,
-        "actions/charge-stop": None,  # Reason: The access is forbidden,
     },
     "DU31SU": {  # Dacia Duster III
         "actions/horn-start": None,  # err.func.wired.forbidden

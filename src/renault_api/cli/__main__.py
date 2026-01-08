@@ -18,6 +18,7 @@ from . import renault_client
 from . import renault_settings
 from . import renault_vehicle
 from .charge import commands as charge_commands
+from .hornlights import commands as hornlights_commands
 from .hvac import commands as hvac_commands
 from renault_api.credential_store import FileCredentialStore
 
@@ -101,6 +102,7 @@ def main(
 
 main.add_command(charge_commands.charge)
 main.add_command(hvac_commands.hvac)
+main.add_command(hornlights_commands.hornlights)
 
 
 @main.command()

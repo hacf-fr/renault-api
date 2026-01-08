@@ -422,6 +422,16 @@ def inject_get_charge_schedule(mocked_responses: aioresponses, type: str) -> str
     )
 
 
+def inject_start_hornlight(mocked_responses: aioresponses, type: str) -> str:
+    """Inject sample horn-lights horn."""
+    urlpath = f"{ADAPTER_PATH}/actions/horn-lights?{DEFAULT_QUERY_STRING}"
+    return inject_action(
+        mocked_responses,
+        urlpath,
+        f"vehicle_action/hornlights-{type}.json",
+    )
+
+
 def inject_get_ev_settings(mocked_responses: aioresponses, type: str) -> str:
     """Inject sample charges."""
     urlpath = f"{KCM_ADAPTER_PATH}/ev/settings?{DEFAULT_QUERY_STRING}"

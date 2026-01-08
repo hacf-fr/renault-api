@@ -68,6 +68,24 @@
   
   '''
 # ---
+# name: test_vehicle_status[tests/fixtures/kamereon/vehicles/alpine_A290.1.json]
+  '''
+  --------------------  -------------------------
+  Battery level         50 %
+  Last updated          2020-11-17 09:06:48
+  Range estimate        128 km
+  Plug state            PlugState.UNPLUGGED
+  Charging state        ChargeState.NOT_IN_CHARGE
+  Total mileage         49114.27 km
+  GPS Latitude          48.1234567
+  GPS Longitude         11.1234567
+  GPS last updated      2020-02-18 17:58:38
+  HVAC status           off
+  External temperature  8.0 °C
+  --------------------  -------------------------
+  
+  '''
+# ---
 # name: test_vehicle_status[tests/fixtures/kamereon/vehicles/austral_XHN1SU.1.json]
   '''
   ----------------  -------------------
