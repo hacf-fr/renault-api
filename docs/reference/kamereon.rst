@@ -1,10 +1,6 @@
 Kamereon low-level API Reference
 ================================
 
-.. contents::
-    :local:
-    :backlinks: none
-
 
 Core
 ----
