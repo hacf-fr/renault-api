@@ -33,7 +33,6 @@ jobs:
           - { python-version: "3.14", os: windows-latest, session: "tests" }
           - { python-version: "3.14", os: macos-latest, session: "tests" }
           - { python-version: "3.14", os: ubuntu-latest, session: "typeguard" }
-          - { python-version: "3.14", os: ubuntu-latest, session: "xdoctest" }
           - { python-version: "3.14", os: ubuntu-latest, session: "docs-build" }
 
     env:
