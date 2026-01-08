@@ -247,6 +247,10 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "soc-levels": None,  # not supported
     },
     "X102VE": {  # ZOE phase 2
+        "actions/charge-start": _DEFAULT_ENDPOINTS["actions/charge-start"],
+        "actions/charge-stop": _KCM_ENDPOINTS[  # Uses KCM pause-resume
+            "actions/charge-stop"
+        ],
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-mode": None,  # default => 400 Bad Request
         "charge-schedule": None,  # default and _KCM_ENDPOINTS["charge-schedule"] => 404
