@@ -333,6 +333,8 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/zoe_50.1.json]
   dict({
+    'actions/charge-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/charging-start', mode='default'),
+    'actions/charge-stop': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/charge/pause-resume', mode='kcm'),
     'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
     'charge-mode': None,
     'charge-schedule': None,
