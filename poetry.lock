@@ -2867,20 +2867,20 @@ test = ["cython (>=3.0)", "defusedxml (>=0.7.1)", "pytest (>=8.0)", "pytest-xdis
 
 [[package]]
 name = "sphinx-autobuild"
-version = "2024.10.3"
+version = "2025.8.25"
 description = "Rebuild Sphinx documentation on changes, with hot reloading in the browser."
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.11"
 groups = ["dev"]
 markers = "python_version >= \"3.14\""
 files = [
-    {file = "sphinx_autobuild-2024.10.3-py3-none-any.whl", hash = "sha256:158e16c36f9d633e613c9aaf81c19b0fc458ca78b112533b20dafcda430d60fa"},
-    {file = "sphinx_autobuild-2024.10.3.tar.gz", hash = "sha256:248150f8f333e825107b6d4b86113ab28fa51750e5f9ae63b59dc339be951fb1"},
+    {file = "sphinx_autobuild-2025.8.25-py3-none-any.whl", hash = "sha256:b750ac7d5a18603e4665294323fd20f6dcc0a984117026d1986704fa68f0379a"},
+    {file = "sphinx_autobuild-2025.8.25.tar.gz", hash = "sha256:9cf5aab32853c8c31af572e4fecdc09c997e2b8be5a07daf2a389e270e85b213"},
 ]
 
 [package.dependencies]
 colorama = ">=0.4.6"
-sphinx = "*"
+Sphinx = "*"
 starlette = ">=0.35"
 uvicorn = ">=0.25"
 watchfiles = ">=0.20"
@@ -3711,4 +3711,4 @@ cli = ["click", "dateparser", "tabulate"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "d9735dea7acef951f4487c0897aa6db64c241f8c21e0add61761a8363602ac03"
+content-hash = "35a8aa4c9d013b3c21f3cebb9ffc66f4ebc74bc8ad9a7df84dde183f10d5a679"
