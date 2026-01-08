@@ -14,3 +14,5 @@ Sample payload:
 .. note::
    On Zoe50 (model code X102VE):
       Payload ``{'action': 'cancel'}`` to stop HVAC does not create errors but has no effect on the vehicle (Renault side limitation).
+
+.. _Contributor Guide: contributing.html
