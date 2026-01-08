@@ -1,10 +1,6 @@
 Renault endpoints
 =================
 
-.. contents::
-   :local:
-   :backlinks: none
-
 
 This is a list of the endpoints available, and their characteristics.
 

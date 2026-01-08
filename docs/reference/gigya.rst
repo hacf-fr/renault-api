@@ -1,10 +1,6 @@
 Gigya low-level authentication API Reference
 ============================================
 
-.. contents::
-    :local:
-    :backlinks: none
-
 
 Core
 ----
