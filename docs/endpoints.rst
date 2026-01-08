@@ -10,7 +10,7 @@ This is a list of the endpoints available, and their characteristics.
 
 
 Vehicle information endpoints
-----------------------
+-----------------------------
 
 .. include:: endpoints/vehicle_data.alerts.rst
 
@@ -36,7 +36,7 @@ Vehicle data endpoints
 .. include:: endpoints/vehicle_data.res-state.rst
 
 Vehicle KCM data endpoints
-----------------------
+--------------------------
 
 .. include:: endpoints/vehicle_kcm_data.ev-settings.rst
 .. include:: endpoints/vehicle_kcm_data.soc-levels.rst
@@ -54,6 +54,6 @@ Action endpoints
 
 
 KCM Action endpoints
--------------------------
+--------------------
 
 .. include:: endpoints/vehicle_kcm_actions.charge-pause-resume.rst
