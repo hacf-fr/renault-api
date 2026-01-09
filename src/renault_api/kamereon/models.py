@@ -47,7 +47,7 @@ COMMON_ERRRORS: list[dict[str, Any]] = [
         "errorCode": "err.func.wired.overloaded",
         "error_type": exceptions.QuotaLimitException,
     },
-    {   
+    {
         "errorCode": "err.func.privacy.on",
         "error_type": exceptions.PrivacyModeOnException,
     },
