@@ -14,6 +14,7 @@ def soclevels() -> None:
     """Display or update charge SoC levels."""
     pass
 
+
 @soclevels.command()
 @click.pass_obj
 @helpers.coro_with_websession
