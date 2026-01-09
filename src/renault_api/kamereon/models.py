@@ -1138,3 +1138,8 @@ class KamereonVehicleHvacModeActionData(KamereonVehicleDataAttributes):
 @dataclass
 class KamereonVehicleChargingStartActionData(KamereonVehicleDataAttributes):
     """Kamereon vehicle action data charging-start attributes."""
+
+
+@dataclass
+class KamereonVehicleBatterySocActionData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle action data soc attributes."""
