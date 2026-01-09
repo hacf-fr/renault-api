@@ -51,7 +51,7 @@
     }),
   })
 # ---
-# name: test_light
+# name: test_lights
   '''
   Request to flash lights 3 times has been sent. It may take a few seconds to take effect.
   
