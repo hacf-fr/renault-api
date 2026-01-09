@@ -3,13 +3,13 @@
   "messages": [
     {
       "code": "err.func.privacy.on",
-      "message": "Data sharing is disabled"
+      "message": "Privacy mode currently ON"
     }
   ],
   "errors": [
     {
       "errorCode": "err.func.privacy.on",
-      "errorMessage": "Data sharing is disabled",
+      "errorMessage": "Privacy mode currently ON",
       "errorType": "functional"
     }
   ]
