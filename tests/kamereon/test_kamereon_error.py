@@ -90,6 +90,20 @@ def test_vehicle_error_not_supported() -> None:
     )
 
 
+def test_vehicle_error_privacy_on() -> None:
+    """Test vehicle privacy on response."""
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/error/privacy_on.json",
+        schemas.KamereonVehicleDataResponseSchema,
+    )
+    with pytest.raises(exceptions.InvalidUpstreamException) as excinfo:
+        response.raise_for_error_code()
+    assert excinfo.value.error_code == "err.func.privacy.on"
+    assert (
+        excinfo.value.error_details == "Privacy mode currently ON"
+    )
+
+
 def test_vehicle_error_resource_not_found() -> None:
     """Test vehicle resource_not_found response."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
