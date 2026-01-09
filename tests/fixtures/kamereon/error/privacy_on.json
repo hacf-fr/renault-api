@@ -1,0 +1,16 @@
+{
+  "type": "FUNCTIONAL",
+  "messages": [
+    {
+      "code": "err.func.privacy.on",
+      "message": "Data sharing is disabled"
+    }
+  ],
+  "errors": [
+    {
+      "errorCode": "err.func.privacy.on",
+      "errorMessage": "Data sharing is disabled",
+      "errorType": "functional"
+    }
+  ]
+}
