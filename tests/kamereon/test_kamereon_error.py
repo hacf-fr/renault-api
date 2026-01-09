@@ -96,7 +96,7 @@ def test_vehicle_error_privacy_on() -> None:
         f"{fixtures.KAMEREON_FIXTURE_PATH}/error/privacy_on.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
-    with pytest.raises(exceptions.InvalidUpstreamException) as excinfo:
+    with pytest.raises(exceptions.PrivacyModeOnException) as excinfo:
         response.raise_for_error_code()
     assert excinfo.value.error_code == "err.func.privacy.on"
     assert (
