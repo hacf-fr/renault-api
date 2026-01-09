@@ -26,6 +26,6 @@ def test_hornlights_start(
     fixtures.inject_get_vehicle_details(mocked_responses, "alpine_A290.1.json")
     fixtures.inject_start_hornlight(mocked_responses, type=type)
 
-    result = cli_runner.invoke(__main__.main, f"hornlights {type}")
+    result = cli_runner.invoke(__main__.main, type)
     assert result.exit_code == 0, result.exception
     assert result.output == snapshot
