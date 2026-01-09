@@ -58,7 +58,7 @@ class FailedForwardException(KamereonResponseException):
     """Failed to forward request to remote service."""
 
     pass
-    
+
 
 class PrivacyModeOnException(KamereonResponseException):
     """Privacy mode currently ON."""
