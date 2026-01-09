@@ -148,12 +148,12 @@ _KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
 
 _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
     "A5E1AE": {  # Alpine A290
+        "actions/charge-start": None,  # Reason: The access is forbidden,
+        "actions/charge-stop": None,  # Reason: The access is forbidden,
         "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
         "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
         "actions/hvac-stop": _DEFAULT_ENDPOINTS["actions/hvac-stop"],
         "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
-        "actions/charge-start": None,  # Reason: The access is forbidden,
-        "actions/charge-stop": None,  # Reason: The access is forbidden,
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: "you should not be there..."
         "charge-mode": None,  # Reason: The access is forbidden
