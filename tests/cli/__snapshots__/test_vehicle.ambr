@@ -1,4 +1,10 @@
 # serializer version: 1
+# name: test_horn
+  '''
+  Request to horn 3 times sent. It may take a few seconds to take effect.
+  
+  '''
+# ---
 # name: test_http_get
   '''
   {'data': {'type': 'Car', 'id': 'VF1AAAAA555777999', 'attributes': {'mode': 'scheduled', 'schedules': [{'id': 1, 'activated': True, 'monday': {'startTime': 'T12:00Z', 'duration': 15}, 'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, 'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, 'thursday': {'startTime': 'T22:00Z', 'duration': 420}, 'friday': {'startTime': 'T12:15Z', 'duration': 15}, 'saturday': {'startTime': 'T12:30Z', 'duration': 30}, 'sunday': {'startTime': 'T12:45Z', 'duration': 45}}]}}}
@@ -44,6 +50,12 @@
       'type': 'ChargeSchedule',
     }),
   })
+# ---
+# name: test_light
+  '''
+  Request to flash lights 3 times has been sent. It may take a few seconds to take effect.
+  
+  '''
 # ---
 # name: test_vehicle_contracts
   '''
