@@ -422,16 +422,6 @@ def inject_get_charge_schedule(mocked_responses: aioresponses, type: str) -> str
     )
 
 
-def inject_start_hornlight(mocked_responses: aioresponses, type: str) -> str:
-    """Inject sample horn-lights horn."""
-    urlpath = f"{ADAPTER_PATH}/actions/horn-lights?{DEFAULT_QUERY_STRING}"
-    return inject_action(
-        mocked_responses,
-        urlpath,
-        f"vehicle_action/hornlights-{type}.json",
-    )
-
-
 def inject_get_ev_settings(mocked_responses: aioresponses, type: str) -> str:
     """Inject sample charges."""
     urlpath = f"{KCM_ADAPTER_PATH}/ev/settings?{DEFAULT_QUERY_STRING}"
@@ -505,6 +495,16 @@ def inject_set_charge_schedule(mocked_responses: aioresponses, result: str) -> s
     )
 
 
+def inject_set_hornlight(mocked_responses: aioresponses, type: str) -> str:
+    """Inject sample horn-lights horn."""
+    urlpath = f"{ADAPTER_PATH}/actions/horn-lights?{DEFAULT_QUERY_STRING}"
+    return inject_action(
+        mocked_responses,
+        urlpath,
+        f"vehicle_action/hornlights-{type}.json",
+    )
+
+
 def inject_set_kcm_charge_pause_resume(
     mocked_responses: aioresponses, result: str
 ) -> str:
@@ -544,26 +544,6 @@ def inject_set_hvac_schedules(mocked_responses: aioresponses) -> str:
         mocked_responses,
         urlpath,
         "vehicle_action/hvac-schedule.schedules.json",
-    )
-
-
-def inject_start_horn(mocked_responses: aioresponses) -> str:
-    """Inject sample horn-lights horn."""
-    urlpath = f"{ADAPTER_PATH}/actions/horn-lights?{DEFAULT_QUERY_STRING}"
-    return inject_action(
-        mocked_responses,
-        urlpath,
-        "vehicle_action/horn-lights.horn.json",
-    )
-
-
-def inject_start_lights(mocked_responses: aioresponses) -> str:
-    """Inject sample horn-lights lights."""
-    urlpath = f"{ADAPTER_PATH}/actions/horn-lights?{DEFAULT_QUERY_STRING}"
-    return inject_action(
-        mocked_responses,
-        urlpath,
-        "vehicle_action/horn-lights.lights.json",
     )
 
 

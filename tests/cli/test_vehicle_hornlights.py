@@ -24,7 +24,7 @@ def test_hornlights_start(
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_get_vehicle_details(mocked_responses, "alpine_A290.1.json")
-    fixtures.inject_start_hornlight(mocked_responses, type=type)
+    fixtures.inject_set_hornlight(mocked_responses, type=type)
 
     result = cli_runner.invoke(__main__.main, type)
     assert result.exit_code == 0, result.exception
