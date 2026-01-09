@@ -60,6 +60,12 @@ class FailedForwardException(KamereonResponseException):
     pass
 
 
+class PrivacyModeOnException(KamereonResponseException):
+    """Privacy mode currently ON."""
+
+    pass
+
+
 class ForbiddenException(KamereonResponseException):
     """The access is forbidden."""
 

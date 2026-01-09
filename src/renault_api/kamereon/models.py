@@ -48,6 +48,10 @@ COMMON_ERRRORS: list[dict[str, Any]] = [
         "error_type": exceptions.QuotaLimitException,
     },
     {
+        "errorCode": "err.func.privacy.on",
+        "error_type": exceptions.PrivacyModeOnException,
+    },
+    {
         "errorCode": "err.func.wired.forbidden",
         "error_type": exceptions.ForbiddenException,
     },
