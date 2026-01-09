@@ -212,6 +212,23 @@ async def contracts(
     await renault_vehicle.display_contracts(websession, ctx_data)
 
 
+@main.command(name="horn")
+@click.pass_obj
+@helpers.coro_with_websession
+async def horn(
+    ctx_data: dict[str, Any],
+    websession: aiohttp.ClientSession,
+) -> None:
+    """Start horn."""
+    vehicle = await renault_vehicle.get_vehicle(
+        websession=websession, ctx_data=ctx_data
+    )
+    await vehicle.start_horn()
+    click.echo(
+        "Request to horn 3 times sent. It may take a few seconds to take effect."
+    )
+
+
 @main.group()
 def http() -> None:
     """Raw HTTP."""
@@ -265,6 +282,24 @@ async def http_post(
     """Process HTTP POST request on endpoint."""
     await renault_client.http_request(
         websession, ctx_data, "POST", endpoint, json.loads(json_body)
+    )
+
+
+@main.command(name="lights")
+@click.pass_obj
+@helpers.coro_with_websession
+async def lights(
+    ctx_data: dict[str, Any],
+    websession: aiohttp.ClientSession,
+) -> None:
+    """Start lights."""
+    vehicle = await renault_vehicle.get_vehicle(
+        websession=websession, ctx_data=ctx_data
+    )
+    await vehicle.start_lights()
+    click.echo(
+        "Request to flash lights 3 times has been sent. "
+        "It may take a few seconds to take effect."
     )
 
 

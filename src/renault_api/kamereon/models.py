@@ -148,6 +148,8 @@ _KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
 
 _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
     "A5E1AE": {  # Alpine A290
+        "actions/charge-start": None,  # Reason: The access is forbidden,
+        "actions/charge-stop": None,  # Reason: The access is forbidden,
         "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
         "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
         "actions/hvac-stop": _DEFAULT_ENDPOINTS["actions/hvac-stop"],
@@ -165,8 +167,6 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "pressure": None,  # Reason: 404
         "res-state": None,  # Reason: The access is forbidden
         "soc-levels": _DEFAULT_ENDPOINTS["soc-levels"],
-        "actions/charge-start": None,  # Reason: The access is forbidden,
-        "actions/charge-stop": None,  # Reason: The access is forbidden,
     },
     "DU31SU": {  # Dacia Duster III
         "actions/horn-start": None,  # err.func.wired.forbidden

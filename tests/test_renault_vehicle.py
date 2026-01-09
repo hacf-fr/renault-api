@@ -405,7 +405,7 @@ async def test_start_horn(
     vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:
     """Test start_horn."""
-    url = fixtures.inject_start_horn(mocked_responses)
+    url = fixtures.inject_set_hornlight(mocked_responses, "horn")
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     assert await vehicle.start_horn()
 
@@ -418,7 +418,7 @@ async def test_start_lights(
     vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:
     """Test start_lights."""
-    url = fixtures.inject_start_lights(mocked_responses)
+    url = fixtures.inject_set_hornlight(mocked_responses, "lights")
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     assert await vehicle.start_lights()
 

@@ -21,6 +21,7 @@ from tests.const import TEST_PERSON_ID
 from tests.const import TEST_USERNAME
 from tests.const import TEST_VIN
 
+from . import initialise_credential_store
 from renault_api.cli import __main__
 from renault_api.cli.renault_settings import CONF_ACCOUNT_ID
 from renault_api.cli.renault_settings import CONF_VIN
@@ -188,6 +189,21 @@ def test_vehicle_contracts(
     assert result.output == snapshot
 
 
+def test_horn(
+    mocked_responses: aioresponses,
+    cli_runner: CliRunner,
+    snapshot: SnapshotAssertion,
+) -> None:
+    """It exits with a status code of zero."""
+    initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "alpine_A290.1.json")
+    fixtures.inject_set_hornlight(mocked_responses, type="horn")
+
+    result = cli_runner.invoke(__main__.main, "horn")
+    assert result.exit_code == 0, result.exception
+    assert result.output == snapshot
+
+
 def test_http_get(
     mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
@@ -310,3 +326,18 @@ def test_http_post_file(
 
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
+
+
+def test_lights(
+    mocked_responses: aioresponses,
+    cli_runner: CliRunner,
+    snapshot: SnapshotAssertion,
+) -> None:
+    """It exits with a status code of zero."""
+    initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "alpine_A290.1.json")
+    fixtures.inject_set_hornlight(mocked_responses, type="lights")
+
+    result = cli_runner.invoke(__main__.main, "lights")
+    assert result.exit_code == 0, result.exception
+    assert result.output == snapshot

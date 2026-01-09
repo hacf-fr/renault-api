@@ -1,4 +1,10 @@
 # serializer version: 1
+# name: test_horn
+  '''
+  Request to horn 3 times sent. It may take a few seconds to take effect.
+  
+  '''
+# ---
 # name: test_http_get
   '''
   {'data': {'type': 'Car', 'id': 'VF1AAAAA555777999', 'attributes': {'mode': 'scheduled', 'schedules': [{'id': 1, 'activated': True, 'monday': {'startTime': 'T12:00Z', 'duration': 15}, 'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, 'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, 'thursday': {'startTime': 'T22:00Z', 'duration': 420}, 'friday': {'startTime': 'T12:15Z', 'duration': 15}, 'saturday': {'startTime': 'T12:30Z', 'duration': 30}, 'sunday': {'startTime': 'T12:45Z', 'duration': 45}}]}}}
@@ -45,6 +51,12 @@
     }),
   })
 # ---
+# name: test_lights
+  '''
+  Request to flash lights 3 times has been sent. It may take a few seconds to take effect.
+  
+  '''
+# ---
 # name: test_vehicle_contracts
   '''
   Type                            Code                  Description                       Start       End         Status
@@ -65,6 +77,24 @@
   Registration    Brand    Model    VIN
   --------------  -------  -------  -----------------
   REG-NUMBER      RENAULT  ZOE      VF1AAAAA555777999
+  
+  '''
+# ---
+# name: test_vehicle_status[tests/fixtures/kamereon/vehicles/alpine_A290.1.json]
+  '''
+  --------------------  -------------------------
+  Battery level         50 %
+  Last updated          2020-11-17 09:06:48
+  Range estimate        128 km
+  Plug state            PlugState.UNPLUGGED
+  Charging state        ChargeState.NOT_IN_CHARGE
+  Total mileage         49114.27 km
+  GPS Latitude          48.1234567
+  GPS Longitude         11.1234567
+  GPS last updated      2020-02-18 17:58:38
+  HVAC status           off
+  External temperature  8.0 °C
+  --------------------  -------------------------
   
   '''
 # ---
