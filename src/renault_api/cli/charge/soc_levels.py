@@ -7,14 +7,8 @@ import click
 
 from renault_api.cli import helpers
 from renault_api.cli import renault_vehicle
-
-# SoC level boundaries (to comply with mobile apps contraints and to
-# balance poor Renault API checks)
-MIN_SOC_MIN = 15
-MAX_SOC_MIN = 45
-MIN_SOC_TARGET = 55
-MAX_SOC_TARGET = 100
-SOC_STEP = 5
+from renault_api.exceptions import InvalidInputError
+from renault_api.helpers import validate_battery_soc_input
 
 
 @click.group()
@@ -59,17 +53,10 @@ async def set(
     websession: aiohttp.ClientSession,
 ) -> None:
     """Set battery soc levels."""
-
-    if min < MIN_SOC_MIN or min > MAX_SOC_MIN or min % SOC_STEP != 0:
-        raise click.BadParameter(
-            f"Minimum state of charge level must be between {MIN_SOC_MIN} and "
-            f"{MAX_SOC_MIN} with a step of {SOC_STEP}."
-        )
-    if target < MIN_SOC_TARGET or target > MAX_SOC_TARGET or target % SOC_STEP != 0:
-        raise click.BadParameter(
-            f"Target state of charge level must be between {MIN_SOC_TARGET} and "
-            f"{MAX_SOC_TARGET} with a step of {SOC_STEP}."
-        )
+    try:
+        validate_battery_soc_input(min=min, target=target)
+    except InvalidInputError as err:
+        raise click.BadParameter(getattr(err, "message", str(err))) from err
 
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
