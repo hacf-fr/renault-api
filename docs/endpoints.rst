@@ -24,7 +24,6 @@ Vehicle data endpoints
 .. include:: endpoints/vehicle_data.charge-schedule.rst
 .. include:: endpoints/vehicle_data.charges.rst
 .. include:: endpoints/vehicle_data.charging-settings.rst
-.. include:: endpoints/vehicle_data.charge-soclevels.rst
 .. include:: endpoints/vehicle_data.cockpit.rst
 .. include:: endpoints/vehicle_data.hvac-history.rst
 .. include:: endpoints/vehicle_data.hvac-sessions.rst
