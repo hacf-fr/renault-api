@@ -360,16 +360,6 @@ def inject_get_charge_history(
     )
 
 
-def inject_get_charge_soc_levels(mocked_responses: aioresponses) -> str:
-    """Inject sample soc-levels."""
-    urlpath = f"{KCM_ADAPTER_PATH}/ev/soc-levels?{DEFAULT_QUERY_STRING}"
-    return inject_data(
-        mocked_responses,
-        urlpath,
-        "vehicle_kcm_data/ev-soc-levels.json",
-    )
-
-
 def inject_get_hvac_history(
     mocked_responses: aioresponses, start: str, end: str, period: str
 ) -> str:
@@ -485,7 +475,7 @@ def inject_get_notification_settings(mocked_responses: aioresponses) -> str:
     )
 
 
-def inject_set_charge_soc_levels(
+def inject_set_battery_soc_levels(
     mocked_responses: aioresponses,
 ) -> str:
     """Inject sample charge-mode."""
@@ -493,7 +483,7 @@ def inject_set_charge_soc_levels(
     return inject_action(
         mocked_responses,
         urlpath,
-        "vehicle_data/soc-levels.json",
+        "vehicle_kcm_action/ev-soc-levels.json",
     )
 
 

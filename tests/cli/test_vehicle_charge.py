@@ -13,13 +13,13 @@ from . import initialise_credential_store
 from renault_api.cli import __main__
 
 
-def test_charge_battery_get_soc_levels(
+def test_charge_soclevels_show(
     mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
-    (fixtures.inject_get_vehicle_details(mocked_responses, "alpine_A290.1.json"),)
-    fixtures.inject_get_charge_soc_levels(mocked_responses)
+    fixtures.inject_get_vehicle_details(mocked_responses, "alpine_A290.1.json")
+    fixtures.inject_get_battery_soc(mocked_responses)
 
     result = cli_runner.invoke(__main__.main, "charge soclevels show")
     assert result.exit_code == 0, result.exception
@@ -40,7 +40,7 @@ def test_charge_battery_get_soc_levels(
         (20, 77, 2),  # Invalid step for target level
     ],
 )
-def test_charge_battery_set_soc_levels(
+def test_charge_soclevels_set(
     mocked_responses: aioresponses,
     cli_runner: CliRunner,
     snapshot: SnapshotAssertion,
@@ -51,9 +51,7 @@ def test_charge_battery_set_soc_levels(
     """It exits with the proper status code and output."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_get_vehicle_details(mocked_responses, "alpine_A290.1.json")
-    url = fixtures.inject_set_charge_soc_levels(
-        mocked_responses,
-    )
+    url = fixtures.inject_set_battery_soc_levels(mocked_responses)
 
     result = cli_runner.invoke(
         __main__.main,
