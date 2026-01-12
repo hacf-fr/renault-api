@@ -277,7 +277,7 @@ def inject_get_battery_status(
     )
 
 
-def inject_get_battery_soc(
+def inject_get_battery_soc_levels(
     mocked_responses: aioresponses,
     filename: str = "vehicle_kcm_data/ev-soc-levels.json",
 ) -> str:

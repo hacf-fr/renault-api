@@ -451,7 +451,7 @@ class RenaultVehicle:
         )
 
     async def set_battery_soc(
-        self, min: int, target: int
+        self, *, min: int, target: int
     ) -> models.KamereonVehicleBatterySocActionData:
         """Sets Battery Soc levels."""
         json: dict[str, Any] = {"socMin": min, "socTarget": target}

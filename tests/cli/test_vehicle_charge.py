@@ -19,7 +19,7 @@ def test_charge_soclevels_show(
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_get_vehicle_details(mocked_responses, "alpine_A290.1.json")
-    fixtures.inject_get_battery_soc(mocked_responses)
+    fixtures.inject_get_battery_soc_levels(mocked_responses)
 
     result = cli_runner.invoke(__main__.main, "charge soclevels show")
     assert result.exit_code == 0, result.exception

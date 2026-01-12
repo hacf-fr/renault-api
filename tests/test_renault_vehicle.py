@@ -107,7 +107,7 @@ async def test_get_battery_soc(
 ) -> None:
     """Test get_battery_soc."""
     fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
-    fixtures.inject_get_battery_soc(mocked_responses)
+    fixtures.inject_get_battery_soc_levels(mocked_responses)
     assert await vehicle.get_battery_soc() == snapshot
 
 
@@ -342,6 +342,16 @@ async def test_set_ac_stop(
 
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
+
+
+@pytest.mark.asyncio
+async def test_set_battery_soc(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+) -> None:
+    """Test set_battery_soc."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
+    fixtures.inject_set_battery_soc_levels(mocked_responses)
+    assert await vehicle.set_battery_soc(min=10, target=50) == snapshot
 
 
 @pytest.mark.asyncio
