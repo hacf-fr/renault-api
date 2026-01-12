@@ -62,10 +62,7 @@ async def set(
         websession=websession, ctx_data=ctx_data
     )
 
-    await vehicle.set_battery_soc(
-        min=min if min is not None else 0,
-        target=target if target is not None else 0,
-    )
+    await vehicle.set_battery_soc(min=min, target=target)
     click.echo(
         f"Charge soc levels updated to {min}-{target} successfully. "
         "It may take up to a few minutes to apply."
