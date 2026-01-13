@@ -450,6 +450,18 @@ class RenaultVehicle:
             response.get_attributes(schemas.KamereonVehicleHvacStartActionDataSchema),
         )
 
+    async def set_battery_soc(
+        self, *, min: int, target: int
+    ) -> models.KamereonVehicleBatterySocActionData:
+        """Sets Battery Soc levels."""
+        json: dict[str, Any] = {"socMin": min, "socTarget": target}
+
+        response = await self._set_vehicle_data("soc-levels", json)
+        return cast(
+            models.KamereonVehicleBatterySocActionData,
+            response.get_attributes(schemas.KamereonVehicleBatterySocActionDataSchema),
+        )
+
     async def set_hvac_schedules(
         self, schedules: list[models.HvacSchedule]
     ) -> models.KamereonVehicleHvacScheduleActionData:

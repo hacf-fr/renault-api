@@ -277,7 +277,7 @@ def inject_get_battery_status(
     )
 
 
-def inject_get_battery_soc(
+def inject_get_battery_soc_levels(
     mocked_responses: aioresponses,
     filename: str = "vehicle_kcm_data/ev-soc-levels.json",
 ) -> str:
@@ -472,6 +472,18 @@ def inject_get_notification_settings(mocked_responses: aioresponses) -> str:
         mocked_responses,
         urlpath,
         "vehicle_data/notification-settings.json",
+    )
+
+
+def inject_set_battery_soc_levels(
+    mocked_responses: aioresponses,
+) -> str:
+    """Inject sample charge-mode."""
+    urlpath = f"{KCM_ADAPTER_PATH}/ev/soc-levels?{DEFAULT_QUERY_STRING}"
+    return inject_action(
+        mocked_responses,
+        urlpath,
+        "vehicle_kcm_action/ev-soc-levels.json",
     )
 
 

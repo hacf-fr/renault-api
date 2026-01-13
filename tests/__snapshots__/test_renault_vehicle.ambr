@@ -441,6 +441,9 @@
     }),
   })
 # ---
+# name: test_set_battery_soc
+  KamereonVehicleBatterySocActionData(raw_data={})
+# ---
 # name: test_set_charge_mode
   dict({
     'data': dict({

@@ -12,6 +12,12 @@ from .const import CONF_GIGYA_URL
 from .const import CONF_KAMEREON_APIKEY
 from .const import CONF_KAMEREON_URL
 from .const import LOCALE_BASE_URL
+from .const import MAX_SOC_MIN
+from .const import MAX_SOC_TARGET
+from .const import MIN_SOC_MIN
+from .const import MIN_SOC_TARGET
+from .const import SOC_STEP
+from .exceptions import InvalidInputError
 from .exceptions import RenaultException
 
 _LOGGER = logging.getLogger(__package__)
@@ -128,3 +134,16 @@ def create_aiohttp_closed_event(
         all_is_lost.set()
 
     return all_is_lost
+
+
+def validate_battery_soc_input(*, min: int, target: int) -> None:
+    if min < MIN_SOC_MIN or min > MAX_SOC_MIN or min % SOC_STEP != 0:
+        raise InvalidInputError(
+            f"Minimum state of charge level must be between {MIN_SOC_MIN} and "
+            f"{MAX_SOC_MIN} with a step of {SOC_STEP}."
+        )
+    if target < MIN_SOC_TARGET or target > MAX_SOC_TARGET or target % SOC_STEP != 0:
+        raise InvalidInputError(
+            f"Target state of charge level must be between {MIN_SOC_TARGET} and "
+            f"{MAX_SOC_TARGET} with a step of {SOC_STEP}."
+        )

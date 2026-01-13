@@ -13,6 +13,59 @@ from . import initialise_credential_store
 from renault_api.cli import __main__
 
 
+def test_charge_soclevels_show(
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+) -> None:
+    """It exits with a status code of zero."""
+    initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "alpine_A290.1.json")
+    fixtures.inject_get_battery_soc_levels(mocked_responses)
+
+    result = cli_runner.invoke(__main__.main, "charge soclevels show")
+    assert result.exit_code == 0, result.exception
+    assert result.output == snapshot
+
+
+@pytest.mark.parametrize(
+    ("min_level", "target_level", "exit_code"),
+    [
+        (20, 80, 0),  # Valid levels
+        (15, 80, 0),  # Boundary valid levels
+        (45, 100, 0),  # Boundary valid levels
+        (14, 80, 2),  # Below minimum min level
+        (46, 80, 2),  # Above maximum min level
+        (20, 54, 2),  # Below minimum target level
+        (20, 101, 2),  # Above maximum target level
+        (22, 80, 2),  # Invalid step for min level
+        (20, 77, 2),  # Invalid step for target level
+    ],
+)
+def test_charge_soclevels_set(
+    mocked_responses: aioresponses,
+    cli_runner: CliRunner,
+    snapshot: SnapshotAssertion,
+    min_level: int,
+    target_level: int,
+    exit_code: int,
+) -> None:
+    """It exits with the proper status code and output."""
+    initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "alpine_A290.1.json")
+    url = fixtures.inject_set_battery_soc_levels(mocked_responses)
+
+    result = cli_runner.invoke(
+        __main__.main,
+        f"charge soclevels set --min {min_level} --target {target_level}",
+    )
+    assert result.exit_code == exit_code, result.exception
+
+    if exit_code == 0:
+        request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+        assert request.kwargs["json"] == snapshot
+
+    assert result.output == snapshot
+
+
 def test_charge_history_day(
     mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:

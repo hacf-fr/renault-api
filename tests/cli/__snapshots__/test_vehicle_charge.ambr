@@ -143,6 +143,103 @@
   
   '''
 # ---
+# name: test_charge_soclevels_set[14-80-2]
+  '''
+  Usage: main charge soclevels set [OPTIONS]
+  Try 'main charge soclevels set --help' for help.
+  
+  Error: Invalid value: Minimum state of charge level must be between 15 and 45 with a step of 5.
+  
+  '''
+# ---
+# name: test_charge_soclevels_set[15-80-0]
+  dict({
+    'socMin': 15,
+    'socTarget': 80,
+  })
+# ---
+# name: test_charge_soclevels_set[15-80-0].1
+  '''
+  Charge soc levels updated to 15-80 successfully. It may take up to a few minutes to apply.
+  
+  '''
+# ---
+# name: test_charge_soclevels_set[20-101-2]
+  '''
+  Usage: main charge soclevels set [OPTIONS]
+  Try 'main charge soclevels set --help' for help.
+  
+  Error: Invalid value: Target state of charge level must be between 55 and 100 with a step of 5.
+  
+  '''
+# ---
+# name: test_charge_soclevels_set[20-54-2]
+  '''
+  Usage: main charge soclevels set [OPTIONS]
+  Try 'main charge soclevels set --help' for help.
+  
+  Error: Invalid value: Target state of charge level must be between 55 and 100 with a step of 5.
+  
+  '''
+# ---
+# name: test_charge_soclevels_set[20-77-2]
+  '''
+  Usage: main charge soclevels set [OPTIONS]
+  Try 'main charge soclevels set --help' for help.
+  
+  Error: Invalid value: Target state of charge level must be between 55 and 100 with a step of 5.
+  
+  '''
+# ---
+# name: test_charge_soclevels_set[20-80-0]
+  dict({
+    'socMin': 20,
+    'socTarget': 80,
+  })
+# ---
+# name: test_charge_soclevels_set[20-80-0].1
+  '''
+  Charge soc levels updated to 20-80 successfully. It may take up to a few minutes to apply.
+  
+  '''
+# ---
+# name: test_charge_soclevels_set[22-80-2]
+  '''
+  Usage: main charge soclevels set [OPTIONS]
+  Try 'main charge soclevels set --help' for help.
+  
+  Error: Invalid value: Minimum state of charge level must be between 15 and 45 with a step of 5.
+  
+  '''
+# ---
+# name: test_charge_soclevels_set[45-100-0]
+  dict({
+    'socMin': 45,
+    'socTarget': 100,
+  })
+# ---
+# name: test_charge_soclevels_set[45-100-0].1
+  '''
+  Charge soc levels updated to 45-100 successfully. It may take up to a few minutes to apply.
+  
+  '''
+# ---
+# name: test_charge_soclevels_set[46-80-2]
+  '''
+  Usage: main charge soclevels set [OPTIONS]
+  Try 'main charge soclevels set --help' for help.
+  
+  Error: Invalid value: Minimum state of charge level must be between 15 and 45 with a step of 5.
+  
+  '''
+# ---
+# name: test_charge_soclevels_show
+  '''
+  Min charge level: 20%
+  Target charge level: 80%
+  
+  '''
+# ---
 # name: test_charging_dacia_start
   dict({
     'data': dict({

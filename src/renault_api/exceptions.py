@@ -22,3 +22,9 @@ class EndpointNotAvailableError(RenaultException):
 
     def __str__(self) -> str:
         return f"Endpoint '{self.endpoint}' not available for model '{self.model_code}'"
+
+
+class InvalidInputError(RenaultException):
+    """The input for the service call is invalid."""
+
+    pass

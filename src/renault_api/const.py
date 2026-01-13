@@ -203,3 +203,11 @@ AVAILABLE_LOCALES = {
         CONF_KAMEREON_APIKEY: KAMEREON_APIKEY,
     },
 }
+
+# SoC level boundaries (to comply with mobile apps contraints and to
+# balance poor Renault API checks)
+MIN_SOC_MIN = 15
+MAX_SOC_MIN = 45
+MIN_SOC_TARGET = 55
+MAX_SOC_TARGET = 100
+SOC_STEP = 5
