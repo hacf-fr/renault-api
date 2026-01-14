@@ -117,7 +117,7 @@
     'actions/charge-stop': None,
     'actions/horn-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
     'actions/hvac-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
-    'actions/hvac-stop': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
+    'actions/hvac-stop': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='kca_stop'),
     'actions/lights-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
     'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
     'charge-history': None,

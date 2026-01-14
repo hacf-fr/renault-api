@@ -138,6 +138,11 @@ _DEFAULT_ENDPOINTS: dict[str, EndpointDefinition] = {
     "res-state": EndpointDefinition("/kca/car-adapter/v1/cars/{vin}/res-state"),
     "soc-levels": EndpointDefinition("/kcm/v1/vehicles/{vin}/ev/soc-levels"),
 }
+_KCA_ALTERNATIVE_ENDPOINTS: dict[str, EndpointDefinition] = {
+    "actions/hvac-stop": EndpointDefinition(
+        "/kca/car-adapter/v1/cars/{vin}/actions/hvac-start", mode="kca_stop"
+    ),
+}
 _KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
     "actions/charge-start": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm"
@@ -156,7 +161,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "actions/charge-stop": None,  # Reason: The access is forbidden,
         "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
         "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
-        "actions/hvac-stop": _DEFAULT_ENDPOINTS["actions/hvac-stop"],
+        "actions/hvac-stop": _KCA_ALTERNATIVE_ENDPOINTS["actions/hvac-stop"],
         "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: "you should not be there..."
