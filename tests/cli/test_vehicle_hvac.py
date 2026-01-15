@@ -1,5 +1,6 @@
 """Test cases for the __main__ module."""
 
+import pytest
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall
 from click.testing import CliRunner
@@ -44,13 +45,21 @@ def test_hvac_history_month(
     assert result.output == snapshot
 
 
+@pytest.mark.parametrize(
+    ("vehicle_fixture", "action"),
+    [("zoe_40.1.json", "cancel"), ("alpine_A290.1.json", "stop")],
+)
 def test_hvac_cancel(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aioresponses,
+    cli_runner: CliRunner,
+    snapshot: SnapshotAssertion,
+    vehicle_fixture: str,
+    action: str,
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
-    url = fixtures.inject_set_hvac_start(mocked_responses, result="cancel")
-    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
+    url = fixtures.inject_set_hvac_start(mocked_responses, result=action)
+    fixtures.inject_get_vehicle_details(mocked_responses, vehicle_fixture)
 
     result = cli_runner.invoke(__main__.main, "hvac cancel")
     assert result.exit_code == 0, result.exception

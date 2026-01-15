@@ -1,5 +1,6 @@
 # serializer version: 1
-# name: test_hvac_cancel
+[(""),("a290_2021.json","stop")])
+# name: test_hvac_cancel[zoe_40.1.json-cancel]
   dict({
     'data': dict({
       'attributes': dict({
@@ -9,9 +10,25 @@
     }),
   })
 # ---
-# name: test_hvac_cancel.1
+# name: test_hvac_cancel[zoe_40.1.json-cancel].1
   '''
   {'action': 'cancel'}
+  
+  '''
+# ---
+# name: test_hvac_cancel[alpine_A290.1.json-stop]
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'action': 'stop',
+      }),
+      'type': 'HvacStart',
+    }),
+  })
+# ---
+# name: test_hvac_cancel[alpine_A290.1.json-stop].1
+  '''
+  {'action': 'stop'}
   
   '''
 # ---
