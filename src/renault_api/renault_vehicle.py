@@ -540,7 +540,20 @@ class RenaultVehicle:
         """Start vehicle charge."""
         endpoint_definition = await self.get_endpoint_definition("actions/charge-start")
         json: dict[str, Any]
-        if endpoint_definition.mode == "kcm":
+        if endpoint_definition.mode == "kcm-settings":
+            # For vehicles like Renault 5 E-TECH, Scenic E-TECH that use ev/settings
+            # endpoint. Based on analysis of MyRenault app behavior (issue #1348):
+            # - GET current settings
+            # - Disable all scheduled programs (programActivationStatus: false)
+            # - POST the modified settings back
+            # This triggers immediate charging by disabling scheduled mode.
+            current_settings = await self._get_ev_settings()
+            # Disable all programs to trigger immediate charging
+            if "programs" in current_settings:
+                for program in current_settings["programs"]:
+                    program["programActivationStatus"] = False
+            json = current_settings
+        elif endpoint_definition.mode == "kcm":
             json = {
                 "data": {
                     "type": "ChargePauseResume",
@@ -567,7 +580,7 @@ class RenaultVehicle:
         )
 
     async def set_charge_stop(self) -> models.KamereonVehicleChargingStartActionData:
-        """Start vehicle charge."""
+        """Stop vehicle charge."""
         endpoint_definition = await self.get_endpoint_definition("actions/charge-stop")
         json: dict[str, Any]
         if endpoint_definition.mode == "kcm":
@@ -620,3 +633,17 @@ class RenaultVehicle:
         """Check if vehicle supports endpoint."""
         details = await self.get_details()
         return details.supports_endpoint(endpoint)
+
+    async def _get_ev_settings(self) -> dict[str, Any]:
+        """Get vehicle EV settings (for KCM vehicles like Scenic/R5 E-TECH)."""
+        endpoint_definition = await self.get_endpoint_definition("charge-schedule")
+        response = await self._get_vehicle_data(endpoint_definition)
+        return response.raw_data
+
+    async def _set_ev_settings(
+        self, settings: dict[str, Any]
+    ) -> models.KamereonVehicleDataResponse:
+        """Set vehicle EV settings (for KCM vehicles like Scenic/R5 E-TECH)."""
+        endpoint_definition = await self.get_endpoint_definition("charge-schedule")
+        response = await self._set_vehicle_data(endpoint_definition, settings)
+        return response

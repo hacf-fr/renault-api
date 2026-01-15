@@ -338,3 +338,22 @@ def test_charging_dacia_stop(
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
     assert result.output == snapshot
+
+
+def test_charging_r5_start(
+    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+) -> None:
+    """Test charge start for Renault 5 E-TECH via ev/settings endpoint."""
+    initialise_credential_store(include_account_id=True, include_vin=True)
+    fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
+    # GET current settings is required for kcm-settings mode
+    fixtures.inject_get_ev_settings(mocked_responses, "single.active")
+    # POST to ev/settings
+    url = fixtures.inject_set_kcm_ev_settings_charge(mocked_responses, "start")
+
+    result = cli_runner.invoke(__main__.main, "charge start")
+    assert result.exit_code == 0, result.exception
+
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    assert request.kwargs["json"] == snapshot
+    assert result.output == snapshot
