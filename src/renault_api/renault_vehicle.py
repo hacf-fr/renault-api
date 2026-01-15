@@ -580,7 +580,7 @@ class RenaultVehicle:
         )
 
     async def set_charge_stop(self) -> models.KamereonVehicleChargingStartActionData:
-        """Stop vehicle charge."""
+        """Start vehicle charge."""
         endpoint_definition = await self.get_endpoint_definition("actions/charge-stop")
         json: dict[str, Any]
         if endpoint_definition.mode == "kcm":
