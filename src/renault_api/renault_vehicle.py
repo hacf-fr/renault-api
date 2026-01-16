@@ -445,15 +445,14 @@ class RenaultVehicle:
         }
 
         # For some vehicles (eg A5E1AE), hvac is stopped with "stop" instead of "cancel"
-        # so we override the action. It could be that this is the case for all vehicle,
+        # so we override the action. It could be that this is the case for all vehicles,
         # but we have no way to test that.
-        key = "actions/hvac-stop"
-        endpoint_definition = await self.get_endpoint_definition(key)
-        if endpoint_definition.mode == models._KCA_ALTERNATIVE_ENDPOINTS[key].mode:
+        endpoint_definition = await self.get_endpoint_definition("actions/hvac-stop")
+        if endpoint_definition.mode == "kca-stop":
             # Using alternative endpoint that requires "stop" action
             json["data"]["attributes"]["action"] = "stop"
 
-        response = await self._set_vehicle_data("actions/hvac-stop", json)
+        response = await self._set_vehicle_data(endpoint_definition, json)
         return cast(
             models.KamereonVehicleHvacStartActionData,
             response.get_attributes(schemas.KamereonVehicleHvacStartActionDataSchema),
