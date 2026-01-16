@@ -540,7 +540,21 @@ class RenaultVehicle:
         """Start vehicle charge."""
         endpoint_definition = await self.get_endpoint_definition("actions/charge-start")
         json: dict[str, Any]
-        if endpoint_definition.mode == "kcm":
+        if endpoint_definition.mode == "kcm-settings":
+            # For vehicles like Renault 5 E-TECH, Scenic E-TECH that use ev/settings
+            # endpoint. Based on analysis of MyRenault app behavior (issue #1348):
+            # - GET current settings
+            # - Disable all scheduled programs (programActivationStatus: false)
+            # - POST the modified settings back
+            # This triggers immediate charging by disabling scheduled mode.
+            get_settings_response = await self._get_vehicle_data(endpoint_definition)
+            current_settings = get_settings_response.raw_data
+            # Disable all programs to trigger immediate charging
+            if "programs" in current_settings:
+                for program in current_settings["programs"]:
+                    program["programActivationStatus"] = False
+            json = current_settings
+        elif endpoint_definition.mode == "kcm":
             json = {
                 "data": {
                     "type": "ChargePauseResume",
