@@ -140,7 +140,7 @@ _DEFAULT_ENDPOINTS: dict[str, EndpointDefinition] = {
 }
 _KCA_ALTERNATIVE_ENDPOINTS: dict[str, EndpointDefinition] = {
     "actions/hvac-stop": EndpointDefinition(
-        "/kca/car-adapter/v1/cars/{vin}/actions/hvac-start", mode="kca_stop"
+        "/kca/car-adapter/v1/cars/{vin}/actions/hvac-start", mode="kca-stop"
     ),
 }
 _KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
