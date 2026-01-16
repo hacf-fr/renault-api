@@ -396,6 +396,22 @@ async def test_set_charge_start(
 
 
 @pytest.mark.asyncio
+async def test_set_charge_start_r5(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+) -> None:
+    """Test set_charge_start for Renault 5 E-TECH via ev/settings endpoint."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
+    # GET current settings is required for kcm-settings mode
+    fixtures.inject_get_ev_settings(mocked_responses, "single.active")
+    # POST to ev/settings
+    url = fixtures.inject_set_kcm_ev_settings_charge(mocked_responses, "start")
+
+    assert await vehicle.set_charge_start()
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    assert request.kwargs["json"] == snapshot
+
+
+@pytest.mark.asyncio
 async def test_set_hvac_schedules(
     vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:

@@ -147,6 +147,9 @@ _KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
     "actions/charge-start": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm"
     ),
+    "actions/charge-start-via-settings": EndpointDefinition(
+        "/kcm/v1/vehicles/{vin}/ev/settings", mode="kcm-settings"
+    ),
     "actions/charge-stop": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm"
     ),
@@ -203,6 +206,8 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "soc-levels": None,  # err.func.wired.forbidden
     },
     "R5E1VE": {  # Renault 5 E-TECH
+        "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start-via-settings"],
+        "actions/charge-stop": None,  # Not supported - use charger to stop
         "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
         "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
         "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
