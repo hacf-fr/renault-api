@@ -1,5 +1,4 @@
 # serializer version: 1
-[(""),("a290_2021.json","stop")])
 # name: test_hvac_cancel[zoe_40.1.json-cancel]
   dict({
     'data': dict({
