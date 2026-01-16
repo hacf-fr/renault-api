@@ -142,11 +142,11 @@ _KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
     "actions/charge-start": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm"
     ),
-    "actions/charge-stop": EndpointDefinition(
-        "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm"
-    ),
     "actions/charge-start-via-settings": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/ev/settings", mode="kcm-settings"
+    ),
+    "actions/charge-stop": EndpointDefinition(
+        "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm"
     ),
     "charge-schedule": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/ev/settings", mode="kcm"
