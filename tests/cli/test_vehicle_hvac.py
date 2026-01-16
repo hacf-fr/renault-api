@@ -47,7 +47,10 @@ def test_hvac_history_month(
 
 @pytest.mark.parametrize(
     ("vehicle_fixture", "action"),
-    [("zoe_40.1.json", "cancel"), ("alpine_A290.1.json", "stop")],
+    [
+        ("zoe_40.1.json", "cancel"),  # Test for cancel action
+        ("alpine_A290.1.json", "stop"),  # Test for stop action
+    ],
 )
 def test_hvac_cancel(
     mocked_responses: aioresponses,
