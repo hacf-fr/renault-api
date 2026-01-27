@@ -187,7 +187,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
         "location": _DEFAULT_ENDPOINTS["location"],
     },
- "A5E1AE": {  # Alpine A290
+    "A5E1AE": {  # Alpine A290
         "actions/charge-start": None,  # Reason: The access is forbidden,
         "actions/charge-stop": None,  # Reason: The access is forbidden,
         "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
