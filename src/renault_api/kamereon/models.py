@@ -160,32 +160,28 @@ _KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
 
 _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
     "A4E1VE": {  # Renault R4 E-Tech
-        # Actions confirmed working
-        "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
-        "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
-        "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
-        "actions/hvac-stop": _DEFAULT_ENDPOINTS["actions/hvac-stop"],
-        # Charge-related actions: blocked or malformed on this model/account
-        "actions/charge-start": None,  # err.func.wired.forbidden
-        "actions/charge-stop": None,  # err.func.wired.invalid-body-format
         "actions/charge-set-mode": None,  # err.func.wired.invalid-body (cannot be bound)
         "actions/charge-set-schedule": None,  # err.func.wired.forbidden
+        "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start-via-settings"],
+        "actions/charge-stop": None,  # err.func.wired.invalid-body-format
+        "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
         "actions/hvac-set-schedule": None,  # err.func.wired.forbidden
-        # Data endpoints: disable consistently failing ones
+        "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
+        "actions/hvac-stop": _DEFAULT_ENDPOINTS["actions/hvac-stop"],
+        "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
+        "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # err.func.wired.not-found (url does not exist)
         "charge-mode": None,  # access forbidden / action invalid-body
-        "notification-settings": None,  # 400001 The vehicle does not have a GDC gateway
-        "lock-status": None,  # 404 There is no data for this vin and uid
-        "pressure": None,  # 404 There is no data for this vin and uid
-        "res-state": None,  # 404 There is no data for this vin and uid
-        # KCM EV settings (read) works; keep it for schedule display
-        "charge-schedule": _KCM_ENDPOINTS["charge-schedule"],
-        # Confirmed working data endpoints (left to defaults, but listed for clarity)
-        "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
-        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
+        "charge-schedule": _KCM_ENDPOINTS["charge-schedule"],  # KCM EV settings (read) works; keep it for schedule display
         "charges": _DEFAULT_ENDPOINTS["charges"],
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
         "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
         "location": _DEFAULT_ENDPOINTS["location"],
+        "lock-status": None,  # 404 There is no data for this vin and uid
+        "notification-settings": None,  # 400001 The vehicle does not have a GDC gateway
+        "pressure": None,  # 404 There is no data for this vin and uid
+        "res-state": None,  # 404 There is no data for this vin and uid
+        "soc-levels": _DEFAULT_ENDPOINTS["soc-levels"],
     },
     "A5E1AE": {  # Alpine A290
         "actions/charge-start": None,  # Reason: The access is forbidden,
