@@ -1,0 +1,9 @@
+{
+	"data": {
+		"type":"ChargeMode",
+		"id":"guid",
+		"attributes":{ 
+			"action":"always_charging"
+		}
+	}
+}

@@ -412,6 +412,26 @@ def inject_get_charging_settings(mocked_responses: aioresponses, type: str) -> s
     )
 
 
+def inject_get_charging_settings_kcm(mocked_responses: aioresponses, type: str) -> str:
+    """Inject sample charges."""
+    urlpath = f"{KCM_ADAPTER_PATH}/charge/settings?{DEFAULT_QUERY_STRING}"
+    return inject_data(
+        mocked_responses,
+        urlpath,
+        f"vehicle_kcm_data/charging-settings.{type}.json",
+    )
+
+
+def inject_set_set_charing_settings(mocked_responses: aioresponses, type: str) -> str:
+    """Inject sample charge-mode."""
+    urlpath = f"{ADAPTER_PATH}/actions/charging-settings?{DEFAULT_QUERY_STRING}"
+    return inject_action(
+        mocked_responses,
+        urlpath,
+        f"vehicle_action/charging-settings.{type}.json",
+    )
+
+
 def inject_get_charge_schedule(mocked_responses: aioresponses, type: str) -> str:
     """Inject sample charges."""
     urlpath = f"{ADAPTER_PATH}/charge-schedule?{DEFAULT_QUERY_STRING}"
@@ -539,6 +559,18 @@ def inject_set_kcm_ev_settings_charge(
         urlpath,
         f"vehicle_kcm_action/ev-settings.charge-{action}.json",
     )
+
+
+def inject_set_charging_settings(mocked_responses: aioresponses, mode: str) -> str:
+    """Inject sample charge-mode that is used for charging/settings mode always."""
+    if mode == "always":
+        urlpath = f"{ADAPTER_PATH}/actions/charge-mode?{DEFAULT_QUERY_STRING}"
+        return inject_action(
+            mocked_responses,
+            urlpath,
+            f"vehicle_action/charging-settings.{mode}.json",
+        )
+    return ""
 
 
 def inject_set_charging_start(mocked_responses: aioresponses, result: str) -> str:

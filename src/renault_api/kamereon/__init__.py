@@ -35,6 +35,7 @@ _KCA_GET_ENDPOINTS: dict[str, Any] = {
     "res-state": {"version": 1},
 }
 _KCA_POST_ENDPOINTS: dict[str, Any] = {
+    "actions/charging/settings": {"version": 1, "type": "ChargingSettings"},
     "actions/charge-mode": {"version": 1, "type": "ChargeMode"},
     "actions/charge-schedule": {"version": 2, "type": "ChargeSchedule"},
     "actions/charging-start": {"version": 1, "type": "ChargingStart"},
