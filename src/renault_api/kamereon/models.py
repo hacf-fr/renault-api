@@ -453,12 +453,16 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
     },
     "XJB2CP": {  # Renault Symbioz 2025
         "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
+        "actions/hvac-start": None,  # err.func.wired.forbidden
         "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
+        "battery-status": None,  # err.func.wired.notFound
+        "charge-mode": None,  # "err.func.wired.forbidden"
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
-        "hvac-status": None,
+        "hvac-status": None,  # err.func.wired.notFound
         "location": _DEFAULT_ENDPOINTS["location"],
-        "lock-status": None,
-        "res-state": None,
+        "lock-status": None,  # "err.func.wired.notFound"
+        "res-state": None,  # "err.func.wired.notFound"
+        "pressure": None,  # err.func.wired.notFound
     },
     "XJB1SU": {  # CAPTUR II
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
