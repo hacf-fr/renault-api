@@ -2,8 +2,8 @@
   "data": {
     "type": "Car",
     "id": "guid",
-    "attributes": { 
-      "mode": "always", 
+    "attributes": {
+      "mode": "always",
       "schedules": []
     }
   }
