@@ -2,7 +2,7 @@
 	"data": {
 		"type":"ChargeMode",
 		"id":"guid",
-		"attributes":{ 
+		"attributes":{
 			"action":"always_charging"
 		}
 	}
