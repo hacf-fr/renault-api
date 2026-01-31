@@ -22,7 +22,6 @@ _KCA_GET_ENDPOINTS: dict[str, Any] = {
     "charge-history": {"version": 1},
     "charge-mode": {"version": 1},
     "charges": {"version": 1},
-    "charging-settings": {"version": 1},
     "cockpit": {"version": 1},
     "hvac-history": {"version": 1},
     "hvac-sessions": {"version": 1},
