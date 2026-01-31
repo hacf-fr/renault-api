@@ -44,6 +44,7 @@ class RenaultVehicle:
         self._vehicle_details = vehicle_details
         self._car_adapter = car_adapter
         self._contracts: list[models.KamereonVehicleContract] | None = None
+        self._stored_charge_schedules: list[models.ChargeSchedule] | None = None
 
         if session:
             self._session = session
@@ -237,6 +238,36 @@ class RenaultVehicle:
             models.KamereonVehicleChargeModeData,
             response.get_attributes(schemas.KamereonVehicleChargeModeDataSchema),
         )
+
+    async def get_charging_settings(self) -> models.KamereonVehicleChargingSettingsData:
+        """Get vehicle charging settings."""
+        response = await self._get_vehicle_data("charging-settings")
+        data = cast(
+            models.KamereonVehicleChargingSettingsData,
+            response.get_attributes(schemas.KamereonVehicleChargingSettingsDataSchema),
+        )
+        if data.mode == "scheduled":
+            await self.set_stored_charge_schedules(data.schedules)
+        return data
+
+    async def get_stored_charging_settings(
+        self,
+    ) -> models.KamereonVehicleChargingSettingsData:
+        """Return stored charging schedules."""
+        return models.KamereonVehicleChargingSettingsData(
+            schedules=self._stored_charge_schedules,
+            mode="scheduled",
+            raw_data={"mode": "scheduled"},
+            startDateTime=None,
+            delay=None,
+        )
+
+    async def set_stored_charge_schedules(
+        self, schedules: list[models.ChargeSchedule] | None
+    ) -> None:
+        """set stored charge schedules."""
+        if schedules:
+            self._stored_charge_schedules = schedules.copy()
 
     async def get_cockpit(self) -> models.KamereonVehicleCockpitData:
         """Get vehicle cockpit."""
@@ -542,6 +573,54 @@ class RenaultVehicle:
         return cast(
             models.KamereonVehicleChargeModeActionData,
             response.get_attributes(schemas.KamereonVehicleChargeModeActionDataSchema),
+        )
+
+    async def set_charging_settings(
+        self, mode: str
+    ) -> models.KamereonVehicleChargingSettingsActionData:
+        """Set vehicle charge mode.
+        At this moment it does not use the action/charging/settings end point.
+        The mode 'always' will actually call action/charge-mode.
+        The mode scheduled will retrieve in memory schedules and
+        call actions/charge-set-schedule.
+        The mode delayed is not implemented.
+        """
+        attributes: dict[str, Any] = {}
+        if mode == "always":
+            # Map mode to charge mode, and call mapped chare-mode
+            type = "ChargeMode"
+            attributes = {"action": "always_charging"}
+            action = "actions/charging-set-settings"
+        elif mode == "scheduled":
+            # Use stored schedules and set
+            stored_settings = await self.get_stored_charging_settings()
+            if stored_settings.schedules:
+                attributes = {
+                    "schedules": [
+                        schedule.for_json() for schedule in stored_settings.schedules
+                    ]
+                }
+                type = "ChargeSchedule"
+                action = "actions/charge-set-schedule"
+            else:
+                raise RenaultException(
+                    """No charging schedule stored.
+                       Use charge_set_schedules action instead."""
+                )
+        else:  # Do not yet know what to map delayed to.
+            raise RenaultException("Delayed charge mode is not implemented.")
+        json: dict[str, Any] = {
+            "data": {
+                "type": type,
+                "attributes": attributes,
+            }
+        }
+        response = await self._set_vehicle_data(action, json)
+        return cast(
+            models.KamereonVehicleChargingSettingsActionData,
+            response.get_attributes(
+                schemas.KamereonVehicleChargingSettingsActionDataSchema
+            ),
         )
 
     async def set_charge_start(self) -> models.KamereonVehicleChargingStartActionData:

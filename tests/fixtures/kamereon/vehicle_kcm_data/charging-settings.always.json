@@ -1,0 +1,10 @@
+{
+  "data": {
+    "type": "Car",
+    "id": "guid",
+    "attributes": {
+      "mode": "always",
+      "schedules": []
+    }
+  }
+}

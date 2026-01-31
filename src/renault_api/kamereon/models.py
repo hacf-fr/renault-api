@@ -55,6 +55,10 @@ COMMON_ERRRORS: list[dict[str, Any]] = [
         "errorCode": "err.func.wired.forbidden",
         "error_type": exceptions.ForbiddenException,
     },
+    {
+        "errorCode": "409001",
+        "error_type": exceptions.ChargeModeInProgressException,
+    },
 ]
 
 VEHICLE_SPECIFICATIONS: dict[str, dict[str, Any]] = {
@@ -82,6 +86,10 @@ class EndpointDefinition:
 
 
 _DEFAULT_ENDPOINTS: dict[str, EndpointDefinition] = {
+    # For now map to charge-mode endpoint
+    "actions/charging-set-settings": EndpointDefinition(
+        "/kca/car-adapter/v1/cars/{vin}/actions/charge-mode"
+    ),
     "actions/charge-set-mode": EndpointDefinition(
         "/kca/car-adapter/v1/cars/{vin}/actions/charge-mode"
     ),
@@ -155,6 +163,9 @@ _KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
     ),
     "charge-schedule": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/ev/settings", mode="kcm"
+    ),
+    "charging-settings": EndpointDefinition(
+        "/kcm/v1/vehicles/{vin}/charge/settings", mode="kcm"
     ),
 }
 
@@ -335,11 +346,20 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "res-state": None,
     },
     "XCB1VE": {  # MEGANE E-TECH
+        "actions/charge-start": _DEFAULT_ENDPOINTS["actions/charge-start"],
+        "actions/charge-stop": None,  # Reason: _KCM_ENDPOINTS["actions/charge-stop"],
+        "actions/charge-set-mode": None,  # Reason: replaced by charging-set-settings,
+        "actions/charging-set-settings": _DEFAULT_ENDPOINTS[
+            "actions/charging-set-settings"
+        ],
+        "actions/charge-set-schedule": _DEFAULT_ENDPOINTS[
+            "actions/charge-set-schedule"
+        ],
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: "err.func.wired.not-found"
-        "charge-mode": None,  # Reason: "err.func.vcps.ev.charge-mode.error"
+        "charge-mode": None,  # Reason: err.func.vcps.ev.charge-mode.error
         "charge-schedule": None,  # Reason: "err.func.vcps.ev.charge-schedule.error"
-        "charging-settings": _DEFAULT_ENDPOINTS["charging-settings"],
+        "charging-settings": _KCM_ENDPOINTS["charging-settings"],
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
         "hvac-history": None,  # Reason: "err.func.wired.not-found"
         "hvac-sessions": None,  # Reason: "err.func.wired.not-found"
@@ -1111,6 +1131,8 @@ class KamereonVehicleChargingSettingsData(KamereonVehicleDataAttributes):
 
     mode: str | None
     schedules: list[ChargeSchedule] | None
+    startDateTime: str | None
+    delay: int | None
 
     def update(self, args: dict[str, Any]) -> None:
         """Update schedule."""
@@ -1198,6 +1220,11 @@ class KamereonVehicleHvacModeActionData(KamereonVehicleDataAttributes):
 @dataclass
 class KamereonVehicleChargingStartActionData(KamereonVehicleDataAttributes):
     """Kamereon vehicle action data charging-start attributes."""
+
+
+@dataclass
+class KamereonVehicleChargingSettingsActionData(KamereonVehicleDataAttributes):
+    """Kamereon vehicle action data charging-settings attributes."""
 
 
 @dataclass
