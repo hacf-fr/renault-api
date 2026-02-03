@@ -252,6 +252,8 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/megane_e-tech.1.json]
   dict({
+    'actions/charge-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/charging-start', mode='default'),
+    'actions/charge-stop': None,
     'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
     'charge-history': None,
     'charge-mode': None,
@@ -271,6 +273,8 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/megane_e-tech.2.json]
   dict({
+    'actions/charge-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/charging-start', mode='default'),
+    'actions/charge-stop': None,
     'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
     'charge-history': None,
     'charge-mode': None,
