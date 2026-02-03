@@ -335,6 +335,8 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "res-state": None,
     },
     "XCB1VE": {  # MEGANE E-TECH
+        "actions/charge-start": _DEFAULT_ENDPOINTS["actions/charge-start"],
+        "actions/charge-stop": None, # Reason: err.func.wired.invalid-body-format
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: "err.func.wired.not-found"
         "charge-mode": None,  # Reason: "err.func.vcps.ev.charge-mode.error"
