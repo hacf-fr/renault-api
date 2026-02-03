@@ -55,6 +55,10 @@ COMMON_ERRRORS: list[dict[str, Any]] = [
         "errorCode": "err.func.wired.forbidden",
         "error_type": exceptions.ForbiddenException,
     },
+    {
+        "errorCode": "409001",
+        "error_type": exceptions.ChargeModeInProgressException,
+    },
 ]
 
 VEHICLE_SPECIFICATIONS: dict[str, dict[str, Any]] = {

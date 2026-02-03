@@ -1,0 +1,17 @@
+{
+  "type": "FUNCTIONAL",
+  "messages": [
+    {
+      "code": "err.func.vcps.ev.charge-mode.error",
+      "message": "A remote CHARGE_MODE is already in progress"
+    }
+  ],
+  "errors": [
+    {
+      "errorCode": "409001",
+      "errorMessage": "A remote CHARGE_MODE is already in progress",
+      "errorType": "functional",
+      "errorLevel": "error"
+    }
+  ]
+}
