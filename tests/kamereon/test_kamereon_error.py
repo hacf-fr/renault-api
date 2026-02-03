@@ -102,6 +102,18 @@ def test_vehicle_error_privacy_on() -> None:
     assert excinfo.value.error_details == "Privacy mode currently ON"
 
 
+def test_vehicle_charge_mode_inprogress() -> None:
+    """Test vehicle Charge mode change in progress response."""
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/error/charge_mode_inprogress.json",
+        schemas.KamereonVehicleDataResponseSchema,
+    )
+    with pytest.raises(exceptions.ChargeModeInProgressException) as excinfo:
+        response.raise_for_error_code()
+    assert excinfo.value.error_code == "409001"
+    assert excinfo.value.error_details == "A remote CHARGE_MODE is already in progress"
+
+
 def test_vehicle_error_resource_not_found() -> None:
     """Test vehicle resource_not_found response."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(

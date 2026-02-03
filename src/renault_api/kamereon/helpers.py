@@ -85,10 +85,51 @@ def create_schedule(
 
 
 def create_charge_schedule(
-    settings: dict[str, Any],
+    settings: dict[str, Any] | int,
 ) -> models.ChargeSchedule:
-    """Update schedule."""
-    raise NotImplementedError
+    """Create one schedule based in input. If int create empty, else copy from dict."""
+    # Implemented function as schedules can be empty.
+    schedule_id = None
+    if isinstance(settings, int):
+        # If settings is an int, treat it as the schedule id
+        schedule_id = settings
+        raw_data: dict[str, Any] = {"id": schedule_id, "activated": False}
+        day_schedules = dict.fromkeys(DAYS_OF_WEEK)
+        activated = False
+    elif isinstance(settings, dict):
+        # If settings is a dict, build from the dict
+        schedule_id = settings.get("id")
+        activated = bool(settings.get("activated"))
+        raw_data = settings
+
+        # Copy day schedules
+        day_schedules = {}
+        for day in DAYS_OF_WEEK:
+            day_data = settings.get(day)
+            if day_data is not None:
+                day_schedules[day] = models.ChargeDaySchedule(
+                    raw_data=day_data,
+                    startTime=day_data.get("startTime"),
+                    duration=day_data.get("duration"),
+                )
+            else:
+                day_schedules[day] = None
+    else:
+        raise TypeError("settings must be either int or dict[str, Any]")
+
+    # Create ChargeSchedule object
+    return models.ChargeSchedule(
+        raw_data=raw_data,
+        id=schedule_id,
+        activated=activated,
+        monday=day_schedules.get("monday"),
+        tuesday=day_schedules.get("tuesday"),
+        wednesday=day_schedules.get("wednesday"),
+        thursday=day_schedules.get("thursday"),
+        friday=day_schedules.get("friday"),
+        saturday=day_schedules.get("saturday"),
+        sunday=day_schedules.get("sunday"),
+    )
 
 
 def create_hvac_schedule(

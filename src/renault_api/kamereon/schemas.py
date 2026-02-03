@@ -136,6 +136,11 @@ KamereonVehicleChargeModeActionDataSchema = marshmallow_dataclass.class_schema(
 )()
 
 
+KamereonVehicleChargingSettingsActionDataSchema = marshmallow_dataclass.class_schema(
+    models.KamereonVehicleChargingSettingsActionData, base_schema=BaseSchema
+)()
+
+
 KamereonVehicleChargingStartActionDataSchema = marshmallow_dataclass.class_schema(
     models.KamereonVehicleChargingStartActionData, base_schema=BaseSchema
 )()

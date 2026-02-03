@@ -178,6 +178,27 @@ async def test_get_charge_mode(
     assert await vehicle.get_charge_mode()
 
 
+@pytest.mark.parametrize(
+    "mode",
+    [
+        "always",
+        "delayed",
+        "scheduled",
+    ],
+)
+@pytest.mark.asyncio
+async def test_get_charging_settings_kcm(
+    vehicle: RenaultVehicle,
+    mocked_responses: aioresponses,
+    snapshot: SnapshotAssertion,
+    mode: str,
+) -> None:
+    """Test get_charging_settings for mode."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "megane_e-tech.1.json")
+    fixtures.inject_get_charging_settings_kcm(mocked_responses, mode)
+    assert await vehicle.get_charging_settings() == snapshot
+
+
 @pytest.mark.asyncio
 async def test_get_cockpit(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
@@ -352,6 +373,19 @@ async def test_set_battery_soc(
     fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
     fixtures.inject_set_battery_soc_levels(mocked_responses)
     assert await vehicle.set_battery_soc(min=10, target=50) == snapshot
+
+
+@pytest.mark.asyncio
+async def test_set_charging_settings(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+) -> None:
+    """Test set_charge_mode."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "megane_e-tech.1.json")
+    url = fixtures.inject_set_charging_settings(mocked_responses, "always")
+    assert await vehicle.set_charging_settings("always")
+
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
