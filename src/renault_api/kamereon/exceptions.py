@@ -66,6 +66,12 @@ class PrivacyModeOnException(KamereonResponseException):
     pass
 
 
+class ChargeModeInProgressException(KamereonResponseException):
+    """Charge mode change in progress."""
+
+    pass
+
+
 class ForbiddenException(KamereonResponseException):
     """The access is forbidden."""
 
