@@ -160,6 +160,9 @@ _KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
     "charge-schedule": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/ev/settings", mode="kcm"
     ),
+    "charge-mode-via-settings": EndpointDefinition(
+        "/kcm/v1/vehicles/{vin}/charge/settings", mode="kcm-settings"
+    ),
 }
 
 _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
@@ -343,7 +346,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "actions/charge-stop": None,  # Reason: err.func.wired.invalid-body-format
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: "err.func.wired.not-found"
-        "charge-mode": None,  # Reason: "err.func.vcps.ev.charge-mode.error"
+        "charge-mode": _KCM_ENDPOINTS["charge-mode-via-settings"],
         "charge-schedule": None,  # Reason: "err.func.vcps.ev.charge-schedule.error"
         "charging-settings": _DEFAULT_ENDPOINTS["charging-settings"],
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
@@ -677,9 +680,8 @@ class KamereonVehicleDetails(BaseModel):
 
         rendition: dict[str, str] = next(
             filter(
-                lambda rendition: (
-                    rendition.get("resolutionType") == f"ONE_MYRENAULT_{size.name}"
-                ),
+                lambda rendition: rendition.get("resolutionType")
+                == f"ONE_MYRENAULT_{size.name}",
                 asset.get("renditions", [{}]),
             )
         )

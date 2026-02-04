@@ -232,11 +232,29 @@ class RenaultVehicle:
 
     async def get_charge_mode(self) -> models.KamereonVehicleChargeModeData:
         """Get vehicle charge mode."""
-        response = await self._get_vehicle_data("charge-mode")
-        return cast(
-            models.KamereonVehicleChargeModeData,
-            response.get_attributes(schemas.KamereonVehicleChargeModeDataSchema),
-        )
+        endpoint_definition = await self.get_endpoint_definition("charge-mode")
+        response = await self._get_vehicle_data(endpoint_definition)
+        # For a number of models charge-mode does not longer work.
+        # In those situations use charge-settings and map mode to chargeMode.
+        # Mode delayed is not directly supported at this moment and just for display.
+        if endpoint_definition.mode == "kcm-settings":
+            mode = response.raw_data["data"]["attributes"]["mode"]
+            data = cast(
+                models.KamereonVehicleChargeModeData,
+                response.get_attributes(schemas.KamereonVehicleChargeModeDataSchema),
+            )
+            charge_mode = "always_charge"
+            if mode == "scheduled":
+                charge_mode = "schedule_mode"
+            elif mode == "delayed":
+                charge_mode = "delayed"
+            data.chargeMode = charge_mode
+            return data
+        else:
+            return cast(
+                models.KamereonVehicleChargeModeData,
+                response.get_attributes(schemas.KamereonVehicleChargeModeDataSchema),
+            )
 
     async def get_cockpit(self) -> models.KamereonVehicleCockpitData:
         """Get vehicle cockpit."""
