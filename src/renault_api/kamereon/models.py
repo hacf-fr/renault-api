@@ -680,8 +680,9 @@ class KamereonVehicleDetails(BaseModel):
 
         rendition: dict[str, str] = next(
             filter(
-                lambda rendition: rendition.get("resolutionType")
-                == f"ONE_MYRENAULT_{size.name}",
+                lambda rendition: (
+                    rendition.get("resolutionType") == f"ONE_MYRENAULT_{size.name}"
+                ),
                 asset.get("renditions", [{}]),
             )
         )
