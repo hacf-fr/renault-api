@@ -193,7 +193,7 @@ async def test_get_charge_mode_megane(
     """Test get_charge_mode for Megane e-Tech via charge-settings endpoint."""
     fixtures.inject_get_vehicle_details(mocked_responses, "megane_e-tech.2.json")
     # GET current settings is required for kcm-settings mode
-    fixtures.inject_get_charge_settings_kcm(mocked_responses, mode)
+    fixtures.inject_get_charging_settings(mocked_responses, mode)
     assert await vehicle.get_charge_mode()
 
 
