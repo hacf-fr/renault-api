@@ -412,16 +412,6 @@ def inject_get_charging_settings(mocked_responses: aioresponses, type: str) -> s
     )
 
 
-def inject_get_charge_settings_kcm(mocked_responses: aioresponses, type: str) -> str:
-    """Inject sample charge settings."""
-    urlpath = f"{KCM_ADAPTER_PATH}/charge/settings?{DEFAULT_QUERY_STRING}"
-    return inject_data(
-        mocked_responses,
-        urlpath,
-        f"vehicle_kcm_data/charge-settings.{type}.json",
-    )
-
-
 def inject_get_charge_schedule(mocked_responses: aioresponses, type: str) -> str:
     """Inject sample charges."""
     urlpath = f"{ADAPTER_PATH}/charge-schedule?{DEFAULT_QUERY_STRING}"
@@ -589,7 +579,7 @@ def inject_vehicle_status(mocked_responses: aioresponses, vehicle: str) -> None:
     inject_get_res_state(mocked_responses)
     inject_get_hvac_status(mocked_responses, vehicle)
     if vehicle == "megane_e-tech":
-        inject_get_charge_settings_kcm(mocked_responses, "always")
+        inject_get_charging_settings(mocked_responses, "always")
     else:
         inject_get_charge_mode(mocked_responses)
     inject_get_cockpit(mocked_responses, vehicle)
