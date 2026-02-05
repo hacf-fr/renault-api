@@ -243,7 +243,7 @@ class RenaultVehicle:
                 models.KamereonVehicleChargeModeData,
                 response.get_attributes(schemas.KamereonVehicleChargeModeDataSchema),
             )
-            charge_mode = "always_charge"
+            charge_mode = "always_charging"
             if mode == "scheduled":
                 charge_mode = "schedule_mode"
             elif mode == "delayed":
