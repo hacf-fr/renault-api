@@ -81,6 +81,11 @@ def test_vehicle_status(
     ]:
         fixtures.inject_vehicle_status(mocked_responses, "captur_ii")
     elif filename in [
+        "megane_e-tech.1.json",
+        "megane_e-tech.2.json",
+    ]:
+        fixtures.inject_vehicle_status(mocked_responses, "megane_e-tech")
+    elif filename in [
         "twingo_ze.1.json",
     ]:
         fixtures.inject_vehicle_status(mocked_responses, "twingo_ze")
