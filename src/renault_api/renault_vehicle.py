@@ -237,7 +237,7 @@ class RenaultVehicle:
         # For a number of models charge-mode does not longer work.
         # In those situations use charging-settings and map mode to chargeMode.
         # Mode delayed is not directly supported at this moment and just for display.
-        if endpoint_definition.mode == "kca-settings":
+        if endpoint_definition.mode == "kca-charge-settings":
             mode = response.raw_data["data"]["attributes"]["mode"]
             data = cast(
                 models.KamereonVehicleChargeModeData,
