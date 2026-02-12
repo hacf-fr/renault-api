@@ -147,7 +147,7 @@ _KCA_ALTERNATIVE_ENDPOINTS: dict[str, EndpointDefinition] = {
         "/kca/car-adapter/v1/cars/{vin}/actions/hvac-start", mode="kca-stop"
     ),
     "charge-mode-via-settings": EndpointDefinition(
-        "/kca/car-adapter/v1/cars/{vin}/charging-settings", mode="kca-settings"
+        "/kca/car-adapter/v1/cars/{vin}/charging-settings", mode="kca-charge-settings"
     ),
 }
 _KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
