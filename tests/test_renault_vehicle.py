@@ -178,6 +178,25 @@ async def test_get_charge_mode(
     assert await vehicle.get_charge_mode()
 
 
+@pytest.mark.parametrize(
+    "mode",
+    [
+        "always",
+        "scheduled",
+        "delayed",
+    ],
+)
+@pytest.mark.asyncio
+async def test_get_charge_mode_megane(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, mode: str
+) -> None:
+    """Test get_charge_mode for Megane e-Tech via charge-settings endpoint."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "megane_e-tech.2.json")
+    # Get charging settings is required for kca-charge-settings mode
+    fixtures.inject_get_charging_settings(mocked_responses, mode)
+    assert await vehicle.get_charge_mode()
+
+
 @pytest.mark.asyncio
 async def test_get_cockpit(
     vehicle: RenaultVehicle, mocked_responses: aioresponses

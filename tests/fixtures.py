@@ -578,6 +578,7 @@ def inject_vehicle_status(mocked_responses: aioresponses, vehicle: str) -> None:
     inject_get_lock_status(mocked_responses)
     inject_get_res_state(mocked_responses)
     inject_get_hvac_status(mocked_responses, vehicle)
+    inject_get_charging_settings(mocked_responses, "always")
     inject_get_charge_mode(mocked_responses)
     inject_get_cockpit(mocked_responses, vehicle)
     inject_get_tyre_pressure(mocked_responses)
