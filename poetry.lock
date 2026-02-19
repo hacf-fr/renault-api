@@ -3219,14 +3219,14 @@ telegram = ["requests"]
 
 [[package]]
 name = "typeguard"
-version = "4.5.0"
+version = "4.5.1"
 description = "Run-time type checker for Python"
 optional = false
 python-versions = ">=3.9"
 groups = ["main", "dev"]
 files = [
-    {file = "typeguard-4.5.0-py3-none-any.whl", hash = "sha256:cfda388fc88a9ce42a41890900d6f31ee124bea9b73bb84701a32438e92165c3"},
-    {file = "typeguard-4.5.0.tar.gz", hash = "sha256:749bea21cdb2553e12831bc29f1eae980b22c7de8331ab67ae7db9e85470b5a7"},
+    {file = "typeguard-4.5.1-py3-none-any.whl", hash = "sha256:44d2bf329d49a244110a090b55f5f91aa82d9a9834ebfd30bcc73651e4a8cc40"},
+    {file = "typeguard-4.5.1.tar.gz", hash = "sha256:f6f8ecbbc819c9bc749983cc67c02391e16a9b43b8b27f15dc70ed7c4a007274"},
 ]
 
 [package.dependencies]
@@ -3731,4 +3731,4 @@ cli = ["click", "dateparser", "tabulate"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "728938392437c0b9c0dc807c369963bd3021737f5cbbe8c0c9aa9a96eb42b22f"
+content-hash = "b1e71ff45e6ec13e8d29112f94f1f6e096d9484d7f2e81b7fa1edd9e9493c5d4"
