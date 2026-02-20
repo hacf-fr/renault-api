@@ -27,12 +27,12 @@ jobs:
 
       - name: Upgrade pip
         run: |
-          pip install --constraint=.github/workflows/constraints.txt pip
+          pip install --constraint=constraints.txt pip
           pip --version
 
       - name: Install Poetry
         run: |
-          pip install --constraint=.github/workflows/constraints.txt poetry
+          pip install --constraint=constraints.txt poetry
           poetry --version
 
       - name: Check if there is a parent commit
@@ -67,7 +67,7 @@ jobs:
         if: "! steps.check-version.outputs.tag"
         uses: pypa/gh-action-pypi-publish@v1.13.0
         with:
-          repository_url: https://test.pypi.org/legacy/
+          repository-url: https://test.pypi.org/legacy/
 
       - name: Publish release notes
         uses: release-drafter/release-drafter@v6.2.0
