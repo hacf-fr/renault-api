@@ -201,6 +201,7 @@
   Range estimate        128 km
   Plug state            PlugState.UNPLUGGED
   Charging state        ChargeState.NOT_IN_CHARGE
+  Charge mode           always_charging
   Total mileage         49114.27 km
   GPS Latitude          48.1234567
   GPS Longitude         11.1234567
@@ -219,6 +220,7 @@
   Range estimate        128 km
   Plug state            PlugState.UNPLUGGED
   Charging state        ChargeState.NOT_IN_CHARGE
+  Charge mode           always_charging
   Total mileage         49114.27 km
   GPS Latitude          48.1234567
   GPS Longitude         11.1234567
