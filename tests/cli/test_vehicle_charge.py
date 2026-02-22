@@ -226,8 +226,8 @@ def test_charging_settings_set(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
-    fixtures.inject_get_charging_settings(mocked_responses, "multi")
+    fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
+    fixtures.inject_get_ev_settings(mocked_responses, "multi")
     url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
 
     monday = "--monday clear"
@@ -247,8 +247,8 @@ def test_charging_settings_activate(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
-    fixtures.inject_get_charging_settings(mocked_responses, "multi")
+    fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
+    fixtures.inject_get_ev_settings(mocked_responses, "multi")
     url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
 
     result = cli_runner.invoke(__main__.main, "charge schedule activate 3")
@@ -264,8 +264,8 @@ def test_charging_settings_deactivate(
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
-    fixtures.inject_get_charging_settings(mocked_responses, "multi")
+    fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
+    fixtures.inject_get_ev_settings(mocked_responses, "multi")
     url = fixtures.inject_set_charge_schedule(mocked_responses, "schedules")
 
     result = cli_runner.invoke(__main__.main, "charge schedule deactivate 1")

@@ -3,6 +3,7 @@
 from typing import cast
 
 import pytest
+from syrupy.assertion import SnapshotAssertion
 
 from tests import fixtures
 
@@ -168,138 +169,26 @@ def test_cockpit_captur_ii() -> None:
     assert vehicle_data.fuelQuantity == 3.0
 
 
-def test_charging_settings_single() -> None:
-    """Test vehicle data for charging-settings.json."""
+def test_charge_schedule_single(snapshot: SnapshotAssertion) -> None:
+    """Test vehicle data for ev-settings.json."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
-        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/charging-settings.single.json",
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/charge-schedule.single.json",
         schemas.KamereonVehicleDataResponseSchema,
     )
     response.raise_for_error_code()
     assert response.data is not None
-    assert response.data.raw_data["attributes"] == {
-        "mode": "scheduled",
-        "schedules": [
-            {
-                "id": 1,
-                "activated": True,
-                "monday": {"startTime": "T12:00Z", "duration": 15},
-                "tuesday": {"startTime": "T04:30Z", "duration": 420},
-                "wednesday": {"startTime": "T22:30Z", "duration": 420},
-                "thursday": {"startTime": "T22:00Z", "duration": 420},
-                "friday": {"startTime": "T12:15Z", "duration": 15},
-                "saturday": {"startTime": "T12:30Z", "duration": 30},
-                "sunday": {"startTime": "T12:45Z", "duration": 45},
-            }
-        ],
-    }
-
-    vehicle_data = cast(
-        models.KamereonVehicleChargingSettingsData,
-        response.get_attributes(schemas.KamereonVehicleChargingSettingsDataSchema),
-    )
-
-    assert vehicle_data.mode == "scheduled"
-    assert vehicle_data.schedules is not None
-    assert len(vehicle_data.schedules) == 1
-
-    schedule_data = vehicle_data.schedules[0]
-    assert schedule_data.id == 1
-    assert schedule_data.activated is True
-    assert schedule_data.monday is not None
-    assert schedule_data.monday.startTime == "T12:00Z"
-    assert schedule_data.monday.duration == 15
-    assert schedule_data.tuesday is not None
-    assert schedule_data.tuesday.startTime == "T04:30Z"
-    assert schedule_data.tuesday.duration == 420
-    assert schedule_data.wednesday is not None
-    assert schedule_data.wednesday.startTime == "T22:30Z"
-    assert schedule_data.wednesday.duration == 420
-    assert schedule_data.thursday is not None
-    assert schedule_data.thursday.startTime == "T22:00Z"
-    assert schedule_data.thursday.duration == 420
-    assert schedule_data.friday is not None
-    assert schedule_data.friday.startTime == "T12:15Z"
-    assert schedule_data.friday.duration == 15
-    assert schedule_data.saturday is not None
-    assert schedule_data.saturday.startTime == "T12:30Z"
-    assert schedule_data.saturday.duration == 30
-    assert schedule_data.sunday is not None
-    assert schedule_data.sunday.startTime == "T12:45Z"
-    assert schedule_data.sunday.duration == 45
+    assert response.data.raw_data["attributes"] == snapshot
 
 
-def test_charging_settings_multi() -> None:
-    """Test vehicle data for charging-settings.json."""
-    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
-        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/charging-settings.multi.json",
-        schemas.KamereonVehicleDataResponseSchema,
+@pytest.mark.parametrize("mode", ["empty", "single", "multi"])
+def test_ev_settings(mode: str, snapshot: SnapshotAssertion) -> None:
+    """Test vehicle data for ev-settings.json."""
+    response: models.KamereonResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_kcm_data/ev-settings.{mode}.json",
+        schemas.KamereonResponseSchema,
     )
     response.raise_for_error_code()
-    assert response.data is not None
-    assert response.data.raw_data["attributes"] == {
-        "mode": "scheduled",
-        "schedules": [
-            {
-                "id": 1,
-                "activated": True,
-                "monday": {"startTime": "T00:00Z", "duration": 450},
-                "tuesday": {"startTime": "T00:00Z", "duration": 450},
-                "wednesday": {"startTime": "T00:00Z", "duration": 450},
-                "thursday": {"startTime": "T00:00Z", "duration": 450},
-                "friday": {"startTime": "T00:00Z", "duration": 450},
-                "saturday": {"startTime": "T00:00Z", "duration": 450},
-                "sunday": {"startTime": "T00:00Z", "duration": 450},
-            },
-            {
-                "id": 2,
-                "activated": True,
-                "monday": {"startTime": "T23:30Z", "duration": 15},
-                "tuesday": {"startTime": "T23:30Z", "duration": 15},
-                "wednesday": {"startTime": "T23:30Z", "duration": 15},
-                "thursday": {"startTime": "T23:30Z", "duration": 15},
-                "friday": {"startTime": "T23:30Z", "duration": 15},
-                "saturday": {"startTime": "T23:30Z", "duration": 15},
-                "sunday": {"startTime": "T23:30Z", "duration": 15},
-            },
-            {"id": 3, "activated": False},
-            {"id": 4, "activated": False},
-            {"id": 5, "activated": False},
-        ],
-    }
-
-    vehicle_data = cast(
-        models.KamereonVehicleChargingSettingsData,
-        response.get_attributes(schemas.KamereonVehicleChargingSettingsDataSchema),
-    )
-
-    assert vehicle_data.mode == "scheduled"
-    assert vehicle_data.schedules is not None
-    assert len(vehicle_data.schedules) == 5
-
-    schedule_data = vehicle_data.schedules[0]
-    assert schedule_data.id == 1
-    assert schedule_data.activated is True
-    assert schedule_data.monday is not None
-    assert schedule_data.monday.startTime == "T00:00Z"
-    assert schedule_data.monday.duration == 450
-    assert schedule_data.tuesday is not None
-    assert schedule_data.tuesday.startTime == "T00:00Z"
-    assert schedule_data.tuesday.duration == 450
-    assert schedule_data.wednesday is not None
-    assert schedule_data.wednesday.startTime == "T00:00Z"
-    assert schedule_data.wednesday.duration == 450
-    assert schedule_data.thursday is not None
-    assert schedule_data.thursday.startTime == "T00:00Z"
-    assert schedule_data.thursday.duration == 450
-    assert schedule_data.friday is not None
-    assert schedule_data.friday.startTime == "T00:00Z"
-    assert schedule_data.friday.duration == 450
-    assert schedule_data.saturday is not None
-    assert schedule_data.saturday.startTime == "T00:00Z"
-    assert schedule_data.saturday.duration == 450
-    assert schedule_data.sunday is not None
-    assert schedule_data.sunday.startTime == "T00:00Z"
-    assert schedule_data.sunday.duration == 450
+    assert response.raw_data == snapshot
 
 
 def test_location_v1() -> None:

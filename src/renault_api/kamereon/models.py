@@ -125,9 +125,6 @@ _DEFAULT_ENDPOINTS: dict[str, EndpointDefinition] = {
         "/kca/car-adapter/v1/cars/{vin}/charge-schedule"
     ),
     "charges": EndpointDefinition("/kca/car-adapter/v1/cars/{vin}/charges"),
-    "charging-settings": EndpointDefinition(
-        "/kca/car-adapter/v1/cars/{vin}/charging-settings"
-    ),
     "cockpit": EndpointDefinition("/kca/car-adapter/v1/cars/{vin}/cockpit"),
     "hvac-history": EndpointDefinition("/kca/car-adapter/v1/cars/{vin}/hvac-history"),
     "hvac-sessions": EndpointDefinition("/kca/car-adapter/v1/cars/{vin}/hvac-sessions"),
