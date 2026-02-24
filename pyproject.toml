@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "renault-api"
-version = "0.5.3"
+version = "0.5.5"
 description = "Renault API"
 authors = ["epenet"]
 license = "MIT"
@@ -39,9 +39,9 @@ pytest = "==9.0.2"
 coverage = {extras = ["toml"], version = "7.13.4"}
 safety = "==3.7.0"
 mypy = "1.19.1"
-typeguard = "==4.5.0"
+typeguard = "==4.5.1"
 pre-commit = "==4.5.1"
-ruff = "==0.15.1"
+ruff = "==0.15.2"
 darglint = "1.8.1"
 pre-commit-hooks = "==6.0.0"
 Pygments = "2.19.2"
