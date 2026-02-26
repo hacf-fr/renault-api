@@ -8,6 +8,9 @@
     "automerge": true
   },
   "commitMessagePrefix": "⬆️",
+  "pip_requirements": {
+    "managerFilePatterns": [".github/workflows/constraints.txt"]
+  },
   "packageRules": [
     {
       "matchManagers": ["poetry"],
@@ -20,16 +23,6 @@
     },
     {
       "matchManagers": ["poetry"],
-      "matchUpdateTypes": ["minor", "patch"],
-      "automerge": true
-    },
-    {
-      "matchManagers": ["npm", "nvm"],
-      "addLabels": ["javascript"],
-      "rangeStrategy": "pin"
-    },
-    {
-      "matchManagers": ["npm", "nvm"],
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
     },
