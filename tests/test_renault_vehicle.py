@@ -180,12 +180,7 @@ async def test_get_charge_mode(
 
 @pytest.mark.parametrize(
     "mode",
-    [
-        "always",
-        "delayed",
-        "multi",
-        "single",
-    ],
+    ["always", "delayed", "multi", "single"],
 )
 @pytest.mark.asyncio
 async def test_get_charging_settings(
