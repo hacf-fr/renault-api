@@ -190,7 +190,6 @@ async def test_get_charging_settings(
 ) -> None:
     """Test get_charging_settings using Megane e-Tech."""
     fixtures.inject_get_vehicle_details(mocked_responses, "megane_e-tech.2.json")
-    # Get charging settings is required for kca-charge-settings mode
     fixtures.inject_get_charging_settings(mocked_responses, mode)
     assert await vehicle.get_charging_settings()
 
