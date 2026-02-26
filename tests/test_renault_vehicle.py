@@ -178,6 +178,22 @@ async def test_get_charge_mode(
     assert await vehicle.get_charge_mode()
 
 
+@pytest.mark.parametrize(
+    "mode",
+    ["always", "delayed", "multi", "single"],
+)
+@pytest.mark.asyncio
+async def test_get_charging_settings(
+    vehicle: RenaultVehicle,
+    mocked_responses: aioresponses,
+    mode: str,
+) -> None:
+    """Test get_charging_settings using Megane e-Tech."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "megane_e-tech.2.json")
+    fixtures.inject_get_charging_settings(mocked_responses, mode)
+    assert await vehicle.get_charging_settings()
+
+
 @pytest.mark.asyncio
 async def test_get_cockpit(
     vehicle: RenaultVehicle, mocked_responses: aioresponses
