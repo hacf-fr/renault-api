@@ -238,6 +238,14 @@ class RenaultVehicle:
             response.get_attributes(schemas.KamereonVehicleChargeModeDataSchema),
         )
 
+    async def get_charging_settings(self) -> models.KamereonVehicleChargingSettingsData:
+        """Get vehicle charging settings."""
+        response = await self._get_vehicle_data("charging-settings")
+        return cast(
+            models.KamereonVehicleChargingSettingsData,
+            response.get_attributes(schemas.KamereonVehicleChargingSettingsDataSchema),
+        )
+
     async def get_cockpit(self) -> models.KamereonVehicleCockpitData:
         """Get vehicle cockpit."""
         response = await self._get_vehicle_data("cockpit")
