@@ -90,20 +90,18 @@ def create_charge_schedule(
     """Create one schedule based in input. copy from dict."""
     schedule_id = settings.get("id")
     activated = bool(settings.get("activated"))
-
     schedule = models.ChargeSchedule(
-        settings,
-        schedule_id,
-        activated,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
+        raw_data=settings,
+        id=schedule_id,
+        activated=activated,
+        monday=None,
+        tuesday=None,
+        wednesday=None,
+        thursday=None,
+        friday=None,
+        saturday=None,
+        sunday=None,
     )
-
     # Copy day schedules details
     for day in DAYS_OF_WEEK:
         day_data = settings.get(day)
@@ -117,7 +115,6 @@ def create_charge_schedule(
                     duration=day_data.get("duration"),
                 ),
             )
-
     return schedule
 
 
