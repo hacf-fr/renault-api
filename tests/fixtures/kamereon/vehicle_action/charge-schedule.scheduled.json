@@ -1,0 +1,114 @@
+{
+  "data": {
+    "type": "ChargeSchedule",
+    "id": "guid",
+    "attributes": {
+      "schedules": [
+        {
+          "id": 1,
+          "activated": true,
+          "monday": {
+            "startTime": "T02:00Z",
+            "duration": 200
+          },
+          "tuesday": {
+            "startTime": "T02:00Z",
+            "duration": 200
+          },
+          "wednesday": {
+            "startTime": "T00:00Z",
+            "duration": 450
+          },
+          "thursday": {
+            "startTime": "T00:00Z",
+            "duration": 450
+          },
+          "friday": {
+            "startTime": "T00:00Z",
+            "duration": 450
+          },
+          "saturday": {
+            "startTime": "T00:00Z",
+            "duration": 450
+          },
+          "sunday": {
+            "startTime": "T02:00Z",
+            "duration": 200
+          }
+        },
+        {
+          "id": 2,
+          "activated": true,
+          "monday": {
+            "startTime": "T23:30Z",
+            "duration": 15
+          },
+          "tuesday": {
+            "startTime": "T23:30Z",
+            "duration": 15
+          },
+          "wednesday": {
+            "startTime": "T23:30Z",
+            "duration": 15
+          },
+          "thursday": {
+            "startTime": "T23:30Z",
+            "duration": 15
+          },
+          "friday": {
+            "startTime": "T23:30Z",
+            "duration": 15
+          },
+          "saturday": {
+            "startTime": "T23:30Z",
+            "duration": 15
+          },
+          "sunday": {
+            "startTime": "T23:30Z",
+            "duration": 15
+          }
+        },
+        {
+          "id": 3,
+          "activated": true,
+          "monday": {
+            "startTime": "T01:00Z",
+            "duration": 300
+          },
+          "tuesday": {
+            "startTime": "T01:01Z",
+            "duration": 300
+          },
+          "wednesday": {
+            "startTime": "T01:00Z",
+            "duration": 300
+          },
+          "thursday": {
+            "startTime": "T01:00Z",
+            "duration": 300
+          },
+          "friday": {
+            "startTime": "T01:00Z",
+            "duration": 300
+          },
+          "saturday": {
+            "startTime": "T01:01Z",
+            "duration": 300
+          },
+          "sunday": {
+            "startTime": "T01:01Z",
+            "duration": 300
+          }
+        },
+        {
+          "id": 4,
+          "activated": false
+        },
+        {
+          "id": 5,
+          "activated": false
+        }
+      ]
+    }
+  }
+}
