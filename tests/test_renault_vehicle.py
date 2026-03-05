@@ -4,13 +4,13 @@ import os
 from datetime import datetime
 from datetime import timezone
 from typing import Any
+from typing import cast
 
 import aiohttp
 import pytest
 from aioresponses import aioresponses
 from aioresponses.core import RequestCall
 from syrupy.assertion import SnapshotAssertion
-from typing import Any, cast
 from yarl import URL
 
 from tests import fixtures
