@@ -284,7 +284,9 @@ def test_charging_start_delayed(
     fixtures.inject_get_vehicle_details(mocked_responses, "megane_e-tech.2.json")
     url = fixtures.inject_set_charging_start_kcm(mocked_responses, "delayed")
 
-    result = cli_runner.invoke(__main__.main, "charge start --at '2026-03-06T23:45:00'")
+    result = cli_runner.invoke(
+        __main__.main, "charge start --at '2026-03-06T23:45:00Z'"
+    )
     assert result.exit_code == 0, result.exception
 
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
