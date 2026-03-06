@@ -552,8 +552,10 @@ class RenaultVehicle:
             response.get_attributes(schemas.KamereonVehicleChargeModeActionDataSchema),
         )
 
-    async def set_charge_start(self) -> models.KamereonVehicleChargingStartActionData:
-        """Start vehicle charge."""
+    async def set_charge_start(
+        self, when: datetime | None = None
+    ) -> models.KamereonVehicleChargingStartActionData:
+        """Start vehicle charge with optional delay."""
         endpoint_definition = await self.get_endpoint_definition("actions/charge-start")
         json: dict[str, Any]
         if endpoint_definition.mode == "kcm-settings":
@@ -588,6 +590,16 @@ class RenaultVehicle:
                     },
                 }
             }
+            if endpoint_definition.mode == "kcm-option-delayed" and when:
+                if not isinstance(when, datetime):
+                    raise TypeError(
+                        "`when` should be an instance of datetime.datetime, "
+                        f"not {when.__class__}"
+                    )
+                start_date_time = when.astimezone(timezone.utc).strftime(
+                    PERIOD_TZ_FORMAT
+                )
+                json["data"]["attributes"]["startDateTime"] = start_date_time
         response = await self._set_vehicle_data(endpoint_definition, json)
         return cast(
             models.KamereonVehicleChargingStartActionData,

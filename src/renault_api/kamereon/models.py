@@ -154,6 +154,9 @@ _KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
     "actions/charge-start-via-settings": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/ev/settings", mode="kcm-settings"
     ),
+    "actions/charge-start-option-delayed": EndpointDefinition(
+        "/kcm/v1/vehicles/{vin}/charge/start", mode="kcm-option-delayed"
+    ),
     "actions/charge-stop": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm"
     ),
@@ -339,7 +342,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "res-state": None,
     },
     "XCB1VE": {  # MEGANE E-TECH
-        "actions/charge-start": _DEFAULT_ENDPOINTS["actions/charge-start"],
+        "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start-option-delayed"],
         "actions/charge-stop": None,  # Reason: err.func.wired.invalid-body-format
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: "err.func.wired.not-found"
