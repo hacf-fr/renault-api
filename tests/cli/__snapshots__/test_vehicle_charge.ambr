@@ -676,6 +676,23 @@
   
   '''
 # ---
+# name: test_charging_start_delayed
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'action': 'start',
+        'startDateTime': '2026-03-06T22:45:00Z',
+      }),
+      'type': 'ChargingStart',
+    }),
+  })
+# ---
+# name: test_charging_start_delayed.1
+  '''
+  {'action': 'start', 'startDateTime': '2026-03-06T23:45:00Z'}
+  
+  '''
+# ---
 # name: test_sessions_40
   '''
   Charge start         Charge end           Duration    Power (kW)    Started at    Finished at    Charge gained    Energy gained    Power level    Status

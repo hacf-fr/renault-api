@@ -529,6 +529,16 @@ def inject_set_kcm_ev_settings_charge(
     )
 
 
+def inject_set_charging_start_kcm(mocked_responses: aioresponses, result: str) -> str:
+    """Inject sample charge-mode."""
+    urlpath = f"{KCM_ADAPTER_PATH}/charge/start?{DEFAULT_QUERY_STRING}"
+    return inject_action(
+        mocked_responses,
+        urlpath,
+        f"vehicle_kcm_action/charging-start.{result}.json",
+    )
+
+
 def inject_set_hvac_start(mocked_responses: aioresponses, result: str) -> str:
     """Inject sample hvac-start."""
     urlpath = f"{KCA_ADAPTER_PATH_V1}/actions/hvac-start?{DEFAULT_QUERY_STRING}"
