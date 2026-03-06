@@ -419,7 +419,9 @@ async def test_set_charge_start_delayed(
     fixtures.inject_get_vehicle_details(mocked_responses, "megane_e-tech.2.json")
     url = fixtures.inject_set_charging_start_kcm(mocked_responses, "delayed")
 
-    assert await vehicle.set_charge_start(datetime(2026, 3, 6, 23, 45))
+    assert await vehicle.set_charge_start(
+        datetime(2026, 3, 6, 23, 45, tzinfo=timezone.utc)
+    )
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
 
