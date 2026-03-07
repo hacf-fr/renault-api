@@ -591,11 +591,6 @@ class RenaultVehicle:
                 }
             }
             if endpoint_definition.mode == "kcm-option-delayed" and when:
-                if not isinstance(when, datetime):
-                    raise TypeError(
-                        "`when` should be an instance of datetime.datetime, "
-                        f"not {when.__class__}"
-                    )
                 start_date_time = when.astimezone(timezone.utc).strftime(
                     PERIOD_TZ_FORMAT
                 )
