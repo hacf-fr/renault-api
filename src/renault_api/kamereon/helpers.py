@@ -87,8 +87,35 @@ def create_schedule(
 def create_charge_schedule(
     settings: dict[str, Any],
 ) -> models.ChargeSchedule:
-    """Update schedule."""
-    raise NotImplementedError
+    """Create one schedule based in input. copy from dict."""
+    schedule_id = settings.get("id")
+    activated = bool(settings.get("activated"))
+    schedule = models.ChargeSchedule(
+        raw_data=settings,
+        id=schedule_id,
+        activated=activated,
+        monday=None,
+        tuesday=None,
+        wednesday=None,
+        thursday=None,
+        friday=None,
+        saturday=None,
+        sunday=None,
+    )
+    # Copy day schedules details
+    for day in DAYS_OF_WEEK:
+        day_data = settings.get(day)
+        if day_data:
+            setattr(
+                schedule,
+                day,
+                models.ChargeDaySchedule(
+                    raw_data=day_data,
+                    startTime=day_data.get("startTime"),
+                    duration=day_data.get("duration"),
+                ),
+            )
+    return schedule
 
 
 def create_hvac_schedule(

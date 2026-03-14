@@ -3,6 +3,8 @@
 import os
 from datetime import datetime
 from datetime import timezone
+from typing import Any
+from typing import cast
 
 import aiohttp
 import pytest
@@ -393,6 +395,76 @@ async def test_set_charge_schedules(
 
     schedules: list[ChargeSchedule] = []
     assert await vehicle.set_charge_schedules(schedules)
+
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    assert request.kwargs["json"] == snapshot
+
+
+@pytest.mark.asyncio
+async def test_set_charge_schedules_empty(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+) -> None:
+    """Test set_charge_schedules when mode is always and current schedules []."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "megane_e-tech.2.json")
+    fixtures.inject_get_charging_settings(mocked_responses, "always")
+    url = fixtures.inject_set_charge_schedule(mocked_responses, "empty")
+    charge_schedules = await vehicle.get_charging_settings()
+    schedules: list[dict[str, Any]] = [
+        {
+            "id": 1,
+            "activated": True,
+            "monday": {"startTime": "T01:00Z", "duration": 300},
+            "tuesday": {"startTime": "T01:01Z", "duration": 300},
+            "wednesday": {"startTime": "T01:00Z", "duration": 300},
+            "thursday": {"startTime": "T01:00Z", "duration": 300},
+            "friday": {"startTime": "T01:00Z", "duration": 300},
+            "saturday": {"startTime": "T01:01Z", "duration": 300},
+            "sunday": {"startTime": "T01:01Z", "duration": 300},
+        }
+    ]
+    for schedule in schedules:
+        charge_schedules.update(schedule)
+    sched = cast(list[ChargeSchedule], charge_schedules.schedules)
+    assert await vehicle.set_charge_schedules(sched)
+
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    assert request.kwargs["json"] == snapshot
+
+
+@pytest.mark.asyncio
+async def test_set_charge_schedules_update(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+) -> None:
+    """Test set_charge_schedules when mode is always and current schedules []."""
+    fixtures.inject_get_vehicle_details(mocked_responses, "megane_e-tech.2.json")
+    fixtures.inject_get_charging_settings(mocked_responses, "multi")
+    url = fixtures.inject_set_charge_schedule(mocked_responses, "scheduled")
+    charge_schedules = await vehicle.get_charging_settings()
+    schedules: list[dict[str, Any]] = [
+        {
+            "id": 1,
+            "activated": True,
+            "monday": {"startTime": "T02:00Z", "duration": 200},
+            "tuesday": {"startTime": "T02:01Z", "duration": 200},
+            "sunday": {"startTime": "T02:01Z", "duration": 200},
+        },
+        {
+            "id": 3,
+            "activated": True,
+            "monday": {"startTime": "T01:00Z", "duration": 300},
+            "tuesday": {"startTime": "T01:01Z", "duration": 300},
+            "wednesday": {"startTime": "T01:00Z", "duration": 300},
+            "thursday": {"startTime": "T01:00Z", "duration": 300},
+            "friday": {"startTime": "T01:00Z", "duration": 300},
+            "saturday": {"startTime": "T01:01Z", "duration": 300},
+            "sunday": {"startTime": "T01:01Z", "duration": 300},
+        },
+    ]
+    for schedule in schedules:
+        charge_schedules.update(schedule)
+
+    sched = cast(list[ChargeSchedule], charge_schedules.schedules)
+    assert await vehicle.set_charge_schedules(sched)
 
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
