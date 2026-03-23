@@ -499,7 +499,18 @@
     }),
   })
 # ---
-# name: test_set_charge_start
+# name: test_set_charge_start[megane_e_tech_2-delayed]
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'action': 'start',
+        'startDateTime': '2026-03-06T23:45:00Z',
+      }),
+      'type': 'ChargingStart',
+    }),
+  })
+# ---
+# name: test_set_charge_start[megane_e_tech_2-now]
   dict({
     'data': dict({
       'attributes': dict({
@@ -509,12 +520,11 @@
     }),
   })
 # ---
-# name: test_set_charge_start_delayed
+# name: test_set_charge_start[zoe_40_1-now]
   dict({
     'data': dict({
       'attributes': dict({
         'action': 'start',
-        'startDateTime': '2026-03-06T23:45:00Z',
       }),
       'type': 'ChargingStart',
     }),
