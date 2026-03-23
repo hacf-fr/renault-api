@@ -148,14 +148,14 @@ _KCA_ALTERNATIVE_ENDPOINTS: dict[str, EndpointDefinition] = {
     ),
 }
 _KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
-    "actions/charge-start": EndpointDefinition(
-        "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm"
+    "actions/charge-start-via-pause-resume": EndpointDefinition(
+        "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm-pause-resume"
     ),
     "actions/charge-start-via-settings": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/ev/settings", mode="kcm-settings"
     ),
-    "actions/charge-stop": EndpointDefinition(
-        "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm"
+    "actions/charge-stop-via-pause-resume": EndpointDefinition(
+        "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm-pause-resume"
     ),
     "charge-schedule": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/ev/settings", mode="kcm"
@@ -291,7 +291,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
     "X102VE": {  # ZOE phase 2
         "actions/charge-start": _DEFAULT_ENDPOINTS["actions/charge-start"],
         "actions/charge-stop": _KCM_ENDPOINTS[  # Uses KCM pause-resume
-            "actions/charge-stop"
+            "actions/charge-stop-via-pause-resume"
         ],
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-mode": None,  # default => 400 Bad Request
@@ -307,8 +307,8 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "res-state": None,  # default => 404
     },
     "XBG1VE": {  # DACIA SPRING
-        "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start"],
-        "actions/charge-stop": _KCM_ENDPOINTS["actions/charge-stop"],
+        "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start-via-pause-resume"],
+        "actions/charge-stop": _KCM_ENDPOINTS["actions/charge-stop-via-pause-resume"],
         "alerts": None,  # Reason: "err.func.wired.not-found"
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: "err.func.wired.not-found"
