@@ -149,16 +149,16 @@ _KCA_ALTERNATIVE_ENDPOINTS: dict[str, EndpointDefinition] = {
 }
 _KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
     "actions/charge-start": EndpointDefinition(
-        "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm"
+        "/kcm/v1/vehicles/{vin}/charge/start", mode="kcm"
+    ),
+    "actions/charge-start-via-pause-resume": EndpointDefinition(
+        "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm-pause-resume"
     ),
     "actions/charge-start-via-settings": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/ev/settings", mode="kcm-settings"
     ),
-    "actions/charge-start-option-delayed": EndpointDefinition(
-        "/kcm/v1/vehicles/{vin}/charge/start", mode="kcm-option-delayed"
-    ),
-    "actions/charge-stop": EndpointDefinition(
-        "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm"
+    "actions/charge-stop-via-pause-resume": EndpointDefinition(
+        "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm-pause-resume"
     ),
     "charge-schedule": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/ev/settings", mode="kcm"
@@ -294,7 +294,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
     "X102VE": {  # ZOE phase 2
         "actions/charge-start": _DEFAULT_ENDPOINTS["actions/charge-start"],
         "actions/charge-stop": _KCM_ENDPOINTS[  # Uses KCM pause-resume
-            "actions/charge-stop"
+            "actions/charge-stop-via-pause-resume"
         ],
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-mode": None,  # default => 400 Bad Request
@@ -310,8 +310,8 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "res-state": None,  # default => 404
     },
     "XBG1VE": {  # DACIA SPRING
-        "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start"],
-        "actions/charge-stop": _KCM_ENDPOINTS["actions/charge-stop"],
+        "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start-via-pause-resume"],
+        "actions/charge-stop": _KCM_ENDPOINTS["actions/charge-stop-via-pause-resume"],
         "alerts": None,  # Reason: "err.func.wired.not-found"
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: "err.func.wired.not-found"
@@ -459,6 +459,32 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "pressure": None,  # err.func.wired.notFound
         "res-state": None,  # err.func.wired.notFound
         "soc-levels": None,  # err.func.wired.forbidden
+    },
+    "XDD1VE": {  # Renault Master E-Tech
+        "actions/charge-set-mode": _DEFAULT_ENDPOINTS["actions/charge-set-mode"],
+        "actions/charge-set-schedule": None,  # err.func.wired.forbidden
+        "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start-via-settings"],
+        "actions/charge-stop": None,  # err.func.wired.forbidden
+        "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
+        "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
+        "actions/hvac-stop": _DEFAULT_ENDPOINTS["actions/hvac-stop"],
+        "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
+        "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
+        "charge-history": None,  # err.func.wired.not-found
+        "charge-mode": None,  # err.func.wired.forbidden
+        "charge-schedule": _KCM_ENDPOINTS["charge-schedule"],
+        "charging-settings": None,  # err.func.wired.forbidden
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
+        "hvac-history": None,  # err.func.wired.not-found
+        "hvac-sessions": None,  # err.func.wired.not-found
+        "hvac-settings": _DEFAULT_ENDPOINTS["hvac-settings"],
+        "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
+        "location": _DEFAULT_ENDPOINTS["location"],
+        "lock-status": None,  # 404 There is no data for this vin and uid
+        "notification-settings": None,  # 400001 The vehicle does not have a GDC gateway
+        "pressure": None,  # 404 There is no data for this vin and uid
+        "res-state": None,  # 404 There is no data for this vin and uid
+        "soc-levels": _DEFAULT_ENDPOINTS["soc-levels"],
     },
     "XJB2CP": {  # Renault Symbioz 2025
         "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
