@@ -499,7 +499,7 @@
     }),
   })
 # ---
-# name: test_set_charge_start[zoe_40_1-now]
+# name: test_set_charge_start[megane_e_tech_2-delayed]
   dict({
     'data': dict({
       'attributes': dict({

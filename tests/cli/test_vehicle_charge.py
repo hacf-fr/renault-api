@@ -320,8 +320,8 @@ def test_charging_settings_deactivate(
         ),
     ],
     ids=[
-        "megane_e_tech_2-now",
-        "megane_e_tech_2-delayed",
+        "megane_e_tech_2-start-charge",
+        "megane_e_tech_2-start-charge-delayed",
         "spring_1-start-charge",
         "spring_1-stop-charge",
         "zoe_40_1-start-charge",
@@ -348,24 +348,6 @@ def test_action(
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot(name="command")
     assert result.output == snapshot(name="result")
-
-
-def test_charging_start_delayed(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
-) -> None:
-    """It exits with a status code of zero."""
-    initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_get_vehicle_details(mocked_responses, "megane_e-tech.2.json")
-    url = fixtures.inject_set_charging_start_kcm(mocked_responses, "delayed")
-
-    result = cli_runner.invoke(
-        __main__.main, "charge start --at '2026-03-06T23:45:00Z'"
-    )
-    assert result.exit_code == 0, result.exception
-
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert request.kwargs["json"] == snapshot
-    assert result.output == snapshot
 
 
 def test_charging_r5_start(
