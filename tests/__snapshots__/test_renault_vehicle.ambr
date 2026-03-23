@@ -515,22 +515,13 @@
               'duration': 300,
               'startTime': 'T01:00Z',
             }),
-            'saturday': dict({
-              'duration': 300,
-              'startTime': 'T01:01Z',
-            }),
+            'saturday': None,
             'sunday': dict({
               'duration': 300,
               'startTime': 'T01:01Z',
             }),
-            'thursday': dict({
-              'duration': 300,
-              'startTime': 'T01:00Z',
-            }),
-            'tuesday': dict({
-              'duration': 300,
-              'startTime': 'T01:01Z',
-            }),
+            'thursday': None,
+            'tuesday': None,
             'wednesday': dict({
               'duration': 300,
               'startTime': 'T01:00Z',

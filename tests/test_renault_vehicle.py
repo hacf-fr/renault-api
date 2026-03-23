@@ -417,11 +417,8 @@ async def test_set_charge_schedules_empty(
             "id": 1,
             "activated": True,
             "monday": {"startTime": "T01:00Z", "duration": 300},
-            "tuesday": {"startTime": "T01:01Z", "duration": 300},
             "wednesday": {"startTime": "T01:00Z", "duration": 300},
-            "thursday": {"startTime": "T01:00Z", "duration": 300},
             "friday": {"startTime": "T01:00Z", "duration": 300},
-            "saturday": {"startTime": "T01:01Z", "duration": 300},
             "sunday": {"startTime": "T01:01Z", "duration": 300},
         }
     ]
