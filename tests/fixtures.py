@@ -28,9 +28,9 @@ KAMEREON_FIXTURE_PATH = "tests/fixtures/kamereon"
 DEFAULT_QUERY_STRING = f"country={TEST_COUNTRY}"
 KAMEREON_BASE_URL = f"{TEST_KAMEREON_URL}/commerce/v1"
 ACCOUNT_PATH = f"accounts/{TEST_ACCOUNT_ID}"
-ADAPTER_PATH = f"{ACCOUNT_PATH}/kamereon/kca/car-adapter/v1/cars/{TEST_VIN}"
+KCA_ADAPTER_PATH_V1 = f"{ACCOUNT_PATH}/kamereon/kca/car-adapter/v1/cars/{TEST_VIN}"
+KCA_ADAPTER_PATH_V2 = f"{ACCOUNT_PATH}/kamereon/kca/car-adapter/v2/cars/{TEST_VIN}"
 KCM_ADAPTER_PATH = f"{ACCOUNT_PATH}/kamereon/kcm/v1/vehicles/{TEST_VIN}"
-ADAPTER2_PATH = f"{ACCOUNT_PATH}/kamereon/kca/car-adapter/v2/cars/{TEST_VIN}"
 
 
 def get_jwt(timedelta: datetime.timedelta | None = None) -> str:
@@ -237,7 +237,7 @@ def inject_get_vehicle_details(mocked_responses: aioresponses, vehicle: str) -> 
 
 def inject_get_car_adapter(mocked_responses: aioresponses, vehicle: str) -> str:
     """Inject sample vehicles."""
-    urlpath = f"{ADAPTER2_PATH}?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{KCA_ADAPTER_PATH_V2}?{DEFAULT_QUERY_STRING}"
 
     filename = f"vehicle_gateway/{vehicle}"
     return inject_data(
@@ -269,7 +269,7 @@ def inject_get_battery_status(
     mocked_responses: aioresponses, filename: str = "vehicle_data/battery-status.1.json"
 ) -> str:
     """Inject sample battery-status."""
-    urlpath = f"{ADAPTER2_PATH}/battery-status?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{KCA_ADAPTER_PATH_V2}/battery-status?{DEFAULT_QUERY_STRING}"
     return inject_data(
         mocked_responses,
         urlpath,
@@ -294,7 +294,7 @@ def inject_get_tyre_pressure(
     mocked_responses: aioresponses, filename: str = "vehicle_data/pressure.json"
 ) -> str:
     """Inject sample tyre pressure."""
-    urlpath = f"{ADAPTER_PATH}/pressure?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{KCA_ADAPTER_PATH_V1}/pressure?{DEFAULT_QUERY_STRING}"
     return inject_data(
         mocked_responses,
         urlpath,
@@ -304,7 +304,7 @@ def inject_get_tyre_pressure(
 
 def inject_get_location(mocked_responses: aioresponses) -> str:
     """Inject sample location."""
-    urlpath = f"{ADAPTER_PATH}/location?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{KCA_ADAPTER_PATH_V1}/location?{DEFAULT_QUERY_STRING}"
     return inject_data(
         mocked_responses,
         urlpath,
@@ -314,7 +314,7 @@ def inject_get_location(mocked_responses: aioresponses) -> str:
 
 def inject_get_hvac_status(mocked_responses: aioresponses, vehicle: str) -> str:
     """Inject sample hvac-status."""
-    urlpath = f"{ADAPTER_PATH}/hvac-status?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{KCA_ADAPTER_PATH_V1}/hvac-status?{DEFAULT_QUERY_STRING}"
     filename = f"vehicle_data/hvac-status.{vehicle}.json"
     if not path.exists(f"{KAMEREON_FIXTURE_PATH}/{filename}"):
         filename = "vehicle_data/hvac-status.zoe.json"
@@ -329,7 +329,7 @@ def inject_get_hvac_status(mocked_responses: aioresponses, vehicle: str) -> str:
 
 def inject_get_hvac_settings(mocked_responses: aioresponses) -> str:
     """Inject sample hvac-settings."""
-    urlpath = f"{ADAPTER_PATH}/hvac-settings?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{KCA_ADAPTER_PATH_V1}/hvac-settings?{DEFAULT_QUERY_STRING}"
     return inject_data(
         mocked_responses,
         urlpath,
@@ -339,7 +339,7 @@ def inject_get_hvac_settings(mocked_responses: aioresponses) -> str:
 
 def inject_get_charge_mode(mocked_responses: aioresponses) -> str:
     """Inject sample charge-mode."""
-    urlpath = f"{ADAPTER_PATH}/charge-mode?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{KCA_ADAPTER_PATH_V1}/charge-mode?{DEFAULT_QUERY_STRING}"
     return inject_data(
         mocked_responses,
         urlpath,
@@ -352,7 +352,7 @@ def inject_get_charge_history(
 ) -> str:
     """Inject sample charge-history."""
     query_string = f"{DEFAULT_QUERY_STRING}&end={end}&start={start}&type={period}"
-    urlpath = f"{ADAPTER_PATH}/charge-history?{query_string}"
+    urlpath = f"{KCA_ADAPTER_PATH_V1}/charge-history?{query_string}"
     return inject_data(
         mocked_responses,
         urlpath,
@@ -365,7 +365,7 @@ def inject_get_hvac_history(
 ) -> str:
     """Inject sample hvac-history."""
     query_string = f"{DEFAULT_QUERY_STRING}&end={end}&start={start}&type={period}"
-    urlpath = f"{ADAPTER_PATH}/hvac-history?{query_string}"
+    urlpath = f"{KCA_ADAPTER_PATH_V1}/hvac-history?{query_string}"
     return inject_data(
         mocked_responses,
         urlpath,
@@ -378,7 +378,7 @@ def inject_get_hvac_sessions(
 ) -> str:
     """Inject sample hvac-sessions."""
     query_string = f"{DEFAULT_QUERY_STRING}&end={end}&start={start}"
-    urlpath = f"{ADAPTER_PATH}/hvac-sessions?{query_string}"
+    urlpath = f"{KCA_ADAPTER_PATH_V1}/hvac-sessions?{query_string}"
     return inject_data(
         mocked_responses,
         urlpath,
@@ -394,7 +394,7 @@ def inject_get_charges(
 ) -> str:
     """Inject sample charges."""
     query_string = f"{DEFAULT_QUERY_STRING}&end={end}&start={start}"
-    urlpath = f"{ADAPTER_PATH}/charges?{query_string}"
+    urlpath = f"{KCA_ADAPTER_PATH_V1}/charges?{query_string}"
     return inject_data(
         mocked_responses,
         urlpath,
@@ -404,7 +404,7 @@ def inject_get_charges(
 
 def inject_get_charging_settings(mocked_responses: aioresponses, type: str) -> str:
     """Inject sample charges."""
-    urlpath = f"{ADAPTER_PATH}/charging-settings?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{KCA_ADAPTER_PATH_V1}/charging-settings?{DEFAULT_QUERY_STRING}"
     return inject_data(
         mocked_responses,
         urlpath,
@@ -414,7 +414,7 @@ def inject_get_charging_settings(mocked_responses: aioresponses, type: str) -> s
 
 def inject_get_charge_schedule(mocked_responses: aioresponses, type: str) -> str:
     """Inject sample charges."""
-    urlpath = f"{ADAPTER_PATH}/charge-schedule?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{KCA_ADAPTER_PATH_V1}/charge-schedule?{DEFAULT_QUERY_STRING}"
     return inject_data(
         mocked_responses,
         urlpath,
@@ -434,7 +434,7 @@ def inject_get_ev_settings(mocked_responses: aioresponses, type: str) -> str:
 
 def inject_get_cockpit(mocked_responses: aioresponses, vehicle: str) -> str:
     """Inject sample cockpit."""
-    urlpath = f"{ADAPTER_PATH}/cockpit?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{KCA_ADAPTER_PATH_V1}/cockpit?{DEFAULT_QUERY_STRING}"
     filename = f"vehicle_data/cockpit.{vehicle}.json"
     if not path.exists(f"{KAMEREON_FIXTURE_PATH}/{filename}"):
         filename = "vehicle_data/cockpit.zoe.json"
@@ -447,7 +447,7 @@ def inject_get_cockpit(mocked_responses: aioresponses, vehicle: str) -> str:
 
 def inject_get_lock_status(mocked_responses: aioresponses) -> str:
     """Inject sample lock-status."""
-    urlpath = f"{ADAPTER_PATH}/lock-status?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{KCA_ADAPTER_PATH_V1}/lock-status?{DEFAULT_QUERY_STRING}"
     return inject_data(
         mocked_responses,
         urlpath,
@@ -457,7 +457,7 @@ def inject_get_lock_status(mocked_responses: aioresponses) -> str:
 
 def inject_get_res_state(mocked_responses: aioresponses) -> str:
     """Inject sample res-state."""
-    urlpath = f"{ADAPTER_PATH}/res-state?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{KCA_ADAPTER_PATH_V1}/res-state?{DEFAULT_QUERY_STRING}"
     return inject_data(
         mocked_responses,
         urlpath,
@@ -467,7 +467,7 @@ def inject_get_res_state(mocked_responses: aioresponses) -> str:
 
 def inject_get_notification_settings(mocked_responses: aioresponses) -> str:
     """Inject sample notification-settings."""
-    urlpath = f"{ADAPTER_PATH}/notification-settings?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{KCA_ADAPTER_PATH_V1}/notification-settings?{DEFAULT_QUERY_STRING}"
     return inject_data(
         mocked_responses,
         urlpath,
@@ -489,7 +489,7 @@ def inject_set_battery_soc_levels(
 
 def inject_set_charge_mode(mocked_responses: aioresponses, mode: str) -> str:
     """Inject sample charge-mode."""
-    urlpath = f"{ADAPTER_PATH}/actions/charge-mode?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{KCA_ADAPTER_PATH_V1}/actions/charge-mode?{DEFAULT_QUERY_STRING}"
     return inject_action(
         mocked_responses,
         urlpath,
@@ -499,7 +499,7 @@ def inject_set_charge_mode(mocked_responses: aioresponses, mode: str) -> str:
 
 def inject_set_charge_schedule(mocked_responses: aioresponses, result: str) -> str:
     """Inject sample charge-schedule."""
-    urlpath = f"{ADAPTER2_PATH}/actions/charge-schedule?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{KCA_ADAPTER_PATH_V2}/actions/charge-schedule?{DEFAULT_QUERY_STRING}"
     return inject_action(
         mocked_responses,
         urlpath,
@@ -509,7 +509,7 @@ def inject_set_charge_schedule(mocked_responses: aioresponses, result: str) -> s
 
 def inject_set_hornlight(mocked_responses: aioresponses, type: str) -> str:
     """Inject sample horn-lights horn."""
-    urlpath = f"{ADAPTER_PATH}/actions/horn-lights?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{KCA_ADAPTER_PATH_V1}/actions/horn-lights?{DEFAULT_QUERY_STRING}"
     return inject_action(
         mocked_responses,
         urlpath,
@@ -543,7 +543,7 @@ def inject_set_kcm_ev_settings_charge(
 
 def inject_set_charging_start(mocked_responses: aioresponses, result: str) -> str:
     """Inject sample charge-mode."""
-    urlpath = f"{ADAPTER_PATH}/actions/charging-start?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{KCA_ADAPTER_PATH_V1}/actions/charging-start?{DEFAULT_QUERY_STRING}"
     return inject_action(
         mocked_responses,
         urlpath,
@@ -553,7 +553,7 @@ def inject_set_charging_start(mocked_responses: aioresponses, result: str) -> st
 
 def inject_set_hvac_start(mocked_responses: aioresponses, result: str) -> str:
     """Inject sample hvac-start."""
-    urlpath = f"{ADAPTER_PATH}/actions/hvac-start?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{KCA_ADAPTER_PATH_V1}/actions/hvac-start?{DEFAULT_QUERY_STRING}"
     return inject_action(
         mocked_responses,
         urlpath,
@@ -563,7 +563,7 @@ def inject_set_hvac_start(mocked_responses: aioresponses, result: str) -> str:
 
 def inject_set_hvac_schedules(mocked_responses: aioresponses) -> str:
     """Inject sample hvac-schedules."""
-    urlpath = f"{ADAPTER2_PATH}/actions/hvac-schedule?{DEFAULT_QUERY_STRING}"
+    urlpath = f"{KCA_ADAPTER_PATH_V2}/actions/hvac-schedule?{DEFAULT_QUERY_STRING}"
     return inject_action(
         mocked_responses,
         urlpath,
