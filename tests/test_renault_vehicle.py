@@ -410,7 +410,7 @@ async def test_set_charge_schedules_empty(
     """Test set_charge_schedules when mode is always and current schedules []."""
     fixtures.inject_get_vehicle_details(mocked_responses, "megane_e-tech.2.json")
     fixtures.inject_get_charging_settings(mocked_responses, "always")
-    url = fixtures.inject_set_charge_schedule(mocked_responses, "empty")
+    url = fixtures.inject_set_kcm_charge_schedule(mocked_responses, "empty")
     charge_schedules = await vehicle.get_charging_settings()
     schedules: list[dict[str, Any]] = [
         {
@@ -438,7 +438,7 @@ async def test_set_charge_schedules_update(
     """Test set_charge_schedules when mode is always and current schedules []."""
     fixtures.inject_get_vehicle_details(mocked_responses, "megane_e-tech.2.json")
     fixtures.inject_get_charging_settings(mocked_responses, "multi")
-    url = fixtures.inject_set_charge_schedule(mocked_responses, "scheduled")
+    url = fixtures.inject_set_kcm_charge_schedule(mocked_responses, "scheduled")
     charge_schedules = await vehicle.get_charging_settings()
     schedules: list[dict[str, Any]] = [
         {

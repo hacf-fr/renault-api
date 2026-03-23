@@ -163,6 +163,9 @@ _KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
     "charge-schedule": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/ev/settings", mode="kcm"
     ),
+    "actions/charge-set-schedule": EndpointDefinition(
+        "/kcm/v1/vehicles/{vin}/charge/schedule", mode="kcm"
+    ),
 }
 
 _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
@@ -344,6 +347,10 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
     "XCB1VE": {  # MEGANE E-TECH
         "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start"],
         "actions/charge-stop": None,  # Reason: err.func.wired.invalid-body-format
+        "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
+        "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
+        "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
+        "actions/charge-set-schedule": _KCM_ENDPOINTS["actions/charge-set-schedule"],
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: "err.func.wired.not-found"
         "charge-mode": None,  # Reason: "err.func.vcps.ev.charge-mode.error"
