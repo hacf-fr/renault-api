@@ -283,6 +283,18 @@ def test_charging_settings_deactivate(
     ("vehicle_details", "cli_command", "action_url", "action_result"),
     [
         (
+            "megane_e-tech.2.json",
+            "charge start",
+            f"{KCM_ADAPTER_PATH}/charge/start?{DEFAULT_QUERY_STRING}",
+            "vehicle_kcm_action/charging-start.now.json",
+        ),
+        (
+            "megane_e-tech.2.json",
+            "charge start --at '2026-03-06T23:45:00Z'",
+            f"{KCM_ADAPTER_PATH}/charge/start?{DEFAULT_QUERY_STRING}",
+            "vehicle_kcm_action/charging-start.delayed.json",
+        ),
+        (
             "spring.1.json",
             "charge start",
             f"{KCM_ADAPTER_PATH}/charge/pause-resume?{DEFAULT_QUERY_STRING}",
@@ -308,6 +320,8 @@ def test_charging_settings_deactivate(
         ),
     ],
     ids=[
+        "megane_e_tech_2-now",
+        "megane_e_tech_2-delayed",
         "spring_1-start-charge",
         "spring_1-stop-charge",
         "zoe_40_1-start-charge",

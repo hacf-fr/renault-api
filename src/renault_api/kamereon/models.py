@@ -148,14 +148,14 @@ _KCA_ALTERNATIVE_ENDPOINTS: dict[str, EndpointDefinition] = {
     ),
 }
 _KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
+    "actions/charge-start": EndpointDefinition(
+        "/kcm/v1/vehicles/{vin}/charge/start", mode="kcm"
+    ),
     "actions/charge-start-via-pause-resume": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm-pause-resume"
     ),
     "actions/charge-start-via-settings": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/ev/settings", mode="kcm-settings"
-    ),
-    "actions/charge-start-option-delayed": EndpointDefinition(
-        "/kcm/v1/vehicles/{vin}/charge/start", mode="kcm-option-delayed"
     ),
     "actions/charge-stop-via-pause-resume": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm-pause-resume"
