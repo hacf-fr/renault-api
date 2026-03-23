@@ -581,6 +581,20 @@ class RenaultVehicle:
                     },
                 }
             }
+        elif endpoint_definition.mode == "kcm":
+            json = {
+                "data": {
+                    "type": "ChargingStart",
+                    "attributes": {
+                        "action": "start",
+                    },
+                }
+            }
+            if when:
+                start_date_time = when.astimezone(timezone.utc).strftime(
+                    PERIOD_TZ_FORMAT
+                )
+                json["data"]["attributes"]["startDateTime"] = start_date_time
         else:
             json = {
                 "data": {
@@ -590,11 +604,6 @@ class RenaultVehicle:
                     },
                 }
             }
-            if endpoint_definition.mode == "kcm-option-delayed" and when:
-                start_date_time = when.astimezone(timezone.utc).strftime(
-                    PERIOD_TZ_FORMAT
-                )
-                json["data"]["attributes"]["startDateTime"] = start_date_time
         response = await self._set_vehicle_data(endpoint_definition, json)
         return cast(
             models.KamereonVehicleChargingStartActionData,
