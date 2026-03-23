@@ -104,8 +104,7 @@ def create_charge_schedule(
     )
     # Copy day schedules details
     for day in DAYS_OF_WEEK:
-        day_data = settings.get(day)
-        if day_data:
+        if day_data := settings.get(day):
             setattr(
                 schedule,
                 day,
