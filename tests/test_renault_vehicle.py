@@ -19,6 +19,7 @@ from tests.const import TEST_LOCALE_DETAILS
 from tests.const import TEST_VIN
 from tests.fixtures import DEFAULT_QUERY_STRING
 from tests.fixtures import KCA_ADAPTER_PATH_V1
+from tests.fixtures import KCM_ADAPTER_PATH
 from tests.test_credential_store import get_logged_in_credential_store
 from tests.test_renault_session import get_logged_in_session
 
@@ -405,13 +406,29 @@ async def test_set_charge_schedules(
     ("vehicle_details", "arguments", "action_url", "action_result"),
     [
         (
+            "megane_e-tech.2.json",
+            {},
+            f"{KCM_ADAPTER_PATH}/charge/start?{DEFAULT_QUERY_STRING}",
+            "vehicle_kcm_action/charging-start.now.json",
+        ),
+        (
+            "megane_e-tech.2.json",
+            {"when": datetime(2026, 3, 6, 23, 45, tzinfo=timezone.utc)},
+            f"{KCM_ADAPTER_PATH}/charge/start?{DEFAULT_QUERY_STRING}",
+            "vehicle_kcm_action/charging-start.delayed.json",
+        ),
+        (
             "zoe_40.1.json",
             {},
             f"{KCA_ADAPTER_PATH_V1}/actions/charging-start?{DEFAULT_QUERY_STRING}",
             "vehicle_action/charging-start.start.json",
         ),
     ],
-    ids=["zoe_40_1-now"],
+    ids=[
+        "megane_e_tech_2-now",
+        "megane_e_tech_2-delayed",
+        "zoe_40_1-now",
+    ],
 )
 @pytest.mark.asyncio
 async def test_set_charge_start(
