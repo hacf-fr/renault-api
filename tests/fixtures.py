@@ -517,18 +517,6 @@ def inject_set_hornlight(mocked_responses: aioresponses, type: str) -> str:
     )
 
 
-def inject_set_kcm_charge_pause_resume(
-    mocked_responses: aioresponses, result: str
-) -> str:
-    """Inject sample charge-pause-resume."""
-    urlpath = f"{KCM_ADAPTER_PATH}/charge/pause-resume?{DEFAULT_QUERY_STRING}"
-    return inject_action(
-        mocked_responses,
-        urlpath,
-        f"vehicle_kcm_action/charge-pause-resume.{result}.json",
-    )
-
-
 def inject_set_kcm_ev_settings_charge(
     mocked_responses: aioresponses, action: str
 ) -> str:
@@ -538,26 +526,6 @@ def inject_set_kcm_ev_settings_charge(
         mocked_responses,
         urlpath,
         f"vehicle_kcm_action/ev-settings.charge-{action}.json",
-    )
-
-
-def inject_set_charging_start(mocked_responses: aioresponses, result: str) -> str:
-    """Inject sample charge-mode."""
-    urlpath = f"{KCA_ADAPTER_PATH_V1}/actions/charging-start?{DEFAULT_QUERY_STRING}"
-    return inject_action(
-        mocked_responses,
-        urlpath,
-        f"vehicle_action/charging-start.{result}.json",
-    )
-
-
-def inject_set_charging_start_kcm(mocked_responses: aioresponses, result: str) -> str:
-    """Inject sample charge-mode."""
-    urlpath = f"{KCM_ADAPTER_PATH}/charge/start?{DEFAULT_QUERY_STRING}"
-    return inject_action(
-        mocked_responses,
-        urlpath,
-        f"vehicle_kcm_action/charging-start.{result}.json",
     )
 
 

@@ -534,7 +534,11 @@ async def test_http_post(
             "type": "ChargingStart",
         },
     }
-    url = fixtures.inject_set_charging_start(mocked_responses, "start")
+    url = fixtures.inject_action(
+        mocked_responses,
+        f"{KCA_ADAPTER_PATH_V1}/actions/charging-start?{DEFAULT_QUERY_STRING}",
+        "vehicle_action/charging-start.start.json",
+    )
 
     assert await vehicle.http_post(endpoint, json) == snapshot
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]

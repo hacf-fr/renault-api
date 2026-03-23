@@ -1,4 +1,101 @@
 # serializer version: 1
+# name: test_action[megane_e_tech_2-start-charge-delayed][command]
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'action': 'start',
+        'startDateTime': '2026-03-06T23:45:00Z',
+      }),
+      'type': 'ChargingStart',
+    }),
+  })
+# ---
+# name: test_action[megane_e_tech_2-start-charge-delayed][result]
+  '''
+  {'action': 'start', 'startDateTime': '2026-03-06T23:45:00Z'}
+  
+  '''
+# ---
+# name: test_action[megane_e_tech_2-start-charge][command]
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'action': 'start',
+      }),
+      'type': 'ChargingStart',
+    }),
+  })
+# ---
+# name: test_action[megane_e_tech_2-start-charge][result]
+  '''
+  {'action': 'start'}
+  
+  '''
+# ---
+# name: test_action[spring_1-start-charge][command]
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'action': 'resume',
+      }),
+      'type': 'ChargePauseResume',
+    }),
+  })
+# ---
+# name: test_action[spring_1-start-charge][result]
+  '''
+  {'action': 'resume'}
+  
+  '''
+# ---
+# name: test_action[spring_1-stop-charge][command]
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'action': 'pause',
+      }),
+      'type': 'ChargePauseResume',
+    }),
+  })
+# ---
+# name: test_action[spring_1-stop-charge][result]
+  '''
+  {'action': 'pause'}
+  
+  '''
+# ---
+# name: test_action[zoe_40_1-start-charge][command]
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'action': 'start',
+      }),
+      'type': 'ChargingStart',
+    }),
+  })
+# ---
+# name: test_action[zoe_40_1-start-charge][result]
+  '''
+  {'action': 'start'}
+  
+  '''
+# ---
+# name: test_action[zoe_40_1-stop-charge][command]
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'action': 'stop',
+      }),
+      'type': 'ChargingStart',
+    }),
+  })
+# ---
+# name: test_action[zoe_40_1-stop-charge][result]
+  '''
+  {'action': 'stop'}
+  
+  '''
+# ---
 # name: test_charge_history_day
   '''
        Day    Number of charges  Total time charging      Errors
@@ -237,38 +334,6 @@
   '''
   Min charge level: 20%
   Target charge level: 80%
-  
-  '''
-# ---
-# name: test_charging_dacia_start
-  dict({
-    'data': dict({
-      'attributes': dict({
-        'action': 'resume',
-      }),
-      'type': 'ChargePauseResume',
-    }),
-  })
-# ---
-# name: test_charging_dacia_start.1
-  '''
-  {'action': 'resume'}
-  
-  '''
-# ---
-# name: test_charging_dacia_stop
-  dict({
-    'data': dict({
-      'attributes': dict({
-        'action': 'pause',
-      }),
-      'type': 'ChargePauseResume',
-    }),
-  })
-# ---
-# name: test_charging_dacia_stop.1
-  '''
-  {'action': 'pause'}
   
   '''
 # ---
@@ -641,87 +706,6 @@
 # name: test_charging_settings_set.1
   '''
   {'schedules': [{'id': 1, 'activated': True, 'tuesday': {'startTime': 'T04:30Z', 'duration': 420}, 'wednesday': {'startTime': 'T22:30Z', 'duration': 420}, 'thursday': {'startTime': 'T22:00Z', 'duration': 420}, 'friday': {'startTime': 'T23:30Z', 'duration': 480}, 'saturday': {'startTime': 'T18:30Z', 'duration': 120}, 'sunday': {'startTime': 'T12:45Z', 'duration': 45}}]}
-  
-  '''
-# ---
-# name: test_charging_start
-  dict({
-    'data': dict({
-      'attributes': dict({
-        'action': 'start',
-      }),
-      'type': 'ChargingStart',
-    }),
-  })
-# ---
-# name: test_charging_start.1
-  '''
-  {'action': 'start'}
-  
-  '''
-# ---
-# name: test_charging_start_delayed[megane_e_tech_2-delayed][command]
-  dict({
-    'data': dict({
-      'attributes': dict({
-        'action': 'start',
-        'startDateTime': '2026-03-06T23:45:00Z',
-      }),
-      'type': 'ChargingStart',
-    }),
-  })
-# ---
-# name: test_charging_start_delayed[megane_e_tech_2-delayed][result]
-  '''
-  {'action': 'start', 'startDateTime': '2026-03-06T23:45:00Z'}
-  
-  '''
-# ---
-# name: test_charging_start_delayed[megane_e_tech_2-now][command]
-  dict({
-    'data': dict({
-      'attributes': dict({
-        'action': 'start',
-      }),
-      'type': 'ChargingStart',
-    }),
-  })
-# ---
-# name: test_charging_start_delayed[megane_e_tech_2-now][result]
-  '''
-  {'action': 'start'}
-  
-  '''
-# ---
-# name: test_charging_start_delayed[zoe_40_1-now][command]
-  dict({
-    'data': dict({
-      'attributes': dict({
-        'action': 'start',
-      }),
-      'type': 'ChargingStart',
-    }),
-  })
-# ---
-# name: test_charging_start_delayed[zoe_40_1-now][result]
-  '''
-  {'action': 'start'}
-  
-  '''
-# ---
-# name: test_charging_stop
-  dict({
-    'data': dict({
-      'attributes': dict({
-        'action': 'stop',
-      }),
-      'type': 'ChargingStart',
-    }),
-  })
-# ---
-# name: test_charging_stop.1
-  '''
-  {'action': 'stop'}
   
   '''
 # ---
