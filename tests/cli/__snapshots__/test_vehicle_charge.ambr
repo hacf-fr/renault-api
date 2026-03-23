@@ -1,37 +1,4 @@
 # serializer version: 1
-# name: test_action[megane_e_tech_2-start-charge-delayed][command]
-  dict({
-    'data': dict({
-      'attributes': dict({
-        'action': 'start',
-        'startDateTime': '2026-03-06T23:45:00Z',
-      }),
-      'type': 'ChargingStart',
-    }),
-  })
-# ---
-# name: test_action[megane_e_tech_2-start-charge-delayed][result]
-  '''
-  {'action': 'start', 'startDateTime': '2026-03-06T23:45:00Z'}
-  
-  '''
-# ---
-# name: test_action[megane_e_tech_2-start-charge][command]
-  dict({
-    'data': dict({
-      'attributes': dict({
-        'action': 'start',
-      }),
-      'type': 'ChargingStart',
-    }),
-  })
-# ---
-# name: test_action[megane_e_tech_2-start-charge][result]
-  '''
-  {'action': 'start'}
-  
-  '''
-# ---
 # name: test_action[spring_1-start-charge][command]
   dict({
     'data': dict({

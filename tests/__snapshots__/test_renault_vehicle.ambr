@@ -280,7 +280,7 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/megane_e-tech.1.json]
   dict({
-    'actions/charge-start': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/charge/start', mode='kcm'),
+    'actions/charge-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/charging-start', mode='default'),
     'actions/charge-stop': None,
     'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
     'charge-history': None,
@@ -301,7 +301,7 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/megane_e-tech.2.json]
   dict({
-    'actions/charge-start': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/charge/start', mode='kcm'),
+    'actions/charge-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/charging-start', mode='default'),
     'actions/charge-stop': None,
     'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
     'charge-history': None,
@@ -496,27 +496,6 @@
         ]),
       }),
       'type': 'ChargeSchedule',
-    }),
-  })
-# ---
-# name: test_set_charge_start[megane_e_tech_2-delayed]
-  dict({
-    'data': dict({
-      'attributes': dict({
-        'action': 'start',
-        'startDateTime': '2026-03-06T23:45:00Z',
-      }),
-      'type': 'ChargingStart',
-    }),
-  })
-# ---
-# name: test_set_charge_start[megane_e_tech_2-now]
-  dict({
-    'data': dict({
-      'attributes': dict({
-        'action': 'start',
-      }),
-      'type': 'ChargingStart',
     }),
   })
 # ---

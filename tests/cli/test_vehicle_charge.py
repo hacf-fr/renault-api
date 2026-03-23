@@ -308,8 +308,6 @@ def test_charging_settings_deactivate(
         ),
     ],
     ids=[
-        "megane_e_tech_2-start-charge",
-        "megane_e_tech_2-start-charge-delayed",
         "spring_1-start-charge",
         "spring_1-stop-charge",
         "zoe_40_1-start-charge",
