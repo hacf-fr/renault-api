@@ -3,6 +3,7 @@
 import os
 from datetime import datetime
 from datetime import timezone
+from typing import Any
 
 import aiohttp
 import pytest
@@ -16,6 +17,8 @@ from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
 from tests.const import TEST_LOCALE_DETAILS
 from tests.const import TEST_VIN
+from tests.fixtures import DEFAULT_QUERY_STRING
+from tests.fixtures import KCA_ADAPTER_PATH_V1
 from tests.test_credential_store import get_logged_in_credential_store
 from tests.test_renault_session import get_logged_in_session
 
@@ -398,15 +401,33 @@ async def test_set_charge_schedules(
     assert request.kwargs["json"] == snapshot
 
 
+@pytest.mark.parametrize(
+    ("vehicle_details", "arguments", "action_url", "action_result"),
+    [
+        (
+            "zoe_40.1.json",
+            {},
+            f"{KCA_ADAPTER_PATH_V1}/actions/charging-start?{DEFAULT_QUERY_STRING}",
+            "vehicle_action/charging-start.start.json",
+        ),
+    ],
+    ids=["zoe_40_1-now"],
+)
 @pytest.mark.asyncio
 async def test_set_charge_start(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+    vehicle: RenaultVehicle,
+    mocked_responses: aioresponses,
+    vehicle_details: str,
+    arguments: dict[str, Any],
+    action_url: str,
+    action_result: str,
+    snapshot: SnapshotAssertion,
 ) -> None:
     """Test set_charge_start."""
-    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
-    url = fixtures.inject_set_charging_start(mocked_responses, "start")
+    fixtures.inject_get_vehicle_details(mocked_responses, vehicle_details)
+    url = fixtures.inject_action(mocked_responses, action_url, action_result)
 
-    assert await vehicle.set_charge_start()
+    assert await vehicle.set_charge_start(**arguments)
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
 
@@ -500,7 +521,11 @@ async def test_http_post(
             "type": "ChargingStart",
         },
     }
-    url = fixtures.inject_set_charging_start(mocked_responses, "start")
+    url = fixtures.inject_action(
+        mocked_responses,
+        f"{KCA_ADAPTER_PATH_V1}/actions/charging-start?{DEFAULT_QUERY_STRING}",
+        "vehicle_action/charging-start.start.json",
+    )
 
     assert await vehicle.http_post(endpoint, json) == snapshot
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]

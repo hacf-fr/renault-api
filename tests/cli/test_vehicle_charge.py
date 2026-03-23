@@ -8,6 +8,9 @@ from syrupy.assertion import SnapshotAssertion
 from yarl import URL
 
 from tests import fixtures
+from tests.fixtures import DEFAULT_QUERY_STRING
+from tests.fixtures import KCA_ADAPTER_PATH_V1
+from tests.fixtures import KCM_ADAPTER_PATH
 
 from . import initialise_credential_store
 from renault_api.cli import __main__
@@ -276,68 +279,61 @@ def test_charging_settings_deactivate(
     assert result.output == snapshot
 
 
-def test_charging_start(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+@pytest.mark.parametrize(
+    ("vehicle_details", "cli_command", "action_url", "action_result"),
+    [
+        (
+            "spring.1.json",
+            "charge start",
+            f"{KCM_ADAPTER_PATH}/charge/pause-resume?{DEFAULT_QUERY_STRING}",
+            "vehicle_kcm_action/charge-pause-resume.resume.json",
+        ),
+        (
+            "spring.1.json",
+            "charge stop",
+            f"{KCM_ADAPTER_PATH}/charge/pause-resume?{DEFAULT_QUERY_STRING}",
+            "vehicle_kcm_action/charge-pause-resume.pause.json",
+        ),
+        (
+            "zoe_40.1.json",
+            "charge start",
+            f"{KCA_ADAPTER_PATH_V1}/actions/charging-start?{DEFAULT_QUERY_STRING}",
+            "vehicle_action/charging-start.start.json",
+        ),
+        (
+            "zoe_40.1.json",
+            "charge stop",
+            f"{KCA_ADAPTER_PATH_V1}/actions/charging-start?{DEFAULT_QUERY_STRING}",
+            "vehicle_action/charging-start.stop.json",
+        ),
+    ],
+    ids=[
+        "spring_1-start-charge",
+        "spring_1-stop-charge",
+        "zoe_40_1-start-charge",
+        "zoe_40_1-stop-charge",
+    ],
+)
+def test_action(
+    mocked_responses: aioresponses,
+    cli_runner: CliRunner,
+    vehicle_details: str,
+    cli_command: str,
+    action_url: str,
+    action_result: str,
+    snapshot: SnapshotAssertion,
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
-    url = fixtures.inject_set_charging_start(mocked_responses, "start")
+    fixtures.inject_get_vehicle_details(mocked_responses, vehicle_details)
+    url = fixtures.inject_action(mocked_responses, action_url, action_result)
 
-    result = cli_runner.invoke(__main__.main, "charge start")
+    result = cli_runner.invoke(__main__.main, cli_command)
     assert result.exit_code == 0, result.exception
 
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert request.kwargs["json"] == snapshot
-    assert result.output == snapshot
-
-
-def test_charging_stop(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
-) -> None:
-    """It exits with a status code of zero."""
-    initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
-    url = fixtures.inject_set_charging_start(mocked_responses, "stop")
-
-    result = cli_runner.invoke(__main__.main, "charge stop")
-    assert result.exit_code == 0, result.exception
-
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert request.kwargs["json"] == snapshot
-    assert result.output == snapshot
-
-
-def test_charging_dacia_start(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
-) -> None:
-    """It exits with a status code of zero."""
-    initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_get_vehicle_details(mocked_responses, "spring.1.json")
-    url = fixtures.inject_set_kcm_charge_pause_resume(mocked_responses, "resume")
-
-    result = cli_runner.invoke(__main__.main, "charge start")
-    assert result.exit_code == 0, result.exception
-
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert request.kwargs["json"] == snapshot
-    assert result.output == snapshot
-
-
-def test_charging_dacia_stop(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
-) -> None:
-    """It exits with a status code of zero."""
-    initialise_credential_store(include_account_id=True, include_vin=True)
-    fixtures.inject_get_vehicle_details(mocked_responses, "spring.1.json")
-    url = fixtures.inject_set_kcm_charge_pause_resume(mocked_responses, "pause")
-
-    result = cli_runner.invoke(__main__.main, "charge stop")
-    assert result.exit_code == 0, result.exception
-
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
-    assert request.kwargs["json"] == snapshot
-    assert result.output == snapshot
+    assert request.kwargs["json"] == snapshot(name="command")
+    assert result.output == snapshot(name="result")
 
 
 def test_charging_r5_start(

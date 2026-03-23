@@ -499,7 +499,7 @@
     }),
   })
 # ---
-# name: test_set_charge_start
+# name: test_set_charge_start[zoe_40_1-now]
   dict({
     'data': dict({
       'attributes': dict({
