@@ -4,7 +4,6 @@ from typing import Any
 
 import aiohttp
 import click
-import dateparser
 
 from renault_api.cli import helpers
 from renault_api.cli import renault_vehicle
@@ -38,28 +37,16 @@ async def mode(
 @click.command()
 @click.pass_obj
 @helpers.coro_with_websession
-@click.option(
-    "--at",
-    default=None,
-    help="Date/time at which to start charging."
-    " (defaults to immediate if not given). You can use"
-    " times like 'in 5 minutes' or 'tomorrow at 9am'.",
-)
 async def start(
     ctx_data: dict[str, Any],
     *,
-    at: str | None,
     websession: aiohttp.ClientSession,
 ) -> None:
-    """Start charging with optional delay."""
+    """Start charge."""
     vehicle = await renault_vehicle.get_vehicle(
         websession=websession, ctx_data=ctx_data
     )
-    if at:
-        when = dateparser.parse(at)
-    else:
-        when = None
-    response = await vehicle.set_charge_start(when=when)
+    response = await vehicle.set_charge_start()
     click.echo(response.raw_data)
 
 
