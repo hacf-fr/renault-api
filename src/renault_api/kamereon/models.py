@@ -1147,6 +1147,9 @@ class KamereonVehicleChargingSettingsData(KamereonVehicleDataAttributes):
 
     mode: str | None
     schedules: list[ChargeSchedule] | None
+    startDateTime: str | None
+    dateTime: str | None
+    delay: int | None
 
     def update(self, args: dict[str, Any]) -> None:
         """Update schedule."""
