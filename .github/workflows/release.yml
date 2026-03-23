@@ -67,7 +67,7 @@ jobs:
         if: "! steps.check-version.outputs.tag"
         uses: pypa/gh-action-pypi-publish@v1.13.0
         with:
-          repository_url: https://test.pypi.org/legacy/
+          repository-url: https://test.pypi.org/legacy/
 
       - name: Publish release notes
         uses: release-drafter/release-drafter@v7.1.1
