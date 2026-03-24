@@ -274,7 +274,7 @@ class RenaultVehicle:
         """Get vehicle charge schedule."""
         endpoint_definition = await self.get_endpoint_definition("charge-schedule")
         response = await self._get_vehicle_data(endpoint_definition)
-        if endpoint_definition.mode == "kcm":
+        if endpoint_definition.mode == "kcm-settings":
             return response.raw_data
         return response.raw_data["data"]["attributes"]  # type:ignore[no-any-return]
 
