@@ -280,8 +280,12 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/megane_e-tech.1.json]
   dict({
+    'actions/charge-set-schedule': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/charge/schedule', mode='kcm'),
     'actions/charge-start': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/charge/start', mode='kcm'),
     'actions/charge-stop': None,
+    'actions/horn-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
+    'actions/hvac-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
+    'actions/lights-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
     'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
     'charge-history': None,
     'charge-mode': None,
@@ -301,8 +305,12 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/megane_e-tech.2.json]
   dict({
+    'actions/charge-set-schedule': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/charge/schedule', mode='kcm'),
     'actions/charge-start': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/charge/start', mode='kcm'),
     'actions/charge-stop': None,
+    'actions/horn-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
+    'actions/hvac-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
+    'actions/lights-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
     'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
     'charge-history': None,
     'charge-mode': None,

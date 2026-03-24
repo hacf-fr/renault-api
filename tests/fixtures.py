@@ -497,6 +497,16 @@ def inject_set_charge_mode(mocked_responses: aioresponses, mode: str) -> str:
     )
 
 
+def inject_set_kcm_charge_schedule(mocked_responses: aioresponses, result: str) -> str:
+    """Inject sample charge-schedule."""
+    urlpath = f"{KCM_ADAPTER_PATH}/charge/schedule?{DEFAULT_QUERY_STRING}"
+    return inject_action(
+        mocked_responses,
+        urlpath,
+        f"vehicle_action/charge-schedule.{result}.json",
+    )
+
+
 def inject_set_charge_schedule(mocked_responses: aioresponses, result: str) -> str:
     """Inject sample charge-schedule."""
     urlpath = f"{KCA_ADAPTER_PATH_V2}/actions/charge-schedule?{DEFAULT_QUERY_STRING}"
