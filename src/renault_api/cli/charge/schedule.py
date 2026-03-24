@@ -49,8 +49,8 @@ async def show(
     )
     endpoint_definition = await vehicle.get_endpoint_definition("charge-schedule")
     response = await vehicle.get_charge_schedule()
-    if endpoint_definition.mode == "kcm":
-        _show_kcm(response)
+    if endpoint_definition.mode == "kcm-settings":
+        _show_kcm_settings(response)
     else:  # default
         _show_kca(response)
 
@@ -85,7 +85,7 @@ def _show_kca(response: dict[str, Any]) -> None:
     click.echo(tabulate(schedule_table, headers=headers))
 
 
-def _show_kcm(response: dict[str, Any]) -> None:
+def _show_kcm_settings(response: dict[str, Any]) -> None:
     """Display charge schedules (alternate)."""
     click.echo(f"Mode: {response['chargeModeRq'].capitalize()}")
     click.echo(f"Charge Time Start: {response['chargeTimeStart']}")

@@ -160,8 +160,8 @@ _KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
     "actions/charge-stop-via-pause-resume": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm-pause-resume"
     ),
-    "charge-schedule": EndpointDefinition(
-        "/kcm/v1/vehicles/{vin}/ev/settings", mode="kcm"
+    "charge-schedule-via-settings": EndpointDefinition(
+        "/kcm/v1/vehicles/{vin}/ev/settings", mode="kcm-settings"
     ),
 }
 
@@ -179,7 +179,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # err.func.wired.not-found (url does not exist)
         "charge-mode": None,  # access forbidden / action invalid-body
-        "charge-schedule": _KCM_ENDPOINTS["charge-schedule"],
+        "charge-schedule": _KCM_ENDPOINTS["charge-schedule-via-settings"],
         "charges": _DEFAULT_ENDPOINTS["charges"],
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
         "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
@@ -200,7 +200,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: "you should not be there..."
         "charge-mode": None,  # Reason: The access is forbidden
-        "charge-schedule": _KCM_ENDPOINTS["charge-schedule"],
+        "charge-schedule": _KCM_ENDPOINTS["charge-schedule-via-settings"],
         "charges": _DEFAULT_ENDPOINTS["charges"],
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
         "hvac-settings": _DEFAULT_ENDPOINTS["hvac-settings"],
@@ -245,7 +245,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: "you should not be there..."
         "charge-mode": None,  # Reason: The access is forbidden
-        "charge-schedule": _KCM_ENDPOINTS["charge-schedule"],
+        "charge-schedule": _KCM_ENDPOINTS["charge-schedule-via-settings"],
         "charges": _DEFAULT_ENDPOINTS["charges"],
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
         "hvac-settings": _DEFAULT_ENDPOINTS["hvac-settings"],
@@ -298,7 +298,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         ],
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-mode": None,  # default => 400 Bad Request
-        "charge-schedule": None,  # default and _KCM_ENDPOINTS["charge-schedule"] => 404
+        "charge-schedule": None,  # default => 404
         "charging-settings": _DEFAULT_ENDPOINTS["charging-settings"],
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
         "hvac-settings": _DEFAULT_ENDPOINTS["hvac-settings"],
@@ -333,7 +333,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
     "XCB1SE": {  # SCENIC E-TECH
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-mode": None,
-        "charge-schedule": _KCM_ENDPOINTS["charge-schedule"],
+        "charge-schedule": _KCM_ENDPOINTS["charge-schedule-via-settings"],
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
         "hvac-settings": _DEFAULT_ENDPOINTS["hvac-settings"],
         "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
@@ -384,7 +384,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: "err.func.wired.not-found"
         "charge-mode": None,  # Reason: "err.func.wired.forbidden"
-        "charge-schedule": _KCM_ENDPOINTS["charge-schedule"],
+        "charge-schedule": _KCM_ENDPOINTS["charge-schedule-via-settings"],
         "charging-settings": None,  # Reason: "err.func.wired.forbidden"
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
         "hvac-history": None,  # Reason: "err.func.wired.not-found"
@@ -472,7 +472,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # err.func.wired.not-found
         "charge-mode": None,  # err.func.wired.forbidden
-        "charge-schedule": _KCM_ENDPOINTS["charge-schedule"],
+        "charge-schedule": _KCM_ENDPOINTS["charge-schedule-via-settings"],
         "charging-settings": None,  # err.func.wired.forbidden
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
         "hvac-history": None,  # err.func.wired.not-found
