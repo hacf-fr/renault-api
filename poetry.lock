@@ -914,15 +914,15 @@ files = [
 
 [[package]]
 name = "dateparser"
-version = "1.3.0"
+version = "1.4.0"
 description = "Date parsing library designed to parse dates from HTML pages"
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
 markers = "extra == \"cli\""
 files = [
-    {file = "dateparser-1.3.0-py3-none-any.whl", hash = "sha256:8dc678b0a526e103379f02ae44337d424bd366aac727d3c6cf52ce1b01efbb5a"},
-    {file = "dateparser-1.3.0.tar.gz", hash = "sha256:5bccf5d1ec6785e5be71cc7ec80f014575a09b4923e762f850e57443bddbf1a5"},
+    {file = "dateparser-1.4.0-py3-none-any.whl", hash = "sha256:7902b8e85d603494bf70a5a0b1decdddb2270b9c6e6b2bc8a57b93476c0df378"},
+    {file = "dateparser-1.4.0.tar.gz", hash = "sha256:97a21840d5ecdf7630c584f673338a5afac5dfe84f647baf4d7e8df98f9354a4"},
 ]
 
 [package.dependencies]
