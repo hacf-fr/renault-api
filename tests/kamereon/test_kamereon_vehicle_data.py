@@ -3,6 +3,7 @@
 from typing import cast
 
 import pytest
+from syrupy.assertion import SnapshotAssertion
 
 from tests import fixtures
 
@@ -519,6 +520,23 @@ def test_hvac_settings_schedule() -> None:
         assert vehicle_data.schedules[i].id == i + 1
         for day in DAYS_OF_WEEK:
             assert vehicle_data.schedules[i].__dict__.get(day) is None
+
+
+@pytest.mark.parametrize("sub_code", ["renault_5", "spring", "zoe_50", "zoe"])
+def test_hvac_status(sub_code: str, snapshot: SnapshotAssertion) -> None:
+    """Test vehicle data with hvac settings for mode."""
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/hvac-status.{sub_code}.json",
+        schemas.KamereonVehicleDataResponseSchema,
+    )
+    response.raise_for_error_code()
+
+    vehicle_data = cast(
+        models.KamereonVehicleHvacStatusData,
+        response.get_attributes(schemas.KamereonVehicleHvacStatusDataSchema),
+    )
+
+    assert vehicle_data == snapshot
 
 
 def test_no_data() -> None:

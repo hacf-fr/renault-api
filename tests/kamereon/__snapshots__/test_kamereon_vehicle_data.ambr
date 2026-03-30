@@ -1,0 +1,13 @@
+# serializer version: 1
+# name: test_hvac_status[renault_5]
+  KamereonVehicleHvacStatusData(raw_data={'internalTemperature': 15.0, 'hvacStatus': 'off', 'socThreshold': 15.0, 'lastUpdateTime': '2025-03-24T18:57:22Z'}, lastUpdateTime='2025-03-24T18:57:22Z', externalTemperature=None, internalTemperature=15.0, hvacStatus='off', nextHvacStartDate=None, socThreshold=15.0)
+# ---
+# name: test_hvac_status[spring]
+  KamereonVehicleHvacStatusData(raw_data={'socThreshold': 30.0, 'hvacStatus': 'off', 'lastUpdateTime': '2020-12-03T00:00:00Z'}, lastUpdateTime='2020-12-03T00:00:00Z', externalTemperature=None, internalTemperature=None, hvacStatus='off', nextHvacStartDate=None, socThreshold=30.0)
+# ---
+# name: test_hvac_status[zoe]
+  KamereonVehicleHvacStatusData(raw_data={'externalTemperature': 8.0, 'hvacStatus': 'off'}, lastUpdateTime=None, externalTemperature=8.0, internalTemperature=None, hvacStatus='off', nextHvacStartDate=None, socThreshold=None)
+# ---
+# name: test_hvac_status[zoe_50]
+  KamereonVehicleHvacStatusData(raw_data={'socThreshold': 40, 'hvacStatus': 'on'}, lastUpdateTime=None, externalTemperature=None, internalTemperature=None, hvacStatus='on', nextHvacStartDate=None, socThreshold=40.0)
+# ---
