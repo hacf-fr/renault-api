@@ -397,6 +397,7 @@ async def update_hvac_status(
         ("HVAC status", response.hvacStatus, None),
         ("HVAC start at", response.nextHvacStartDate, "tzdatetime"),
         ("External temperature", response.externalTemperature, "°C"),
+        ("Internal temperature", response.internalTemperature, "°C"),
     ]
 
     for key, value, unit in items:
