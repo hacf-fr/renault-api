@@ -943,6 +943,7 @@ class KamereonVehicleHvacStatusData(KamereonVehicleDataAttributes):
 
     lastUpdateTime: str | None
     externalTemperature: float | None
+    internalTemperature: float | None
     hvacStatus: str | None
     nextHvacStartDate: str | None
     socThreshold: float | None
