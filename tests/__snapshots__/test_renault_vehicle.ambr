@@ -301,6 +301,7 @@
     'notification-settings': None,
     'pressure': None,
     'res-state': None,
+    'soc-levels': None,
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/megane_e-tech.2.json]
@@ -326,6 +327,7 @@
     'notification-settings': None,
     'pressure': None,
     'res-state': None,
+    'soc-levels': None,
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/renault_5.1.json]
