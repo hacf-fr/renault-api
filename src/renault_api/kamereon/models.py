@@ -366,6 +366,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "notification-settings": None,  # Reason: "err.func.vcps.users-helper.get-notification-settings.error"  # noqa: E501
         "pressure": None,  # Reason: "err.func.wired.notFound"
         "res-state": None,  # Reason: "err.func.wired.notFound"
+        "soc-levels": None,  # err.func.wired.forbidden
     },
     "XFB2BI": {  # Megane IV
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
