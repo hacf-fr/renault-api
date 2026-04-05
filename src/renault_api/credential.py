@@ -25,6 +25,12 @@ class JWTCredential(Credential):
 
     def __init__(self, value: str) -> None:
         """Initialise JWTCredential."""
+        import warnings
+        warnings.warn(
+            "JWT signature verification is disabled (verify_signature=False). "
+            "Forged or tampered JWTs will be accepted without validation.",
+            stacklevel=2,
+        )
         decoded_token = jwt.decode(value, options={"verify_signature": False})
 
         super().__init__(value=value)

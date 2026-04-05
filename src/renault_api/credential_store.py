@@ -2,6 +2,7 @@
 
 import json
 import os
+import stat
 
 import jwt
 
@@ -122,3 +123,8 @@ class FileCredentialStore(CredentialStore):
             os.makedirs(dirname)
         with open(self._store_location, "w") as json_file:
             json.dump(self._store, json_file, cls=CredentialEncoder)
+        # Security fix: restrict credential file to owner-only
+        try:
+            os.chmod(self._store_location, stat.S_IRUSR | stat.S_IWUSR)
+        except OSError:
+            pass
