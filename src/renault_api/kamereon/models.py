@@ -315,6 +315,8 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
     "XBG1VE": {  # DACIA SPRING
         "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start-via-pause-resume"],
         "actions/charge-stop": _KCM_ENDPOINTS["actions/charge-stop-via-pause-resume"],
+        "actions/horn-start": None,  # Reason: The access is forbidden,
+        "actions/lights-start": None,  # Reason: The access is forbidden,
         "alerts": None,  # Reason: "err.func.wired.not-found"
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: "err.func.wired.not-found"
