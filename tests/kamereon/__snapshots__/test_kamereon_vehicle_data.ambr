@@ -1,6 +1,21 @@
 # serializer version: 1
+# name: test_battery_status[1]
+  KamereonVehicleBatteryStatusData(raw_data={'timestamp': '2020-11-17T09:06:48+01:00', 'batteryLevel': 50, 'batteryAutonomy': 128, 'batteryCapacity': 0, 'batteryAvailableEnergy': 0, 'plugStatus': 0, 'chargingStatus': -1.0}, timestamp='2020-11-17T09:06:48+01:00', batteryLevel=50, batteryTemperature=None, batteryAutonomy=128, batteryCapacity=0, batteryAvailableEnergy=0, plugStatus=0, chargingStatus=-1.0, chargingRemainingTime=None, chargingInstantaneousPower=None, chargingRemainingTimeLastUpdateDateTime=None, V2L_SystemStatusDisplay=None)
+# ---
+# name: test_battery_status[2]
+  KamereonVehicleBatteryStatusData(raw_data={'timestamp': '2020-01-12T21:40:16Z', 'batteryLevel': 60, 'batteryTemperature': 20, 'batteryAutonomy': 141, 'batteryCapacity': 0, 'batteryAvailableEnergy': 31, 'plugStatus': 1, 'chargingStatus': 1.0, 'chargingRemainingTime': 145, 'chargingInstantaneousPower': 27.0}, timestamp='2020-01-12T21:40:16Z', batteryLevel=60, batteryTemperature=20, batteryAutonomy=141, batteryCapacity=0, batteryAvailableEnergy=31, plugStatus=1, chargingStatus=1.0, chargingRemainingTime=145, chargingInstantaneousPower=27.0, chargingRemainingTimeLastUpdateDateTime=None, V2L_SystemStatusDisplay=None)
+# ---
+# name: test_battery_status[renault_5]
+  KamereonVehicleBatteryStatusData(raw_data={'timestamp': '2025-03-24T19:03:58Z', 'batteryLevel': 49, 'batteryAutonomy': 169, 'plugStatus': 0, 'chargingStatus': 0.0, 'chargingRemainingTime': 0, 'V2L_SystemStatusDisplay': 0}, timestamp='2025-03-24T19:03:58Z', batteryLevel=49, batteryTemperature=None, batteryAutonomy=169, batteryCapacity=None, batteryAvailableEnergy=None, plugStatus=0, chargingStatus=0.0, chargingRemainingTime=0, chargingInstantaneousPower=None, chargingRemainingTimeLastUpdateDateTime=None, V2L_SystemStatusDisplay=0)
+# ---
+# name: test_battery_status[renault_5_uk]
+  KamereonVehicleBatteryStatusData(raw_data={'timestamp': '2026-05-01T06:07:54Z', 'batteryLevel': 73, 'batteryAutonomy': 261, 'V2L_SystemStatusDisplay': 0, 'plugStatus': 0, 'chargingStatus': 0.0, 'chargingRemainingTime': 3, 'chargingRemainingTimeLastUpdateDateTime': '2026-04-30T16:16:10Z'}, timestamp='2026-05-01T06:07:54Z', batteryLevel=73, batteryTemperature=None, batteryAutonomy=261, batteryCapacity=None, batteryAvailableEnergy=None, plugStatus=0, chargingStatus=0.0, chargingRemainingTime=3, chargingInstantaneousPower=None, chargingRemainingTimeLastUpdateDateTime='2026-04-30T16:16:10Z', V2L_SystemStatusDisplay=0)
+# ---
 # name: test_hvac_status[renault_5]
   KamereonVehicleHvacStatusData(raw_data={'internalTemperature': 15.0, 'hvacStatus': 'off', 'socThreshold': 15.0, 'lastUpdateTime': '2025-03-24T18:57:22Z'}, lastUpdateTime='2025-03-24T18:57:22Z', externalTemperature=None, internalTemperature=15.0, hvacStatus='off', nextHvacStartDate=None, socThreshold=15.0)
+# ---
+# name: test_hvac_status[renault_5_uk]
+  KamereonVehicleHvacStatusData(raw_data={'hvacStatus': 'off', 'socThreshold': 15.0, 'lastUpdateTime': '2026-05-01T05:26:06Z'}, lastUpdateTime='2026-05-01T05:26:06Z', externalTemperature=None, internalTemperature=None, hvacStatus='off', nextHvacStartDate=None, socThreshold=15.0)
 # ---
 # name: test_hvac_status[spring]
   KamereonVehicleHvacStatusData(raw_data={'socThreshold': 30.0, 'hvacStatus': 'off', 'lastUpdateTime': '2020-12-03T00:00:00Z'}, lastUpdateTime='2020-12-03T00:00:00Z', externalTemperature=None, internalTemperature=None, hvacStatus='off', nextHvacStartDate=None, socThreshold=30.0)

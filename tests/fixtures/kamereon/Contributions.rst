@@ -13,3 +13,9 @@ Navigation is available in the vehicle, but the location is not available throug
 zoe_40.2.json
 -------------
 Navigation is not available in the vehicle.
+
+renault_5.uk.json
+-----------------
+Renault 5 E-Tech (2026) for UK market.
+VYS VIN prefix.
+Includes V2L status in battery status.
