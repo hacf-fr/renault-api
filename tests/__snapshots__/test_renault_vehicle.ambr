@@ -352,7 +352,7 @@
     'soc-levels': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/ev/soc-levels', mode='default'),
   })
 # ---
-# name: test_get_endpoints[tests/fixtures/kamereon/vehicles/renault_5.uk.json]
+# name: test_get_endpoints[tests/fixtures/kamereon/vehicles/renault_5.2.json]
   dict({
     'actions/charge-start': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/ev/settings', mode='kcm-settings'),
     'actions/charge-stop': None,

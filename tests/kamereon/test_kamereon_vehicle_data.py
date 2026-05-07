@@ -105,7 +105,7 @@ def test_battery_status_2() -> None:
     assert vehicle_data.get_charging_status() == enums.ChargeState.CHARGE_IN_PROGRESS
 
 
-@pytest.mark.parametrize("sub_code", ["1", "2", "renault_5", "renault_5_uk"])
+@pytest.mark.parametrize("sub_code", ["1", "2", "renault_5", "renault_5_2"])
 def test_battery_status(sub_code: str, snapshot: SnapshotAssertion) -> None:
     """Test vehicle data for battery-status."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
@@ -540,7 +540,7 @@ def test_hvac_settings_schedule() -> None:
 
 
 @pytest.mark.parametrize(
-    "sub_code", ["renault_5", "renault_5_uk", "spring", "zoe_50", "zoe"]
+    "sub_code", ["renault_5", "renault_5_2", "spring", "zoe_50", "zoe"]
 )
 def test_hvac_status(sub_code: str, snapshot: SnapshotAssertion) -> None:
     """Test vehicle data with hvac settings for mode."""
