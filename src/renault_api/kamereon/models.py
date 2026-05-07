@@ -113,6 +113,9 @@ _DEFAULT_ENDPOINTS: dict[str, EndpointDefinition] = {
     "actions/lights-start": EndpointDefinition(
         "/kca/car-adapter/v1/cars/{vin}/actions/horn-lights"
     ),
+    "actions/refresh-location": EndpointDefinition(
+        "/kca/car-adapter/v1/cars/{vin}/actions/refresh-location",
+    ),
     "alerts": EndpointDefinition("/vehicles/{vin}/alerts"),
     "battery-status": EndpointDefinition(
         "/kca/car-adapter/v2/cars/{vin}/battery-status"
@@ -141,9 +144,6 @@ _DEFAULT_ENDPOINTS: dict[str, EndpointDefinition] = {
     "pressure": EndpointDefinition("/kca/car-adapter/v1/cars/{vin}/pressure"),
     "res-state": EndpointDefinition("/kca/car-adapter/v1/cars/{vin}/res-state"),
     "soc-levels": EndpointDefinition("/kcm/v1/vehicles/{vin}/ev/soc-levels"),
-    "actions/refresh-location": EndpointDefinition(
-        "/kca/car-adapter/v1/cars/{vin}/actions/refresh-location",
-    ),
 }
 _KCA_ALTERNATIVE_ENDPOINTS: dict[str, EndpointDefinition] = {
     "actions/hvac-stop": EndpointDefinition(
@@ -318,9 +318,9 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
     "XBG1VE": {  # DACIA SPRING
         "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start-via-pause-resume"],
         "actions/charge-stop": _KCM_ENDPOINTS["actions/charge-stop-via-pause-resume"],
+        "actions/refresh-location": _DEFAULT_ENDPOINTS["actions/refresh-location"],
         "alerts": None,  # Reason: "err.func.wired.not-found"
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
-        "actions/refresh-location": _DEFAULT_ENDPOINTS["actions/refresh-location"],
         "charge-history": None,  # Reason: "err.func.wired.not-found"
         "charge-mode": None,  # Reason: "err.func.wired.forbidden"
         "charge-schedule": None,  # Reason: "err.func.wired.forbidden"
