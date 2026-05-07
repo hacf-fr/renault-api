@@ -575,6 +575,19 @@ async def test_start_lights(
 
 
 @pytest.mark.asyncio
+async def test_refresh_location(
+    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+) -> None:
+    """Test refresh_location."""
+    url = fixtures.inject_set_refresh_location(mocked_responses)
+    fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
+    assert await vehicle.refresh_location()
+
+    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    assert request.kwargs["json"] == snapshot
+
+
+@pytest.mark.asyncio
 async def test_http_get(
     vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
 ) -> None:

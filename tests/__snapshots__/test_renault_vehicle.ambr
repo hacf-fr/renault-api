@@ -119,6 +119,7 @@
     'actions/hvac-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
     'actions/hvac-stop': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='kca-stop'),
     'actions/lights-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
+    'actions/refresh-location': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/refresh-location', mode='default'),
     'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
     'charge-history': None,
     'charge-mode': None,
@@ -138,6 +139,7 @@
   dict({
     'actions/horn-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
     'actions/lights-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
+    'actions/refresh-location': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/refresh-location', mode='default'),
     'battery-status': None,
     'charge-history': None,
     'charge-mode': None,
@@ -230,6 +232,7 @@
     'actions/hvac-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
     'actions/hvac-stop': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
     'actions/lights-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
+    'actions/refresh-location': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/refresh-location', mode='default'),
     'alerts': EndpointDefinition(endpoint='/vehicles/{vin}/alerts', mode='default'),
     'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
     'charge-history': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/charge-history', mode='default'),
@@ -286,6 +289,7 @@
     'actions/horn-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
     'actions/hvac-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
     'actions/lights-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
+    'actions/refresh-location': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/refresh-location', mode='default'),
     'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
     'charge-history': None,
     'charge-mode': None,
@@ -312,6 +316,7 @@
     'actions/horn-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
     'actions/hvac-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
     'actions/lights-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
+    'actions/refresh-location': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/refresh-location', mode='default'),
     'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
     'charge-history': None,
     'charge-mode': None,
@@ -337,6 +342,7 @@
     'actions/horn-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
     'actions/hvac-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
     'actions/lights-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
+    'actions/refresh-location': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/refresh-location', mode='default'),
     'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
     'charge-history': None,
     'charge-mode': None,
@@ -356,6 +362,7 @@
   dict({
     'actions/charge-start': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/charge/pause-resume', mode='kcm-pause-resume'),
     'actions/charge-stop': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/charge/pause-resume', mode='kcm-pause-resume'),
+    'actions/refresh-location': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/refresh-location', mode='default'),
     'alerts': None,
     'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
     'charge-history': None,
@@ -460,6 +467,13 @@
         'action': 'start',
       }),
       'type': 'ChargingStart',
+    }),
+  })
+# ---
+# name: test_refresh_location
+  dict({
+    'data': dict({
+      'type': 'RefreshLocation',
     }),
   })
 # ---
