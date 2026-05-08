@@ -51,6 +51,7 @@ Action endpoints
 .. include:: endpoints/vehicle_action.horn-lights.rst
 .. include:: endpoints/vehicle_action.hvac-start.rst
 .. include:: endpoints/vehicle_action.hvac-schedule.rst
+.. include:: endpoints/vehicle_action.refresh-location.rst
 
 
 KCM Action endpoints

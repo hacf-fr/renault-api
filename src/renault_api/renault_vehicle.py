@@ -662,6 +662,15 @@ class RenaultVehicle:
         response = await self._set_vehicle_data("actions/lights-start", json)
         return response.raw_data
 
+    async def refresh_location(self) -> dict[str, Any]:
+        json: dict[str, Any] = {
+            "data": {
+                "type": "RefreshLocation",
+            }
+        }
+        response = await self._set_vehicle_data("actions/refresh-location", json)
+        return response.raw_data
+
     async def supports_endpoint(self, endpoint: str) -> bool:
         """Check if vehicle supports endpoint."""
         details = await self.get_details()
