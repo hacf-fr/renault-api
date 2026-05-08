@@ -887,6 +887,8 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
     chargingStatus: float | None
     chargingRemainingTime: int | None
     chargingInstantaneousPower: float | None
+    chargingRemainingTimeLastUpdateDateTime: str | None
+    V2L_SystemStatusDisplay: int | None
 
     def get_plug_status(self) -> enums.PlugState | None:
         """Return plug status."""

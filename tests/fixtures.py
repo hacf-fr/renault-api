@@ -598,7 +598,7 @@ def _is_redacted(key: str, value: str) -> bool:
     if key == "accountId":
         return value.startswith("account-id")
     if key == "vin":
-        return value.startswith(("VF1AAAA", "UU1AAAA"))
+        return value.startswith(("VF1AAAA", "UU1AAAA", "VYSP000"))
     if key == "registrationNumber":
         return value == "REG-NUMBER"
     if key == "radioCode":

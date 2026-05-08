@@ -93,6 +93,10 @@ def test_vehicle_status(
         "zoe_50.1.json",
     ]:
         fixtures.inject_vehicle_status(mocked_responses, "zoe_50")
+    elif filename == "renault_5.1.json":
+        fixtures.inject_vehicle_status(mocked_responses, "renault_5")
+    elif filename == "renault_5.2.json":
+        fixtures.inject_vehicle_status(mocked_responses, "renault_5_2")
     else:
         fixtures.inject_vehicle_status(mocked_responses, "zoe")
 

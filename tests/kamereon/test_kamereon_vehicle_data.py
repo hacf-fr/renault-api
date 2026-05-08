@@ -25,7 +25,7 @@ def test_vehicle_data_response(filename: str) -> None:
     response.raise_for_error_code()
     # Ensure the VIN is hidden
     if response.data and response.data.id:
-        assert response.data.id.startswith(("VF1AAAA", "UU1AAAA"))
+        assert response.data.id.startswith(("VF1AAAA", "UU1AAAA", "VYSP000"))
 
 
 def test_battery_status_1() -> None:
@@ -98,11 +98,28 @@ def test_battery_status_2() -> None:
     assert vehicle_data.batteryCapacity == 0
     assert vehicle_data.batteryAvailableEnergy == 31
     assert vehicle_data.plugStatus == 1
+    assert vehicle_data.get_plug_status() == enums.PlugState.PLUGGED
     assert vehicle_data.chargingStatus == 1.0
     assert vehicle_data.chargingRemainingTime == 145
     assert vehicle_data.chargingInstantaneousPower == 27.0
-    assert vehicle_data.get_plug_status() == enums.PlugState.PLUGGED
     assert vehicle_data.get_charging_status() == enums.ChargeState.CHARGE_IN_PROGRESS
+
+
+@pytest.mark.parametrize("sub_code", ["1", "2", "renault_5", "renault_5_2"])
+def test_battery_status(sub_code: str, snapshot: SnapshotAssertion) -> None:
+    """Test vehicle data for battery-status."""
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/battery-status.{sub_code}.json",
+        schemas.KamereonVehicleDataResponseSchema,
+    )
+    response.raise_for_error_code()
+
+    vehicle_data = cast(
+        models.KamereonVehicleBatteryStatusData,
+        response.get_attributes(schemas.KamereonVehicleBatteryStatusDataSchema),
+    )
+
+    assert vehicle_data == snapshot
 
 
 def test_tyre_pressure() -> None:
@@ -522,7 +539,9 @@ def test_hvac_settings_schedule() -> None:
             assert vehicle_data.schedules[i].__dict__.get(day) is None
 
 
-@pytest.mark.parametrize("sub_code", ["renault_5", "spring", "zoe_50", "zoe"])
+@pytest.mark.parametrize(
+    "sub_code", ["renault_5", "renault_5_2", "spring", "zoe_50", "zoe"]
+)
 def test_hvac_status(sub_code: str, snapshot: SnapshotAssertion) -> None:
     """Test vehicle data with hvac settings for mode."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
