@@ -113,6 +113,9 @@ _DEFAULT_ENDPOINTS: dict[str, EndpointDefinition] = {
     "actions/lights-start": EndpointDefinition(
         "/kca/car-adapter/v1/cars/{vin}/actions/horn-lights"
     ),
+    "actions/refresh-location": EndpointDefinition(
+        "/kca/car-adapter/v1/cars/{vin}/actions/refresh-location",
+    ),
     "alerts": EndpointDefinition("/vehicles/{vin}/alerts"),
     "battery-status": EndpointDefinition(
         "/kca/car-adapter/v2/cars/{vin}/battery-status"
@@ -245,6 +248,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
         "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
         "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
+        "actions/refresh-location": _DEFAULT_ENDPOINTS["actions/refresh-location"],
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: "you should not be there..."
         "charge-mode": None,  # Reason: The access is forbidden
@@ -319,6 +323,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
         "actions/hvac-stop": _KCA_ALTERNATIVE_ENDPOINTS["actions/hvac-stop"],
         "actions/lights-start": None,  # Reason: The access is forbidden,
+        "actions/refresh-location": _DEFAULT_ENDPOINTS["actions/refresh-location"],
         "alerts": None,  # Reason: "err.func.wired.not-found"
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: "err.func.wired.not-found"

@@ -559,6 +559,16 @@ def inject_set_hvac_schedules(mocked_responses: aioresponses) -> str:
     )
 
 
+def inject_set_refresh_location(mocked_responses: aioresponses) -> str:
+    """Inject sample refresh-location."""
+    urlpath = f"{KCA_ADAPTER_PATH_V1}/actions/refresh-location?{DEFAULT_QUERY_STRING}"
+    return inject_action(
+        mocked_responses,
+        urlpath,
+        "vehicle_action/refresh-location.json",
+    )
+
+
 def inject_vehicle_status(mocked_responses: aioresponses, vehicle: str) -> None:
     """Inject Kamereon vehicle status data."""
     inject_get_battery_status(mocked_responses)
