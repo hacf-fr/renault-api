@@ -38,10 +38,10 @@ dateparser = {version = ">=1.0.0", optional = true}
 pytest = "==9.0.3"
 coverage = {extras = ["toml"], version = "7.13.5"}
 safety = "==3.7.0"
-mypy = "1.20.0"
+mypy = "1.20.2"
 typeguard = "==4.5.1"
-pre-commit = "==4.5.1"
-ruff = "==0.15.10"
+pre-commit = "==4.6.0"
+ruff = "==0.15.12"
 darglint = "1.8.1"
 pre-commit-hooks = "==6.0.0"
 Pygments = "2.20.0"
