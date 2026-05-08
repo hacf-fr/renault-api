@@ -570,7 +570,8 @@ def get_model_endpoints(
             _ALREADY_WARNED_VEHICLE.add(model_code)
             _LOGGER.warning(
                 "Model %s is not documented, using default endpoints."
-                " Please help to document it at https://github.com/hacf-fr/renault-api",
+                " Please see instructions at "
+                "https://github.com/hacf-fr/renault-api/issues/1747",
                 model_code,
             )
         return _DEFAULT_ENDPOINTS
@@ -591,7 +592,8 @@ def get_model_endpoint(
             _ALREADY_WARNED_VEHICLE_ENDPOINT.add(key)
             _LOGGER.warning(
                 "Endpoint %s for model %s is not documented, using default endpoints."
-                " Please help to document it at https://github.com/hacf-fr/renault-api",
+                " Please see instructions at "
+                "https://github.com/hacf-fr/renault-api/issues/1747",
                 endpoint,
                 model_code,
             )
