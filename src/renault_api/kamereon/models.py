@@ -462,6 +462,11 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "hvac-status": None,
     },
     "XJA2VP": {  # CLIO V
+        "actions/charge-start": None,  # err.func.wired.forbidden
+        "actions/charge-stop": None,  # err.func.wired.invalid-body-format
+        "actions/horn-start": None,  # err.func.wired.forbidden
+        "actions/hvac-start": None,  # err.func.wired.forbidden
+        "actions/lights-start": None,  # err.func.wired.forbidden
         "alerts": None,  # err.func.wired.not-found
         "battery-status": None,  # err.func.wired.notFound
         "charge-mode": None,  # err.func.wired.forbidden
