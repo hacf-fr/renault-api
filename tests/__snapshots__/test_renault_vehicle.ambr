@@ -194,6 +194,11 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/clio_v.2.json]
   dict({
+    'actions/charge-start': None,
+    'actions/charge-stop': None,
+    'actions/horn-start': None,
+    'actions/hvac-start': None,
+    'actions/lights-start': None,
     'alerts': None,
     'battery-status': None,
     'charge-history': None,
