@@ -531,11 +531,11 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "pressure": None,  # err.func.wired.notFound
     },
     "XJB1SU": {  # CAPTUR II
-        "actions/charge-start": None,  # err.func.wired.not-found
-        "actions/charge-stop": None,  # err.func.wired.not-found
-        "actions/horn-start": None,  # err.func.wired.not-found
+        "actions/charge-start": None,  # Reason: "err.func.wired.not-found"
+        "actions/charge-stop": None,  # Reason: "err.func.wired.not-found"
+        "actions/horn-start": None,  # Reason: "err.func.wired.not-found"
         "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
-        "actions/lights-start": None,  # err.func.wired.not-found
+        "actions/lights-start": None,  # Reason: "err.func.wired.not-found"
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: "err.func.wired.not-found"
         "charge-mode": None,  # Reason: "err.func.vcps.ev.charge-mode.error"
