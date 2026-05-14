@@ -39,7 +39,7 @@ pytest = "==9.0.3"
 coverage = {extras = ["toml"], version = "7.14.0"}
 safety = "==3.7.0"
 mypy = "2.1.0"
-typeguard = "==4.5.1"
+typeguard = "==4.5.2"
 pre-commit = "==4.6.0"
 ruff = "==0.15.13"
 darglint = "1.8.1"
