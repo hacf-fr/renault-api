@@ -16,7 +16,6 @@ PERMANENT_KEYS = [
     CONF_KAMEREON_URL,
 ]
 
-
 GIGYA_URL_EU = "https://accounts.eu1.gigya.com"
 GIGYA_URL_US = "https://accounts.us1.gigya.com"
 KAMEREON_APIKEY = "YjkKtHmGfaceeuExUDKGxrLZGGvtVS0J"
@@ -96,7 +95,7 @@ AVAILABLE_LOCALES = {
     },
     "fr_FR": {
         CONF_GIGYA_URL: GIGYA_URL_EU,
-        CONF_GIGYA_APIKEY: "3_4LKbCcMMcvjDm3X89LU4z4mNKYKdl_W0oD9w-Jvih21WqgJKtFZAnb9YdUgWT9_a",  # noqa
+        CONF_GIGYA_APIKEY: "4_ebQiBB9_00dVd3q8Sn-EgQ",  # noqa
         CONF_KAMEREON_URL: KAMEREON_URL_EU,
         CONF_KAMEREON_APIKEY: KAMEREON_APIKEY,
     },
