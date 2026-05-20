@@ -151,6 +151,11 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/captur_ii.1.json]
   dict({
+    'actions/charge-start': None,
+    'actions/charge-stop': None,
+    'actions/horn-start': None,
+    'actions/hvac-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
+    'actions/lights-start': None,
     'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
     'charge-history': None,
     'charge-mode': None,
@@ -166,10 +171,16 @@
     'notification-settings': None,
     'pressure': None,
     'res-state': None,
+    'soc-levels': None,
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/captur_ii.2.json]
   dict({
+    'actions/charge-start': None,
+    'actions/charge-stop': None,
+    'actions/horn-start': None,
+    'actions/hvac-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
+    'actions/lights-start': None,
     'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
     'charge-history': None,
     'charge-mode': None,
@@ -185,6 +196,7 @@
     'notification-settings': None,
     'pressure': None,
     'res-state': None,
+    'soc-levels': None,
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/clio_v.1.json]
