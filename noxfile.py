@@ -107,7 +107,6 @@ def safety(session: Session) -> None:
         "check",
         "--full-report",
         f"--file={requirements}",
-        "-i 70612",  # Disputed - no fix available https://github.com/pyupio/safety/issues/527
     )
 
 
