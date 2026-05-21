@@ -181,6 +181,35 @@ async def test_login(session: RenaultSession, mocked_responses: aioresponses) ->
 
 
 @pytest.mark.asyncio
+async def test_login_token_property(
+    session: RenaultSession, mocked_responses: aioresponses
+) -> None:
+    """Test that the login token is exposed after login."""
+    assert session.login_token is None
+
+    fixtures.inject_gigya_all(mocked_responses)
+    await session.login(TEST_USERNAME, TEST_PASSWORD)
+
+    assert session.login_token == TEST_LOGIN_TOKEN
+
+
+@pytest.mark.asyncio
+async def test_set_login_token(
+    session: RenaultSession, mocked_responses: aioresponses
+) -> None:
+    """Test restoring a login token instead of using the password."""
+    session.set_login_token(TEST_LOGIN_TOKEN)
+
+    assert session.login_token == TEST_LOGIN_TOKEN
+    assert await session._get_login_token() == TEST_LOGIN_TOKEN
+
+    # A restored token can mint a JWT without ever calling login.
+    fixtures.inject_gigya_jwt(mocked_responses)
+    assert await session._get_jwt()
+    assert len(mocked_responses.requests) == 1
+
+
+@pytest.mark.asyncio
 async def test_expired_login_token(
     websession: aiohttp.ClientSession, mocked_responses: aioresponses
 ) -> None:

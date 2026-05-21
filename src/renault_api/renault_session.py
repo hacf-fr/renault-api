@@ -65,6 +65,26 @@ class RenaultSession:
         credential = Credential(response.get_session_cookie())
         self._credentials[gigya.GIGYA_LOGIN_TOKEN] = credential
 
+    @property
+    def login_token(self) -> str | None:
+        """Return the current Gigya login token.
+
+        This token is obtained from the password on `login`, and is used to
+        mint JWTs (access tokens) without re-supplying the password. Store it
+        securely instead of the password, and restore it with `set_login_token`
+        (or by pre-populating the credential store) on the next session.
+        """
+        return self._credentials.get_value(gigya.GIGYA_LOGIN_TOKEN)
+
+    def set_login_token(self, login_token: str) -> None:
+        """Restore a Gigya login token obtained from a previous session.
+
+        This avoids storing and reusing the user password: a session restored
+        this way can mint JWTs without ever calling `login`.
+        """
+        self._credentials.clear_keys(gigya.GIGYA_KEYS)
+        self._credentials[gigya.GIGYA_LOGIN_TOKEN] = Credential(login_token)
+
     async def _get_credential(self, key: str) -> str:
         """Get specified credential, or raise RenaultException."""
         if key not in self._credentials:

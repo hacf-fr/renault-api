@@ -93,6 +93,22 @@ You can install *Renault API* via pip_ from PyPI_:
    loop = asyncio.get_event_loop()
    loop.run_until_complete(main())
 
+Avoiding password storage
+-------------------------
+
+The password is only needed once: ``session.login`` exchanges it for a Gigya
+login token, which acts as a refresh token used to mint access tokens (JWTs).
+Read it from ``session.login_token`` after login, store it securely *instead of
+the password*, and restore it on the next session with ``session.set_login_token``:
+
+.. code:: python
+
+   await client.session.login('email', 'password')
+   login_token = client.session.login_token  # persist this, not the password
+
+   # later, in a new session:
+   client.session.set_login_token(login_token)  # no password required
+
 CLI Usage
 ---------
 
