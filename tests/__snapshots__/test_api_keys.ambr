@@ -25,7 +25,7 @@
 # ---
 # name: test_available_locales[de_AT]
   dict({
-    'gigya-api-key': '3__B4KghyeUb0GlpU62ZXKrjSfb7CPzwBS368wioftJUL5qXE0Z_sSy0rX69klXuHy',
+    'gigya-api-key': '3_VgdkgtIRH3AdHvJm-cjV2ug2EFE0lxt0IJzMC4MFqZjFpn_GYFXVdNZ19L7wZX0N',
     'gigya-root-url': 'https://accounts.eu1.gigya.com',
     'kamereon-api-key': 'YjkKtHmGfaceeuExUDKGxrLZGGvtVS0J',
     'kamereon-root-url': 'https://api-wired-prod-1-euw1.wrd-aws.com',
