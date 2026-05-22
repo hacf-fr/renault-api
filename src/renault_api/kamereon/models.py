@@ -513,11 +513,14 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "soc-levels": _DEFAULT_ENDPOINTS["soc-levels"],
     },
     "XJB2CP": {  # Renault Symbioz 2025
+        "actions/charge-start": None,  # err.func.wired.forbidden
+        "actions/charge-stop": None,  # err.func.wired.invalid-body-format
         "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
         "actions/hvac-start": None,  # err.func.wired.forbidden
         "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
         "battery-status": None,  # err.func.wired.notFound
         "charge-mode": None,  # "err.func.wired.forbidden"
+        "charging-settings": None,  # err.func.wired.forbidden
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
         "hvac-status": None,  # err.func.wired.notFound
         "location": _DEFAULT_ENDPOINTS["location"],
