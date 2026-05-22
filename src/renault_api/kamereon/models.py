@@ -384,7 +384,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "notification-settings": None,  # Reason: "err.func.vcps.users-helper.get-notification-settings.error"  # noqa: E501
         "pressure": None,  # Reason: "err.func.wired.notFound"
         "res-state": None,  # Reason: "err.func.wired.notFound"
-        "soc-levels": None,  # err.func.wired.forbidden
+        "soc-levels": None,  # Reason: "err.func.wired.forbidden"
     },
     "XFB2BI": {  # Megane IV
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
@@ -462,6 +462,11 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "hvac-status": None,
     },
     "XJA2VP": {  # CLIO V
+        "actions/charge-start": None,  # err.func.wired.forbidden
+        "actions/charge-stop": None,  # err.func.wired.invalid-body-format
+        "actions/horn-start": None,  # err.func.wired.forbidden
+        "actions/hvac-start": None,  # err.func.wired.forbidden
+        "actions/lights-start": None,  # err.func.wired.forbidden
         "alerts": None,  # err.func.wired.not-found
         "battery-status": None,  # err.func.wired.notFound
         "charge-mode": None,  # err.func.wired.forbidden
@@ -529,6 +534,11 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "pressure": None,  # err.func.wired.notFound
     },
     "XJB1SU": {  # CAPTUR II
+        "actions/charge-start": None,  # Reason: "err.func.wired.not-found"
+        "actions/charge-stop": None,  # Reason: "err.func.wired.not-found"
+        "actions/horn-start": None,  # Reason: "err.func.wired.not-found"
+        "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
+        "actions/lights-start": None,  # Reason: "err.func.wired.not-found"
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: "err.func.wired.not-found"
         "charge-mode": None,  # Reason: "err.func.vcps.ev.charge-mode.error"
@@ -544,6 +554,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "notification-settings": None,  # Reason: "err.func.vcps.users-helper.get-notification-settings.error"  # noqa: E501
         "pressure": None,  # Reason: "err.func.wired.notFound"
         "res-state": None,  # Reason: "err.func.wired.notFound"
+        "soc-levels": None,  # Reason: "err.func.wired.forbidden"
     },
     "XJL2TR": {  # Arkana E-tech full hybrid
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
