@@ -524,13 +524,13 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "actions/hvac-start": None,  # err.func.wired.forbidden
         "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
         "battery-status": None,  # err.func.wired.notFound
-        "charge-mode": None,  # "err.func.wired.forbidden"
+        "charge-mode": None,  # err.func.wired.forbidden
         "charging-settings": None,  # err.func.wired.forbidden
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
         "hvac-status": None,  # err.func.wired.notFound
         "location": _DEFAULT_ENDPOINTS["location"],
-        "lock-status": None,  # "err.func.wired.notFound"
-        "res-state": None,  # "err.func.wired.notFound"
+        "lock-status": None,  # err.func.wired.notFound
+        "res-state": None,  # err.func.wired.notFound
         "pressure": None,  # err.func.wired.notFound
     },
     "XJB1SU": {  # CAPTUR II
