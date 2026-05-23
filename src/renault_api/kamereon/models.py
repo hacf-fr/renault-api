@@ -312,6 +312,9 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "actions/charge-stop": _KCM_ENDPOINTS[  # Uses KCM pause-resume
             "actions/charge-stop-via-pause-resume"
         ],
+        "actions/horn-start": None,  # Reason: The access is forbidden,
+        "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
+        "actions/lights-start": None,  # Reason: The access is forbidden,
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-mode": None,  # default => 400 Bad Request
         "charge-schedule": None,  # default => 404
@@ -324,6 +327,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         # pressure not supported by all vehicles - but confirmed to be working on some
         "pressure": _DEFAULT_ENDPOINTS["pressure"],
         "res-state": None,  # default => 404
+        "soc-levels": None,  # Reason: "The access is forbidden"
     },
     "XBG1VE": {  # DACIA SPRING
         "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start-via-pause-resume"],
