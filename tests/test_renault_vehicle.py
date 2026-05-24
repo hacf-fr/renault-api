@@ -554,7 +554,7 @@ async def test_start_horn(
 ) -> None:
     """Test start_horn."""
     url = fixtures.inject_set_hornlight(mocked_responses, "horn")
-    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
+    fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
     assert await vehicle.start_horn()
 
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
@@ -567,7 +567,7 @@ async def test_start_lights(
 ) -> None:
     """Test start_lights."""
     url = fixtures.inject_set_hornlight(mocked_responses, "lights")
-    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
+    fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
     assert await vehicle.start_lights()
 
     request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]

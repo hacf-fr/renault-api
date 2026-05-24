@@ -499,6 +499,9 @@
   dict({
     'actions/charge-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/charging-start', mode='default'),
     'actions/charge-stop': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/charge/pause-resume', mode='kcm-pause-resume'),
+    'actions/horn-start': None,
+    'actions/hvac-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
+    'actions/lights-start': None,
     'battery-status': EndpointDefinition(endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status', mode='default'),
     'charge-mode': None,
     'charge-schedule': None,
@@ -510,6 +513,7 @@
     'lock-status': None,
     'pressure': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/pressure', mode='default'),
     'res-state': None,
+    'soc-levels': None,
   })
 # ---
 # name: test_http_get
