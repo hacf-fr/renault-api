@@ -319,7 +319,7 @@
     'notification-settings': None,
     'pressure': None,
     'res-state': None,
-    'soc-levels': None,
+    'soc-levels': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/ev/soc-levels', mode='default'),
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/megane_e-tech.2.json]
@@ -345,7 +345,7 @@
     'notification-settings': None,
     'pressure': None,
     'res-state': None,
-    'soc-levels': None,
+    'soc-levels': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/ev/soc-levels', mode='default'),
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/renault_5.1.json]
