@@ -136,17 +136,22 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/austral_XHN1SU.1.json]
   dict({
+    'actions/charge-start': None,
+    'actions/charge-stop': None,
     'actions/horn-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
+    'actions/hvac-start': None,
     'actions/lights-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights', mode='default'),
     'battery-status': None,
     'charge-history': None,
     'charge-mode': None,
+    'charging-settings': None,
     'cockpit': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/cockpit', mode='default'),
     'hvac-status': None,
     'location': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/location', mode='default'),
     'lock-status': None,
     'pressure': None,
     'res-state': None,
+    'soc-levels': None,
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/captur_ii.1.json]
@@ -201,7 +206,34 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/clio_v.1.json]
   dict({
+    'actions/charge-start': None,
+    'actions/charge-stop': None,
+    'actions/horn-start': None,
+    'actions/hvac-start': None,
+    'actions/lights-start': None,
+    'alerts': None,
+    'battery-status': None,
+    'charge-history': None,
+    'charge-mode': None,
+    'charge-schedule': None,
+    'charges': None,
+    'charging-settings': None,
+    'charging-start': None,
+    'cockpit': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/cockpit', mode='default'),
+    'horn-lights': None,
+    'hvac-history': None,
+    'hvac-schedule': None,
+    'hvac-sessions': None,
+    'hvac-settings': None,
+    'hvac-start': None,
     'hvac-status': None,
+    'location': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/location', mode='default'),
+    'lock-status': None,
+    'notification-settings': None,
+    'pause-resume': None,
+    'pressure': None,
+    'res-state': None,
+    'soc-levels': None,
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/clio_v.2.json]
