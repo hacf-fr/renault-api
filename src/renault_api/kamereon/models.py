@@ -429,21 +429,21 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
     },
     "XHN1SU": {  # AUSTRAL
         "actions/charge-start": None,  # Reason: "err.func.wired.forbidden"
-        "actions/charge-stop": None, # Reason: "err.func.wired.not-found"
+        "actions/charge-stop": None,  # Reason: "err.func.wired.not-found"
         "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
-        "actions/hvac-start": None, # Reason: "err.func.wired.methodNotAllowed"
+        "actions/hvac-start": None,  # Reason: "err.func.wired.methodNotAllowed"
         "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
         "battery-status": None,  # Reason: "err.func.wired.notFound"
         "charge-history": None,  # Reason: "err.func.wired.not-found"
         "charge-mode": None,  # Reason: "err.func.wired.forbidden"
-        "charging-settings": None, # Reason: "err.func.wired.forbidden"
+        "charging-settings": None,  # Reason: "err.func.wired.forbidden"
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
         "hvac-status": None,
         "location": _DEFAULT_ENDPOINTS["location"],
         "lock-status": None,
         "pressure": None,  # Reason: 404
         "res-state": None,
-        "soc-levels": None, # Reason: "err.func.wired.forbidden"
+        "soc-levels": None,  # Reason: "err.func.wired.forbidden"
     },
     "XHN1ML": {  # Renault Espace VI (OpenRLink)
         "actions/hvac-start": None,  # err.func.wired.forbidden
