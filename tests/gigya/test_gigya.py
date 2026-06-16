@@ -2,7 +2,7 @@
 
 import aiohttp
 import pytest
-from aioresponses import aioresponses
+from aiointercept import aiointercept
 
 from tests import fixtures
 from tests.const import TEST_GIGYA_APIKEY
@@ -17,7 +17,7 @@ from renault_api import gigya
 
 @pytest.mark.asyncio
 async def test_login(
-    websession: aiohttp.ClientSession, mocked_responses: aioresponses
+    websession: aiohttp.ClientSession, mocked_responses: aiointercept
 ) -> None:
     """Test login response."""
     fixtures.inject_gigya_login(mocked_responses)
@@ -34,7 +34,7 @@ async def test_login(
 
 @pytest.mark.asyncio
 async def test_login_error(
-    websession: aiohttp.ClientSession, mocked_responses: aioresponses
+    websession: aiohttp.ClientSession, mocked_responses: aiointercept
 ) -> None:
     """Test login response."""
     fixtures.inject_gigya_login_invalid(mocked_responses)
@@ -51,7 +51,7 @@ async def test_login_error(
 
 @pytest.mark.asyncio
 async def test_person_id(
-    websession: aiohttp.ClientSession, mocked_responses: aioresponses
+    websession: aiohttp.ClientSession, mocked_responses: aiointercept
 ) -> None:
     """Test get_account_info response."""
     fixtures.inject_gigya_account_info(mocked_responses)
@@ -67,7 +67,7 @@ async def test_person_id(
 
 @pytest.mark.asyncio
 async def test_get_jwt_token(
-    websession: aiohttp.ClientSession, mocked_responses: aioresponses
+    websession: aiohttp.ClientSession, mocked_responses: aiointercept
 ) -> None:
     """Test get_jwt response."""
     fixtures.inject_gigya_jwt(mocked_responses)

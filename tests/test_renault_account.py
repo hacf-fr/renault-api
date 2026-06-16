@@ -2,7 +2,7 @@
 
 import aiohttp
 import pytest
-from aioresponses import aioresponses
+from aiointercept import aiointercept
 
 from tests import fixtures
 from tests.const import TEST_ACCOUNT_ID
@@ -42,7 +42,7 @@ def tests_init(websession: aiohttp.ClientSession) -> None:
 
 @pytest.mark.asyncio
 async def test_get_vehicles(
-    account: RenaultAccount, mocked_responses: aioresponses
+    account: RenaultAccount, mocked_responses: aiointercept
 ) -> None:
     """Test get_vehicles."""
     fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1.json")
@@ -51,7 +51,7 @@ async def test_get_vehicles(
 
 @pytest.mark.asyncio
 async def test_get_api_vehicles(
-    account: RenaultAccount, mocked_responses: aioresponses
+    account: RenaultAccount, mocked_responses: aiointercept
 ) -> None:
     """Test get_api_vehicles."""
     fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1.json")

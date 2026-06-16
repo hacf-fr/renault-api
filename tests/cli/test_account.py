@@ -2,7 +2,7 @@
 
 import os
 
-from aioresponses import aioresponses
+from aiointercept import aiointercept
 from click.testing import CliRunner
 from syrupy.assertion import SnapshotAssertion
 
@@ -27,7 +27,7 @@ from renault_api.gigya import GIGYA_PERSON_ID
 
 
 def test_list_vehicles_prompt(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     fixtures.inject_gigya_all(mocked_responses)
@@ -56,7 +56,7 @@ def test_list_vehicles_prompt(
 
 
 def test_list_vehicles_store(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
@@ -74,7 +74,7 @@ def test_list_vehicles_store(
 
 
 def test_list_vehicles_no_prompt(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
