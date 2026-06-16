@@ -390,32 +390,6 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "res-state": None,  # Reason: "err.func.wired.notFound"
         "soc-levels": _DEFAULT_ENDPOINTS["soc-levels"],
     },
-    "XDD1VE": {  # Renault Master E-Tech
-        "actions/charge-set-mode": _DEFAULT_ENDPOINTS["actions/charge-set-mode"],
-        "actions/charge-set-schedule": None,  # err.func.wired.forbidden
-        "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start-via-settings"],
-        "actions/charge-stop": None,  # err.func.wired.forbidden
-        "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
-        "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
-        "actions/hvac-stop": _DEFAULT_ENDPOINTS["actions/hvac-stop"],
-        "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
-        "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
-        "charge-history": None,  # err.func.wired.not-found
-        "charge-mode": None,  # err.func.wired.forbidden
-        "charge-schedule": _KCM_ENDPOINTS["charge-schedule-via-settings"],
-        "charging-settings": None,  # err.func.wired.forbidden
-        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
-        "hvac-history": None,  # err.func.wired.not-found
-        "hvac-sessions": None,  # err.func.wired.not-found
-        "hvac-settings": _DEFAULT_ENDPOINTS["hvac-settings"],
-        "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
-        "location": _DEFAULT_ENDPOINTS["location"],
-        "lock-status": None,  # 404 There is no data for this vin and uid
-        "notification-settings": None,  # 400001 The vehicle does not have a GDC gateway
-        "pressure": None,  # 404 There is no data for this vin and uid
-        "res-state": None,  # 404 There is no data for this vin and uid
-        "soc-levels": _DEFAULT_ENDPOINTS["soc-levels"],
-    },
     "XFB2BI": {  # Megane IV
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: "err.func.wired.not-found"
@@ -453,6 +427,24 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "pressure": None,  # Reason: "err.func.wired.notFound"
         "res-state": None,  # Reason: "err.func.wired.notFound"
     },
+    "XHN1SU": {  # AUSTRAL
+        "actions/charge-start": None,  # Reason: "err.func.wired.forbidden"
+        "actions/charge-stop": None,  # Reason: "err.func.wired.not-found"
+        "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
+        "actions/hvac-start": None,  # Reason: "err.func.wired.methodNotAllowed"
+        "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
+        "battery-status": None,  # Reason: "err.func.wired.notFound"
+        "charge-history": None,  # Reason: "err.func.wired.not-found"
+        "charge-mode": None,  # Reason: "err.func.wired.forbidden"
+        "charging-settings": None,  # Reason: "err.func.wired.forbidden"
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
+        "hvac-status": None,
+        "location": _DEFAULT_ENDPOINTS["location"],
+        "lock-status": None,
+        "pressure": None,  # Reason: 404
+        "res-state": None,
+        "soc-levels": None,  # Reason: "err.func.wired.forbidden"
+    },
     "XHN1ML": {  # Renault Espace VI (OpenRLink)
         "actions/hvac-start": None,  # err.func.wired.forbidden
         "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
@@ -474,24 +466,6 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "pressure": None,  # err.func.wired.notFound
         "res-state": None,  # err.func.wired.notFound
         "soc-levels": None,  # err.func.wired.notFound
-    },
-    "XHN1SU": {  # AUSTRAL
-        "actions/charge-start": None,  # Reason: "err.func.wired.forbidden"
-        "actions/charge-stop": None,  # Reason: "err.func.wired.not-found"
-        "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
-        "actions/hvac-start": None,  # Reason: "err.func.wired.methodNotAllowed"
-        "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
-        "battery-status": None,  # Reason: "err.func.wired.notFound"
-        "charge-history": None,  # Reason: "err.func.wired.not-found"
-        "charge-mode": None,  # Reason: "err.func.wired.forbidden"
-        "charging-settings": None,  # Reason: "err.func.wired.forbidden"
-        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
-        "hvac-status": None,
-        "location": _DEFAULT_ENDPOINTS["location"],
-        "lock-status": None,
-        "pressure": None,  # Reason: 404
-        "res-state": None,
-        "soc-levels": None,  # Reason: "err.func.wired.forbidden"
     },
     "XJA1VP": {  # CLIO V
         "actions/charge-start": None,  # err.func.wired.forbidden
@@ -553,6 +527,48 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "res-state": None,  # err.func.wired.notFound
         "soc-levels": None,  # err.func.wired.forbidden
     },
+    "XDD1VE": {  # Renault Master E-Tech
+        "actions/charge-set-mode": _DEFAULT_ENDPOINTS["actions/charge-set-mode"],
+        "actions/charge-set-schedule": None,  # err.func.wired.forbidden
+        "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start-via-settings"],
+        "actions/charge-stop": None,  # err.func.wired.forbidden
+        "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
+        "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
+        "actions/hvac-stop": _DEFAULT_ENDPOINTS["actions/hvac-stop"],
+        "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
+        "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
+        "charge-history": None,  # err.func.wired.not-found
+        "charge-mode": None,  # err.func.wired.forbidden
+        "charge-schedule": _KCM_ENDPOINTS["charge-schedule-via-settings"],
+        "charging-settings": None,  # err.func.wired.forbidden
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
+        "hvac-history": None,  # err.func.wired.not-found
+        "hvac-sessions": None,  # err.func.wired.not-found
+        "hvac-settings": _DEFAULT_ENDPOINTS["hvac-settings"],
+        "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
+        "location": _DEFAULT_ENDPOINTS["location"],
+        "lock-status": None,  # 404 There is no data for this vin and uid
+        "notification-settings": None,  # 400001 The vehicle does not have a GDC gateway
+        "pressure": None,  # 404 There is no data for this vin and uid
+        "res-state": None,  # 404 There is no data for this vin and uid
+        "soc-levels": _DEFAULT_ENDPOINTS["soc-levels"],
+    },
+    "XJB2CP": {  # Renault Symbioz 2025
+        "actions/charge-start": None,  # err.func.wired.forbidden
+        "actions/charge-stop": None,  # err.func.wired.invalid-body-format
+        "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
+        "actions/hvac-start": None,  # err.func.wired.forbidden
+        "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
+        "battery-status": None,  # err.func.wired.notFound
+        "charge-mode": None,  # err.func.wired.forbidden
+        "charging-settings": None,  # err.func.wired.forbidden
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
+        "hvac-status": None,  # err.func.wired.notFound
+        "location": _DEFAULT_ENDPOINTS["location"],
+        "lock-status": None,  # err.func.wired.notFound
+        "res-state": None,  # err.func.wired.notFound
+        "pressure": None,  # err.func.wired.notFound
+    },
     "XJB1SU": {  # CAPTUR II
         "actions/charge-start": None,  # Reason: "err.func.wired.not-found"
         "actions/charge-stop": None,  # Reason: "err.func.wired.not-found"
@@ -575,22 +591,6 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "pressure": None,  # Reason: "err.func.wired.notFound"
         "res-state": None,  # Reason: "err.func.wired.notFound"
         "soc-levels": None,  # Reason: "err.func.wired.forbidden"
-    },
-    "XJB2CP": {  # Renault Symbioz 2025
-        "actions/charge-start": None,  # err.func.wired.forbidden
-        "actions/charge-stop": None,  # err.func.wired.invalid-body-format
-        "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
-        "actions/hvac-start": None,  # err.func.wired.forbidden
-        "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
-        "battery-status": None,  # err.func.wired.notFound
-        "charge-mode": None,  # err.func.wired.forbidden
-        "charging-settings": None,  # err.func.wired.forbidden
-        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
-        "hvac-status": None,  # err.func.wired.notFound
-        "location": _DEFAULT_ENDPOINTS["location"],
-        "lock-status": None,  # err.func.wired.notFound
-        "res-state": None,  # err.func.wired.notFound
-        "pressure": None,  # err.func.wired.notFound
     },
     "XJF2BI": {  # DACIA SANDERO III (ECO-G, petrol+LPG; engineEnergyType OTHER)
         "actions/charge-set-mode": None,  # no EV
