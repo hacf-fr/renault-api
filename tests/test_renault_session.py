@@ -4,7 +4,7 @@ from typing import cast
 
 import aiohttp
 import pytest
-from aioresponses import aioresponses
+from aiointercept import aiointercept
 
 from tests import fixtures
 from tests.const import TEST_COUNTRY
@@ -160,7 +160,7 @@ async def test_not_logged_in(session: RenaultSession) -> None:
 
 
 @pytest.mark.asyncio
-async def test_login(session: RenaultSession, mocked_responses: aioresponses) -> None:
+async def test_login(session: RenaultSession, mocked_responses: aiointercept) -> None:
     """Test login/person/jwt response."""
     fixtures.inject_gigya_all(mocked_responses)
 
@@ -182,7 +182,7 @@ async def test_login(session: RenaultSession, mocked_responses: aioresponses) ->
 
 @pytest.mark.asyncio
 async def test_login_token_property(
-    session: RenaultSession, mocked_responses: aioresponses
+    session: RenaultSession, mocked_responses: aiointercept
 ) -> None:
     """Test that the login token is exposed after login."""
     assert session.login_token is None
@@ -195,7 +195,7 @@ async def test_login_token_property(
 
 @pytest.mark.asyncio
 async def test_set_login_token(
-    session: RenaultSession, mocked_responses: aioresponses
+    session: RenaultSession, mocked_responses: aiointercept
 ) -> None:
     """Test restoring a login token instead of using the password."""
     session.set_login_token(TEST_LOGIN_TOKEN)
@@ -211,7 +211,7 @@ async def test_set_login_token(
 
 @pytest.mark.asyncio
 async def test_expired_login_token(
-    websession: aiohttp.ClientSession, mocked_responses: aioresponses
+    websession: aiohttp.ClientSession, mocked_responses: aiointercept
 ) -> None:
     """Test _get_jwt response on expired login token."""
     session = get_logged_in_session(websession=websession)

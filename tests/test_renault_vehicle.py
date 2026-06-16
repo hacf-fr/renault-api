@@ -8,8 +8,7 @@ from typing import cast
 
 import aiohttp
 import pytest
-from aioresponses import aioresponses
-from aioresponses.core import RequestCall
+from aiointercept import aiointercept
 from syrupy.assertion import SnapshotAssertion
 from yarl import URL
 
@@ -61,7 +60,7 @@ def test_init(websession: aiohttp.ClientSession) -> None:
 
 @pytest.mark.asyncio
 async def test_get_details(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aiointercept
 ) -> None:
     """Test get_details."""
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
@@ -73,7 +72,7 @@ async def test_get_details(
 
 @pytest.mark.asyncio
 async def test_get_car_adapter(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aiointercept
 ) -> None:
     """Test get_details."""
     fixtures.inject_get_car_adapter(mocked_responses, "zoe_40.1.json")
@@ -85,7 +84,7 @@ async def test_get_car_adapter(
 
 @pytest.mark.asyncio
 async def test_get_contracts(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aiointercept
 ) -> None:
     """Test get_contracts."""
     fixtures.inject_get_vehicle_contracts(mocked_responses, "fr_FR.1.json")
@@ -98,7 +97,7 @@ async def test_get_contracts(
 
 @pytest.mark.asyncio
 async def test_get_battery_status(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aiointercept
 ) -> None:
     """Test get_battery_status."""
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
@@ -108,7 +107,7 @@ async def test_get_battery_status(
 
 @pytest.mark.asyncio
 async def test_get_battery_soc(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+    vehicle: RenaultVehicle, mocked_responses: aiointercept, snapshot: SnapshotAssertion
 ) -> None:
     """Test get_battery_soc."""
     fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
@@ -118,7 +117,7 @@ async def test_get_battery_soc(
 
 @pytest.mark.asyncio
 async def test_get_tyre_pressure(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aiointercept
 ) -> None:
     """Test get_tyre_pressure."""
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
@@ -128,7 +127,7 @@ async def test_get_tyre_pressure(
 
 @pytest.mark.asyncio
 async def test_get_location(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aiointercept
 ) -> None:
     """Test get_location."""
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
@@ -138,7 +137,7 @@ async def test_get_location(
 
 @pytest.mark.asyncio
 async def test_get_hvac_status(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aiointercept
 ) -> None:
     """Test get_hvac_status."""
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
@@ -148,7 +147,7 @@ async def test_get_hvac_status(
 
 @pytest.mark.asyncio
 async def test_get_hvac_settings(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aiointercept
 ) -> None:
     """Test get_hvac_settings."""
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
@@ -175,7 +174,7 @@ async def test_get_hvac_settings(
 
 @pytest.mark.asyncio
 async def test_get_charge_mode(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aiointercept
 ) -> None:
     """Test get_charge_mode."""
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
@@ -190,7 +189,7 @@ async def test_get_charge_mode(
 @pytest.mark.asyncio
 async def test_get_charging_settings(
     vehicle: RenaultVehicle,
-    mocked_responses: aioresponses,
+    mocked_responses: aiointercept,
     mode: str,
 ) -> None:
     """Test get_charging_settings using Megane e-Tech."""
@@ -201,7 +200,7 @@ async def test_get_charging_settings(
 
 @pytest.mark.asyncio
 async def test_get_cockpit(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aiointercept
 ) -> None:
     """Test get_cockpit."""
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
@@ -211,7 +210,7 @@ async def test_get_cockpit(
 
 @pytest.mark.asyncio
 async def test_get_lock_status(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aiointercept
 ) -> None:
     """Test get_lock_status."""
     fixtures.inject_get_vehicle_details(mocked_responses, "duster.1.json")
@@ -221,7 +220,7 @@ async def test_get_lock_status(
 
 @pytest.mark.asyncio
 async def test_get_lock_status_no_endpoint(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aiointercept
 ) -> None:
     """Test get_lock_status."""
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
@@ -236,7 +235,7 @@ async def test_get_lock_status_no_endpoint(
 
 @pytest.mark.asyncio
 async def test_get_charge_schedule(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+    vehicle: RenaultVehicle, mocked_responses: aiointercept, snapshot: SnapshotAssertion
 ) -> None:
     """Test get_charging_settings."""
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
@@ -254,7 +253,7 @@ async def test_get_charge_schedule(
 @pytest.mark.asyncio
 async def test_get_charge_schedule_kcm(
     vehicle: RenaultVehicle,
-    mocked_responses: aioresponses,
+    mocked_responses: aiointercept,
     snapshot: SnapshotAssertion,
     ev_schedule_type: str,
 ) -> None:
@@ -266,7 +265,7 @@ async def test_get_charge_schedule_kcm(
 
 @pytest.mark.asyncio
 async def test_get_notification_settings(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aiointercept
 ) -> None:
     """Test get_notification_settings."""
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
@@ -276,7 +275,7 @@ async def test_get_notification_settings(
 
 @pytest.mark.asyncio
 async def test_get_charge_history_month(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aiointercept
 ) -> None:
     """Test get_charge_history."""
     fixtures.inject_get_charge_history(mocked_responses, "202010", "202011", "month")
@@ -289,7 +288,7 @@ async def test_get_charge_history_month(
 
 @pytest.mark.asyncio
 async def test_get_charge_history_day(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aiointercept
 ) -> None:
     """Test get_charge_history."""
     fixtures.inject_get_charge_history(mocked_responses, "20201001", "20201115", "day")
@@ -302,7 +301,7 @@ async def test_get_charge_history_day(
 
 @pytest.mark.asyncio
 async def test_get_charges(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aiointercept
 ) -> None:
     """Test get_charges."""
     fixtures.inject_get_charges(mocked_responses, "20201001", "20201115")
@@ -314,7 +313,7 @@ async def test_get_charges(
 
 @pytest.mark.asyncio
 async def test_get_hvac_history(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aiointercept
 ) -> None:
     """Test get_hvac_history."""
     fixtures.inject_get_hvac_history(mocked_responses, "202010", "202011", "month")
@@ -327,7 +326,7 @@ async def test_get_hvac_history(
 
 @pytest.mark.asyncio
 async def test_get_hvac_sessions(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aiointercept
 ) -> None:
     """Test get_hvac_sessions."""
     fixtures.inject_get_hvac_sessions(mocked_responses, "20201001", "20201115")
@@ -339,7 +338,7 @@ async def test_get_hvac_sessions(
 
 @pytest.mark.asyncio
 async def test_set_ac_start(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+    vehicle: RenaultVehicle, mocked_responses: aiointercept, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_ac_start."""
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
@@ -348,26 +347,26 @@ async def test_set_ac_start(
         21, datetime(2020, 11, 24, 6, 30, tzinfo=timezone.utc)
     )
 
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
 async def test_set_ac_stop(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+    vehicle: RenaultVehicle, mocked_responses: aiointercept, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_ac_stop."""
     url = fixtures.inject_set_hvac_start(mocked_responses, "cancel")
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
     assert await vehicle.set_ac_stop()
 
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
 async def test_set_battery_soc(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+    vehicle: RenaultVehicle, mocked_responses: aiointercept, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_battery_soc."""
     fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
@@ -377,20 +376,20 @@ async def test_set_battery_soc(
 
 @pytest.mark.asyncio
 async def test_set_charge_mode(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+    vehicle: RenaultVehicle, mocked_responses: aiointercept, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_charge_mode."""
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     url = fixtures.inject_set_charge_mode(mocked_responses, "schedule_mode")
     assert await vehicle.set_charge_mode("schedule_mode")
 
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
 async def test_set_charge_schedules(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+    vehicle: RenaultVehicle, mocked_responses: aiointercept, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_charge_schedules."""
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
@@ -399,13 +398,13 @@ async def test_set_charge_schedules(
     schedules: list[ChargeSchedule] = []
     assert await vehicle.set_charge_schedules(schedules)
 
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
 async def test_set_charge_schedules_empty(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+    vehicle: RenaultVehicle, mocked_responses: aiointercept, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_charge_schedules when mode is always and current schedules []."""
     fixtures.inject_get_vehicle_details(mocked_responses, "megane_e-tech.2.json")
@@ -427,13 +426,13 @@ async def test_set_charge_schedules_empty(
     sched = cast(list[ChargeSchedule], charge_schedules.schedules)
     assert await vehicle.set_charge_schedules(sched)
 
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
 async def test_set_charge_schedules_update(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+    vehicle: RenaultVehicle, mocked_responses: aiointercept, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_charge_schedules when mode is always and current schedules []."""
     fixtures.inject_get_vehicle_details(mocked_responses, "megane_e-tech.2.json")
@@ -466,7 +465,7 @@ async def test_set_charge_schedules_update(
     sched = cast(list[ChargeSchedule], charge_schedules.schedules)
     assert await vehicle.set_charge_schedules(sched)
 
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
 
 
@@ -501,7 +500,7 @@ async def test_set_charge_schedules_update(
 @pytest.mark.asyncio
 async def test_set_charge_start(
     vehicle: RenaultVehicle,
-    mocked_responses: aioresponses,
+    mocked_responses: aiointercept,
     vehicle_details: str,
     arguments: dict[str, Any],
     action_url: str,
@@ -513,13 +512,13 @@ async def test_set_charge_start(
     url = fixtures.inject_action(mocked_responses, action_url, action_result)
 
     assert await vehicle.set_charge_start(**arguments)
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
 async def test_set_charge_start_r5(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+    vehicle: RenaultVehicle, mocked_responses: aiointercept, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_charge_start for Renault 5 E-TECH via ev/settings endpoint."""
     fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
@@ -529,13 +528,13 @@ async def test_set_charge_start_r5(
     url = fixtures.inject_set_kcm_ev_settings_charge(mocked_responses, "start")
 
     assert await vehicle.set_charge_start()
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
 async def test_set_hvac_schedules(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+    vehicle: RenaultVehicle, mocked_responses: aiointercept, snapshot: SnapshotAssertion
 ) -> None:
     """Test set_hvac_schedules."""
     schedules: list[HvacSchedule] = []
@@ -543,53 +542,53 @@ async def test_set_hvac_schedules(
     url = fixtures.inject_set_hvac_schedules(mocked_responses)
 
     assert await vehicle.set_hvac_schedules(schedules)
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
 
     assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
 async def test_start_horn(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+    vehicle: RenaultVehicle, mocked_responses: aiointercept, snapshot: SnapshotAssertion
 ) -> None:
     """Test start_horn."""
     url = fixtures.inject_set_hornlight(mocked_responses, "horn")
     fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
     assert await vehicle.start_horn()
 
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
 async def test_start_lights(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+    vehicle: RenaultVehicle, mocked_responses: aiointercept, snapshot: SnapshotAssertion
 ) -> None:
     """Test start_lights."""
     url = fixtures.inject_set_hornlight(mocked_responses, "lights")
     fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
     assert await vehicle.start_lights()
 
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
 async def test_refresh_location(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+    vehicle: RenaultVehicle, mocked_responses: aiointercept, snapshot: SnapshotAssertion
 ) -> None:
     """Test refresh_location."""
     url = fixtures.inject_set_refresh_location(mocked_responses)
     fixtures.inject_get_vehicle_details(mocked_responses, "renault_5.1.json")
     assert await vehicle.refresh_location()
 
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
 
 
 @pytest.mark.asyncio
 async def test_http_get(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+    vehicle: RenaultVehicle, mocked_responses: aiointercept, snapshot: SnapshotAssertion
 ) -> None:
     """Test http_get."""
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
@@ -597,14 +596,14 @@ async def test_http_get(
     url = fixtures.inject_get_charge_schedule(mocked_responses, "single")
 
     assert await vehicle.http_get(endpoint) == snapshot
-    request: RequestCall = mocked_responses.requests[("GET", URL(url))][0]
+    request = mocked_responses.requests[("GET", URL(url))][0]
 
     assert request.kwargs["json"] is None
 
 
 @pytest.mark.asyncio
 async def test_http_post(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses, snapshot: SnapshotAssertion
+    vehicle: RenaultVehicle, mocked_responses: aiointercept, snapshot: SnapshotAssertion
 ) -> None:
     """Test http_post."""
     endpoint = (
@@ -626,7 +625,7 @@ async def test_http_post(
     )
 
     assert await vehicle.http_post(endpoint, json) == snapshot
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
 
     assert request.kwargs["json"] == snapshot
 
@@ -637,7 +636,7 @@ async def test_http_post(
 @pytest.mark.asyncio
 async def test_get_endpoints(
     vehicle: RenaultVehicle,
-    mocked_responses: aioresponses,
+    mocked_responses: aiointercept,
     filename: str,
     snapshot: SnapshotAssertion,
 ) -> None:
@@ -652,7 +651,7 @@ async def test_get_endpoints(
 
 @pytest.mark.asyncio
 async def test_get_full_endpoint_unknown(
-    vehicle: RenaultVehicle, mocked_responses: aioresponses
+    vehicle: RenaultVehicle, mocked_responses: aiointercept
 ) -> None:
     """Test http_get."""
     # Unkown endpoint

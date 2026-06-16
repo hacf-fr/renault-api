@@ -2,7 +2,7 @@
 
 import pytest
 from aiohttp import ClientSession
-from aioresponses import aioresponses
+from aiointercept import aiointercept
 from syrupy.assertion import SnapshotAssertion
 
 from renault_api.const import AVAILABLE_LOCALES
@@ -56,7 +56,7 @@ async def test_preload_force_api_keys(
 @pytest.mark.skip("API keys are out of date.")
 async def test_preload_unknown_api_keys(
     websession: ClientSession,
-    mocked_responses: aioresponses,
+    mocked_responses: aiointercept,
     snapshot: SnapshotAssertion,
 ) -> None:
     """Ensure is able to parse a known known."""
@@ -74,7 +74,7 @@ async def test_preload_unknown_api_keys(
 
 @pytest.mark.asyncio
 async def test_preload_invalid_api_keys(
-    websession: ClientSession, mocked_responses: aioresponses
+    websession: ClientSession, mocked_responses: aiointercept
 ) -> None:
     """Ensure is able to parse an invalid locale."""
     fake_locale = "fake"

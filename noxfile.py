@@ -123,7 +123,7 @@ def mypy(session: Session) -> None:
         "types-tzlocal",
         "typeguard",
         "pytest-asyncio",
-        "aioresponses",
+        "aiointercept",
         "syrupy",
     )
     session.run("mypy", *args)
@@ -140,7 +140,7 @@ def tests(session: Session) -> None:
         "pytest",
         "pygments",
         "pytest-asyncio",
-        "aioresponses",
+        "aiointercept",
         "syrupy",
         "typeguard",
     )
@@ -169,7 +169,7 @@ def typeguard(session: Session) -> None:
     """Runtime type checking using Typeguard."""
     session.install(".[cli]")
     session.install(
-        "pytest", "typeguard", "pygments", "pytest-asyncio", "aioresponses", "syrupy"
+        "pytest", "typeguard", "pygments", "pytest-asyncio", "aiointercept", "syrupy"
     )
     session.run("pytest", f"--typeguard-packages={package}", *session.posargs)
 

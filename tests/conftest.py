@@ -14,7 +14,7 @@ import pytest
 import pytest_asyncio
 from _pytest.monkeypatch import MonkeyPatch
 from aiohttp.client import ClientSession
-from aioresponses import aioresponses
+from aiointercept import aiointercept
 from click.testing import CliRunner
 
 
@@ -29,11 +29,28 @@ async def websession() -> AsyncGenerator[ClientSession, None]:
         await closed_event.wait()
 
 
+@pytest.fixture(scope="session")
+def _intercept_server() -> Generator[aiointercept, None, None]:
+    """Fixture for starting the aiointercept test server.
+
+    aiointercept routes requests through a real aiohttp test server, so the
+    server is started once per session on its own background loop.  This keeps
+    it usable from both async tests and the synchronous CLI tests (which drive
+    the event loop internally via ``CliRunner``).
+    """
+    m = aiointercept(mock_external_urls=True)
+    asyncio.run(m.start())
+    yield m
+    asyncio.run(m.stop())
+
+
 @pytest.fixture(autouse=True)
-def mocked_responses() -> Generator[aioresponses, None, None]:
+def mocked_responses(
+    _intercept_server: aiointercept,
+) -> Generator[aiointercept, None, None]:
     """Fixture for mocking aiohttp responses."""
-    with aioresponses() as m:
-        yield m
+    yield _intercept_server
+    _intercept_server.clear()
 
 
 @pytest.fixture

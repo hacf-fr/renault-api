@@ -10,7 +10,7 @@ from os import path
 from typing import Any
 
 import jwt
-from aioresponses import aioresponses
+from aiointercept import aiointercept
 from marshmallow.schema import Schema
 
 from tests.const import REDACTED
@@ -84,7 +84,7 @@ def get_file_content_as_wrapped_schema(
 
 
 def inject_gigya(
-    mocked_responses: aioresponses,
+    mocked_responses: aiointercept,
     urlpath: str,
     filename: str,
 ) -> str:
@@ -97,12 +97,12 @@ def inject_gigya(
         url,
         status=200,
         body=body,
-        headers={"content-type": "text/javascript"},
+        content_type="text/javascript",
     )
     return url
 
 
-def inject_gigya_login(mocked_responses: aioresponses) -> str:
+def inject_gigya_login(mocked_responses: aiointercept) -> str:
     """Inject Gigya login data."""
     return inject_gigya(
         mocked_responses,
@@ -111,7 +111,7 @@ def inject_gigya_login(mocked_responses: aioresponses) -> str:
     )
 
 
-def inject_gigya_login_invalid(mocked_responses: aioresponses) -> str:
+def inject_gigya_login_invalid(mocked_responses: aiointercept) -> str:
     """Inject Gigya login data."""
     return inject_gigya(
         mocked_responses,
@@ -120,7 +120,7 @@ def inject_gigya_login_invalid(mocked_responses: aioresponses) -> str:
     )
 
 
-def inject_gigya_account_info(mocked_responses: aioresponses) -> str:
+def inject_gigya_account_info(mocked_responses: aiointercept) -> str:
     """Inject Gigya getAccountInfo data."""
     return inject_gigya(
         mocked_responses,
@@ -129,7 +129,7 @@ def inject_gigya_account_info(mocked_responses: aioresponses) -> str:
     )
 
 
-def inject_gigya_jwt(mocked_responses: aioresponses) -> str:
+def inject_gigya_jwt(mocked_responses: aiointercept) -> str:
     """Inject Gigya getJWT data."""
     return inject_gigya(
         mocked_responses,
@@ -138,7 +138,7 @@ def inject_gigya_jwt(mocked_responses: aioresponses) -> str:
     )
 
 
-def inject_gigya_all(mocked_responses: aioresponses) -> None:
+def inject_gigya_all(mocked_responses: aiointercept) -> None:
     """Inject Gigya login/getAccountInfo/getJWT data."""
     inject_gigya_login(mocked_responses)
     inject_gigya_account_info(mocked_responses)
@@ -146,7 +146,7 @@ def inject_gigya_all(mocked_responses: aioresponses) -> None:
 
 
 def inject_data(
-    mocked_responses: aioresponses,
+    mocked_responses: aiointercept,
     urlpath: str,
     filename: str | None = None,
     *,
@@ -164,7 +164,7 @@ def inject_data(
 
 
 def inject_action(
-    mocked_responses: aioresponses,
+    mocked_responses: aiointercept,
     urlpath: str,
     filename: str,
 ) -> str:
@@ -179,7 +179,7 @@ def inject_action(
     return url
 
 
-def inject_get_person(mocked_responses: aioresponses) -> str:
+def inject_get_person(mocked_responses: aiointercept) -> str:
     """Inject sample person."""
     urlpath = f"persons/{TEST_PERSON_ID}?{DEFAULT_QUERY_STRING}"
     return inject_data(
@@ -189,7 +189,7 @@ def inject_get_person(mocked_responses: aioresponses) -> str:
     )
 
 
-def inject_get_notifications(mocked_responses: aioresponses) -> str:
+def inject_get_notifications(mocked_responses: aiointercept) -> str:
     """Inject sample charges."""
     urlpath = (
         f"persons/{TEST_PERSON_ID}/notifications/kmr?"
@@ -203,7 +203,7 @@ def inject_get_notifications(mocked_responses: aioresponses) -> str:
     )
 
 
-def inject_get_vehicles(mocked_responses: aioresponses, vehicle: str) -> str:
+def inject_get_vehicles(mocked_responses: aiointercept, vehicle: str) -> str:
     """Inject sample vehicles."""
     urlpath = f"accounts/{TEST_ACCOUNT_ID}/vehicles?{DEFAULT_QUERY_STRING}"
     return inject_data(
@@ -213,7 +213,7 @@ def inject_get_vehicles(mocked_responses: aioresponses, vehicle: str) -> str:
     )
 
 
-def inject_get_vehicle_details(mocked_responses: aioresponses, vehicle: str) -> str:
+def inject_get_vehicle_details(mocked_responses: aiointercept, vehicle: str) -> str:
     """Inject sample vehicles."""
     urlpath = (
         f"accounts/{TEST_ACCOUNT_ID}/vehicles/{TEST_VIN}/details?{DEFAULT_QUERY_STRING}"
@@ -235,7 +235,7 @@ def inject_get_vehicle_details(mocked_responses: aioresponses, vehicle: str) -> 
     )
 
 
-def inject_get_car_adapter(mocked_responses: aioresponses, vehicle: str) -> str:
+def inject_get_car_adapter(mocked_responses: aiointercept, vehicle: str) -> str:
     """Inject sample vehicles."""
     urlpath = f"{KCA_ADAPTER_PATH_V2}?{DEFAULT_QUERY_STRING}"
 
@@ -247,7 +247,7 @@ def inject_get_car_adapter(mocked_responses: aioresponses, vehicle: str) -> str:
     )
 
 
-def inject_get_vehicle_contracts(mocked_responses: aioresponses, filename: str) -> str:
+def inject_get_vehicle_contracts(mocked_responses: aiointercept, filename: str) -> str:
     """Inject sample contracts."""
     query_string = (
         "brand=RENAULT&"
@@ -266,7 +266,7 @@ def inject_get_vehicle_contracts(mocked_responses: aioresponses, filename: str) 
 
 
 def inject_get_battery_status(
-    mocked_responses: aioresponses, filename: str = "vehicle_data/battery-status.1.json"
+    mocked_responses: aiointercept, filename: str = "vehicle_data/battery-status.1.json"
 ) -> str:
     """Inject sample battery-status."""
     urlpath = f"{KCA_ADAPTER_PATH_V2}/battery-status?{DEFAULT_QUERY_STRING}"
@@ -278,7 +278,7 @@ def inject_get_battery_status(
 
 
 def inject_get_battery_soc_levels(
-    mocked_responses: aioresponses,
+    mocked_responses: aiointercept,
     filename: str = "vehicle_kcm_data/ev-soc-levels.json",
 ) -> str:
     """Inject sample battery state of charge limits."""
@@ -291,7 +291,7 @@ def inject_get_battery_soc_levels(
 
 
 def inject_get_tyre_pressure(
-    mocked_responses: aioresponses, filename: str = "vehicle_data/pressure.json"
+    mocked_responses: aiointercept, filename: str = "vehicle_data/pressure.json"
 ) -> str:
     """Inject sample tyre pressure."""
     urlpath = f"{KCA_ADAPTER_PATH_V1}/pressure?{DEFAULT_QUERY_STRING}"
@@ -302,7 +302,7 @@ def inject_get_tyre_pressure(
     )
 
 
-def inject_get_location(mocked_responses: aioresponses) -> str:
+def inject_get_location(mocked_responses: aiointercept) -> str:
     """Inject sample location."""
     urlpath = f"{KCA_ADAPTER_PATH_V1}/location?{DEFAULT_QUERY_STRING}"
     return inject_data(
@@ -312,7 +312,7 @@ def inject_get_location(mocked_responses: aioresponses) -> str:
     )
 
 
-def inject_get_hvac_status(mocked_responses: aioresponses, vehicle: str) -> str:
+def inject_get_hvac_status(mocked_responses: aiointercept, vehicle: str) -> str:
     """Inject sample hvac-status."""
     urlpath = f"{KCA_ADAPTER_PATH_V1}/hvac-status?{DEFAULT_QUERY_STRING}"
     filename = f"vehicle_data/hvac-status.{vehicle}.json"
@@ -327,7 +327,7 @@ def inject_get_hvac_status(mocked_responses: aioresponses, vehicle: str) -> str:
     )
 
 
-def inject_get_hvac_settings(mocked_responses: aioresponses) -> str:
+def inject_get_hvac_settings(mocked_responses: aiointercept) -> str:
     """Inject sample hvac-settings."""
     urlpath = f"{KCA_ADAPTER_PATH_V1}/hvac-settings?{DEFAULT_QUERY_STRING}"
     return inject_data(
@@ -337,7 +337,7 @@ def inject_get_hvac_settings(mocked_responses: aioresponses) -> str:
     )
 
 
-def inject_get_charge_mode(mocked_responses: aioresponses) -> str:
+def inject_get_charge_mode(mocked_responses: aiointercept) -> str:
     """Inject sample charge-mode."""
     urlpath = f"{KCA_ADAPTER_PATH_V1}/charge-mode?{DEFAULT_QUERY_STRING}"
     return inject_data(
@@ -348,7 +348,7 @@ def inject_get_charge_mode(mocked_responses: aioresponses) -> str:
 
 
 def inject_get_charge_history(
-    mocked_responses: aioresponses, start: str, end: str, period: str
+    mocked_responses: aiointercept, start: str, end: str, period: str
 ) -> str:
     """Inject sample charge-history."""
     query_string = f"{DEFAULT_QUERY_STRING}&end={end}&start={start}&type={period}"
@@ -361,7 +361,7 @@ def inject_get_charge_history(
 
 
 def inject_get_hvac_history(
-    mocked_responses: aioresponses, start: str, end: str, period: str
+    mocked_responses: aiointercept, start: str, end: str, period: str
 ) -> str:
     """Inject sample hvac-history."""
     query_string = f"{DEFAULT_QUERY_STRING}&end={end}&start={start}&type={period}"
@@ -374,7 +374,7 @@ def inject_get_hvac_history(
 
 
 def inject_get_hvac_sessions(
-    mocked_responses: aioresponses, start: str, end: str
+    mocked_responses: aiointercept, start: str, end: str
 ) -> str:
     """Inject sample hvac-sessions."""
     query_string = f"{DEFAULT_QUERY_STRING}&end={end}&start={start}"
@@ -387,7 +387,7 @@ def inject_get_hvac_sessions(
 
 
 def inject_get_charges(
-    mocked_responses: aioresponses,
+    mocked_responses: aiointercept,
     start: str,
     end: str,
     filename: str = "vehicle_data/charges.json",
@@ -402,7 +402,7 @@ def inject_get_charges(
     )
 
 
-def inject_get_charging_settings(mocked_responses: aioresponses, type: str) -> str:
+def inject_get_charging_settings(mocked_responses: aiointercept, type: str) -> str:
     """Inject sample charges."""
     urlpath = f"{KCA_ADAPTER_PATH_V1}/charging-settings?{DEFAULT_QUERY_STRING}"
     return inject_data(
@@ -412,7 +412,7 @@ def inject_get_charging_settings(mocked_responses: aioresponses, type: str) -> s
     )
 
 
-def inject_get_charge_schedule(mocked_responses: aioresponses, type: str) -> str:
+def inject_get_charge_schedule(mocked_responses: aiointercept, type: str) -> str:
     """Inject sample charges."""
     urlpath = f"{KCA_ADAPTER_PATH_V1}/charge-schedule?{DEFAULT_QUERY_STRING}"
     return inject_data(
@@ -422,7 +422,7 @@ def inject_get_charge_schedule(mocked_responses: aioresponses, type: str) -> str
     )
 
 
-def inject_get_ev_settings(mocked_responses: aioresponses, type: str) -> str:
+def inject_get_ev_settings(mocked_responses: aiointercept, type: str) -> str:
     """Inject sample charges."""
     urlpath = f"{KCM_ADAPTER_PATH}/ev/settings?{DEFAULT_QUERY_STRING}"
     return inject_data(
@@ -432,7 +432,7 @@ def inject_get_ev_settings(mocked_responses: aioresponses, type: str) -> str:
     )
 
 
-def inject_get_cockpit(mocked_responses: aioresponses, vehicle: str) -> str:
+def inject_get_cockpit(mocked_responses: aiointercept, vehicle: str) -> str:
     """Inject sample cockpit."""
     urlpath = f"{KCA_ADAPTER_PATH_V1}/cockpit?{DEFAULT_QUERY_STRING}"
     filename = f"vehicle_data/cockpit.{vehicle}.json"
@@ -445,7 +445,7 @@ def inject_get_cockpit(mocked_responses: aioresponses, vehicle: str) -> str:
     )
 
 
-def inject_get_lock_status(mocked_responses: aioresponses) -> str:
+def inject_get_lock_status(mocked_responses: aiointercept) -> str:
     """Inject sample lock-status."""
     urlpath = f"{KCA_ADAPTER_PATH_V1}/lock-status?{DEFAULT_QUERY_STRING}"
     return inject_data(
@@ -455,7 +455,7 @@ def inject_get_lock_status(mocked_responses: aioresponses) -> str:
     )
 
 
-def inject_get_res_state(mocked_responses: aioresponses) -> str:
+def inject_get_res_state(mocked_responses: aiointercept) -> str:
     """Inject sample res-state."""
     urlpath = f"{KCA_ADAPTER_PATH_V1}/res-state?{DEFAULT_QUERY_STRING}"
     return inject_data(
@@ -465,7 +465,7 @@ def inject_get_res_state(mocked_responses: aioresponses) -> str:
     )
 
 
-def inject_get_notification_settings(mocked_responses: aioresponses) -> str:
+def inject_get_notification_settings(mocked_responses: aiointercept) -> str:
     """Inject sample notification-settings."""
     urlpath = f"{KCA_ADAPTER_PATH_V1}/notification-settings?{DEFAULT_QUERY_STRING}"
     return inject_data(
@@ -476,7 +476,7 @@ def inject_get_notification_settings(mocked_responses: aioresponses) -> str:
 
 
 def inject_set_battery_soc_levels(
-    mocked_responses: aioresponses,
+    mocked_responses: aiointercept,
 ) -> str:
     """Inject sample charge-mode."""
     urlpath = f"{KCM_ADAPTER_PATH}/ev/soc-levels?{DEFAULT_QUERY_STRING}"
@@ -487,7 +487,7 @@ def inject_set_battery_soc_levels(
     )
 
 
-def inject_set_charge_mode(mocked_responses: aioresponses, mode: str) -> str:
+def inject_set_charge_mode(mocked_responses: aiointercept, mode: str) -> str:
     """Inject sample charge-mode."""
     urlpath = f"{KCA_ADAPTER_PATH_V1}/actions/charge-mode?{DEFAULT_QUERY_STRING}"
     return inject_action(
@@ -497,7 +497,7 @@ def inject_set_charge_mode(mocked_responses: aioresponses, mode: str) -> str:
     )
 
 
-def inject_set_kcm_charge_schedule(mocked_responses: aioresponses, result: str) -> str:
+def inject_set_kcm_charge_schedule(mocked_responses: aiointercept, result: str) -> str:
     """Inject sample charge-schedule."""
     urlpath = f"{KCM_ADAPTER_PATH}/charge/schedule?{DEFAULT_QUERY_STRING}"
     return inject_action(
@@ -507,7 +507,7 @@ def inject_set_kcm_charge_schedule(mocked_responses: aioresponses, result: str) 
     )
 
 
-def inject_set_charge_schedule(mocked_responses: aioresponses, result: str) -> str:
+def inject_set_charge_schedule(mocked_responses: aiointercept, result: str) -> str:
     """Inject sample charge-schedule."""
     urlpath = f"{KCA_ADAPTER_PATH_V2}/actions/charge-schedule?{DEFAULT_QUERY_STRING}"
     return inject_action(
@@ -517,7 +517,7 @@ def inject_set_charge_schedule(mocked_responses: aioresponses, result: str) -> s
     )
 
 
-def inject_set_hornlight(mocked_responses: aioresponses, type: str) -> str:
+def inject_set_hornlight(mocked_responses: aiointercept, type: str) -> str:
     """Inject sample horn-lights horn."""
     urlpath = f"{KCA_ADAPTER_PATH_V1}/actions/horn-lights?{DEFAULT_QUERY_STRING}"
     return inject_action(
@@ -528,7 +528,7 @@ def inject_set_hornlight(mocked_responses: aioresponses, type: str) -> str:
 
 
 def inject_set_kcm_ev_settings_charge(
-    mocked_responses: aioresponses, action: str
+    mocked_responses: aiointercept, action: str
 ) -> str:
     """Inject sample ev/settings for charge-start or charge-stop."""
     urlpath = f"{KCM_ADAPTER_PATH}/ev/settings?{DEFAULT_QUERY_STRING}"
@@ -539,7 +539,7 @@ def inject_set_kcm_ev_settings_charge(
     )
 
 
-def inject_set_hvac_start(mocked_responses: aioresponses, result: str) -> str:
+def inject_set_hvac_start(mocked_responses: aiointercept, result: str) -> str:
     """Inject sample hvac-start."""
     urlpath = f"{KCA_ADAPTER_PATH_V1}/actions/hvac-start?{DEFAULT_QUERY_STRING}"
     return inject_action(
@@ -549,7 +549,7 @@ def inject_set_hvac_start(mocked_responses: aioresponses, result: str) -> str:
     )
 
 
-def inject_set_hvac_schedules(mocked_responses: aioresponses) -> str:
+def inject_set_hvac_schedules(mocked_responses: aiointercept) -> str:
     """Inject sample hvac-schedules."""
     urlpath = f"{KCA_ADAPTER_PATH_V2}/actions/hvac-schedule?{DEFAULT_QUERY_STRING}"
     return inject_action(
@@ -559,7 +559,7 @@ def inject_set_hvac_schedules(mocked_responses: aioresponses) -> str:
     )
 
 
-def inject_set_refresh_location(mocked_responses: aioresponses) -> str:
+def inject_set_refresh_location(mocked_responses: aiointercept) -> str:
     """Inject sample refresh-location."""
     urlpath = f"{KCA_ADAPTER_PATH_V1}/actions/refresh-location?{DEFAULT_QUERY_STRING}"
     return inject_action(
@@ -569,7 +569,7 @@ def inject_set_refresh_location(mocked_responses: aioresponses) -> str:
     )
 
 
-def inject_vehicle_status(mocked_responses: aioresponses, vehicle: str) -> None:
+def inject_vehicle_status(mocked_responses: aiointercept, vehicle: str) -> None:
     """Inject Kamereon vehicle status data."""
     inject_get_battery_status(mocked_responses)
     inject_get_location(mocked_responses)

@@ -1,8 +1,7 @@
 """Test cases for the __main__ module."""
 
 import pytest
-from aioresponses import aioresponses
-from aioresponses.core import RequestCall
+from aiointercept import aiointercept
 from click.testing import CliRunner
 from syrupy.assertion import SnapshotAssertion
 from yarl import URL
@@ -14,7 +13,7 @@ from renault_api.cli import __main__
 
 
 def test_hvac_history_day(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -30,7 +29,7 @@ def test_hvac_history_day(
 
 
 def test_hvac_history_month(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -53,7 +52,7 @@ def test_hvac_history_month(
     ],
 )
 def test_hvac_cancel(
-    mocked_responses: aioresponses,
+    mocked_responses: aiointercept,
     cli_runner: CliRunner,
     snapshot: SnapshotAssertion,
     vehicle_fixture: str,
@@ -67,13 +66,13 @@ def test_hvac_cancel(
     result = cli_runner.invoke(__main__.main, "hvac cancel")
     assert result.exit_code == 0, result.exception
 
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
     assert result.output == snapshot
 
 
 def test_sessions(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -89,7 +88,7 @@ def test_sessions(
 
 
 def test_hvac_start_now(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -98,13 +97,13 @@ def test_hvac_start_now(
 
     result = cli_runner.invoke(__main__.main, "hvac start --temperature 25")
     assert result.exit_code == 0, result.exception
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
     assert result.output == snapshot
 
 
 def test_hvac_start_later(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -115,6 +114,6 @@ def test_hvac_start_later(
         __main__.main, "hvac start --temperature 24 --at '2020-12-25T11:50:00+02:00'"
     )
     assert result.exit_code == 0, result.exception
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
     assert result.output == snapshot

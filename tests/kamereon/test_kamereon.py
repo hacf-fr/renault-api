@@ -2,8 +2,7 @@
 
 import aiohttp
 import pytest
-from aioresponses import aioresponses
-from aioresponses.core import RequestCall
+from aiointercept import aiointercept
 from syrupy.assertion import SnapshotAssertion
 from yarl import URL
 
@@ -21,7 +20,7 @@ from renault_api.kamereon import exceptions
 
 @pytest.mark.asyncio
 async def test_get_person(
-    websession: aiohttp.ClientSession, mocked_responses: aioresponses
+    websession: aiohttp.ClientSession, mocked_responses: aiointercept
 ) -> None:
     """Test get_person."""
     fixtures.inject_get_person(mocked_responses)
@@ -40,7 +39,7 @@ async def test_get_person(
 
 @pytest.mark.asyncio
 async def test_get_account_vehicles(
-    websession: aiohttp.ClientSession, mocked_responses: aioresponses
+    websession: aiohttp.ClientSession, mocked_responses: aiointercept
 ) -> None:
     """Test get_account_vehicles."""
     fixtures.inject_get_vehicles(mocked_responses, "zoe_40.1.json")
@@ -57,7 +56,7 @@ async def test_get_account_vehicles(
 
 @pytest.mark.asyncio
 async def test_get_vehicle_data(
-    websession: aiohttp.ClientSession, mocked_responses: aioresponses
+    websession: aiohttp.ClientSession, mocked_responses: aiointercept
 ) -> None:
     """Test get_vehicle_data."""
     fixtures.inject_get_battery_status(mocked_responses)
@@ -76,7 +75,7 @@ async def test_get_vehicle_data(
 
 @pytest.mark.asyncio
 async def test_get_vehicle_data_xml_bad_gateway(
-    websession: aiohttp.ClientSession, mocked_responses: aioresponses
+    websession: aiohttp.ClientSession, mocked_responses: aiointercept
 ) -> None:
     """Test get_vehicle_data with invalid xml data."""
     fixtures.inject_get_battery_status(mocked_responses, "error/bad_gateway.html")
@@ -102,7 +101,7 @@ async def test_get_vehicle_data_xml_bad_gateway(
 @pytest.mark.asyncio
 async def test_set_vehicle_action(
     websession: aiohttp.ClientSession,
-    mocked_responses: aioresponses,
+    mocked_responses: aiointercept,
     snapshot: SnapshotAssertion,
 ) -> None:
     """Test set_vehicle_action."""
@@ -119,5 +118,5 @@ async def test_set_vehicle_action(
         attributes={"action": "cancel"},
     )
 
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot

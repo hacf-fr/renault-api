@@ -5,8 +5,7 @@ import os
 from typing import Any
 
 import pytest
-from aioresponses import aioresponses
-from aioresponses.core import RequestCall
+from aiointercept import aiointercept
 from click.testing import CliRunner
 from syrupy.assertion import SnapshotAssertion
 from typeguard import suppress_type_checks
@@ -36,7 +35,7 @@ from renault_api.gigya import GIGYA_PERSON_ID
 
 
 def test_vehicle_details(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
@@ -59,7 +58,7 @@ def test_vehicle_details(
     "filename", fixtures.get_json_files(f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicles")
 )
 def test_vehicle_status(
-    mocked_responses: aioresponses,
+    mocked_responses: aiointercept,
     cli_runner: CliRunner,
     filename: str,
     snapshot: SnapshotAssertion,
@@ -106,7 +105,7 @@ def test_vehicle_status(
 
 
 def test_vehicle_status_prompt(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     fixtures.inject_gigya_all(mocked_responses)
@@ -138,7 +137,7 @@ def test_vehicle_status_prompt(
 
 
 def test_vehicle_status_no_prompt(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
@@ -159,7 +158,7 @@ def test_vehicle_status_no_prompt(
 
 
 def test_vehicle_status_json(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
@@ -180,7 +179,7 @@ def test_vehicle_status_json(
 
 
 def test_vehicle_contracts(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
@@ -199,7 +198,7 @@ def test_vehicle_contracts(
 
 
 def test_horn(
-    mocked_responses: aioresponses,
+    mocked_responses: aiointercept,
     cli_runner: CliRunner,
     snapshot: SnapshotAssertion,
 ) -> None:
@@ -214,7 +213,7 @@ def test_horn(
 
 
 def test_http_get(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
@@ -241,7 +240,7 @@ def test_http_get(
 
 
 def test_http_get_list(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
@@ -267,7 +266,7 @@ def test_http_get_list(
 
 
 def test_http_post(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     credential_store = FileCredentialStore(os.path.expanduser(CREDENTIAL_PATH))
@@ -294,13 +293,13 @@ def test_http_post(
     assert result.exit_code == 0, result.exception
     assert result.output == snapshot
 
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
 
 
 def test_http_post_file(
     tmpdir: Any,
-    mocked_responses: aioresponses,
+    mocked_responses: aiointercept,
     cli_runner: CliRunner,
     snapshot: SnapshotAssertion,
 ) -> None:
@@ -333,12 +332,12 @@ def test_http_post_file(
     assert result.exit_code == 0, result.exception
     assert result.output == snapshot
 
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
 
 
 def test_lights(
-    mocked_responses: aioresponses,
+    mocked_responses: aiointercept,
     cli_runner: CliRunner,
     snapshot: SnapshotAssertion,
 ) -> None:

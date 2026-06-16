@@ -1,8 +1,7 @@
 """Test cases for the __main__ module."""
 
 import pytest
-from aioresponses import aioresponses
-from aioresponses.core import RequestCall
+from aiointercept import aiointercept
 from click.testing import CliRunner
 from syrupy.assertion import SnapshotAssertion
 from yarl import URL
@@ -17,7 +16,7 @@ from renault_api.cli import __main__
 
 
 def test_charge_soclevels_show(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -44,7 +43,7 @@ def test_charge_soclevels_show(
     ],
 )
 def test_charge_soclevels_set(
-    mocked_responses: aioresponses,
+    mocked_responses: aiointercept,
     cli_runner: CliRunner,
     snapshot: SnapshotAssertion,
     min_level: int,
@@ -63,14 +62,14 @@ def test_charge_soclevels_set(
     assert result.exit_code == exit_code, result.exception
 
     if exit_code == 0:
-        request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+        request = mocked_responses.requests[("POST", URL(url))][0]
         assert request.kwargs["json"] == snapshot
 
     assert result.output == snapshot
 
 
 def test_charge_history_day(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -87,7 +86,7 @@ def test_charge_history_day(
 
 
 def test_charge_history_month(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -104,7 +103,7 @@ def test_charge_history_month(
 
 
 def test_charge_mode_get(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -117,7 +116,7 @@ def test_charge_mode_get(
 
 
 def test_charge_mode_set(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -127,13 +126,13 @@ def test_charge_mode_set(
     result = cli_runner.invoke(__main__.main, "charge mode --set schedule_mode")
     assert result.exit_code == 0, result.exception
 
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
     assert result.output == snapshot
 
 
 def test_sessions_40(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -148,7 +147,7 @@ def test_sessions_40(
 
 
 def test_sessions_45(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -168,7 +167,7 @@ def test_sessions_45(
 
 
 def test_sessions_50(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -188,7 +187,7 @@ def test_sessions_50(
 
 
 def test_charge_schedule_show(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -209,7 +208,7 @@ def test_charge_schedule_show(
     ],
 )
 def test_charge_schedule_show_alternate(
-    mocked_responses: aioresponses,
+    mocked_responses: aiointercept,
     cli_runner: CliRunner,
     snapshot: SnapshotAssertion,
     ev_schedule_type: str,
@@ -225,7 +224,7 @@ def test_charge_schedule_show_alternate(
 
 
 def test_charging_settings_set(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -240,13 +239,13 @@ def test_charging_settings_set(
         __main__.main, f"charge schedule set 1 {monday} {friday} {saturday}"
     )
     assert result.exit_code == 0, result.exception
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
     assert result.output == snapshot
 
 
 def test_charging_settings_activate(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -256,14 +255,14 @@ def test_charging_settings_activate(
 
     result = cli_runner.invoke(__main__.main, "charge schedule activate 3")
     assert result.exit_code == 0, result.exception
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
 
     assert request.kwargs["json"] == snapshot
     assert result.output == snapshot
 
 
 def test_charging_settings_deactivate(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -273,7 +272,7 @@ def test_charging_settings_deactivate(
 
     result = cli_runner.invoke(__main__.main, "charge schedule deactivate 1")
     assert result.exit_code == 0, result.exception
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
 
     assert request.kwargs["json"] == snapshot
     assert result.output == snapshot
@@ -329,7 +328,7 @@ def test_charging_settings_deactivate(
     ],
 )
 def test_action(
-    mocked_responses: aioresponses,
+    mocked_responses: aiointercept,
     cli_runner: CliRunner,
     vehicle_details: str,
     cli_command: str,
@@ -345,13 +344,13 @@ def test_action(
     result = cli_runner.invoke(__main__.main, cli_command)
     assert result.exit_code == 0, result.exception
 
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot(name="command")
     assert result.output == snapshot(name="result")
 
 
 def test_charging_r5_start(
-    mocked_responses: aioresponses, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:
     """Test charge start for Renault 5 E-TECH via ev/settings endpoint."""
     initialise_credential_store(include_account_id=True, include_vin=True)
@@ -364,6 +363,6 @@ def test_charging_r5_start(
     result = cli_runner.invoke(__main__.main, "charge start")
     assert result.exit_code == 0, result.exception
 
-    request: RequestCall = mocked_responses.requests[("POST", URL(url))][0]
+    request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
     assert result.output == snapshot
