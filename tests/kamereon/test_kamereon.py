@@ -24,6 +24,10 @@ def test_vehicle_endpoints_sorted_by_key() -> None:
     keys = list(models._VEHICLE_ENDPOINTS)
     assert keys == sorted(keys)
 
+    for vehicle, endpoints in models._VEHICLE_ENDPOINTS.items():
+        keys = list(endpoints)
+        assert keys == sorted(keys), f"{vehicle} endpoints are not sorted: {keys}"
+
 
 @pytest.mark.asyncio
 async def test_get_person(
