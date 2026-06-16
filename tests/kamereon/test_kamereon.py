@@ -16,6 +16,13 @@ from tests.const import TEST_VIN
 
 from renault_api import kamereon
 from renault_api.kamereon import exceptions
+from renault_api.kamereon import models
+
+
+def test_vehicle_endpoints_sorted_by_key() -> None:
+    """Ensure _VEHICLE_ENDPOINTS stays ordered by model code."""
+    keys = list(models._VEHICLE_ENDPOINTS)
+    assert keys == sorted(keys)
 
 
 @pytest.mark.asyncio
