@@ -591,6 +591,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "lock-status": None,  # err.func.wired.notFound
         "pressure": None,  # err.func.wired.notFound
         "res-state": None,  # err.func.wired.notFound
+        "soc-levels": None,  # err.func.wired.forbidden
     },
     "XJF2BI": {  # DACIA SANDERO III (ECO-G, petrol+LPG; engineEnergyType OTHER)
         "actions/charge-set-mode": None,  # no EV
