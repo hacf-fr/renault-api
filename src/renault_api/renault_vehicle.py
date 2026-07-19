@@ -1,6 +1,7 @@
 """Client for Renault API."""
 
 from datetime import datetime
+from datetime import timedelta
 from datetime import timezone
 from typing import Any
 from typing import cast
@@ -18,6 +19,8 @@ from .renault_session import RenaultSession
 PERIOD_DAY_FORMAT = "%Y%m%d"
 PERIOD_MONTH_FORMAT = "%Y%m"
 PERIOD_TZ_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
+KCM_DELAYED_START_FORMAT = "%Y-%m-%dT%H:%M:00.000Z"
+X102VE_CHARGE_STOP_DELAY = timedelta(hours=24)
 PERIOD_FORMATS = {"day": PERIOD_DAY_FORMAT, "month": PERIOD_MONTH_FORMAT}
 
 
@@ -613,7 +616,7 @@ class RenaultVehicle:
         )
 
     async def set_charge_stop(self) -> models.KamereonVehicleChargingStartActionData:
-        """Start vehicle charge."""
+        """Stop vehicle charge."""
         endpoint_definition = await self.get_endpoint_definition("actions/charge-stop")
         json: dict[str, Any]
         if endpoint_definition.mode == "kcm-pause-resume":
@@ -622,6 +625,20 @@ class RenaultVehicle:
                     "type": "ChargePauseResume",
                     "attributes": {
                         "action": "pause",
+                    },
+                }
+            }
+        elif endpoint_definition.mode == "kcm-delayed-start":
+            # X102VE ignores pause, but postponing its next start stops charging.
+            start_date_time = (
+                datetime.now(timezone.utc) + X102VE_CHARGE_STOP_DELAY
+            ).strftime(KCM_DELAYED_START_FORMAT)
+            json = {
+                "data": {
+                    "type": "ChargingStart",
+                    "attributes": {
+                        "action": "start",
+                        "startDateTime": start_date_time,
                     },
                 }
             }

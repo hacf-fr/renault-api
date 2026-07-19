@@ -537,8 +537,8 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/zoe_50.1.json]
   dict({
-    'actions/charge-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/charging-start', mode='default'),
-    'actions/charge-stop': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/charge/pause-resume', mode='kcm-pause-resume'),
+    'actions/charge-start': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/charge/start', mode='kcm'),
+    'actions/charge-stop': EndpointDefinition(endpoint='/kcm/v1/vehicles/{vin}/charge/start', mode='kcm-delayed-start'),
     'actions/horn-start': None,
     'actions/hvac-start': EndpointDefinition(endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start', mode='default'),
     'actions/lights-start': None,
@@ -819,6 +819,16 @@
     }),
   })
 # ---
+# name: test_set_charge_start[zoe_50_1-now]
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'action': 'start',
+      }),
+      'type': 'ChargingStart',
+    }),
+  })
+# ---
 # name: test_set_charge_start_r5
   dict({
     'chargeDuration': 9000,
@@ -844,6 +854,17 @@
         'programType': 'CHARGE_AND_PRECONDITIONING',
       }),
     ]),
+  })
+# ---
+# name: test_set_charge_stop_zoe_50
+  dict({
+    'data': dict({
+      'attributes': dict({
+        'action': 'start',
+        'startDateTime': '2026-03-07T23:45:00.000Z',
+      }),
+      'type': 'ChargingStart',
+    }),
   })
 # ---
 # name: test_set_hvac_schedules
