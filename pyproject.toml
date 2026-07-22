@@ -40,7 +40,7 @@ coverage = {extras = ["toml"], version = "7.15.2"}
 safety = "==3.8.1"
 mypy = "2.3.0"
 typeguard = "==4.5.2"
-pre-commit = "==4.6.0"
+pre-commit = "==4.6.1"
 ruff = "==0.15.22"
 darglint = "1.8.1"
 pre-commit-hooks = "==6.0.0"
