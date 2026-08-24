@@ -105,6 +105,7 @@ ignore = [
     "N815",    # Variable in class scope should not be mixedCase
     "PLR0911", # Too many return statements
     "PLR0913", # Too many arguments in function definition
+    "PLR0917", # Too many positional arguments
 ]
 select = [
     "A",     # flake8-builtins
