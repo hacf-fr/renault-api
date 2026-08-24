@@ -619,6 +619,31 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "res-state": None,  # err.func.wired.notFound
         "soc-levels": None,  # err.func.wired.forbidden
     },
+    "XJB2SU": {  # CAPTUR II GPL
+        "actions/charge-start": None,  # Reason: "err.func.wired.not-found"
+        "actions/charge-stop": None,  # Reason: "err.func.wired.not-found"
+        "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
+        "actions/hvac-start": None,  # Reason: "err.func.wired.not-found"
+        "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
+        "alerts": None,  # err.func.wired.not-found
+        "battery-status": None,  # Reason: "err.func.wired.not-found"
+        "charge-history": None,  # Reason: "err.func.wired.not-found"
+        "charge-mode": None,  # Reason: "err.func.wired.forbidden"
+        "charge-schedule": None,  # Reason: "err.func.wired.forbidden"
+        "charges": None,  # err.func.wired.notFound: Not Found
+        "charging-settings": None,  # Reason: "err.func.wired.forbidden"
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
+        "hvac-history": None,  # Reason: "err.func.wired.not-found"
+        "hvac-sessions": None,  # Reason: "err.func.wired.not-found"
+        "hvac-settings": None,  # Reason: "err.func.wired.forbidden"
+        "hvac-status": None,  # Reason: "err.func.wired.not-found"
+        "location": _DEFAULT_ENDPOINTS["location"],
+        "lock-status": None,  # Reason: "err.func.wired.notFound"
+        "notification-settings": None,  # Reason: "err.func.vcps.users-helper.get-notification-settings.error"  # noqa: E501
+        "pressure": None,  # Reason: "err.func.wired.notFound"
+        "res-state": None,  # Reason: "err.func.wired.notFound"
+        "soc-levels": None,  # Reason: "err.func.wired.not-found"
+    },
     "XJF2BI": {  # DACIA SANDERO III (ECO-G, petrol+LPG; engineEnergyType OTHER)
         "actions/charge-set-mode": None,  # no EV
         "actions/charge-set-schedule": None,  # no EV
