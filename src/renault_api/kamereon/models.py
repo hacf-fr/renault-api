@@ -584,7 +584,24 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "res-state": None,  # Reason: "err.func.wired.notFound"
         "soc-levels": None,  # Reason: "err.func.wired.forbidden"
     },
-    "XJB2SU": { # CAPTUR II GPL
+    "XJB2CP": {  # Renault Symbioz 2025
+        "actions/charge-start": None,  # err.func.wired.forbidden
+        "actions/charge-stop": None,  # err.func.wired.invalid-body-format
+        "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
+        "actions/hvac-start": None,  # err.func.wired.forbidden
+        "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
+        "battery-status": None,  # err.func.wired.notFound
+        "charge-mode": None,  # err.func.wired.forbidden
+        "charging-settings": None,  # err.func.wired.forbidden
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
+        "hvac-status": None,  # err.func.wired.notFound
+        "location": _DEFAULT_ENDPOINTS["location"],
+        "lock-status": None,  # err.func.wired.notFound
+        "pressure": None,  # err.func.wired.notFound
+        "res-state": None,  # err.func.wired.notFound
+        "soc-levels": None,  # err.func.wired.forbidden
+    },
+    "XJB2SU": {  # CAPTUR II GPL
         "actions/charge-start": None,  # Reason: "err.func.wired.not-found"
         "actions/charge-stop": None,  # Reason: "err.func.wired.not-found"
         "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
@@ -609,23 +626,6 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "res-state": None,  # Reason: "err.func.wired.notFound"
         "soc-levels": None,  # Reason: "err.func.wired.not-found"
     }
-    "XJB2CP": {  # Renault Symbioz 2025
-        "actions/charge-start": None,  # err.func.wired.forbidden
-        "actions/charge-stop": None,  # err.func.wired.invalid-body-format
-        "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
-        "actions/hvac-start": None,  # err.func.wired.forbidden
-        "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
-        "battery-status": None,  # err.func.wired.notFound
-        "charge-mode": None,  # err.func.wired.forbidden
-        "charging-settings": None,  # err.func.wired.forbidden
-        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
-        "hvac-status": None,  # err.func.wired.notFound
-        "location": _DEFAULT_ENDPOINTS["location"],
-        "lock-status": None,  # err.func.wired.notFound
-        "pressure": None,  # err.func.wired.notFound
-        "res-state": None,  # err.func.wired.notFound
-        "soc-levels": None,  # err.func.wired.forbidden
-    },
     "XJF2BI": {  # DACIA SANDERO III (ECO-G, petrol+LPG; engineEnergyType OTHER)
         "actions/charge-set-mode": None,  # no EV
         "actions/charge-set-schedule": None,  # no EV
