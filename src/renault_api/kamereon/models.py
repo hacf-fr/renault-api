@@ -625,7 +625,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "pressure": None,  # Reason: "err.func.wired.notFound"
         "res-state": None,  # Reason: "err.func.wired.notFound"
         "soc-levels": None,  # Reason: "err.func.wired.not-found"
-    }
+    },
     "XJF2BI": {  # DACIA SANDERO III (ECO-G, petrol+LPG; engineEnergyType OTHER)
         "actions/charge-set-mode": None,  # no EV
         "actions/charge-set-schedule": None,  # no EV
