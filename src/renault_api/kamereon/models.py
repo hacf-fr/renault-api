@@ -166,6 +166,9 @@ _KCM_ENDPOINTS: dict[str, EndpointDefinition] = {
     "actions/charge-stop-via-pause-resume": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/charge/pause-resume", mode="kcm-pause-resume"
     ),
+    "actions/charge-stop-via-delayed-start": EndpointDefinition(
+        "/kcm/v1/vehicles/{vin}/charge/start", mode="kcm-delayed-start"
+    ),
     "charge-schedule-via-settings": EndpointDefinition(
         "/kcm/v1/vehicles/{vin}/ev/settings", mode="kcm-settings"
     ),
@@ -316,10 +319,8 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "soc-levels": None,  # not supported
     },
     "X102VE": {  # ZOE phase 2
-        "actions/charge-start": _DEFAULT_ENDPOINTS["actions/charge-start"],
-        "actions/charge-stop": _KCM_ENDPOINTS[  # Uses KCM pause-resume
-            "actions/charge-stop-via-pause-resume"
-        ],
+        "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start"],
+        "actions/charge-stop": _KCM_ENDPOINTS["actions/charge-stop-via-delayed-start"],
         "actions/horn-start": None,  # Reason: The access is forbidden,
         "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
         "actions/lights-start": None,  # Reason: The access is forbidden,

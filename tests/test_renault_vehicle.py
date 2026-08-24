@@ -490,11 +490,18 @@ async def test_set_charge_schedules_update(
             f"{KCA_ADAPTER_PATH_V1}/actions/charging-start?{DEFAULT_QUERY_STRING}",
             "vehicle_action/charging-start.start.json",
         ),
+        (
+            "zoe_50.1.json",
+            {},
+            f"{KCM_ADAPTER_PATH}/charge/start?{DEFAULT_QUERY_STRING}",
+            "vehicle_kcm_action/charging-start.now.json",
+        ),
     ],
     ids=[
         "megane_e_tech_2-now",
         "megane_e_tech_2-delayed",
         "zoe_40_1-now",
+        "zoe_50_1-now",
     ],
 )
 @pytest.mark.asyncio
@@ -512,6 +519,33 @@ async def test_set_charge_start(
     url = fixtures.inject_action(mocked_responses, action_url, action_result)
 
     assert await vehicle.set_charge_start(**arguments)
+    request = mocked_responses.requests[("POST", URL(url))][0]
+    assert request.kwargs["json"] == snapshot
+
+
+@pytest.mark.asyncio
+async def test_set_charge_stop_zoe_50(
+    vehicle: RenaultVehicle,
+    mocked_responses: aiointercept,
+    monkeypatch: pytest.MonkeyPatch,
+    snapshot: SnapshotAssertion,
+) -> None:
+    """Test X102VE charge stop via a delayed KCM start."""
+
+    class FixedDateTime(datetime):
+        @classmethod
+        def now(cls, tz: timezone | None = None) -> datetime:
+            return datetime(2026, 3, 6, 23, 45, tzinfo=tz)
+
+    monkeypatch.setattr("renault_api.renault_vehicle.datetime", FixedDateTime)
+    fixtures.inject_get_vehicle_details(mocked_responses, "zoe_50.1.json")
+    url = fixtures.inject_action(
+        mocked_responses,
+        f"{KCM_ADAPTER_PATH}/charge/start?{DEFAULT_QUERY_STRING}",
+        "vehicle_kcm_action/charging-start.delayed.json",
+    )
+
+    assert await vehicle.set_charge_stop()
     request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
 
