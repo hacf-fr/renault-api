@@ -41,7 +41,7 @@ safety = "==3.8.1"
 mypy = "2.3.1"
 typeguard = "==4.6.0"
 pre-commit = "==4.6.2"
-ruff = "==0.15.22"
+ruff = "==0.16.4"
 darglint = "1.8.1"
 pre-commit-hooks = "==6.0.0"
 Pygments = "2.21.0"
@@ -105,6 +105,7 @@ ignore = [
     "N815",    # Variable in class scope should not be mixedCase
     "PLR0911", # Too many return statements
     "PLR0913", # Too many arguments in function definition
+    "PLR0917", # Too many positional arguments
 ]
 select = [
     "A",     # flake8-builtins
