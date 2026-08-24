@@ -455,7 +455,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
         "location": _DEFAULT_ENDPOINTS["location"],
         "lock-status": None,  # err.func.wired.notFound
-        "notification-settings": None,  # err.func.vcps.users-helper.get-notification-settings.error
+        "notification-settings": None,  # err.func.vcps.users-helper...
         "pressure": None,  # err.func.wired.notFound
         "res-state": None,  # err.func.wired.notFound
     },
