@@ -441,6 +441,24 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "pressure": None,  # Reason: "err.func.wired.notFound"
         "res-state": None,  # Reason: "err.func.wired.notFound"
     },
+    "XFB2BK": {  # Megane IV Break (E-Tech Plug-in Hybrid)
+        "actions/charge-start": _DEFAULT_ENDPOINTS["actions/charge-start"],
+        "actions/horn-start": None,  # err.func.wired.forbidden
+        "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
+        "actions/lights-start": None,  # err.func.wired.forbidden
+        "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
+        "charging-settings": _DEFAULT_ENDPOINTS["charging-settings"],
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
+        "hvac-history": None,  # err.func.wired.not-found
+        "hvac-sessions": None,  # err.func.wired.not-found
+        "hvac-settings": None,  # err.func.wired.not-found
+        "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
+        "location": _DEFAULT_ENDPOINTS["location"],
+        "lock-status": None,  # err.func.wired.notFound
+        "notification-settings": None,  # err.func.vcps.users-helper...
+        "pressure": None,  # err.func.wired.notFound
+        "res-state": None,  # err.func.wired.notFound
+    },
     "XHN1CP": {  # Rafale
         "actions/charge-start": None,  # err.func.wired.forbidden
         "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
