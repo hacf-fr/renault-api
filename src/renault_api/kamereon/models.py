@@ -605,7 +605,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "actions/charge-start": None,  # Reason: "err.func.wired.not-found"
         "actions/charge-stop": None,  # Reason: "err.func.wired.not-found"
         "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
-        "actions/hvac-start":  None,  # Reason: "err.func.wired.not-found"
+        "actions/hvac-start": None,  # Reason: "err.func.wired.not-found"
         "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
         "alerts": None,  # err.func.wired.not-found
         "battery-status": None,  # Reason: "err.func.wired.not-found"
