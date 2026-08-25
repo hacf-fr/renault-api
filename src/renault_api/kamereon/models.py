@@ -225,6 +225,28 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "res-state": None,  # Reason: err.func.wired.notFound
         "soc-levels": _DEFAULT_ENDPOINTS["soc-levels"],
     },
+    "BD11SL": {  # DACIA BIGSTER HYBRID 155 (no EV)
+        "actions/charge-start": None,  # Reason: err.func.wired.forbidden
+        "actions/horn-start": None,  # Reason: err.func.wired.forbidden
+        "actions/lights-start": None,  # Reason: err.func.wired.forbidden
+        "alerts": None,  # Reason: err.func.wired.not-found
+        "battery-status": None,  # Reason: err.func.wired.notFound
+        "charge-history": None,  # Reason: err.func.wired.not-found
+        "charge-mode": None,  # Reason: err.func.wired.forbidden
+        "charge-schedule": None,  # Reason: err.func.wired.forbidden
+        "charging-settings": None,  # Reason: err.func.wired.forbidden
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
+        "hvac-history": None,  # Reason: err.func.wired.not-found
+        "hvac-sessions": None,  # Reason: err.func.wired.not-found
+        "hvac-settings": None,  # Reason: err.func.wired.forbidden
+        "hvac-status": None,  # Reason: err.func.wired.notFound
+        "location": _DEFAULT_ENDPOINTS["location"],
+        "lock-status": None,  # Reason: err.func.wired.notFound
+        "notification-settings": None,  # Reason: vehicle does not have a GDC gateway
+        "pressure": None,  # Reason: err.func.wired.notFound
+        "res-state": None,  # Reason: err.func.wired.notFound
+        "soc-levels": None,  # Reason: err.func.wired.forbidden
+    },
     "DU31SU": {  # Dacia Duster III
         "actions/horn-start": None,  # err.func.wired.forbidden
         "actions/lights-start": None,  # err.func.wired.forbidden
