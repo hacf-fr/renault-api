@@ -386,15 +386,23 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "soc-levels": None,  # Reason: "err.func.wired.forbidden"
     },
     "XCB1SE": {  # SCENIC E-TECH
+        "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start-via-settings"],
+        "actions/charge-stop": None,  # Reason: "err.func.wired.forbidden" (kcm pause-resume) / "err.func.wired.invalid-body-format" (default)  # noqa: E501
+        "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
+        "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
+        "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-mode": None,
         "charge-schedule": _KCM_ENDPOINTS["charge-schedule-via-settings"],
+        "charging-settings": None,  # Reason: forbidden; use soc-levels instead
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
         "hvac-settings": _DEFAULT_ENDPOINTS["hvac-settings"],
         "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
         "location": _DEFAULT_ENDPOINTS["location"],
         "lock-status": None,
+        "pressure": None,  # Reason: notFound; no TPMS data for this vin
         "res-state": None,
+        "soc-levels": _DEFAULT_ENDPOINTS["soc-levels"],
     },
     "XCB1VE": {  # MEGANE E-TECH
         "actions/charge-set-schedule": _KCM_ENDPOINTS["actions/charge-set-schedule"],
