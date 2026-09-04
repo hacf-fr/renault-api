@@ -410,7 +410,9 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "actions/charge-stop": None,  # Reason: err.func.wired.invalid-body-format
         "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
         "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
-        "actions/hvac-stop":  _KCA_ALTERNATIVE_ENDPOINTS["actions/hvac-stop"], # requires action stop instead of default action cancel
+        "actions/hvac-stop": _KCA_ALTERNATIVE_ENDPOINTS[
+            "actions/hvac-stop"
+        ],  # requires action stop instead of default action cancel
         "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: "err.func.wired.not-found"
