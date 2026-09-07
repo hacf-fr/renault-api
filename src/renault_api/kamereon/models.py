@@ -511,14 +511,18 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "res-state": None,  # Reason: "err.func.wired.notFound"
     },
     "XHN1ML": {  # Renault Espace VI (OpenRLink)
+        "actions/charge-start": None,  # err.func.wired.forbidden
+        "actions/charge-stop": None,  # err.func.wired.not-found
         "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
         "actions/hvac-start": None,  # err.func.wired.forbidden
         "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
+        "actions/refresh-location": _DEFAULT_ENDPOINTS["actions/refresh-location"],
+        "alerts": None,  # err.func.wired.not-found
         "battery-status": None,  # err.func.wired.notFound
         "charge-history": None,  # err.func.wired.not-found
         "charge-mode": None,  # err.func.wired.forbidden
         "charge-schedule": None,  # err.func.wired.forbidden
-        "charges": None,  # err.func.wired.forbidden
+        "charges": None,  # err.func.wired.notFound
         "charging-settings": None,  # err.func.wired.forbidden
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
         "hvac-history": None,  # err.func.wired.not-found
