@@ -146,6 +146,10 @@
       endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights',
       mode='default',
     ),
+    'actions/refresh-location': EndpointDefinition(
+      endpoint='/kca/car-adapter/v1/cars/{vin}/actions/refresh-location',
+      mode='default',
+    ),
     'alerts': None,
     'battery-status': EndpointDefinition(
       endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status',
