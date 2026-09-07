@@ -186,6 +186,17 @@
   
   '''
 # ---
+# name: test_vehicle_status[tests/fixtures/kamereon/vehicles/espace_XHN1ML.1.json]
+  '''
+  ----------------  -------------------
+  Total mileage     49114.27 km
+  GPS Latitude      48.1234567
+  GPS Longitude     11.1234567
+  GPS last updated  2020-02-18 17:58:38
+  ----------------  -------------------
+  
+  '''
+# ---
 # name: test_vehicle_status[tests/fixtures/kamereon/vehicles/master_iv.1.json]
   '''
   --------------------  -------------------------
