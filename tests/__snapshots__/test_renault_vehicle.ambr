@@ -592,6 +592,10 @@
       endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start',
       mode='default',
     ),
+    'actions/hvac-stop': EndpointDefinition(
+      endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start',
+      mode='kca-stop',
+    ),
     'actions/lights-start': EndpointDefinition(
       endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights',
       mode='default',
@@ -653,6 +657,10 @@
     'actions/hvac-start': EndpointDefinition(
       endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start',
       mode='default',
+    ),
+    'actions/hvac-stop': EndpointDefinition(
+      endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start',
+      mode='kca-stop',
     ),
     'actions/lights-start': EndpointDefinition(
       endpoint='/kca/car-adapter/v1/cars/{vin}/actions/horn-lights',
