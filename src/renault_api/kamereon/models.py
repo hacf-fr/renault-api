@@ -216,7 +216,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
         "hvac-history": None,  # Reason: err.func.wired.not-found
         "hvac-sessions": None,  # Reason: err.func.wired.not-found
-        "hvac-settings": _DEFAULT_ENDPOINTS["hvac-settings"],
+        "hvac-settings": None,  # Reason: errorCode 502000 (technical) on every call
         "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
         "location": _DEFAULT_ENDPOINTS["location"],
         "lock-status": None,  # Reason: err.func.wired.notFound

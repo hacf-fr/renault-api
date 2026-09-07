@@ -168,10 +168,7 @@
     ),
     'hvac-history': None,
     'hvac-sessions': None,
-    'hvac-settings': EndpointDefinition(
-      endpoint='/kca/car-adapter/v1/cars/{vin}/hvac-settings',
-      mode='default',
-    ),
+    'hvac-settings': None,
     'hvac-status': EndpointDefinition(
       endpoint='/kca/car-adapter/v1/cars/{vin}/hvac-status',
       mode='default',
