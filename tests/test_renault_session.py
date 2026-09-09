@@ -21,6 +21,7 @@ from renault_api.exceptions import NotAuthenticatedException
 from renault_api.exceptions import RenaultException
 from renault_api.gigya import GIGYA_JWT
 from renault_api.gigya import GIGYA_LOGIN_TOKEN
+from renault_api.gigya.exceptions import PendingTwoFactorAuthenticationException
 from renault_api.renault_session import RenaultSession
 
 
@@ -251,3 +252,58 @@ async def test_expired_login_token(
         assert await session._get_jwt()
 
     assert len(mocked_responses.requests) == 1
+
+
+@pytest.mark.asyncio
+async def test_two_factor_auth(
+    session: RenaultSession, mocked_responses: aiointercept
+) -> None:
+    """Test the full email one-time-code two-factor-authentication flow."""
+    fixtures.inject_gigya_tfa_all(mocked_responses)
+    fixtures.inject_gigya_account_info(mocked_responses)
+    fixtures.inject_gigya_jwt(mocked_responses)
+
+    with pytest.raises(PendingTwoFactorAuthenticationException) as excinfo:
+        await session.login(TEST_USERNAME, TEST_PASSWORD)
+    assert excinfo.value.reg_token == "sample-reg-token"
+
+    # Gigya login token isn't available yet: the challenge isn't resolved.
+    with pytest.raises(NotAuthenticatedException):
+        await session._get_login_token()
+
+    await session.request_two_factor_auth_code(excinfo.value.reg_token)
+    await session.complete_two_factor_auth("123456")
+
+    assert await session._get_login_token() == TEST_LOGIN_TOKEN
+    assert await session._get_person_id() == TEST_PERSON_ID
+    assert await session._get_jwt()
+
+
+@pytest.mark.asyncio
+async def test_complete_two_factor_auth_without_pending_challenge(
+    session: RenaultSession,
+) -> None:
+    """Test error completing TFA without a pending challenge."""
+    with pytest.raises(
+        RenaultException,
+        match="No two-factor authentication challenge is pending",
+    ):
+        await session.complete_two_factor_auth("123456")
+
+
+@pytest.mark.asyncio
+async def test_complete_two_factor_auth_without_login(
+    session: RenaultSession, mocked_responses: aiointercept
+) -> None:
+    """Test error completing TFA if `login` was never called first."""
+    fixtures.inject_gigya_tfa_bootstrap(mocked_responses)
+    fixtures.inject_gigya_tfa_init(mocked_responses)
+    fixtures.inject_gigya_tfa_emails(mocked_responses)
+    fixtures.inject_gigya_tfa_send_email_code(mocked_responses)
+
+    await session.request_two_factor_auth_code("sample-reg-token")
+    with pytest.raises(
+        RenaultException,
+        match="`login` must be called before completing two-factor authentication.",
+    ):
+        await session.complete_two_factor_auth("123456")
