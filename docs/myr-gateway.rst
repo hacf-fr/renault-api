@@ -68,20 +68,33 @@ Verified live (200, XHN1ML, country ``FR``):
      - Notes
    * - GET
      - ``/myr/api/v1/accounts/{account_id}/connected-vehicles?vin={vin}&country={country}``
-     - Returns ``vehicleList`` with ``applicableFeatures: [{featureId, status}]``
+     - Returns ``vehicleLinks`` per vehicle: ``vehicleDetails`` and
+       ``connectedStatus`` (``services``, ``applicableFeatures``,
+       ``remoteSecurityProtocol``, ``privacyModeStatus``, ...). ``vin``,
+       ``locale`` and ``oms`` query params are optional; without ``vin`` the
+       whole garage is returned.
    * - GET
      - ``/myr/api/v1/accounts/{account_id}/vehicles/{vin}/dashboard?country={country}&type={type}&paired={bool}``
      - Observed ``type=HEV&paired=true``; returns ``cockpit`` (fuelAutonomy,
-       fuelQuantity, totalMileage, timestamp)
+       fuelQuantity, totalMileage, timestamp). ``type`` is a fixed server-side
+       enum, independent of the vehicle powertrain: ``HEV`` is accepted even on
+       a full-EV vehicle, while ``EV`` is rejected on both an EV and an HEV
+       vehicle (400 ``err.func.carpage.unknown.dashboard``).
    * - GET
      - ``/myr/api/v1/accounts/{account_id}/vehicles/{vin}/remotes?country={country}``
-     - Returns ``[{featureId, securityProtocol: ["JWT"]}, ...]`` with door statuses
+     - Returns ``[{featureId, securityProtocol: [...]}, ...]`` with door
+       statuses and optional business fields (``status``, ``hvacThreshold``,
+       ``internalTemperature``), e.g. feature 366 reported
+       ``{"featureId": 366, "securityProtocol": ["SRP"], "status": "off",
+       "hvacThreshold": 8, "internalTemperature": 41}`` on a full-EV vehicle
+       at rest.
    * - POST
      - ``/myr/api/v1/accounts/{account_id}/vehicles/{vin}/state?country={country}``
      - See `POST /state`_ below
    * - GET
      - ``/myr/mybrand/kyc/v1/transactions/last?country={country}``
-     - Returns an empty body on the tested vehicle
+     - Vehicle-dependent: 200 with an empty body on the tested HEV, 404 on a
+       tested full-EV (XCB1VE)
 
 Present in the APK but not verified live:
 
@@ -127,9 +140,33 @@ POST /state
 * Response blocks (per the APK): ``sohBlms`` (hybrid battery health
   ``soheRef``/``sohStatus``), ``tirePressure`` (TPMS), ``mileage``,
   ``connectedMaintenance``.
+* An ``ACTIVATED`` featureId does not guarantee its block is served: on a
+  tested full-EV (XCB1VE) with ``uidveh: [345, 202, 831, 820, 204]``, only
+  ``mileage`` came back (no ``sohBlms``, no ``tirePressure``, no error). The
+  ``mileage`` block matches the Kamereon ``/cockpit`` value and timestamp.
 * The APK filters the requested ids against ``{820, 204, 831, 202, 345}``
   before calling this endpoint, so those five ids are known-accepted
   (read-only queries: no physical action is triggered).
+
+Vehicle-level attributes
+------------------------
+
+* ``connectedStatus.remoteSecurityProtocol`` (``/connected-vehicles``) is a
+  per-vehicle attribute with values ``JWT`` or ``SRP``: ``JWT`` on the tested
+  HEV, ``SRP`` on the tested full-EV. On an SRP-protocol vehicle, direct
+  Kamereon remote commands were refused (``errorCode 6``, CONTACT_SRC), while
+  the APK carries SRP-6a remote-service actions (``srp-initiates``,
+  ``srp-sets``) as the alternative path.
+* The three id representations coincide per vehicle, without any deviation
+  (observed on both tested vehicles): ``connectedStatus.services`` (ids as
+  strings), ``applicableFeatures`` filtered to ``status: ACTIVATED``, and the
+  ``/remotes`` id list. The app itself reads ``services`` only (a plain
+  presence check); the ACTIVATED filtering is done server-side.
+* ``connectedStatus.privacyModeStatus`` / ``privacyModeLastUpdate`` (observed
+  under ``connectedStatus`` and reported under ``vehicleDetails`` on another
+  vehicle) reflect the MyRenault privacy mode. When active, it cuts data
+  reporting and is an explicit cause of unavailability, distinct from a
+  contract or account/link issue.
 
 featureIds
 ----------
@@ -186,9 +223,12 @@ Ids explicitly interpreted by the app 6.13.4 (evidence: jadx decompilation):
    * - 3205
      - V2G charge history
 
-Ids relayed by the app without interpretation (server-side semantics only),
-observed on the tested vehicle: ``4, 12, 21, 107, 200, 323, 419, 729, 730, 748,
-815, 818, 826, 830, 846, 847, 912, 920, 927, 966, 967, 2852, 3302, 1710040``.
+Ids relayed by the app without interpretation (server-side semantics only):
+``4, 12, 21, 107, 200, 315, 323, 344, 419, 724, 729, 730, 748, 815, 818, 826,
+830, 846, 847, 912, 920, 927, 966, 967, 2852, 3302, 1710040``. Observed on the
+tested HEV (28 ids ``ACTIVATED``) and full-EV (21 ids, adding ``315``, ``344``
+and ``724``); none of them has a literal reference in the APK 6.13.4, so their
+semantics live server-side only.
 
 Discovery method
 ----------------
