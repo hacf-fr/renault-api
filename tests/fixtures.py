@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import datetime
 import json
+import re
 from collections.abc import Mapping
 from glob import glob
 from os import path
@@ -12,6 +13,7 @@ from typing import Any
 import jwt
 from aiointercept import aiointercept
 from marshmallow.schema import Schema
+from multidict import CIMultiDict
 
 from tests.const import REDACTED
 from tests.const import TEST_ACCOUNT_ID
@@ -138,11 +140,127 @@ def inject_gigya_jwt(mocked_responses: aiointercept) -> str:
     )
 
 
+def inject_gigya_get(
+    mocked_responses: aiointercept,
+    urlpath: str,
+    filename: str,
+) -> str:
+    """Inject Gigya data for a GET-based endpoint (eg. two-factor auth).
+
+    Matches on path only (ignoring query string), since these endpoints are
+    called with parameters (ucid/gmid/assertions/tokens) that chain from one
+    response to the next and aren't worth pinning down here.
+    """
+    url = f"{TEST_GIGYA_URL}/{urlpath}"
+    body = get_file_content(f"{GIGYA_FIXTURE_PATH}/{filename}")
+    mocked_responses.get(
+        re.compile(f"^{re.escape(url)}"),
+        status=200,
+        body=body,
+        content_type="text/javascript",
+    )
+    return url
+
+
 def inject_gigya_all(mocked_responses: aiointercept) -> None:
     """Inject Gigya login/getAccountInfo/getJWT data."""
     inject_gigya_login(mocked_responses)
     inject_gigya_account_info(mocked_responses)
     inject_gigya_jwt(mocked_responses)
+
+
+def inject_gigya_login_403101(mocked_responses: aiointercept) -> str:
+    """Inject Gigya login response requiring two-factor authentication."""
+    return inject_gigya(
+        mocked_responses,
+        "accounts.login",
+        "error/login.403101.json",
+    )
+
+
+def inject_gigya_tfa_bootstrap(mocked_responses: aiointercept) -> str:
+    """Inject Gigya webSdkBootstrap response, setting the ucid/gmid cookies."""
+    url = f"{TEST_GIGYA_URL}/accounts.webSdkBootstrap"
+    headers = CIMultiDict(
+        [
+            ("Set-Cookie", "ucid=sample-ucid; Path=/"),
+            ("Set-Cookie", "gmid=sample-gmid; Path=/"),
+        ]
+    )
+    mocked_responses.get(
+        re.compile(f"^{re.escape(url)}"), status=200, body="", headers=headers
+    )
+    return url
+
+
+def inject_gigya_tfa_bootstrap_no_cookies(mocked_responses: aiointercept) -> str:
+    """Inject Gigya webSdkBootstrap response that sets no cookies."""
+    url = f"{TEST_GIGYA_URL}/accounts.webSdkBootstrap"
+    mocked_responses.get(re.compile(f"^{re.escape(url)}"), status=200, body="")
+    return url
+
+
+def inject_gigya_tfa_init(mocked_responses: aiointercept) -> str:
+    """Inject Gigya initTFA data."""
+    return inject_gigya_get(
+        mocked_responses,
+        "accounts.tfa.initTFA",
+        "tfa_init.json",
+    )
+
+
+def inject_gigya_tfa_emails(mocked_responses: aiointercept) -> str:
+    """Inject Gigya TFA email list data."""
+    return inject_gigya_get(
+        mocked_responses,
+        "accounts.tfa.email.getEmails",
+        "tfa_emails.json",
+    )
+
+
+def inject_gigya_tfa_send_email_code(mocked_responses: aiointercept) -> str:
+    """Inject Gigya TFA sendVerificationCode data."""
+    return inject_gigya_get(
+        mocked_responses,
+        "accounts.tfa.email.sendVerificationCode",
+        "tfa_send_email_code.json",
+    )
+
+
+def inject_gigya_tfa_complete_email_verification(mocked_responses: aiointercept) -> str:
+    """Inject Gigya TFA completeVerification data."""
+    return inject_gigya_get(
+        mocked_responses,
+        "accounts.tfa.email.completeVerification",
+        "tfa_complete_email_verification.json",
+    )
+
+
+def inject_gigya_tfa_finalize(mocked_responses: aiointercept) -> str:
+    """Inject Gigya finalizeTFA data."""
+    return inject_gigya_get(
+        mocked_responses,
+        "accounts.tfa.finalizeTFA",
+        "tfa_finalize.json",
+    )
+
+
+def inject_gigya_tfa_all(mocked_responses: aiointercept) -> None:
+    """Inject a full email-OTP two-factor-authentication challenge.
+
+    The initial `accounts.login` returns a 403101 (pending TFA); once the
+    challenge is completed, `RenaultSession.complete_two_factor_auth` calls
+    `login` again, so a second (successful) `accounts.login` response is
+    queued up behind the first.
+    """
+    inject_gigya_login_403101(mocked_responses)
+    inject_gigya_tfa_bootstrap(mocked_responses)
+    inject_gigya_tfa_init(mocked_responses)
+    inject_gigya_tfa_emails(mocked_responses)
+    inject_gigya_tfa_send_email_code(mocked_responses)
+    inject_gigya_tfa_complete_email_verification(mocked_responses)
+    inject_gigya_tfa_finalize(mocked_responses)
+    inject_gigya_login(mocked_responses)
 
 
 def inject_data(
