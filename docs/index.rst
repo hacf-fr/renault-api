@@ -13,6 +13,7 @@
    reference/kamereon
    reference/gigya
    endpoints
+   myr-gateway
    contributing
    Code of Conduct <codeofconduct>
    License <license>
