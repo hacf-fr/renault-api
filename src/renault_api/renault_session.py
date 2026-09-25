@@ -2,6 +2,7 @@
 
 import asyncio
 import logging
+from dataclasses import dataclass
 from typing import Any
 
 import aiohttp
@@ -27,6 +28,15 @@ from renault_api.helpers import get_api_keys
 _LOGGER = logging.getLogger(__name__)
 
 
+@dataclass
+class _PendingTwoFactorAuth:
+    """State needed to complete an in-progress email TFA challenge."""
+
+    reg_token: str
+    gigya_assertion: str
+    phv_token: str
+
+
 class RenaultSession:
     """Renault session for interaction with Renault servers."""
 
@@ -42,6 +52,8 @@ class RenaultSession:
         self._gigya_lock = asyncio.Lock()
         self._websession = websession
         self._credentials: CredentialStore = credential_store or CredentialStore()
+        self._pending_login: tuple[str, str] | None = None
+        self._tfa: _PendingTwoFactorAuth | None = None
 
         if locale_details:
             for k, v in locale_details.items():
@@ -52,8 +64,18 @@ class RenaultSession:
             self._credentials[CONF_COUNTRY] = Credential(country)
 
     async def login(self, login_id: str, password: str) -> None:
-        """Attempt login on Gigya."""
+        """Attempt login on Gigya.
+
+        Raises `PendingTwoFactorAuthenticationException` if the account
+        requires two-factor authentication (see
+        https://github.com/hacf-fr/renault-api/issues/2132). Catch it, then
+        call `request_two_factor_auth_code` followed by
+        `complete_two_factor_auth` (which calls back into `login`) to finish.
+        """
         self._credentials.clear_keys(gigya.GIGYA_KEYS)
+        # Kept in memory (never persisted) so `complete_two_factor_auth` can
+        # replay the login once the pending TFA challenge is resolved.
+        self._pending_login = (login_id, password)
 
         response = await gigya.login(
             self._websession,
@@ -64,6 +86,83 @@ class RenaultSession:
         )
         credential = Credential(response.get_session_cookie())
         self._credentials[gigya.GIGYA_LOGIN_TOKEN] = credential
+        self._pending_login = None
+
+    async def request_two_factor_auth_code(self, reg_token: str) -> None:
+        """Start an email one-time-code two-factor authentication challenge.
+
+        `reg_token` comes from `PendingTwoFactorAuthenticationException.reg_token`,
+        raised by `login`. This emails a one-time code to the account's
+        registered address; pass it to `complete_two_factor_auth` once known.
+        Currently only the email one-time-code method is supported.
+        """
+        root_url = await self._get_gigya_root_url()
+        api_key = await self._get_gigya_api_key()
+
+        init_response = await gigya.init_tfa(
+            self._websession, root_url, api_key, reg_token
+        )
+        gigya_assertion = init_response.get_gigya_assertion()
+
+        emails_response = await gigya.get_tfa_emails(
+            self._websession, root_url, api_key, gigya_assertion
+        )
+        email_id = emails_response.get_email_id()
+
+        send_response = await gigya.send_tfa_email_code(
+            self._websession, root_url, api_key, gigya_assertion, email_id
+        )
+        self._tfa = _PendingTwoFactorAuth(
+            reg_token=reg_token,
+            gigya_assertion=gigya_assertion,
+            phv_token=send_response.get_phv_token(),
+        )
+
+    async def complete_two_factor_auth(
+        self, code: str, *, remember_device: bool = True
+    ) -> None:
+        """Submit the emailed one-time code and finish logging in.
+
+        Must be called after `request_two_factor_auth_code`, on the same
+        `RenaultSession` that raised `PendingTwoFactorAuthenticationException`.
+        When `remember_device` is True (the default), Gigya should not
+        require another TFA challenge on this session for about 30 days.
+        """
+        if not self._tfa:
+            raise RenaultException(
+                "No two-factor authentication challenge is pending; "
+                "call `request_two_factor_auth_code` first."
+            )
+        if not self._pending_login:
+            raise RenaultException(
+                "`login` must be called before completing two-factor authentication."
+            )
+        tfa = self._tfa
+        root_url = await self._get_gigya_root_url()
+        api_key = await self._get_gigya_api_key()
+
+        complete_response = await gigya.complete_tfa_email_verification(
+            self._websession,
+            root_url,
+            api_key,
+            tfa.gigya_assertion,
+            tfa.phv_token,
+            code,
+        )
+        await gigya.finalize_tfa(
+            self._websession,
+            root_url,
+            api_key,
+            tfa.gigya_assertion,
+            complete_response.get_provider_assertion(),
+            tfa.reg_token,
+            remember_device=remember_device,
+        )
+        # The challenge is now resolved (the code is single-use) - clear it
+        # even if the re-login below fails, so a retry doesn't replay it.
+        self._tfa = None
+        login_id, password = self._pending_login
+        await self.login(login_id, password)
 
     @property
     def login_token(self) -> str | None:
