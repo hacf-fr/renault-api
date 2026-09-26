@@ -1,5 +1,6 @@
 """Test cases for initialisation of the Kamereon client."""
 
+from typing import Any
 from typing import cast
 
 import aiohttp
@@ -21,6 +22,7 @@ from renault_api.exceptions import NotAuthenticatedException
 from renault_api.exceptions import RenaultException
 from renault_api.gigya import GIGYA_JWT
 from renault_api.gigya import GIGYA_LOGIN_TOKEN
+from renault_api.kamereon.exceptions import UnauthorizedException
 from renault_api.renault_session import RenaultSession
 
 
@@ -251,3 +253,55 @@ async def test_expired_login_token(
         assert await session._get_jwt()
 
     assert len(mocked_responses.requests) == 1
+
+
+@pytest.mark.asyncio
+async def test_unauthorized_refresh_retry(
+    websession: aiohttp.ClientSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """An unauthorized response remints the JWT and retries once."""
+    session = get_logged_in_session(websession)
+
+    jwt_calls = 0
+
+    async def fake_get_jwt() -> str:
+        nonlocal jwt_calls
+        jwt_calls += 1
+        return f"jwt{jwt_calls}"
+
+    monkeypatch.setattr(session, "_get_jwt", fake_get_jwt)
+
+    seen: list[str] = []
+
+    async def fake_request(**kwargs: Any) -> str:
+        seen.append(kwargs["gigya_jwt"])
+        if len(seen) == 1:
+            raise UnauthorizedException("err.func.wired.unauthorized", "nope")
+        return "ok"
+
+    assert await session._kamereon_call(fake_request) == "ok"
+    assert seen == ["jwt1", "jwt2"]
+
+
+@pytest.mark.asyncio
+async def test_unauthorized_no_infinite_retry(
+    websession: aiohttp.ClientSession, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A second unauthorized response is surfaced instead of looping."""
+    session = get_logged_in_session(websession)
+
+    async def fake_get_jwt() -> str:
+        return "jwt"
+
+    monkeypatch.setattr(session, "_get_jwt", fake_get_jwt)
+
+    calls = 0
+
+    async def fake_request(**kwargs: Any) -> str:
+        nonlocal calls
+        calls += 1
+        raise UnauthorizedException("err.func.wired.unauthorized", "nope")
+
+    with pytest.raises(UnauthorizedException):
+        await session._kamereon_call(fake_request)
+    assert calls == 2
