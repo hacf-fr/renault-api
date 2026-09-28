@@ -177,20 +177,23 @@ speedups = ["Brotli (>=1.2) ; platform_python_implementation == \"CPython\" and 
 
 [[package]]
 name = "aiointercept"
-version = "0.1.11"
+version = "0.1.12"
 description = "aiohttp mock library that routes requests through a real test server"
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
 files = [
-    {file = "aiointercept-0.1.11-py3-none-any.whl", hash = "sha256:e9e7a245fbf6f8a814401420f66cc6bd5d6a3a10377b75802995d317638e8ae4"},
-    {file = "aiointercept-0.1.11.tar.gz", hash = "sha256:acf3197ae0ac69fa5fb161ebc886978cca51af4b7ddb7650845f8920f4bc6509"},
+    {file = "aiointercept-0.1.12-py3-none-any.whl", hash = "sha256:6b63d0512bb0d3ff1d6e2f43ba491c2ea9ad5d99e10114995f6582d7314e66b9"},
+    {file = "aiointercept-0.1.12.tar.gz", hash = "sha256:d5f36e5ed69ffa7caf9b686ca7a32cc26d57564ff1a68c5a2a94c6c9c0f7a75d"},
 ]
 
 [package.dependencies]
 aiohttp = ">=3.13.3,<4.0.0"
 multidict = ">=6.0,<7.0"
 yarl = ">=1.23.0,<2.0.0"
+
+[package.extras]
+pytest-asyncio = ["pytest-asyncio (>=0.24.0)"]
 
 [[package]]
 name = "aiosignal"
@@ -4074,4 +4077,4 @@ cli = ["click", "dateparser", "tabulate"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "1687b24a752f0864bdcea131619aa06de3abe84a32e13a5e54961ac789915228"
+content-hash = "663eb34052c1c4d85cfbf3d686d9b912601ea74615a44cb9e3cd047e3f7b00a7"
