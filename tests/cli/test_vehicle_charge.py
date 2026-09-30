@@ -186,13 +186,17 @@ def test_sessions_50(
     assert result.output == snapshot
 
 
+@pytest.mark.parametrize("schedule_type", ["single", "mixed"])
 def test_charge_schedule_show(
-    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept,
+    cli_runner: CliRunner,
+    snapshot: SnapshotAssertion,
+    schedule_type: str,
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
-    fixtures.inject_get_charge_schedule(mocked_responses, "single")
+    fixtures.inject_get_charge_schedule(mocked_responses, schedule_type)
 
     result = cli_runner.invoke(__main__.main, "charge schedule show")
     assert result.exit_code == 0, result.exception

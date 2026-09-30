@@ -135,7 +135,21 @@
   
   '''
 # ---
-# name: test_charge_schedule_show
+# name: test_charge_schedule_show[mixed]
+  '''
+  Day        Start time    End time      Duration  Active
+  ---------  ------------  ----------  ----------  --------
+  Monday     12:00         16:00              240  True
+  Tuesday    23:15         00:10               55  True
+  Wednesday  09:30         11:00               90  True
+  Thursday   00:30         02:30              120  True
+  Friday     00:00         00:10               10  False
+  Saturday   03:00         09:00              360  True
+  Sunday     09:30         16:00              390  False
+  
+  '''
+# ---
+# name: test_charge_schedule_show[single]
   '''
   Day        Start time    End time      Duration  Active
   ---------  ------------  ----------  ----------  --------
