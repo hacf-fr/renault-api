@@ -1047,18 +1047,6 @@ typing-extensions = {version = ">=4.13.2", markers = "python_full_version < \"3.
 ssh = ["bcrypt (>=3.1.5)"]
 
 [[package]]
-name = "darglint"
-version = "1.8.1"
-description = "A utility for ensuring Google-style docstrings stay up to date with the source code."
-optional = false
-python-versions = ">=3.6,<4.0"
-groups = ["dev"]
-files = [
-    {file = "darglint-1.8.1-py3-none-any.whl", hash = "sha256:5ae11c259c17b0701618a20c3da343a3eb98b3bc4b5a83d31cdd94f5ebdced8d"},
-    {file = "darglint-1.8.1.tar.gz", hash = "sha256:080d5106df149b199822e7ee7deb9c012b49891538f14a11be681044f0bb20da"},
-]
-
-[[package]]
 name = "dateparser"
 version = "1.4.3"
 description = "Date parsing library designed to parse dates from HTML pages"
@@ -4077,4 +4065,4 @@ cli = ["click", "dateparser", "tabulate"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "663eb34052c1c4d85cfbf3d686d9b912601ea74615a44cb9e3cd047e3f7b00a7"
+content-hash = "d147288fa4a50faf2b9203755c7b99f4256851663e85dcc3990d989b6c0d4d33"
