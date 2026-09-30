@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+env:
+  DEFAULT_PYTHON: "3.14"
+
 jobs:
   release:
     name: Release
@@ -24,7 +27,7 @@ jobs:
         uses: astral-sh/setup-uv@v10.2.0
         with:
           version: "0.12.21"
-          python-version: "3.14.7"
+          python-version: ${{ env.DEFAULT_PYTHON }}
 
       - name: Check if there is a parent commit
         id: check-parent-commit
