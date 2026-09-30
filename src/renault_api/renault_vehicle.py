@@ -276,7 +276,7 @@ class RenaultVehicle:
         response = await self._get_vehicle_data(endpoint_definition)
         if endpoint_definition.mode == "kcm-settings":
             return response.raw_data
-        return response.raw_data["data"]["attributes"]  # type:ignore[no-any-return]
+        return response.raw_data["data"]["attributes"]
 
     async def get_notification_settings(
         self,
