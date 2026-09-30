@@ -59,13 +59,22 @@ please send us the samples.
 How to set up your development environment
 ------------------------------------------
 
-You need Python 3.10+ and uv_.
+The easiest way to get started is to use the `Dev Container`_,
+which comes with Python, uv and all development tools pre-installed:
+open the repository in VS Code and select *Reopen in Container*,
+or `open it in a new Dev Container`_ directly.
+
+.. _Dev Container: https://code.visualstudio.com/docs/devcontainers/containers
+.. _open it in a new Dev Container: https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/hacf-fr/renault-api
+
+For a manual setup, you need Python 3.10+ and uv_.
 
 Install the package with development requirements:
 
 .. code:: console
 
    $ uv sync --all-extras
+   $ uv run pre-commit install
 
 You can now run an interactive Python session,
 or the command-line interface:
