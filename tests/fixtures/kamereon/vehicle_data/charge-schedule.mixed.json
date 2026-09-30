@@ -1,0 +1,31 @@
+{
+  "data": {
+    "type": "Car",
+    "id": "VF1AAAAA555777999",
+    "attributes": {
+      "calendar": {
+        "monday": [
+          { "startTime": "1100", "duration": 240, "activationState": true }
+        ],
+        "tuesday": [
+          { "startTime": "2215", "duration": 55, "activationState": true }
+        ],
+        "wednesday": [
+          { "startTime": "0830", "duration": 90, "activationState": true }
+        ],
+        "thursday": [
+          { "startTime": "2330", "duration": 120, "activationState": true }
+        ],
+        "friday": [
+          { "startTime": "2300", "duration": 10, "activationState": false }
+        ],
+        "saturday": [
+          { "startTime": "0200", "duration": 360, "activationState": true }
+        ],
+        "sunday": [
+          { "startTime": "0830", "duration": 390, "activationState": false }
+        ]
+      }
+    }
+  }
+}
