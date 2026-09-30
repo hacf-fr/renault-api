@@ -20,20 +20,11 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Set up Python
-        uses: actions/setup-python@v7.0.0
+      - name: Set up uv and Python
+        uses: astral-sh/setup-uv@v10.2.0
         with:
+          version: "0.11.15"
           python-version: "3.14.7"
-
-      - name: Upgrade pip
-        run: |
-          pip install --constraint=.github/workflows/constraints.txt pip
-          pip --version
-
-      - name: Install uv
-        run: |
-          pip install --constraint=.github/workflows/constraints.txt uv
-          uv --version
 
       - name: Check if there is a parent commit
         id: check-parent-commit

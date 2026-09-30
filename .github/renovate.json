@@ -8,9 +8,6 @@
     "automerge": true
   },
   "commitMessagePrefix": "⬆️",
-  "pip_requirements": {
-    "managerFilePatterns": [".github/workflows/constraints.txt"]
-  },
   "packageRules": [
     {
       "matchManagers": ["pep621"],

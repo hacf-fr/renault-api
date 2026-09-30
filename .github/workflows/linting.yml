@@ -1,0 +1,60 @@
+name: Linting
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pre-commit:
+    name: pre-commit 3.14 / ubuntu-latest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7.0.1
+
+      - name: Set up uv and Python
+        uses: astral-sh/setup-uv@v10.2.0
+        with:
+          version: "0.11.15"
+          python-version: "3.14"
+          enable-cache: true
+
+      - name: Restore pre-commit cache
+        uses: actions/cache@v6.1.0
+        with:
+          path: ~/.cache/pre-commit
+          key: ${{ runner.os }}-3.14-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-3.14-
+
+      - name: Run pre-commit
+        run: |
+          uv run --locked pre-commit run --all-files --show-diff-on-failure
+
+  safety:
+    name: safety 3.14 / ubuntu-latest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7.0.1
+
+      - name: Set up uv and Python
+        uses: astral-sh/setup-uv@v10.2.0
+        with:
+          version: "0.11.15"
+          python-version: "3.14"
+          enable-cache: true
+
+      - name: Export locked requirements
+        run: |
+          uv export --locked --all-extras --all-groups --no-hashes --no-emit-project --output-file=requirements.txt
+
+      - name: Scan dependencies for insecure packages
+        run: |
+          uv run --locked --no-group docs safety check --full-report --file=requirements.txt

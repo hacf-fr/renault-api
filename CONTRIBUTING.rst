@@ -59,10 +59,7 @@ please send us the samples.
 How to set up your development environment
 ------------------------------------------
 
-You need Python 3.10+ and the following tools:
-
-- uv_
-- Nox_
+You need Python 3.10+ and uv_.
 
 Install the package with development requirements:
 
@@ -79,30 +76,29 @@ or the command-line interface:
    $ uv run renault-api
 
 .. _uv: https://docs.astral.sh/uv/
-.. _Nox: https://nox.thea.codes/
 
 
 How to test the project
 -----------------------
 
-Run the full test suite:
+Run the unit test suite:
 
 .. code:: console
 
-   $ nox
+   $ uv run pytest
 
-List the available Nox sessions:
-
-.. code:: console
-
-   $ nox --list-sessions
-
-You can also run a specific Nox session.
-For example, invoke the unit test suite like this:
+Run the type checker and the linters:
 
 .. code:: console
 
-   $ nox --session=tests
+   $ uv run ty check src tests docs/conf.py
+   $ uv run pre-commit run --all-files
+
+Build the documentation (Python 3.14+):
+
+.. code:: console
+
+   $ uv run sphinx-build docs docs/_build
 
 Unit tests are located in the ``tests`` directory,
 and are written using the pytest_ testing framework.
@@ -117,7 +113,7 @@ Open a `pull request`_ to submit changes to this project.
 
 Your pull request needs to meet the following guidelines for acceptance:
 
-- The Nox test suite must pass without errors and warnings.
+- The test suite, type checker and linters must pass without errors and warnings.
 - Include unit tests. This project maintains 100% code coverage.
 - If your changes add functionality, update the documentation accordingly.
 
@@ -127,7 +123,7 @@ To run linting and code formatting checks before commiting your change, you can 
 
 .. code:: console
 
-   $ nox --session=pre-commit -- install
+   $ uv run pre-commit install
 
 It is recommended to open an issue before starting work on anything.
 This will allow a chance to talk it over with the owners and validate your approach.
