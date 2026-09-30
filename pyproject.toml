@@ -1,38 +1,48 @@
-[tool.poetry]
+[project]
 name = "renault-api"
 version = "0.5.13"
 description = "Renault API"
-authors = ["epenet"]
+authors = [{ name = "epenet" }]
 license = "MIT"
+requires-python = ">=3.10"
 readme = "README.rst"
-homepage = "https://github.com/hacf-fr/renault-api"
-repository = "https://github.com/hacf-fr/renault-api"
-documentation = "https://renault-api.readthedocs.io"
 classifiers = [
+    "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
 ]
+dependencies = [
+    # Warning: as of 2024-04-23, aiohttp is pinned to 3.9.5 on HA-core
+    "aiohttp>=3.9.5",
+    # Warning: as of 2023-07-19, pyjwt is pinned to 2.8.0 on HA-core
+    "PyJWT>=2.8.0",
+    "marshmallow-dataclass>=8.2.0",
+]
 
-[tool.poetry.urls]
+[project.optional-dependencies]
+cli = [
+    "click>=8.0.1",
+    "dateparser>=1.0.0",
+    "tabulate>=0.8.7",
+]
+
+[project.scripts]
+renault-api = "renault_api.cli.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/hacf-fr/renault-api"
+Repository = "https://github.com/hacf-fr/renault-api"
+Documentation = "https://renault-api.readthedocs.io"
 Changelog = "https://github.com/hacf-fr/renault-api/releases"
+
+[tool.poetry]
+requires-poetry = ">=2.0"
 
 [tool.poetry.requires-plugins]
 poetry-plugin-export = ">=1.8"
-
-[tool.poetry.dependencies]
-python = ">=3.10,<4.0"
-# Warning: as of 2024-04-23, aiohttp is pinned to 3.9.5 on HA-core
-aiohttp = ">=3.9.5"
-# Warning: as of 2023-07-19, pyjwt is pinned to 2.8.0 on HA-core
-PyJWT = ">=2.8.0"
-
-marshmallow-dataclass = ">=8.2.0"
-click = { version = ">=8.0.1", optional = true }
-tabulate = { version = ">=0.8.7", optional = true }
-dateparser = {version = ">=1.0.0", optional = true}
 
 [tool.poetry.group.dev.dependencies]
 pytest = "==9.1.1"
@@ -53,12 +63,6 @@ myst-parser = {version = "==5.1.0", python = ">=3.14"}
 sphinx = {version = "==9.1.0", python = ">=3.14"}
 sphinx-autobuild = {version = "==2025.8.25", python = ">=3.14"}
 sphinx-click = {version = "==6.2.0", python = ">=3.14"}
-
-[tool.poetry.extras]
-cli = ["click", "tabulate", "dateparser"]
-
-[tool.poetry.scripts]
-renault-api = "renault_api.cli.__main__:main"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
@@ -132,5 +136,5 @@ max-complexity = 10
 convention = "google"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=2.0.0"]
 build-backend = "poetry.core.masonry.api"

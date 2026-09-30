@@ -4064,5 +4064,5 @@ cli = ["click", "dateparser", "tabulate"]
 
 [metadata]
 lock-version = "2.1"
-python-versions = ">=3.10,<4.0"
-content-hash = "e6870d9e7da4c2875dfa2cd5d8193de667c41282e37bf5fa3c6f9980c414fbe0"
+python-versions = ">=3.10"
+content-hash = "29e8a85aa103ebf05e3a8de672cc8447a2440e9b50e99a3264f3c8abfb1aa668"
