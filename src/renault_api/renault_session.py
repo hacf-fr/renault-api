@@ -2,10 +2,7 @@
 
 import asyncio
 import logging
-from collections.abc import Awaitable
-from collections.abc import Callable
 from typing import Any
-from typing import TypeVar
 
 import aiohttp
 from marshmallow.schema import Schema
@@ -25,12 +22,9 @@ from .exceptions import NotAuthenticatedException
 from .exceptions import RenaultException
 from .gigya.exceptions import GigyaResponseException
 from .kamereon import models
-from .kamereon.exceptions import UnauthorizedException
 from renault_api.helpers import get_api_keys
 
 _LOGGER = logging.getLogger(__name__)
-
-T = TypeVar("T")
 
 
 class RenaultSession:
@@ -179,19 +173,6 @@ class RenaultSession:
                 self._credentials[gigya.GIGYA_JWT] = JWTCredential(jwt)
                 return jwt
 
-    async def _kamereon_call(
-        self, func: Callable[..., Awaitable[T]], **kwargs: Any
-    ) -> T:
-        """Call a Kamereon endpoint, reminting the JWT once on auth failure."""
-        kwargs["gigya_jwt"] = await self._get_jwt()
-        try:
-            return await func(**kwargs)
-        except UnauthorizedException:
-            # Server rejected a locally-valid JWT (revoked/clock skew): remint once.
-            self._credentials.clear_keys([gigya.GIGYA_JWT])
-            kwargs["gigya_jwt"] = await self._get_jwt()
-            return await func(**kwargs)
-
     async def http_request(
         self,
         method: str,
@@ -203,12 +184,12 @@ class RenaultSession:
         """GET to specified endpoint."""
         url = (await self._get_kamereon_root_url()) + endpoint
         params = {"country": await self._get_country()}
-        return await self._kamereon_call(
-            kamereon.request,
+        return await kamereon.request(
             websession=self._websession,
             method=method,
             url=url,
             api_key=await self._get_kamereon_api_key(),
+            gigya_jwt=await self._get_jwt(),
             params=params,
             json=json,
             schema=schema,
@@ -216,11 +197,11 @@ class RenaultSession:
 
     async def get_person(self) -> models.KamereonPersonResponse:
         """GET to /persons/{person_id}."""
-        return await self._kamereon_call(
-            kamereon.get_person,
+        return await kamereon.get_person(
             websession=self._websession,
             root_url=await self._get_kamereon_root_url(),
             api_key=await self._get_kamereon_api_key(),
+            gigya_jwt=await self._get_jwt(),
             country=await self._get_country(),
             person_id=await self._get_person_id(),
         )
@@ -229,11 +210,11 @@ class RenaultSession:
         self, account_id: str
     ) -> models.KamereonVehiclesResponse:
         """GET to /accounts/{account_id}/vehicles."""
-        return await self._kamereon_call(
-            kamereon.get_account_vehicles,
+        return await kamereon.get_account_vehicles(
             websession=self._websession,
             root_url=await self._get_kamereon_root_url(),
             api_key=await self._get_kamereon_api_key(),
+            gigya_jwt=await self._get_jwt(),
             country=await self._get_country(),
             account_id=account_id,
         )
@@ -242,11 +223,11 @@ class RenaultSession:
         self, account_id: str, vin: str
     ) -> models.KamereonVehicleDetailsResponse:
         """GET to /accounts/{account_id}/vehicles/{vin}/details."""
-        return await self._kamereon_call(
-            kamereon.get_vehicle_details,
+        return await kamereon.get_vehicle_details(
             websession=self._websession,
             root_url=await self._get_kamereon_root_url(),
             api_key=await self._get_kamereon_api_key(),
+            gigya_jwt=await self._get_jwt(),
             country=await self._get_country(),
             account_id=account_id,
             vin=vin,
@@ -262,11 +243,11 @@ class RenaultSession:
         adapter_type: str = "kca",
     ) -> models.KamereonVehicleDataResponse:
         """GET to /v{endpoint_version}/cars/{vin}/{endpoint}."""
-        return await self._kamereon_call(
-            kamereon.get_vehicle_data,
+        return await kamereon.get_vehicle_data(
             websession=self._websession,
             root_url=await self._get_kamereon_root_url(),
             api_key=await self._get_kamereon_api_key(),
+            gigya_jwt=await self._get_jwt(),
             country=await self._get_country(),
             account_id=account_id,
             vin=vin,
@@ -281,11 +262,11 @@ class RenaultSession:
         vin: str,
     ) -> models.KamereonVehicleContractsResponse:
         """GET to /v{endpoint_version}/cars/{vin}/contracts."""
-        return await self._kamereon_call(
-            kamereon.get_vehicle_contracts,
+        return await kamereon.get_vehicle_contracts(
             websession=self._websession,
             root_url=await self._get_kamereon_root_url(),
             api_key=await self._get_kamereon_api_key(),
+            gigya_jwt=await self._get_jwt(),
             country=await self._get_country(),
             account_id=account_id,
             vin=vin,
@@ -302,11 +283,11 @@ class RenaultSession:
         adapter_type: str = "kca",
     ) -> models.KamereonVehicleDataResponse:
         """POST to /v{endpoint_version}/cars/{vin}/{endpoint}."""
-        return await self._kamereon_call(
-            kamereon.set_vehicle_action,
+        return await kamereon.set_vehicle_action(
             websession=self._websession,
             root_url=await self._get_kamereon_root_url(),
             api_key=await self._get_kamereon_api_key(),
+            gigya_jwt=await self._get_jwt(),
             country=await self._get_country(),
             account_id=account_id,
             vin=vin,
