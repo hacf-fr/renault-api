@@ -61,34 +61,25 @@ How to set up your development environment
 
 You need Python 3.10+ and the following tools:
 
-- Poetry_
+- uv_
 - Nox_
-- nox-poetry_
-
-**WARNING**: due to an open issue with Poetry, we recommand that you use the 1.0.10 version. You can install it
-with the commmand:
-
-.. code:: console
-
-   $ pipx install poetry==1.0.10
 
 Install the package with development requirements:
 
 .. code:: console
 
-   $ poetry install --extras "cli"
+   $ uv sync --all-extras
 
 You can now run an interactive Python session,
 or the command-line interface:
 
 .. code:: console
 
-   $ poetry run python
-   $ poetry run renault-api
+   $ uv run python
+   $ uv run renault-api
 
-.. _Poetry: https://python-poetry.org/
+.. _uv: https://docs.astral.sh/uv/
 .. _Nox: https://nox.thea.codes/
-.. _nox-poetry: https://nox-poetry.readthedocs.io/
 
 
 How to test the project

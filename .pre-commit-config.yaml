@@ -4,6 +4,7 @@ repos:
       - id: check-added-large-files
         name: Check for added large files
         entry: check-added-large-files
+        exclude: ^uv\.lock$
         language: system
       - id: check-toml
         name: Check Toml

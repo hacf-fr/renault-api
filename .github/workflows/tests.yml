@@ -47,16 +47,14 @@ jobs:
           pip install --constraint=.github/workflows/constraints.txt pip
           pip --version
 
-      - name: Install Poetry
+      - name: Install uv
         run: |
-          pip install --constraint=.github/workflows/constraints.txt poetry
-          poetry --version
-          poetry self add poetry-plugin-export
-          poetry self show plugins
+          pip install --constraint=.github/workflows/constraints.txt uv
+          uv --version
 
       - name: Install Nox
         run: |
-          pip install --constraint=.github/workflows/constraints.txt nox nox-poetry
+          pip install --constraint=.github/workflows/constraints.txt nox
           nox --version
 
       - name: Compute pre-commit cache key
@@ -110,16 +108,14 @@ jobs:
           pip install --constraint=.github/workflows/constraints.txt pip
           pip --version
 
-      - name: Install Poetry
+      - name: Install uv
         run: |
-          pip install --constraint=.github/workflows/constraints.txt poetry
-          poetry --version
-          poetry self add poetry-plugin-export
-          poetry self show plugins
+          pip install --constraint=.github/workflows/constraints.txt uv
+          uv --version
 
       - name: Install Nox
         run: |
-          pip install --constraint=.github/workflows/constraints.txt nox nox-poetry
+          pip install --constraint=.github/workflows/constraints.txt nox
           nox --version
 
       - name: Download coverage data

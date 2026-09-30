@@ -6,7 +6,7 @@
     {
       "label": "Pre-commit all files",
       "type": "shell",
-      "command": "poetry run pre-commit run --all-files",
+      "command": "uv run pre-commit run --all-files",
       "presentation": {
         "reveal": "always",
         "panel": "new"
@@ -16,7 +16,7 @@
     {
       "label": "Run tests with coverage",
       "type": "shell",
-      "command": "poetry run pytest --cov",
+      "command": "uv run pytest --cov",
       "presentation": {
         "reveal": "always",
         "panel": "new"
