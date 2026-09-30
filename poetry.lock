@@ -3539,7 +3539,7 @@ version = "4.6.0"
 description = "Run-time type checker for Python"
 optional = false
 python-versions = ">=3.10"
-groups = ["main", "dev"]
+groups = ["main"]
 files = [
     {file = "typeguard-4.6.0-py3-none-any.whl", hash = "sha256:79878165bb86f2cf5d41d159a0ff1792a796cf496882d2fe1b1c6c7049b9cdd7"},
     {file = "typeguard-4.6.0.tar.gz", hash = "sha256:e7414f09111317de3e335de92cd397c5c0ca00b1cc1676de12e1d444a79b3f21"},
@@ -4065,4 +4065,4 @@ cli = ["click", "dateparser", "tabulate"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "d147288fa4a50faf2b9203755c7b99f4256851663e85dcc3990d989b6c0d4d33"
+content-hash = "e6870d9e7da4c2875dfa2cd5d8193de667c41282e37bf5fa3c6f9980c414fbe0"

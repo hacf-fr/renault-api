@@ -8,7 +8,6 @@ import pytest
 from aiointercept import aiointercept
 from click.testing import CliRunner
 from syrupy.assertion import SnapshotAssertion
-from typeguard import suppress_type_checks
 from yarl import URL
 
 from tests import fixtures
@@ -324,11 +323,10 @@ def test_http_post_file(
     json_file = tmpdir.mkdir("json").join("sample.json")
     json_file.write(json.dumps(body))
 
-    with suppress_type_checks():
-        result = cli_runner.invoke(
-            __main__.main,
-            f"http post-file {endpoint} '{json_file}'",
-        )
+    result = cli_runner.invoke(
+        __main__.main,
+        f"http post-file {endpoint} '{json_file}'",
+    )
     assert result.exit_code == 0, result.exception
     assert result.output == snapshot
 
