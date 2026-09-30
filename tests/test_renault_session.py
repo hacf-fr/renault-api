@@ -5,15 +5,19 @@ from typing import cast
 import aiohttp
 import pytest
 from aiointercept import aiointercept
+from yarl import URL
 
 from tests import fixtures
+from tests.const import TEST_ACCOUNT_ID
 from tests.const import TEST_COUNTRY
+from tests.const import TEST_GIGYA_URL
 from tests.const import TEST_LOCALE
 from tests.const import TEST_LOCALE_DETAILS
 from tests.const import TEST_LOGIN_TOKEN
 from tests.const import TEST_PASSWORD
 from tests.const import TEST_PERSON_ID
 from tests.const import TEST_USERNAME
+from tests.const import TEST_VIN
 from tests.test_credential_store import get_logged_in_credential_store
 
 from renault_api.credential import JWTCredential
@@ -21,6 +25,7 @@ from renault_api.exceptions import NotAuthenticatedException
 from renault_api.exceptions import RenaultException
 from renault_api.gigya import GIGYA_JWT
 from renault_api.gigya import GIGYA_LOGIN_TOKEN
+from renault_api.kamereon.exceptions import UnauthorizedException
 from renault_api.renault_session import RenaultSession
 
 
@@ -206,7 +211,81 @@ async def test_set_login_token(
     # A restored token can mint a JWT without ever calling login.
     fixtures.inject_gigya_jwt(mocked_responses)
     assert await session._get_jwt()
+
     assert len(mocked_responses.requests) == 1
+
+
+@pytest.mark.asyncio
+async def test_unauthorized_refresh_retry(
+    websession: aiohttp.ClientSession, mocked_responses: aiointercept
+) -> None:
+    """Test Kamereon call remints the JWT once on unauthorized failure."""
+    fresh_jwt = fixtures.get_jwt()
+    session = get_logged_in_session(websession=websession)
+    rejected_jwt = session._credentials.get_value(GIGYA_JWT)
+
+    fixtures.inject_gigya_jwt(mocked_responses, jwt=fresh_jwt)
+    fixtures.inject_data(
+        mocked_responses,
+        f"accounts/{TEST_ACCOUNT_ID}/vehicles/{TEST_VIN}/details?{fixtures.DEFAULT_QUERY_STRING}",
+        "error/unauthorized.json",
+    )
+    url = fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
+
+    response = await session.get_vehicle_details(TEST_ACCOUNT_ID, TEST_VIN)
+    assert response.vin == TEST_VIN
+
+    gigya_requests = mocked_responses.requests[
+        ("POST", URL(f"{TEST_GIGYA_URL}/accounts.getJWT"))
+    ]
+    assert len(gigya_requests) == 1
+    kamereon_requests = mocked_responses.requests[("GET", URL(url))]
+    assert len(kamereon_requests) == 2
+    assert kamereon_requests[0].headers["x-gigya-id_token"] == rejected_jwt
+    assert kamereon_requests[1].headers["x-gigya-id_token"] == fresh_jwt
+    assert session._credentials.get_value(GIGYA_JWT) == fresh_jwt
+
+
+@pytest.mark.asyncio
+async def test_unauthorized_no_infinite_retry(
+    websession: aiohttp.ClientSession, mocked_responses: aiointercept
+) -> None:
+    """Test a second unauthorized failure is raised, not retried again."""
+    session = get_logged_in_session(websession=websession)
+    fixtures.inject_gigya_jwt(mocked_responses)
+    urlpath = (
+        f"accounts/{TEST_ACCOUNT_ID}/vehicles/{TEST_VIN}"
+        f"/details?{fixtures.DEFAULT_QUERY_STRING}"
+    )
+    fixtures.inject_data(mocked_responses, urlpath, "error/unauthorized.json")
+    fixtures.inject_data(mocked_responses, urlpath, "error/unauthorized.json")
+
+    with pytest.raises(UnauthorizedException):
+        await session.get_vehicle_details(TEST_ACCOUNT_ID, TEST_VIN)
+
+
+@pytest.mark.asyncio
+async def test_set_vehicle_action(
+    websession: aiohttp.ClientSession, mocked_responses: aiointercept
+) -> None:
+    """Test set_vehicle_action through the session."""
+    session = get_logged_in_session(websession=websession)
+    fixtures.inject_gigya_all(mocked_responses)
+    await session.login(TEST_USERNAME, TEST_PASSWORD)
+
+    url = fixtures.inject_set_hvac_start(mocked_responses, "cancel")
+    response = await session.set_vehicle_action(
+        TEST_ACCOUNT_ID,
+        TEST_VIN,
+        "actions/hvac-start",
+        {"action": "cancel"},
+    )
+    assert response is not None
+    # login + getJWT (store cleared by login) + the action itself
+    assert len(mocked_responses.requests) == 3
+    assert mocked_responses.requests[("POST", URL(url))][0].kwargs["json"] == {
+        "data": {"type": "HvacStart", "attributes": {"action": "cancel"}}
+    }
 
 
 @pytest.mark.asyncio

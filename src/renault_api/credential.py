@@ -5,6 +5,10 @@ from dataclasses import dataclass
 
 import jwt
 
+# Treat a JWT as expired this many seconds early, to tolerate clock skew
+# between this machine and the Gigya/Kamereon servers.
+CLOCK_SKEW_MARGIN = 60
+
 
 @dataclass
 class Credential:
@@ -32,4 +36,4 @@ class JWTCredential(Credential):
 
     def has_expired(self) -> bool:
         """Check if JWT token has expired."""
-        return self.expiry < time.time()
+        return self.expiry - CLOCK_SKEW_MARGIN < time.time()

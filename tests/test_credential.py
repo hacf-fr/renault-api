@@ -31,3 +31,16 @@ def test_jwt() -> None:
     expired_time = time.time() + 3600
     with mock.patch("time.time", mock.MagicMock(return_value=expired_time)):
         assert credential.has_expired()
+
+
+def test_jwt_clock_skew_margin() -> None:
+    """Test a token expiring within the margin is treated as expired."""
+    credential = JWTCredential(get_jwt())
+
+    within_margin = time.time() + 900 - 30
+    with mock.patch("time.time", mock.MagicMock(return_value=within_margin)):
+        assert credential.has_expired()
+
+    beyond_margin = time.time() + 900 - 120
+    with mock.patch("time.time", mock.MagicMock(return_value=beyond_margin)):
+        assert not credential.has_expired()
