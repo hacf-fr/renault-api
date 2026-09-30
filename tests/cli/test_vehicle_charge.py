@@ -13,8 +13,6 @@ from tests.fixtures import KCM_ADAPTER_PATH
 
 from . import initialise_credential_store
 from renault_api.cli import __main__
-from renault_api.cli.charge import schedule
-from renault_api.kamereon.helpers import DAYS_OF_WEEK
 
 
 def test_charge_soclevels_show(
@@ -188,43 +186,17 @@ def test_sessions_50(
     assert result.output == snapshot
 
 
-@pytest.mark.parametrize(
-    ("start_time", "duration", "end_time"),
-    [
-        ("2300", 10, "T23:10Z"),
-        ("2300", 70, "T00:10Z"),
-        ("2300", 121, "T01:01Z"),
-    ],
-)
-def test_show_kca_end_time(
-    monkeypatch: pytest.MonkeyPatch,
-    capsys: pytest.CaptureFixture[str],
-    start_time: str,
-    duration: int,
-    end_time: str,
-) -> None:
-    """It displays schedule end times using minute arithmetic."""
-    monkeypatch.setattr(schedule.helpers, "get_display_value", lambda value, _: value)
-    day_data = {
-        "startTime": start_time,
-        "duration": duration,
-        "activationState": False,
-    }
-    response = {"calendar": {day: [day_data] for day in DAYS_OF_WEEK}}
-
-    schedule._show_kca(response)
-
-    output = capsys.readouterr().out
-    assert end_time in output
-
-
+@pytest.mark.parametrize("schedule_type", ["single", "mixed"])
 def test_charge_schedule_show(
-    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
+    mocked_responses: aiointercept,
+    cli_runner: CliRunner,
+    snapshot: SnapshotAssertion,
+    schedule_type: str,
 ) -> None:
     """It exits with a status code of zero."""
     initialise_credential_store(include_account_id=True, include_vin=True)
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
-    fixtures.inject_get_charge_schedule(mocked_responses, "single")
+    fixtures.inject_get_charge_schedule(mocked_responses, schedule_type)
 
     result = cli_runner.invoke(__main__.main, "charge schedule show")
     assert result.exit_code == 0, result.exception
