@@ -29,7 +29,6 @@ nox.options.sessions = [
     "safety",
     "mypy",
     "tests",
-    "typeguard",
     "docs-build",
 ]
 
@@ -120,7 +119,6 @@ def mypy(session: Session) -> None:
         "types-dateparser",
         "types-tabulate",
         "types-tzlocal",
-        "typeguard",
         "pytest-asyncio",
         "aiointercept",
         "syrupy",
@@ -137,11 +135,9 @@ def tests(session: Session) -> None:
     session.install(
         "coverage[toml]",
         "pytest",
-        "pygments",
         "pytest-asyncio",
         "aiointercept",
         "syrupy",
-        "typeguard",
     )
     try:
         session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
@@ -161,16 +157,6 @@ def coverage(session: Session) -> None:
         session.run("coverage", "combine")
 
     session.run("coverage", *args)
-
-
-@session(python=python_versions)
-def typeguard(session: Session) -> None:
-    """Runtime type checking using Typeguard."""
-    session.install(".[cli]")
-    session.install(
-        "pytest", "typeguard", "pygments", "pytest-asyncio", "aiointercept", "syrupy"
-    )
-    session.run("pytest", f"--typeguard-packages={package}", *session.posargs)
 
 
 @session(name="docs-build", python=python_versions[0])

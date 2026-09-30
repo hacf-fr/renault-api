@@ -7,7 +7,6 @@ from shutil import copyfile
 from unittest import mock
 
 import pytest
-from typeguard import suppress_type_checks
 
 from tests.const import TEST_LOGIN_TOKEN
 from tests.const import TEST_PERSON_ID
@@ -36,11 +35,11 @@ def test_invalid_credential() -> None:
     credential_store = CredentialStore()
 
     test_key = "test"
-    with suppress_type_checks(), pytest.raises(TypeError):
+    with pytest.raises(TypeError):
         credential_store[test_key] = test_key  # type:ignore
 
     test_value = Credential("test_value")
-    with suppress_type_checks(), pytest.raises(TypeError):
+    with pytest.raises(TypeError):
         credential_store[test_value] = test_value  # type:ignore
 
 
