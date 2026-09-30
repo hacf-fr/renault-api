@@ -8,6 +8,7 @@ from collections.abc import Generator
 from datetime import datetime
 from datetime import timedelta
 from datetime import tzinfo
+from typing import TYPE_CHECKING
 from typing import Any
 
 import pytest
@@ -98,7 +99,7 @@ def create_aiohttp_closed_event(
     transports = 0
     all_is_lost = asyncio.Event()
 
-    def connection_lost(exc, orig_lost):  # type: ignore[no-untyped-def]
+    def connection_lost(exc, orig_lost):
         nonlocal transports
 
         try:
@@ -108,7 +109,7 @@ def create_aiohttp_closed_event(
             if transports == 0:
                 all_is_lost.set()
 
-    def eof_received(orig_eof_received):  # type: ignore[no-untyped-def]
+    def eof_received(orig_eof_received):
         try:
             orig_eof_received()
         except AttributeError:
@@ -116,7 +117,9 @@ def create_aiohttp_closed_event(
             # _app_protocol and _transport are set to None.
             pass
 
-    for conn in session.connector._conns.values():  # type: ignore[union-attr]
+    if TYPE_CHECKING:
+        assert session.connector is not None
+    for conn in session.connector._conns.values():
         for handler, _ in conn:
             proto = getattr(handler.transport, "_ssl_protocol", None)
             if proto is None:

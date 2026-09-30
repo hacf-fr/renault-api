@@ -95,7 +95,7 @@ def create_aiohttp_closed_event(
     transports = 0
     all_is_lost = asyncio.Event()
 
-    def connection_lost(exc, orig_lost):  # type: ignore
+    def connection_lost(exc, orig_lost):
         nonlocal transports
 
         try:
@@ -105,7 +105,7 @@ def create_aiohttp_closed_event(
             if transports == 0:
                 all_is_lost.set()
 
-    def eof_received(orig_eof_received):  # type: ignore
+    def eof_received(orig_eof_received):
         try:
             orig_eof_received()
         except AttributeError:

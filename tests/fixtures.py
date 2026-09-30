@@ -38,7 +38,7 @@ def get_jwt(timedelta: datetime.timedelta | None = None) -> str:
     if not timedelta:
         timedelta = datetime.timedelta(seconds=900)
     encoded_jwt = jwt.encode(
-        payload={"exp": datetime.datetime.utcnow() + timedelta},
+        payload={"exp": datetime.datetime.utcnow() + timedelta},  # ty: ignore[deprecated]
         key="mock",
         algorithm="HS256",
     )

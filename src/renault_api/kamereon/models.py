@@ -941,18 +941,18 @@ class KamereonVehicleDetails(BaseModel):
         """Return True if model reports history durations in minutes."""
         # Default to False (=seconds) for unknown vehicles
         if self.model and self.model.code:
-            return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
-                self.model.code, {}
-            ).get("reports-charge-session-durations-in-minutes", False)
+            return VEHICLE_SPECIFICATIONS.get(self.model.code, {}).get(
+                "reports-charge-session-durations-in-minutes", False
+            )
         return False
 
     def reports_charging_power_in_watts(self) -> bool:
         """Return True if model reports chargingInstantaneousPower in watts."""
         # Default to False for unknown vehicles
         if self.model and self.model.code:
-            return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
-                self.model.code, {}
-            ).get("reports-in-watts", False)
+            return VEHICLE_SPECIFICATIONS.get(self.model.code, {}).get(
+                "reports-in-watts", False
+            )
         return False
 
     def supports_endpoint(self, endpoint: str) -> bool:
@@ -969,9 +969,9 @@ class KamereonVehicleDetails(BaseModel):
         )
         # Default to False for unknown vehicles
         if self.model and self.model.code:
-            return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
-                self.model.code, {}
-            ).get(f"control-{action}-via-kcm", False)
+            return VEHICLE_SPECIFICATIONS.get(self.model.code, {}).get(
+                f"control-{action}-via-kcm", False
+            )
         return False
 
     def get_endpoints(self) -> Mapping[str, EndpointDefinition | None]:
@@ -1232,9 +1232,9 @@ class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
         """Return True if model reports chargingInstantaneousPower in watts."""
         # Default to False for unknown vehicles
         if self.carGateway:
-            return GATEWAY_SPECIFICATIONS.get(  # type:ignore[no-any-return]
-                self.carGateway, {}
-            ).get("reports-in-watts", False)
+            return GATEWAY_SPECIFICATIONS.get(self.carGateway, {}).get(
+                "reports-in-watts", False
+            )
         return False
 
     def controls_action_via_kcm(self, action: str) -> bool:
@@ -1246,9 +1246,9 @@ class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
         )
         # Default to False for unknown vehicles
         if self.modelCodeDetail:
-            return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
-                self.modelCodeDetail, {}
-            ).get(f"control-{action}-via-kcm", False)
+            return VEHICLE_SPECIFICATIONS.get(self.modelCodeDetail, {}).get(
+                f"control-{action}-via-kcm", False
+            )
         return False
 
 

@@ -48,7 +48,6 @@ poetry-plugin-export = ">=1.8"
 pytest = "==9.1.1"
 coverage = {extras = ["toml"], version = "7.16.2"}
 safety = "==3.8.1"
-mypy = "2.3.1"
 pre-commit = "==4.6.2"
 ruff = "==0.16.9"
 pre-commit-hooks = "==6.0.0"
@@ -63,6 +62,7 @@ myst-parser = {version = "==5.1.0", python = ">=3.14"}
 sphinx = {version = "==9.1.0", python = ">=3.14"}
 sphinx-autobuild = {version = "==2025.8.25", python = ">=3.14"}
 sphinx-click = {version = "==6.2.0", python = ">=3.14"}
+ty = "0.0.84"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
@@ -74,26 +74,8 @@ source = ["renault_api"]
 [tool.coverage.report]
 show_missing = true
 
-[tool.mypy]
-check_untyped_defs = true
-disallow_any_generics = true
-disallow_incomplete_defs = true
-disallow_subclassing_any = true
-disallow_untyped_calls = true
-disallow_untyped_decorators = true
-disallow_untyped_defs = true
-no_implicit_optional = true
-no_implicit_reexport = true
-pretty = true
-show_column_numbers = true
-show_error_codes = true
-show_error_context = true
-strict_equality = true
-warn_redundant_casts = true
-warn_return_any = true
-warn_unreachable = true
-warn_unused_configs = true
-warn_unused_ignores = true
+[tool.ty.environment]
+python-version = "3.10"
 
 [tool.ruff]
 line-length = 88
