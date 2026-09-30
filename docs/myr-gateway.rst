@@ -44,9 +44,10 @@ The gateway accepts the same Gigya JWT used by Kamereon:
   ``401 {"errorCode": "10.01.02.01", "errorMessage": "Missing apikey."}``.
 * The JWT goes in the ``x-gigya-id_token`` header. The same legacy JWT sent as
   ``Authorization: Bearer`` is rejected (401 ``err.func.wired.unauthorized``).
-* ``/ccx/garage-center/v1/...`` was reported to reject the legacy Gigya JWT and
-  to require the OIDC access token described below. However, on the ZOE
-  account it accepted the legacy JWT in ``x-gigya-id_token`` (200).
+* ``/ccx/garage-center/v1/...``: the app authenticates with its OIDC access
+  token here (see below). The legacy Gigya JWT in ``x-gigya-id_token`` was
+  verified accepted (200) on the ZOE; behavior on other vehicles is not
+  established.
 
 For reference, the official app itself sends an OIDC access token
 (``Authorization: Bearer at+JWT``, TTL 300 s) minted by:
@@ -185,11 +186,11 @@ Vehicle-level attributes
   ``services`` matches the ``/remotes`` id list. The app itself reads
   ``services`` only (a plain presence check); the ACTIVATED filtering is done
   server-side.
-* ``connectedStatus.privacyModeStatus`` / ``privacyModeLastUpdate`` (observed
-  under ``connectedStatus`` and reported under ``vehicleDetails`` on another
-  vehicle) reflect the MyRenault privacy mode. When active, it cuts data
-  reporting and is an explicit cause of unavailability, distinct from a
-  contract or account/link issue.
+* ``privacyModeStatus`` / ``privacyModeLastUpdate`` reflect the MyRenault
+  privacy mode. Their position varies by vehicle: under ``connectedStatus`` on
+  the HEV and the ZOE, under ``vehicleDetails`` on the XCB1VE (Mégane E-Tech).
+  When active, it cuts data reporting and is an explicit cause of
+  unavailability, distinct from a contract or account/link issue.
 
 featureIds
 ----------
