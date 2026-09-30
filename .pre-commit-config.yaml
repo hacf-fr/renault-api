@@ -3,40 +3,40 @@ repos:
     hooks:
       - id: check-added-large-files
         name: Check for added large files
-        entry: check-added-large-files
+        entry: uv run check-added-large-files
         exclude: ^uv\.lock$
         language: system
       - id: check-toml
         name: Check Toml
-        entry: check-toml
+        entry: uv run check-toml
         language: system
         types: [toml]
       - id: check-yaml
         name: Check Yaml
-        entry: check-yaml
+        entry: uv run check-yaml
         language: system
         types: [yaml]
       - id: end-of-file-fixer
         name: Fix End of Files
-        entry: end-of-file-fixer
+        entry: uv run end-of-file-fixer
         language: system
         types: [text]
         stages: [pre-commit, pre-push, manual]
       - id: ruff-check
         name: Lint code with Ruff
-        entry: ruff check
+        entry: uv run ruff check
         language: system
         types: [python]
         require_serial: true
       - id: ruff-format
         name: Format code with Ruff
-        entry: ruff format
+        entry: uv run ruff format
         language: system
         types: [python]
         require_serial: true
       - id: trailing-whitespace
         name: Trim Trailing Whitespace
-        entry: trailing-whitespace-fixer
+        entry: uv run trailing-whitespace-fixer
         exclude: \.ambr$
         language: system
         types: [text]
