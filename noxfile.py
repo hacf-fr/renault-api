@@ -2,28 +2,17 @@
 
 import os
 import shutil
-import sys
 from pathlib import Path
 from textwrap import dedent
 
 import nox
-
-try:
-    from nox_poetry import Session
-    from nox_poetry import session
-except ImportError as err:
-    message = f"""\
-    Nox failed to import the 'nox-poetry' package.
-
-    Please install it using the following command:
-
-    {sys.executable} -m pip install nox-poetry"""
-    raise SystemExit(dedent(message)) from err
-
+from nox import Session
+from nox import session
 
 package = "renault_api"
 python_versions = ["3.14", "3.13", "3.12", "3.11", "3.10"]
-nox.needs_version = ">= 2021.6.6"
+nox.needs_version = ">= 2024.3.2"
+nox.options.default_venv_backend = "uv"
 nox.options.sessions = [
     "pre-commit",
     "safety",
@@ -31,6 +20,28 @@ nox.options.sessions = [
     "tests",
     "docs-build",
 ]
+
+
+def uv_sync(session: Session, *groups: str, install_project: bool = True) -> None:
+    """Install the locked dependencies into the session's virtualenv.
+
+    Args:
+        session: The Session object.
+        groups: The dependency groups to install.
+        install_project: Whether to install the project with its extras.
+    """
+    args = ["uv", "sync", "--locked", "--no-default-groups"]
+    args += [f"--group={group}" for group in groups]
+    args += (
+        ["--all-extras", "--no-editable"]
+        if install_project
+        else ["--no-install-project"]
+    )
+    session.run_install(
+        *args,
+        f"--python={session.virtualenv.location}",
+        env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
+    )
 
 
 def activate_virtualenv_in_precommit_hooks(session: Session) -> None:
@@ -85,11 +96,7 @@ def activate_virtualenv_in_precommit_hooks(session: Session) -> None:
 def precommit(session: Session) -> None:
     """Lint using pre-commit."""
     args = session.posargs or ["run", "--all-files", "--show-diff-on-failure"]
-    session.install(
-        "ruff",
-        "pre-commit",
-        "pre-commit-hooks",
-    )
+    uv_sync(session, "dev", install_project=False)
     session.run("pre-commit", *args)
     if args and args[0] == "install":
         activate_virtualenv_in_precommit_hooks(session)
@@ -98,8 +105,19 @@ def precommit(session: Session) -> None:
 @session(python=python_versions[0])
 def safety(session: Session) -> None:
     """Scan dependencies for insecure packages."""
-    requirements = session.poetry.export_requirements()
-    session.install("safety")
+    requirements = Path(session.create_tmp(), "requirements.txt")
+    session.run_install(
+        "uv",
+        "export",
+        "--locked",
+        "--all-extras",
+        "--all-groups",
+        "--no-hashes",
+        "--no-emit-project",
+        f"--output-file={requirements}",
+        silent=True,
+    )
+    uv_sync(session, "dev", install_project=False)
     session.run(
         "safety",
         "check",
@@ -112,22 +130,14 @@ def safety(session: Session) -> None:
 def ty(session: Session) -> None:
     """Type-check using ty."""
     args = session.posargs or ["src", "tests", "docs/conf.py"]
-    session.install(".[cli]")
-    session.install("ty", "pytest", "pytest-asyncio", "aiointercept", "syrupy")
+    uv_sync(session, "dev")
     session.run("ty", "check", *args)
 
 
 @session(python=python_versions)
 def tests(session: Session) -> None:
     """Run the test suite."""
-    session.install(".[cli]")
-    session.install(
-        "coverage[toml]",
-        "pytest",
-        "pytest-asyncio",
-        "aiointercept",
-        "syrupy",
-    )
+    uv_sync(session, "dev")
     try:
         session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
     finally:
@@ -135,12 +145,12 @@ def tests(session: Session) -> None:
             session.notify("coverage", posargs=[])
 
 
-@session
+@session(python=python_versions[0])
 def coverage(session: Session) -> None:
     """Produce the coverage report."""
     args = session.posargs or ["report"]
 
-    session.install("coverage[toml]")
+    uv_sync(session, "dev", install_project=False)
 
     if not session.posargs and any(Path().glob(".coverage.*")):
         session.run("coverage", "combine")
@@ -155,8 +165,7 @@ def docs_build(session: Session) -> None:
     if not session.posargs and "FORCE_COLOR" in os.environ:
         args.insert(0, "--color")
 
-    session.install(".[cli]")
-    session.install("sphinx", "sphinx-click", "furo", "myst-parser")
+    uv_sync(session, "docs")
 
     build_dir = Path("docs", "_build")
     if build_dir.exists():
@@ -169,8 +178,7 @@ def docs_build(session: Session) -> None:
 def docs(session: Session) -> None:
     """Build and serve the documentation with live reloading on file changes."""
     args = session.posargs or ["--open-browser", "docs", "docs/_build"]
-    session.install(".[cli]")
-    session.install("sphinx", "sphinx-autobuild", "sphinx-click", "furo", "myst-parser")
+    uv_sync(session, "docs")
 
     build_dir = Path("docs", "_build")
     if build_dir.exists():

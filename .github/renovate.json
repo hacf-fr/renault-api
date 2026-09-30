@@ -13,16 +13,16 @@
   },
   "packageRules": [
     {
-      "matchManagers": ["poetry"],
+      "matchManagers": ["pep621"],
       "addLabels": ["python"]
     },
     {
-      "matchManagers": ["poetry"],
-      "matchDepTypes": ["dev"],
+      "matchManagers": ["pep621"],
+      "matchDepTypes": ["dependency-groups"],
       "rangeStrategy": "pin"
     },
     {
-      "matchManagers": ["poetry"],
+      "matchManagers": ["pep621"],
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
     },

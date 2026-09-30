@@ -4,6 +4,7 @@ version = "0.5.13"
 description = "Renault API"
 authors = [{ name = "epenet" }]
 license = "MIT"
+license-files = ["LICENSE.rst"]
 requires-python = ">=3.10"
 readme = "README.rst"
 classifiers = [
@@ -38,31 +39,31 @@ Repository = "https://github.com/hacf-fr/renault-api"
 Documentation = "https://renault-api.readthedocs.io"
 Changelog = "https://github.com/hacf-fr/renault-api/releases"
 
-[tool.poetry]
-requires-poetry = ">=2.0"
-
-[tool.poetry.requires-plugins]
-poetry-plugin-export = ">=1.8"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "==9.1.1"
-coverage = {extras = ["toml"], version = "7.16.2"}
-safety = "==3.8.1"
-pre-commit = "==4.6.2"
-ruff = "==0.16.9"
-pre-commit-hooks = "==6.0.0"
-pytest-asyncio = "==1.4.0"
-aiointercept = "0.1.12"
-pytest-cov = "==7.1.0"
-syrupy = "==6.1.1"
-
+[dependency-groups]
+dev = [
+    "aiointercept==0.1.12",
+    "coverage[toml]==7.16.2",
+    "pre-commit==4.6.2",
+    "pre-commit-hooks==6.0.0",
+    "pytest==9.1.1",
+    "pytest-asyncio==1.4.0",
+    "pytest-cov==7.1.0",
+    "ruff==0.16.9",
+    "safety==3.8.1",
+    "syrupy==6.1.1",
+    "ty==0.0.84",
+]
 # docs (Python >= 3.14)
-furo = {version = "==2025.12.19", python = ">=3.14"}
-myst-parser = {version = "==5.1.0", python = ">=3.14"}
-sphinx = {version = "==9.1.0", python = ">=3.14"}
-sphinx-autobuild = {version = "==2025.8.25", python = ">=3.14"}
-sphinx-click = {version = "==6.2.0", python = ">=3.14"}
-ty = "0.0.84"
+docs = [
+    "furo==2025.12.19; python_version >= '3.14'",
+    "myst-parser==5.1.0; python_version >= '3.14'",
+    "sphinx==9.1.0; python_version >= '3.14'",
+    "sphinx-autobuild==2025.8.25; python_version >= '3.14'",
+    "sphinx-click==6.2.0; python_version >= '3.14'",
+]
+
+[tool.uv]
+default-groups = ["dev", "docs"]
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
@@ -118,5 +119,5 @@ max-complexity = 10
 convention = "google"
 
 [build-system]
-requires = ["poetry-core>=2.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.11.15,<0.12"]
+build-backend = "uv_build"
