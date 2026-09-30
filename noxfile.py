@@ -32,7 +32,11 @@ def uv_sync(session: Session, *groups: str, install_project: bool = True) -> Non
     """
     args = ["uv", "sync", "--locked", "--no-default-groups"]
     args += [f"--group={group}" for group in groups]
-    args += ["--all-extras"] if install_project else ["--no-install-project"]
+    args += (
+        ["--all-extras", "--no-editable"]
+        if install_project
+        else ["--no-install-project"]
+    )
     session.run_install(
         *args,
         f"--python={session.virtualenv.location}",
