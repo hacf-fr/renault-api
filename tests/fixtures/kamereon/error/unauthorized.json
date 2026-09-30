@@ -1,0 +1,16 @@
+{
+  "type": "FUNCTIONAL",
+  "messages": [
+    {
+      "code": "err.func.wired.unauthorized",
+      "message": "The access is unauthorized"
+    }
+  ],
+  "errors": [
+    {
+      "errorCode": "err.func.wired.unauthorized",
+      "errorMessage": "The access is unauthorized"
+    }
+  ],
+  "error_reference": "FUNCTIONAL"
+}

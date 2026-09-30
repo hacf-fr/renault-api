@@ -72,6 +72,12 @@ class ChargeModeInProgressException(KamereonResponseException):
     pass
 
 
+class UnauthorizedException(KamereonResponseException):
+    """The access is unauthorized (expired/revoked JWT)."""
+
+    pass
+
+
 class ForbiddenException(KamereonResponseException):
     """The access is forbidden."""
 

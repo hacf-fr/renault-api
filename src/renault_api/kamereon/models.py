@@ -56,6 +56,10 @@ COMMON_ERRRORS: list[dict[str, Any]] = [
         "error_type": exceptions.ForbiddenException,
     },
     {
+        "errorCode": "err.func.wired.unauthorized",
+        "error_type": exceptions.UnauthorizedException,
+    },
+    {
         "errorCode": "409001",
         "error_type": exceptions.ChargeModeInProgressException,
     },
