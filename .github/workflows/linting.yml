@@ -13,6 +13,9 @@ concurrency:
 permissions:
   contents: read
 
+env:
+  DEFAULT_PYTHON: "3.14"
+
 jobs:
   pre-commit:
     name: pre-commit 3.14 / ubuntu-latest
@@ -25,16 +28,16 @@ jobs:
         uses: astral-sh/setup-uv@v10.2.0
         with:
           version: "0.12.21"
-          python-version: "3.14"
+          python-version: ${{ env.DEFAULT_PYTHON }}
           enable-cache: true
 
       - name: Restore pre-commit cache
         uses: actions/cache@v6.1.0
         with:
           path: ~/.cache/pre-commit
-          key: ${{ runner.os }}-3.14-${{ hashFiles('.pre-commit-config.yaml') }}
+          key: ${{ runner.os }}-${{ env.DEFAULT_PYTHON }}-${{ hashFiles('.pre-commit-config.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-3.14-
+            ${{ runner.os }}-${{ env.DEFAULT_PYTHON }}-
 
       - name: Run pre-commit
         run: |
@@ -51,7 +54,7 @@ jobs:
         uses: astral-sh/setup-uv@v10.2.0
         with:
           version: "0.12.21"
-          python-version: "3.14"
+          python-version: ${{ env.DEFAULT_PYTHON }}
           enable-cache: true
 
       - name: Export locked requirements
