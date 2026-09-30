@@ -1,0 +1,41 @@
+{
+  "containerEnv": {
+    "UV_LINK_MODE": "copy"
+  },
+  "customizations": {
+    "codespaces": {
+      "openFiles": ["README.rst"]
+    },
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "redhat.vscode-yaml",
+        "esbenp.prettier-vscode",
+        "GitHub.vscode-pull-request-github",
+        "charliermarsh.ruff",
+        "GitHub.vscode-github-actions"
+      ],
+      "settings": {
+        "[python]": {
+          "editor.codeActionsOnSave": {
+            "source.fixAll": "explicit",
+            "source.organizeImports": "explicit"
+          }
+        },
+        "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+        "python.testing.cwd": "${workspaceFolder}",
+        "python.testing.pytestEnabled": true,
+        "ruff.importStrategy": "fromEnvironment",
+        "ruff.interpreter": ["${workspaceFolder}/.venv/bin/python"],
+        "terminal.integrated.defaultProfile.linux": "zsh"
+      }
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "image": "mcr.microsoft.com/devcontainers/python:3.14",
+  "name": "Renault API",
+  "onCreateCommand": "pipx install uv",
+  "updateContentCommand": "uv sync --all-extras && uv run pre-commit install"
+}
