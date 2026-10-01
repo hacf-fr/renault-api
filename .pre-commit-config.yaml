@@ -41,6 +41,12 @@ repos:
         language: system
         types: [text]
         stages: [pre-commit, pre-push, manual]
+      - id: zizmor
+        name: Audit GitHub Actions workflows with zizmor
+        entry: uv run zizmor
+        language: system
+        files: ^\.github/workflows/
+        types: [yaml]
   - repo: https://github.com/prettier/pre-commit
     rev: v2.1.2
     hooks:
