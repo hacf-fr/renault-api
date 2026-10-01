@@ -42,6 +42,7 @@ Changelog = "https://github.com/hacf-fr/renault-api/releases"
 [dependency-groups]
 dev = [
     "aiointercept==0.1.12",
+    "covdefaults==2.3.0",
     "coverage[toml]==7.16.2",
     "pre-commit==4.6.2",
     "pre-commit-hooks==6.0.0",
@@ -69,11 +70,15 @@ default-groups = ["dev", "docs"]
 source = ["src", "*/site-packages"]
 
 [tool.coverage.run]
-branch = true
+plugins = ["covdefaults"]
 source = ["renault_api"]
 
+[tool.coverage.covdefaults]
+# cli/__main__.py holds the whole CLI entry point, keep measuring it
+subtract_omit = "*/__main__.py"
+
 [tool.coverage.report]
-show_missing = true
+fail_under = 89
 
 [tool.ty.environment]
 python-version = "3.10"
