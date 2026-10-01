@@ -5,16 +5,18 @@ on:
     - cron: "47 15 * * *"
   workflow_dispatch:
 
-permissions:
-  issues: write
+permissions: {}
 
 jobs:
   stale:
     if: github.repository_owner == 'hacf-fr'
     runs-on: ubuntu-latest
+    permissions:
+      # Needed to label, comment on and close stale issues
+      issues: write
     steps:
       - name: stale issues
-        uses: actions/stale@v11.0.0
+        uses: actions/stale@4391f3da665fdf50b6810c1a66712fb9ba21aa93 # v11.0.0
         with:
           days-before-stale: 30
           days-before-close: 15
