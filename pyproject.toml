@@ -50,7 +50,7 @@ dev = [
     "pytest==9.1.1",
     "pytest-asyncio==1.4.0",
     "pytest-cov==7.1.0",
-    "ruff==0.16.9",
+    "ruff==0.16.10",
     "syrupy==6.1.1",
     "ty==0.0.84",
     "yamllint==1.38.0",
