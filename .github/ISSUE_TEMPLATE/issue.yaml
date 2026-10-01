@@ -1,0 +1,88 @@
+---
+name: Issue
+description: Report an issue with the renault-api library or CLI.
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report an issue!
+
+        If you are using the Home Assistant `renault` integration, please
+        check first whether the issue also happens with the `renault-api`
+        CLI. Issues specific to Home Assistant should be reported to
+        [Home Assistant core](https://github.com/home-assistant/core/issues).
+
+        > [!WARNING]
+        > Debug logs and traces contain **sensitive data**: VIN, registration
+        > number, account and person ids, email address, login tokens and
+        > JWTs. Please **redact them** before posting anything below.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: >-
+        A clear description of what the issue is. What did you do, what
+        did you expect to see, and what did you see instead?
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: renault-api version
+      description: >-
+        The version of renault-api you are using
+        (`renault-api --version` or `pip show renault-api`).
+      placeholder: e.g., 0.5.0
+    validations:
+      required: true
+  - type: input
+    id: python-version
+    attributes:
+      label: Python version and operating system
+      placeholder: e.g., Python 3.13 on Ubuntu 24.04
+    validations:
+      required: true
+  - type: input
+    id: vehicle
+    attributes:
+      label: Vehicle model
+      description: >-
+        The brand and model of the affected vehicle, and its model code if
+        known (`vehicleDetails.model.code` in the debug logs, e.g. `XCB1VE`).
+      placeholder: e.g., Renault Zoe ZE50 (X102VE)
+    validations:
+      required: false
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: CLI command or code to reproduce
+      description: >-
+        The `renault-api` CLI command you ran, or a minimal Python snippet
+        that reproduces the issue. Do not include your credentials.
+      render: console
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Debug logs
+      description: >-
+        Relevant debug output, for example from
+        `renault-api --debug <command>` or the files generated in the
+        `logs` subfolder by `renault-api --log <command>`.
+        **Redact your VIN, registration number, account/person ids,
+        email address and any tokens before posting.**
+      render: text
+    validations:
+      required: false
+  - type: textarea
+    id: additional-information
+    attributes:
+      label: Additional information
+      description: >-
+        Any additional context, screenshots, or other information that
+        might help.
+    validations:
+      required: false
