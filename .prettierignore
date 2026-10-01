@@ -1,10 +1,18 @@
+__pycache__/
+*.py[cod]
 /.coverage
 /.coverage.*
 /.python-version
 /dist/
 /docs/_build/
 /src/*.egg-info/
-__pycache__/
+.pytest_cache/
+
+# Type checkers
+.ty/
+
+# Linters
+.ruff_cache/
 
 # Virtual env
 .venv

@@ -1,5 +1,6 @@
 name: Linting
 
+# yamllint disable-line rule:truthy
 on:
   pull_request:
   push:
@@ -18,8 +19,8 @@ env:
   DEFAULT_PYTHON: "3.14"
 
 jobs:
-  pre-commit:
-    name: pre-commit 3.14 / ubuntu-latest
+  prek:
+    name: prek 3.14 / ubuntu-latest
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repository
@@ -34,14 +35,32 @@ jobs:
           python-version: ${{ env.DEFAULT_PYTHON }}
           enable-cache: true
 
-      - name: Restore pre-commit cache
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+
+      - name: Install NPM dependencies
+        run: npm ci
+
+      - name: Restore prek cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
-          path: ~/.cache/pre-commit
-          key: ${{ runner.os }}-${{ env.DEFAULT_PYTHON }}-${{ hashFiles('.pre-commit-config.yaml') }}
+          path: ~/.cache/prek
+          key: prek-${{ runner.os }}-${{ env.DEFAULT_PYTHON }}-${{ hashFiles('.pre-commit-config.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-${{ env.DEFAULT_PYTHON }}-
+            prek-${{ runner.os }}-${{ env.DEFAULT_PYTHON }}-
 
-      - name: Run pre-commit
+      # Before prek, whose ruff --fix would hide fixable violations;
+      # prek decides the outcome, this only annotates the PR
+      - name: Annotate ruff violations
         run: |
-          uv run --locked pre-commit run --all-files --show-diff-on-failure
+          uv run --locked ruff check --output-format=github --exit-zero .
+
+      - name: Run prek
+        env:
+          # Pushes to main would otherwise fail this hook
+          SKIP: no-commit-to-branch
+        run: |
+          uv run --locked prek run --all-files --show-diff-on-failure

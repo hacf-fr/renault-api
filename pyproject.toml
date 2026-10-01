@@ -42,16 +42,18 @@ Changelog = "https://github.com/hacf-fr/renault-api/releases"
 [dependency-groups]
 dev = [
     "aiointercept==0.1.12",
+    "codespell==2.4.3",
     "covdefaults==2.3.0",
     "coverage[toml]==7.16.2",
-    "pre-commit==4.6.2",
     "pre-commit-hooks==6.0.0",
+    "prek==0.5.4",
     "pytest==9.1.1",
     "pytest-asyncio==1.4.0",
     "pytest-cov==7.1.0",
     "ruff==0.16.9",
     "syrupy==6.1.1",
     "ty==0.0.84",
+    "yamllint==1.38.0",
     "zizmor==1.30.1",
 ]
 # docs (Python >= 3.14)
@@ -65,6 +67,11 @@ docs = [
 
 [tool.uv]
 default-groups = ["dev", "docs"]
+
+[tool.codespell]
+skip = "node_modules,package-lock.json,uv.lock"
+# Renault model names, French words and API field names/values
+ignore-words-list = "advices,equipments,espace,garantie,groupe,notse,rcall,serie"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]

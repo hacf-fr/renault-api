@@ -53,7 +53,7 @@ please send us the samples.
 - Ensure that `vehicleDetails.vin` also starts with `VF1AAAA` _(we do not want the real VIN)_
 - Ensure that `vehicleDetails.registrationNumber` starts with `REG-` _(we do not want the real registration number)_
 - Ensure that `vehicleDetails.radioCode` is equal to `1234` _(we do not want the real radio code)_
-- Ensure that the json file passes pre-commit (can be parsed online via https://codebeautify.org/jsonviewer)
+- Ensure that the json file passes prek (can be parsed online via https://codebeautify.org/jsonviewer)
 - Create a pull request
 
 How to set up your development environment
@@ -67,14 +67,16 @@ or `open it in a new Dev Container`_ directly.
 .. _Dev Container: https://code.visualstudio.com/docs/devcontainers/containers
 .. _open it in a new Dev Container: https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/hacf-fr/renault-api
 
-For a manual setup, you need Python 3.10+ and uv_.
+For a manual setup, you need Python 3.10+, uv_ and `Node.js`_
+(the version in ``.nvmrc``, used to run Prettier).
 
 Install the package with development requirements:
 
 .. code:: console
 
    $ uv sync --all-extras
-   $ uv run pre-commit install
+   $ npm ci
+   $ uv run prek install
 
 You can now run an interactive Python session,
 or the command-line interface:
@@ -85,6 +87,7 @@ or the command-line interface:
    $ uv run renault-api
 
 .. _uv: https://docs.astral.sh/uv/
+.. _Node.js: https://nodejs.org/
 
 
 How to test the project
@@ -101,7 +104,7 @@ Run the type checker and the linters:
 .. code:: console
 
    $ uv run ty check src tests docs/conf.py
-   $ uv run pre-commit run --all-files
+   $ uv run prek run --all-files
 
 Build the documentation (Python 3.14+):
 
@@ -128,11 +131,11 @@ Your pull request needs to meet the following guidelines for acceptance:
 
 Feel free to submit early, though—we can always iterate on this.
 
-To run linting and code formatting checks before commiting your change, you can install pre-commit as a Git hook by running the following command:
+To run linting and code formatting checks before committing your change, you can install prek as a Git hook by running the following command:
 
 .. code:: console
 
-   $ uv run pre-commit install
+   $ uv run prek install
 
 It is recommended to open an issue before starting work on anything.
 This will allow a chance to talk it over with the owners and validate your approach.
