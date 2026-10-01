@@ -1,6 +1,11 @@
 MyRenault app gateway ("myr")
 =============================
 
+.. note::
+
+   This gateway is not used by ``renault-api``. This page documents observed
+   behaviour of the official app, for reference only.
+
 The official MyRenault mobile app (6.13.x–6.14.x) talks to two backends:
 
 .. list-table::
