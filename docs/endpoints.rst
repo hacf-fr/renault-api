@@ -4,6 +4,9 @@ Renault endpoints
 
 This is a list of the endpoints available, and their characteristics.
 
+The official MyRenault app also uses a second backend, which this library does
+not use: see :doc:`myr-gateway`.
+
 .. _fixtures: https://github.com/hacf-fr/renault-api/blob/main/tests/fixtures/kamereon/vehicle_data/
 .. _chargestatus: https://github.com/hacf-fr/renault-api/blob/main/src/renault_api/kamereon/enums.py
 .. _Contributor Guide: contributing.html
