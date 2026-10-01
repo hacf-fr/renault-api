@@ -172,17 +172,13 @@ please `file an issue`_ along with a detailed description.
 Credits
 -------
 
-This project was generated from `@cjolowicz`_'s `Hypermodern Python Cookiecutter`_ template.
 This project was heavily based on `@jamesremuscat`_'s `PyZE`_ python client for the Renault ZE API.
 
 
-.. _@cjolowicz: https://github.com/cjolowicz
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _@jamesremuscat: https://github.com/jamesremuscat
 .. _PyZE: https://github.com/jamesremuscat/pyze
 .. _MIT: http://opensource.org/licenses/MIT
 .. _PyPI: https://pypi.org/
-.. _Hypermodern Python Cookiecutter: https://github.com/cjolowicz/cookiecutter-hypermodern-python
 .. _file an issue: https://github.com/hacf-fr/renault-api/issues
 .. _pip: https://pip.pypa.io/
 .. github-only
