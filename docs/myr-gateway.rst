@@ -57,8 +57,9 @@ For reference, the official app itself sends an OIDC access token
    https://gigya-prod-eu1.idconnect.renaultgroup.com/oidc/op/v1.0/{gigya_api_key}/
 
 with ``client_id: qiXX6GdXSgerKxYqvdAblK_M`` and scopes
-``openid email personId lang renaultGroupFull``, plus ``offline_access`` in
-6.14.2 (``authorization_code`` + PKCE, no password grant). The ``{gigya_api_key}`` EU value appears in the issuer path.
+``openid email personId lang renaultGroupFull offline_access``
+(``authorization_code`` + PKCE, no password grant). The ``{gigya_api_key}`` EU
+value appears in the issuer path.
 These constants are extracted from the app binaries. For first-party use of
 ``/myr/api/v1/*``, the legacy Gigya JWT in ``x-gigya-id_token`` is sufficient.
 
@@ -170,7 +171,7 @@ POST /state
   before calling this endpoint, so those five ids are known-accepted
   (read-only queries: no physical action is triggered).
 * Whether the app displays the battery-health block is decided by remote
-  config, not by featureId 345 alone (APK 6.14.2): ``SOH_block_displayed``,
+  config, not by featureId 345 alone: ``SOH_block_displayed``,
   a server-provided ``SOH_UID_list`` of featureIds, and an optional
   ``SOH_filter_vehicle_models``. The vehicle-condition menu is shown for
   ``{820, 204, 831, 202}`` plus ``SOH_UID_list``.
@@ -221,9 +222,9 @@ Ids explicitly interpreted by the app 6.13.4 (evidence: jadx decompilation):
    * - 299
      - Instant charge (legacy generation)
    * - 362
-     - Reachable area on the map (6.14.2: ``isReachableAreaEnabled``; the
-       charging spots layer is driven by the ``ze_charging_spots`` remote
-       config flag instead)
+     - Reachable area on the map (``isReachableAreaEnabled``; the charging
+       spots layer is driven by the ``ze_charging_spots`` remote config flag
+       instead)
    * - 366
      - Instant HVAC (``POST /actions/hvac-start``)
    * - 701
@@ -231,7 +232,7 @@ Ids explicitly interpreted by the app 6.13.4 (evidence: jadx decompilation):
    * - 740
      - V2L (vehicle-to-load)
    * - 743
-     - Plug & Charge (no reference found in 6.14.2)
+     - Plug & Charge
    * - 801
      - Virtual key ONBOARD pairing
    * - 806
@@ -259,14 +260,13 @@ Ids relayed by the app without interpretation (server-side semantics only):
 830, 846, 847, 912, 920, 927, 966, 967, 2852, 3302, 1710040``. Observed on the
 tested HEV (28 ids ``ACTIVATED``) and full-EV (21 ids, adding ``315``, ``344``
 and ``724``); none of them has a literal reference in the APK 6.13.4, so their
-semantics live server-side only. In 6.14.2, ``12`` and ``344`` are mapped
-(see below).
+semantics live server-side only, except ``12`` and ``344`` (see below).
 
 The ZOE reports 12 ids in ``services`` and ``/remotes``: ``202, 288, 311, 315,
 317, 319, 322, 362, 366, 408, 723, 725``. The ids ``288, 311, 317, 319, 322,
 408`` appear in none of the lists on this page.
 
-APK 6.14.2 maps featureIds to named flags in
+The app maps featureIds to named flags in
 ``com.renault.core.utils.ServiceMappingConfig`` (property names recovered from
 the Kotlin metadata). Ids not already listed above:
 
