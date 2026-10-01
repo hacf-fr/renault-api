@@ -26,12 +26,22 @@ When filing an issue, make sure to answer these questions:
 
 - Which operating system and Python version are you using?
 - Which version of this project are you using?
-- What did you do?
+- Which vehicle model is affected?
+- What did you do (CLI command or code)?
 - What did you expect to see?
 - What did you see instead?
 
 The best way to get your bug fixed is to provide a test case,
 and/or steps to reproduce the issue.
+
+Debug logs and traces contain sensitive data (VIN, registration number,
+account and person ids, email address, login tokens and JWTs):
+redact them before posting.
+
+Please do not report security vulnerabilities on the Issue Tracker;
+see the `Security Policy`_ instead.
+
+.. _Security Policy: https://github.com/hacf-fr/renault-api/security/policy
 
 
 How to request a feature
@@ -140,6 +150,15 @@ To run linting and code formatting checks before committing your change, you can
 It is recommended to open an issue before starting work on anything.
 This will allow a chance to talk it over with the owners and validate your approach.
 
+
+AI policy
+---------
+
+This project follows an `AI Policy`_. In short: AI tools are welcome as an aid,
+but you must fully understand and be able to explain every change you submit.
+Contributions made by autonomous agents are not accepted.
+
+.. _AI Policy: https://github.com/hacf-fr/renault-api/blob/main/AI_POLICY.md
 .. _pull request: https://github.com/hacf-fr/renault-api/pulls
 .. github-only
 .. _Code of Conduct: CODE_OF_CONDUCT.rst

@@ -1,0 +1,63 @@
+---
+name: Feature request
+description: >-
+  Request support for a new vehicle, endpoint or feature, or suggest an
+  improvement to the library or CLI.
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement!
+
+        If you are requesting support for a new vehicle or endpoint, the
+        best way to help is to provide samples: see
+        [Providing samples](https://github.com/hacf-fr/renault-api/blob/main/CONTRIBUTING.rst#providing-samples)
+        in the Contributor Guide.
+
+        > [!WARNING]
+        > Debug logs and traces contain **sensitive data**: VIN, registration
+        > number, account and person ids, email address, login tokens and
+        > JWTs. Please **redact them** before posting anything below.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: >-
+        Describe what you'd like to see. If your vehicle behaves
+        incorrectly, explain what it currently does and what you
+        expect it to do instead.
+    validations:
+      required: true
+  - type: input
+    id: vehicle
+    attributes:
+      label: Vehicle model
+      description: >-
+        The brand and model of the vehicle, and its model code if known
+        (`vehicleDetails.model.code` in the debug logs, e.g. `XCB1VE`).
+      placeholder: e.g., Renault Megane E-Tech (XCB1VE)
+    validations:
+      required: false
+  - type: textarea
+    id: samples
+    attributes:
+      label: Sample responses
+      description: >-
+        Anonymised JSON responses for the relevant endpoints, for example
+        from `renault-api --log <command>` or `renault-api http get <path>`.
+        VINs must start with `VF1AAAA`, registration numbers with `REG-`
+        and `radioCode` must be `1234`.
+      render: json
+    validations:
+      required: false
+  - type: textarea
+    id: additional-information
+    attributes:
+      label: Additional information
+      description: >-
+        Any additional context, references, or links (e.g. what the
+        MyRenault app shows for this feature).
+    validations:
+      required: false
