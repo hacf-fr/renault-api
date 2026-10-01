@@ -10,3 +10,6 @@ __pycache__/
 
 # Virtual env
 .venv
+
+# MyRenault APK analysis (see .claude/skills/apk-analysis)
+/.apk_analysis/
