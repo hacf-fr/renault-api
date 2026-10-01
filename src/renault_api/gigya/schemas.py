@@ -23,3 +23,23 @@ GigyaGetAccountInfoResponseSchema = marshmallow_dataclass.class_schema(
 GigyaGetJWTResponseSchema = marshmallow_dataclass.class_schema(
     models.GigyaGetJWTResponse, base_schema=BaseSchema
 )()
+
+
+GigyaTfaInitResponseSchema = marshmallow_dataclass.class_schema(
+    models.GigyaTfaInitResponse, base_schema=BaseSchema
+)()
+
+
+GigyaTfaEmailListResponseSchema = marshmallow_dataclass.class_schema(
+    models.GigyaTfaEmailListResponse, base_schema=BaseSchema
+)()
+
+
+GigyaTfaSendEmailCodeResponseSchema = marshmallow_dataclass.class_schema(
+    models.GigyaTfaSendEmailCodeResponse, base_schema=BaseSchema
+)()
+
+
+GigyaTfaEmailCompleteVerificationResponseSchema = marshmallow_dataclass.class_schema(
+    models.GigyaTfaEmailCompleteVerificationResponse, base_schema=BaseSchema
+)()
