@@ -86,16 +86,18 @@ repos:
         always_run: true
       - id: ruff-check
         name: Lint code with Ruff
-        entry: uv run ruff check
+        entry: uv run ruff check --fix
         language: system
         types: [python]
         require_serial: true
+        stages: [pre-commit, pre-push, manual]
       - id: ruff-format
         name: Format code with Ruff
         entry: uv run ruff format
         language: system
         types: [python]
         require_serial: true
+        stages: [pre-commit, pre-push, manual]
       - id: prettier
         name: Prettier
         entry: npm run prettier
