@@ -52,6 +52,12 @@ jobs:
           restore-keys: |
             prek-${{ runner.os }}-${{ env.DEFAULT_PYTHON }}-
 
+      # Before prek, whose ruff --fix would hide fixable violations;
+      # prek decides the outcome, this only annotates the PR
+      - name: Annotate ruff violations
+        run: |
+          uv run --locked ruff check --output-format=github --exit-zero .
+
       - name: Run prek
         env:
           # Pushes to main would otherwise fail this hook
