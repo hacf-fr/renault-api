@@ -205,7 +205,7 @@ AVAILABLE_LOCALES = {
     },
 }
 
-# SoC level boundaries (to comply with mobile apps contraints and to
+# SoC level boundaries (to comply with mobile apps constraints and to
 # balance poor Renault API checks)
 MIN_SOC_MIN = 15
 MAX_SOC_MIN = 45

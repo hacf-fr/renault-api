@@ -1,0 +1,14 @@
+{
+  "name": "renault-api",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Renault API",
+  "scripts": {
+    "prettier": "prettier --write **/*.{json,js,md,yml,yaml} *.{json,js,md,yml,yaml}"
+  },
+  "author": "epenet",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "3.9.9"
+  }
+}

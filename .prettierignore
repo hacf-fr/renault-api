@@ -1,3 +1,5 @@
+__pycache__/
+*.py[cod]
 .mypy_cache/
 /.coverage
 /.nox/
@@ -6,7 +8,13 @@
 /dist/
 /docs/_build/
 /src/*.egg-info/
-__pycache__/
+.pytest_cache/
+
+# Type checkers
+.ty/
+
+# Linters
+.ruff_cache/
 
 # Virtual env
 .venv

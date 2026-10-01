@@ -31,7 +31,7 @@ async def get_api_keys(
     """Get the API keys for specified locale.
 
     Args:
-        locale (str): locale code (preferrably from AVAILABLE_LOCALES.keys())
+        locale (str): locale code (preferably from AVAILABLE_LOCALES.keys())
         force_load (bool): bypass internal AVAILABLE_LOCALES
         websession (aiohttp.ClientSession): required if locale not in AVAILABLE_LOCALES
 
@@ -40,7 +40,7 @@ async def get_api_keys(
         kamereon-api-key and kamereon-api-url
 
     Raises:
-        RenaultException: an issue occured loading the API keys
+        RenaultException: an issue occurred loading the API keys
     """
     if locale in AVAILABLE_LOCALES.keys() and not force_load:
         return AVAILABLE_LOCALES[locale]

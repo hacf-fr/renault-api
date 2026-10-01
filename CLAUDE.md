@@ -8,10 +8,11 @@ Its main consumer is the Home Assistant `renault` integration.
 
 ```console
 uv sync --all-extras                       # install (dev + docs groups by default)
+npm ci                                     # install prettier (Node version in .nvmrc)
 uv run pytest                              # tests
 uv run pytest --snapshot-update            # refresh syrupy snapshots (tests/__snapshots__)
 uv run ty check src tests docs/conf.py     # type checking
-uv run pre-commit run --all-files          # ruff, prettier, whitespace, ...
+uv run prek run --all-files                # ruff, prettier, codespell, yamllint, ...
 uv run sphinx-build docs docs/_build       # docs (Python 3.14+ only)
 ```
 

@@ -6,6 +6,43 @@ repos:
         entry: uv run check-added-large-files
         exclude: ^uv\.lock$
         language: system
+      - id: check-ast
+        name: Check Python AST
+        entry: uv run check-ast
+        language: system
+        types: [python]
+      - id: check-case-conflict
+        name: Check for case conflicts
+        entry: uv run check-case-conflict
+        language: system
+      - id: check-docstring-first
+        name: Check docstring is first
+        entry: uv run check-docstring-first
+        language: system
+        types: [python]
+      - id: check-executables-have-shebangs
+        name: Check that executables have shebangs
+        entry: uv run check-executables-have-shebangs
+        language: system
+        types: [text, executable]
+        stages: [pre-commit, pre-push, manual]
+      - id: check-json
+        name: Check JSON files
+        entry: uv run check-json
+        # VS Code and devcontainer settings are JSON with comments
+        exclude: ^\.(devcontainer|vscode)/
+        language: system
+        types: [json]
+      - id: check-merge-conflict
+        name: Check for merge conflicts
+        entry: uv run check-merge-conflict
+        language: system
+        types: [text]
+      - id: check-symlinks
+        name: Check for broken symlinks
+        entry: uv run check-symlinks
+        language: system
+        types: [symlink]
       - id: check-toml
         name: Check Toml
         entry: uv run check-toml
@@ -16,12 +53,37 @@ repos:
         entry: uv run check-yaml
         language: system
         types: [yaml]
+      - id: codespell
+        name: Check code for common misspellings
+        entry: uv run codespell
+        language: system
+        types: [text]
+        exclude: ^(uv\.lock|package-lock\.json)$
+      - id: detect-private-key
+        name: Detect Private Keys
+        entry: uv run detect-private-key
+        language: system
+        types: [text]
       - id: end-of-file-fixer
         name: Fix End of Files
         entry: uv run end-of-file-fixer
         language: system
         types: [text]
         stages: [pre-commit, pre-push, manual]
+      - id: no-commit-to-branch
+        name: Don't commit to main branch
+        entry: uv run no-commit-to-branch
+        language: system
+        pass_filenames: false
+        always_run: true
+        args:
+          - --branch=main
+      - id: uv-lock
+        name: Check uv.lock is up to date
+        entry: uv lock --check
+        language: system
+        pass_filenames: false
+        always_run: true
       - id: ruff-check
         name: Lint code with Ruff
         entry: uv run ruff check
@@ -34,6 +96,12 @@ repos:
         language: system
         types: [python]
         require_serial: true
+      - id: prettier
+        name: Prettier
+        entry: npm run prettier
+        language: system
+        types_or: [yaml, json, markdown]
+        pass_filenames: false
       - id: trailing-whitespace
         name: Trim Trailing Whitespace
         entry: uv run trailing-whitespace-fixer
@@ -41,13 +109,14 @@ repos:
         language: system
         types: [text]
         stages: [pre-commit, pre-push, manual]
+      - id: yamllint
+        name: Check YAML files with yamllint
+        entry: uv run yamllint
+        language: system
+        types: [yaml]
       - id: zizmor
         name: Audit GitHub Actions workflows with zizmor
         entry: uv run zizmor
         language: system
         files: ^\.github/workflows/
         types: [yaml]
-  - repo: https://github.com/prettier/pre-commit
-    rev: v2.1.2
-    hooks:
-      - id: prettier

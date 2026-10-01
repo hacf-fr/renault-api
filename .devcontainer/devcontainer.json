@@ -32,10 +32,13 @@
     }
   },
   "features": {
-    "ghcr.io/devcontainers/features/github-cli:1": {}
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "24"
+    }
   },
   "image": "mcr.microsoft.com/devcontainers/python:3.14",
   "name": "Renault API",
   "onCreateCommand": "pipx install uv",
-  "updateContentCommand": "uv sync --all-extras && uv run pre-commit install"
+  "updateContentCommand": "uv sync --all-extras && npm ci && uv run prek install"
 }

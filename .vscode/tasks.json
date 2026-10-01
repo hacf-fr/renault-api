@@ -4,9 +4,9 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Pre-commit all files",
+      "label": "Run prek on all files",
       "type": "shell",
-      "command": "uv run pre-commit run --all-files",
+      "command": "uv run prek run --all-files",
       "presentation": {
         "reveal": "always",
         "panel": "new"
