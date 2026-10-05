@@ -129,13 +129,24 @@ def inject_gigya_account_info(mocked_responses: aiointercept) -> str:
     )
 
 
-def inject_gigya_jwt(mocked_responses: aiointercept) -> str:
+def inject_gigya_jwt(mocked_responses: aiointercept, jwt: str | None = None) -> str:
     """Inject Gigya getJWT data."""
-    return inject_gigya(
-        mocked_responses,
-        "accounts.getJWT",
-        "get_jwt.json",
+    if jwt is None:
+        return inject_gigya(
+            mocked_responses,
+            "accounts.getJWT",
+            "get_jwt.json",
+        )
+    body = json.loads(get_file_content(f"{GIGYA_FIXTURE_PATH}/get_jwt.json"))
+    body["id_token"] = jwt
+    url = f"{TEST_GIGYA_URL}/accounts.getJWT"
+    mocked_responses.post(
+        url,
+        status=200,
+        body=json.dumps(body),
+        content_type="text/javascript",
     )
+    return url
 
 
 def inject_gigya_all(mocked_responses: aiointercept) -> None:
