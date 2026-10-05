@@ -678,7 +678,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "hvac-settings": None,  # Reason: "err.func.wired.forbidden"
         "hvac-status": None,  # Reason: "err.func.wired.not-found"
         "location": _DEFAULT_ENDPOINTS["location"],
-        "lock-status": None,  # Reason: "err.func.wired.notFound"
+        "lock-status": _DEFAULT_ENDPOINTS["lock-status"],
         "notification-settings": None,  # Reason: "err.func.vcps.users-helper.get-notification-settings.error"  # noqa: E501
         "pressure": None,  # Reason: "err.func.wired.notFound"
         "res-state": None,  # Reason: "err.func.wired.notFound"
