@@ -21,6 +21,8 @@ from renault_api.exceptions import NotAuthenticatedException
 from renault_api.exceptions import RenaultException
 from renault_api.gigya import GIGYA_JWT
 from renault_api.gigya import GIGYA_LOGIN_TOKEN
+from renault_api.gigya.enums import GigyaErrorCode
+from renault_api.gigya.exceptions import PendingTwoFactorAuthenticationException
 from renault_api.renault_session import RenaultSession
 
 
@@ -178,6 +180,21 @@ async def test_login(session: RenaultSession, mocked_responses: aiointercept) ->
     assert await session._get_person_id() == TEST_PERSON_ID
     assert await session._get_jwt()
     assert len(mocked_responses.requests) == 3
+
+
+@pytest.mark.asyncio
+async def test_login_two_factor_auth_required(
+    session: RenaultSession, mocked_responses: aiointercept
+) -> None:
+    """Test login raises PendingTwoFactorAuthenticationException."""
+    fixtures.inject_gigya_login_403101(mocked_responses)
+
+    with pytest.raises(PendingTwoFactorAuthenticationException) as excinfo:
+        await session.login(TEST_USERNAME, TEST_PASSWORD)
+    assert excinfo.value.error_code == GigyaErrorCode.PENDING_TWO_FACTOR_AUTHENTICATION
+    assert excinfo.value.reg_token == "sample-reg-token"
+    assert session.login_token is None
+    assert len(mocked_responses.requests) == 1
 
 
 @pytest.mark.asyncio
