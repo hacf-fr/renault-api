@@ -55,3 +55,32 @@ def test_login_403042_response() -> None:
         response.raise_for_error_code()
     assert excinfo.value.error_code == 403042
     assert excinfo.value.error_details == "invalid loginID or password"
+
+
+def test_login_403101_response() -> None:
+    """Test login.403101 (pending two-factor authentication) response."""
+    response: models.GigyaLoginResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.GIGYA_FIXTURE_PATH}/error/login.403101.json",
+        schemas.GigyaLoginResponseSchema,
+    )
+    with pytest.raises(exceptions.PendingTwoFactorAuthenticationException) as excinfo:
+        response.raise_for_error_code()
+    assert excinfo.value.error_code == 403101
+    assert excinfo.value.error_details == "Pending Two-Factor Authentication"
+    assert excinfo.value.reg_token == "sample-reg-token"
+
+
+def test_403101_without_reg_token() -> None:
+    """A 403101 error without a regToken falls back to a generic error.
+
+    This shouldn't happen in practice, but avoids raising
+    `PendingTwoFactorAuthenticationException` with no usable `reg_token`.
+    """
+    response = models.GigyaResponse(
+        raw_data={}, errorCode=403101, errorDetails="test", regToken=None
+    )
+    with pytest.raises(exceptions.GigyaResponseException) as excinfo:
+        response.raise_for_error_code()
+    assert not isinstance(
+        excinfo.value, exceptions.PendingTwoFactorAuthenticationException
+    )

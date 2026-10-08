@@ -14,16 +14,24 @@ COMMON_ERRRORS: list[dict[str, Any]] = [
 ]
 
 
+TFA_PENDING_ERROR_CODE = 403101
+
+
 @dataclass
 class GigyaResponse(BaseModel):
     """Gigya response."""
 
     errorCode: int
     errorDetails: str | None
+    regToken: str | None
 
     def raise_for_error_code(self) -> None:
         """Checks the response information."""
         if self.errorCode > 0:
+            if self.errorCode == TFA_PENDING_ERROR_CODE and self.regToken:
+                raise exceptions.PendingTwoFactorAuthenticationException(
+                    self.errorCode, self.errorDetails, self.regToken
+                )
             for common_error in COMMON_ERRRORS:
                 if self.errorCode == common_error["errorCode"]:
                     error_type = common_error["error_type"]
