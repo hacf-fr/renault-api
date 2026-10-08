@@ -1,0 +1,9 @@
+{
+  "callId": "callId",
+  "errorCode": 0,
+  "apiVersion": 2,
+  "statusCode": 200,
+  "statusReason": "OK",
+  "time": "2026-06-01T12:00:05.000Z",
+  "providerAssertion": "sample-provider-assertion"
+}

@@ -1,0 +1,15 @@
+{
+  "callId": "callId",
+  "errorCode": 0,
+  "apiVersion": 2,
+  "statusCode": 200,
+  "statusReason": "OK",
+  "time": "2026-06-01T12:00:02.000Z",
+  "emails": [
+    {
+      "id": "sample-email-id",
+      "obfuscated": "e***@example.com",
+      "lastVerification": "2026-06-01T11:05:13.832Z"
+    }
+  ]
+}
