@@ -47,6 +47,14 @@
     'kamereon-root-url': 'https://api-wired-prod-1-euw1.wrd-aws.com',
   })
 # ---
+# name: test_available_locales[en_AU]
+  dict({
+    'gigya-api-key': '4_GC9iGd3sH8sMJpz2x0q0CQ',
+    'gigya-root-url': 'https://gigya-prod-au1.renaultgroup.com',
+    'kamereon-api-key': 'YjkKtHmGfaceeuExUDKGxrLZGGvtVS0J',
+    'kamereon-root-url': 'https://api-wired-prod-1-euw1.wrd-aws.com',
+  })
+# ---
 # name: test_available_locales[en_GB]
   dict({
     'gigya-api-key': '3_VgdkgtIRH3AdHvJm-cjV2ug2EFE0lxt0IJzMC4MFqZjFpn_GYFXVdNZ19L7wZX0N',
