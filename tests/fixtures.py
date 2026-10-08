@@ -120,6 +120,15 @@ def inject_gigya_login_invalid(mocked_responses: aiointercept) -> str:
     )
 
 
+def inject_gigya_login_403101(mocked_responses: aiointercept) -> str:
+    """Inject Gigya login response requiring two-factor authentication."""
+    return inject_gigya(
+        mocked_responses,
+        "accounts.login",
+        "error/login.403101.json",
+    )
+
+
 def inject_gigya_account_info(mocked_responses: aiointercept) -> str:
     """Inject Gigya getAccountInfo data."""
     return inject_gigya(

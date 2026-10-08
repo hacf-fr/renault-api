@@ -2,9 +2,10 @@
   "callId": "callId",
   "errorCode": 403101,
   "errorDetails": "Pending Two-Factor Authentication",
+  "errorMessage": "Pending Two-Factor Authentication",
   "apiVersion": 2,
   "statusCode": 403,
   "statusReason": "Forbidden",
-  "time": "2020-11-17T08:22:36.561Z",
+  "time": "2026-06-01T12:00:00.000Z",
   "regToken": "sample-reg-token"
 }
