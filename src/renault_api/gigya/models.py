@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from . import exceptions
+from .enums import GigyaErrorCode
 from renault_api.models import BaseModel
 
 COMMON_ERRRORS: list[dict[str, Any]] = [
@@ -12,9 +13,6 @@ COMMON_ERRRORS: list[dict[str, Any]] = [
         "error_type": exceptions.InvalidCredentialsException,
     }
 ]
-
-
-TFA_PENDING_ERROR_CODE = 403101
 
 
 @dataclass
@@ -28,7 +26,10 @@ class GigyaResponse(BaseModel):
     def raise_for_error_code(self) -> None:
         """Checks the response information."""
         if self.errorCode > 0:
-            if self.errorCode == TFA_PENDING_ERROR_CODE and self.regToken:
+            if (
+                self.errorCode == GigyaErrorCode.PENDING_TWO_FACTOR_AUTHENTICATION
+                and self.regToken
+            ):
                 raise exceptions.PendingTwoFactorAuthenticationException(
                     self.errorCode, self.errorDetails, self.regToken
                 )
