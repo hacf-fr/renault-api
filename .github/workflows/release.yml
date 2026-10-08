@@ -1,77 +1,77 @@
 name: Release
 
+# yamllint disable-line rule:truthy
 on:
-  push:
-    branches:
-      - main
+  release:
+    types:
+      - published
+
+permissions:
+  contents: read
+
+env:
+  DEFAULT_PYTHON: "3.14"
 
 jobs:
   release:
-    name: Release
+    name: Release to PyPI
     runs-on: ubuntu-latest
+    environment:
+      name: release
+      url: https://pypi.org/p/renault-api
     permissions:
+      # Needed to attest the SBOM against the built artifacts
+      attestations: write
       # IMPORTANT: this permission is mandatory for Trusted Publishing
       id-token: write
-      # Needed for salsify/action-detect-and-tag-new-version
-      contents: write
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          fetch-depth: 2
+          persist-credentials: false
 
-      - name: Set up Python
-        uses: actions/setup-python@v7.0.0
+      - name: Set up uv and Python
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
         with:
-          python-version: "3.14.7"
+          version: "0.12.23"
+          python-version: ${{ env.DEFAULT_PYTHON }}
+          # No cache on release builds, to avoid cache poisoning
+          enable-cache: false
 
-      - name: Upgrade pip
+      - name: Set package version
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
         run: |
-          pip install --constraint=.github/workflows/constraints.txt pip
-          pip --version
-
-      - name: Install Poetry
-        run: |
-          pip install --constraint=.github/workflows/constraints.txt poetry
-          poetry --version
-
-      - name: Check if there is a parent commit
-        id: check-parent-commit
-        run: |
-          echo "sha=$(git rev-parse --verify --quiet HEAD^)" >> $GITHUB_OUTPUT
-
-      - name: Detect and tag new version
-        id: check-version
-        if: steps.check-parent-commit.outputs.sha
-        uses: salsify/action-detect-and-tag-new-version@v2.0.3
-        with:
-          version-command: |
-            bash -o pipefail -c "poetry version | awk '{ print \$2 }'"
-
-      - name: Bump version for developmental release
-        if: "! steps.check-version.outputs.tag"
-        run: |
-          poetry version patch &&
-          version=$(poetry version | awk '{ print $2 }') &&
-          poetry version $version.dev.$(date +%s)
+          version="${RELEASE_TAG,,}"
+          version="${version#v}"
+          uv version "${version}" --frozen
 
       - name: Build package
         run: |
-          poetry build --ansi
+          uv build
+
+      - name: Locate built wheel
+        run: |
+          WHEEL_PATH=$(ls dist/renault_api-*-py3-none-any.whl)
+          echo "WHEEL_PATH=${WHEEL_PATH}" >> "${GITHUB_ENV}"
+
+      - name: Generate CycloneDX SBOM
+        uses: anchore/sbom-action@66cbf4bc1f1c0d2edc94016e65bc221b6bb0ad6c # v0.24.3
+        with:
+          file: ${{ env.WHEEL_PATH }}
+          format: cyclonedx-json
+          output-file: renault-api.cdx.json
+          upload-artifact: false
+          upload-release-assets: false
+
+      - name: Attest SBOM against built artifacts
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: "dist/*"
+          sbom-path: renault-api.cdx.json
 
       - name: Publish package on PyPI
-        if: steps.check-version.outputs.tag
-        uses: pypa/gh-action-pypi-publish@v1.14.2
-
-      - name: Publish package on TestPyPI
-        if: "! steps.check-version.outputs.tag"
-        uses: pypa/gh-action-pypi-publish@v1.14.2
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
         with:
-          repository-url: https://test.pypi.org/legacy/
-
-      - name: Publish release notes
-        uses: release-drafter/release-drafter@v7.7.0
-        with:
-          publish: ${{ steps.check-version.outputs.tag != '' }}
-          tag: ${{ steps.check-version.outputs.tag }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          verbose: true
+          print-hash: true

@@ -654,7 +654,7 @@ async def test_get_full_endpoint_unknown(
     vehicle: RenaultVehicle, mocked_responses: aiointercept
 ) -> None:
     """Test http_get."""
-    # Unkown endpoint
+    # Unknown endpoint
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     with pytest.raises(EndpointNotAvailableError):
         await vehicle.get_full_endpoint("random")

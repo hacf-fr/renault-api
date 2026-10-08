@@ -11,6 +11,7 @@ from tabulate import tabulate
 from renault_api.cli import helpers
 from renault_api.cli import renault_vehicle
 from renault_api.kamereon.helpers import DAYS_OF_WEEK
+from renault_api.kamereon.helpers import get_end_time
 from renault_api.kamereon.models import ChargeDaySchedule
 from renault_api.kamereon.models import ChargeSchedule
 from renault_api.kamereon.models import KamereonVehicleChargingSettingsData
@@ -62,10 +63,8 @@ def _show_kca(response: dict[str, Any]) -> None:
     for day in DAYS_OF_WEEK:
         day_data = calendar[day][0]
         start_time = day_data["startTime"]
-        end_time = str(
-            int(day_data["startTime"])
-            + int(day_data["duration"] * 100 / 60)
-            + (day_data["duration"] % 60)
+        end_time = get_end_time(
+            f"T{start_time[0:2]}:{start_time[2:4]}Z", day_data["duration"]
         )
         schedule_table.append(
             [
@@ -73,9 +72,7 @@ def _show_kca(response: dict[str, Any]) -> None:
                 helpers.get_display_value(
                     f"T{start_time[0:2]}:{start_time[2:4]}Z", "tztime"
                 ),
-                helpers.get_display_value(
-                    f"T{end_time[0:2]}:{end_time[2:4]}Z", "tztime"
-                ),
+                helpers.get_display_value(end_time, "tztime"),
                 day_data["duration"],
                 day_data["activationState"],
             ]

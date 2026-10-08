@@ -56,6 +56,10 @@ COMMON_ERRRORS: list[dict[str, Any]] = [
         "error_type": exceptions.ForbiddenException,
     },
     {
+        "errorCode": "err.func.wired.unauthorized",
+        "error_type": exceptions.UnauthorizedException,
+    },
+    {
         "errorCode": "409001",
         "error_type": exceptions.ChargeModeInProgressException,
     },
@@ -674,7 +678,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "hvac-settings": None,  # Reason: "err.func.wired.forbidden"
         "hvac-status": None,  # Reason: "err.func.wired.not-found"
         "location": _DEFAULT_ENDPOINTS["location"],
-        "lock-status": None,  # Reason: "err.func.wired.notFound"
+        "lock-status": _DEFAULT_ENDPOINTS["lock-status"],
         "notification-settings": None,  # Reason: "err.func.vcps.users-helper.get-notification-settings.error"  # noqa: E501
         "pressure": None,  # Reason: "err.func.wired.notFound"
         "res-state": None,  # Reason: "err.func.wired.notFound"
@@ -937,18 +941,18 @@ class KamereonVehicleDetails(BaseModel):
         """Return True if model reports history durations in minutes."""
         # Default to False (=seconds) for unknown vehicles
         if self.model and self.model.code:
-            return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
-                self.model.code, {}
-            ).get("reports-charge-session-durations-in-minutes", False)
+            return VEHICLE_SPECIFICATIONS.get(self.model.code, {}).get(
+                "reports-charge-session-durations-in-minutes", False
+            )
         return False
 
     def reports_charging_power_in_watts(self) -> bool:
         """Return True if model reports chargingInstantaneousPower in watts."""
         # Default to False for unknown vehicles
         if self.model and self.model.code:
-            return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
-                self.model.code, {}
-            ).get("reports-in-watts", False)
+            return VEHICLE_SPECIFICATIONS.get(self.model.code, {}).get(
+                "reports-in-watts", False
+            )
         return False
 
     def supports_endpoint(self, endpoint: str) -> bool:
@@ -965,9 +969,9 @@ class KamereonVehicleDetails(BaseModel):
         )
         # Default to False for unknown vehicles
         if self.model and self.model.code:
-            return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
-                self.model.code, {}
-            ).get(f"control-{action}-via-kcm", False)
+            return VEHICLE_SPECIFICATIONS.get(self.model.code, {}).get(
+                f"control-{action}-via-kcm", False
+            )
         return False
 
     def get_endpoints(self) -> Mapping[str, EndpointDefinition | None]:
@@ -1228,9 +1232,9 @@ class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
         """Return True if model reports chargingInstantaneousPower in watts."""
         # Default to False for unknown vehicles
         if self.carGateway:
-            return GATEWAY_SPECIFICATIONS.get(  # type:ignore[no-any-return]
-                self.carGateway, {}
-            ).get("reports-in-watts", False)
+            return GATEWAY_SPECIFICATIONS.get(self.carGateway, {}).get(
+                "reports-in-watts", False
+            )
         return False
 
     def controls_action_via_kcm(self, action: str) -> bool:
@@ -1242,9 +1246,9 @@ class KamereonVehicleCarAdapterData(KamereonVehicleDataAttributes):
         )
         # Default to False for unknown vehicles
         if self.modelCodeDetail:
-            return VEHICLE_SPECIFICATIONS.get(  # type:ignore[no-any-return]
-                self.modelCodeDetail, {}
-            ).get(f"control-{action}-via-kcm", False)
+            return VEHICLE_SPECIFICATIONS.get(self.modelCodeDetail, {}).get(
+                f"control-{action}-via-kcm", False
+            )
         return False
 
 

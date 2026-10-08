@@ -1,8 +1,6 @@
-.mypy_cache/
 /.coverage
-/.nox/
+/.coverage.*
 /.python-version
-/.pytype/
 /dist/
 /docs/_build/
 /src/*.egg-info/
@@ -10,3 +8,9 @@ __pycache__/
 
 # Virtual env
 .venv
+
+# MyRenault APK analysis (see .claude/skills/apk-analysis)
+/.apk_analysis/
+
+# Node
+node_modules/

@@ -1,0 +1,24 @@
+__pycache__/
+*.py[cod]
+/.coverage
+/.coverage.*
+/.python-version
+/dist/
+/docs/_build/
+/src/*.egg-info/
+.pytest_cache/
+
+# Type checkers
+.ty/
+
+# Linters
+.ruff_cache/
+
+# Virtual env
+.venv
+
+# MyRenault APK analysis (see .claude/skills/apk-analysis)
+/.apk_analysis/
+
+# Node
+node_modules/

@@ -5,7 +5,7 @@ Renault API
 
 |Read the Docs| |Tests| |Codecov|
 
-|pre-commit| |Ruff|
+|prek| |Ruff|
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/renault-api.svg
    :target: https://pypi.org/project/renault-api/
@@ -25,9 +25,9 @@ Renault API
 .. |Codecov| image:: https://codecov.io/gh/hacf-fr/renault-api/branch/main/graph/badge.svg
    :target: https://codecov.io/gh/hacf-fr/renault-api
    :alt: Codecov
-.. |pre-commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white
-   :target: https://github.com/pre-commit/pre-commit
-   :alt: pre-commit
+.. |prek| image:: https://img.shields.io/badge/prek-enabled-brightgreen
+   :target: https://github.com/j178/prek
+   :alt: prek
 .. |Ruff| image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json
     :target: https://github.com/astral-sh/ruff
     :alt: Ruff
@@ -172,17 +172,13 @@ please `file an issue`_ along with a detailed description.
 Credits
 -------
 
-This project was generated from `@cjolowicz`_'s `Hypermodern Python Cookiecutter`_ template.
 This project was heavily based on `@jamesremuscat`_'s `PyZE`_ python client for the Renault ZE API.
 
 
-.. _@cjolowicz: https://github.com/cjolowicz
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _@jamesremuscat: https://github.com/jamesremuscat
 .. _PyZE: https://github.com/jamesremuscat/pyze
 .. _MIT: http://opensource.org/licenses/MIT
 .. _PyPI: https://pypi.org/
-.. _Hypermodern Python Cookiecutter: https://github.com/cjolowicz/cookiecutter-hypermodern-python
 .. _file an issue: https://github.com/hacf-fr/renault-api/issues
 .. _pip: https://pip.pypa.io/
 .. github-only

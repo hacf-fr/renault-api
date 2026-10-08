@@ -1,5 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["helpers:pinGitHubActionDigests"],
   "rebaseWhen": "behind-base-branch",
   "dependencyDashboard": true,
   "labels": ["dependencies", "no-stale"],
@@ -8,21 +9,28 @@
     "automerge": true
   },
   "commitMessagePrefix": "⬆️",
-  "pip_requirements": {
-    "managerFilePatterns": [".github/workflows/constraints.txt"]
-  },
   "packageRules": [
     {
-      "matchManagers": ["poetry"],
+      "matchManagers": ["pep621"],
       "addLabels": ["python"]
     },
     {
-      "matchManagers": ["poetry"],
-      "matchDepTypes": ["dev"],
+      "matchManagers": ["pep621"],
+      "matchDepTypes": ["dependency-groups"],
       "rangeStrategy": "pin"
     },
     {
-      "matchManagers": ["poetry"],
+      "matchManagers": ["pep621"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
+      "matchManagers": ["npm", "nvm"],
+      "addLabels": ["javascript"],
+      "rangeStrategy": "pin"
+    },
+    {
+      "matchManagers": ["npm", "nvm"],
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
     },

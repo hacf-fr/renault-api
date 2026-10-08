@@ -1,0 +1,40 @@
+name: Labeler
+
+# yamllint disable-line rule:truthy
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/labels.yml
+      - .github/workflows/labeler.yml
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions:
+  # Default for all jobs: read-only access to the repository
+  contents: read
+
+jobs:
+  labeler:
+    name: Sync labels
+    if: github.repository_owner == 'hacf-fr'
+    runs-on: ubuntu-latest
+    permissions:
+      # Needed to read .github/labels.yml
+      contents: read
+      # Needed to create and update repository labels
+      issues: write
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Sync labels
+        uses: crazy-max/ghaction-github-labeler@548a7c3603594ec17c819e1239f281a3b801ab4d # v6.0.0
+        with:
+          skip-delete: true

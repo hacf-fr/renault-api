@@ -44,6 +44,18 @@ def test_vehicle_error_quota_limit() -> None:
     assert excinfo.value.error_details == "You have reached your quota limit"
 
 
+def test_vehicle_error_unauthorized() -> None:
+    """Test vehicle unauthorized response."""
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/error/unauthorized.json",
+        schemas.KamereonVehicleDataResponseSchema,
+    )
+    with pytest.raises(exceptions.UnauthorizedException) as excinfo:
+        response.raise_for_error_code()
+    assert excinfo.value.error_code == "err.func.wired.unauthorized"
+    assert excinfo.value.error_details == "The access is unauthorized"
+
+
 def test_vehicle_error_invalid_date() -> None:
     """Test vehicle invalid_date response."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(

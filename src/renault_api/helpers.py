@@ -31,7 +31,7 @@ async def get_api_keys(
     """Get the API keys for specified locale.
 
     Args:
-        locale (str): locale code (preferrably from AVAILABLE_LOCALES.keys())
+        locale (str): locale code (preferably from AVAILABLE_LOCALES.keys())
         force_load (bool): bypass internal AVAILABLE_LOCALES
         websession (aiohttp.ClientSession): required if locale not in AVAILABLE_LOCALES
 
@@ -40,7 +40,7 @@ async def get_api_keys(
         kamereon-api-key and kamereon-api-url
 
     Raises:
-        RenaultException: an issue occured loading the API keys
+        RenaultException: an issue occurred loading the API keys
     """
     if locale in AVAILABLE_LOCALES.keys() and not force_load:
         return AVAILABLE_LOCALES[locale]
@@ -95,7 +95,7 @@ def create_aiohttp_closed_event(
     transports = 0
     all_is_lost = asyncio.Event()
 
-    def connection_lost(exc, orig_lost):  # type: ignore
+    def connection_lost(exc, orig_lost):
         nonlocal transports
 
         try:
@@ -105,7 +105,7 @@ def create_aiohttp_closed_event(
             if transports == 0:
                 all_is_lost.set()
 
-    def eof_received(orig_eof_received):  # type: ignore
+    def eof_received(orig_eof_received):
         try:
             orig_eof_received()
         except AttributeError:

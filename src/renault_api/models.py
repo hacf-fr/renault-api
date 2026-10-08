@@ -22,6 +22,6 @@ class BaseSchema(marshmallow.Schema):
         unknown = marshmallow.EXCLUDE
 
     @marshmallow.pre_load
-    def get_raw_data(self, data, **kwargs):  # type: ignore
+    def get_raw_data(self, data, **kwargs):
         """Ensure raw_data is added to the data set."""
         return {"raw_data": data, **data}
