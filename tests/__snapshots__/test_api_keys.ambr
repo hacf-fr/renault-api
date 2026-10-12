@@ -52,7 +52,7 @@
     'gigya-api-key': '4_GC9iGd3sH8sMJpz2x0q0CQ',
     'gigya-root-url': 'https://gigya-prod-au1.renaultgroup.com',
     'kamereon-api-key': 'YjkKtHmGfaceeuExUDKGxrLZGGvtVS0J',
-    'kamereon-root-url': 'https://api-wired-prod-1-euw1.wrd-aws.com',
+    'kamereon-root-url': 'https://api-wired-prod-1-apn1.wrd-aws.com',
   })
 # ---
 # name: test_available_locales[en_GB]

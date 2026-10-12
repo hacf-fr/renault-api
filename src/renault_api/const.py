@@ -22,6 +22,7 @@ GIGYA_URL_AU = "https://gigya-prod-au1.renaultgroup.com"
 GIGYA_URL_EU = "https://accounts.eu1.gigya.com"
 GIGYA_URL_US = "https://accounts.us1.gigya.com"
 KAMEREON_APIKEY = "YjkKtHmGfaceeuExUDKGxrLZGGvtVS0J"
+KAMEREON_URL_AU = "https://api-wired-prod-1-apn1.wrd-aws.com"
 KAMEREON_URL_EU = "https://api-wired-prod-1-euw1.wrd-aws.com"
 KAMEREON_URL_US = "https://api-wired-prod-1-usw2.wrd-aws.com"
 
@@ -69,7 +70,7 @@ AVAILABLE_LOCALES = {
     "en_AU": {
         CONF_GIGYA_URL: GIGYA_URL_AU,
         CONF_GIGYA_APIKEY: "4_GC9iGd3sH8sMJpz2x0q0CQ",  # noqa
-        CONF_KAMEREON_URL: KAMEREON_URL_EU,
+        CONF_KAMEREON_URL: KAMEREON_URL_AU,
         CONF_KAMEREON_APIKEY: KAMEREON_APIKEY,
     },
     "en_GB": {
