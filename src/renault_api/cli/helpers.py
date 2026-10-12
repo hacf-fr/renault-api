@@ -28,6 +28,10 @@ def coro_with_websession(func: Callable[..., Any]) -> Callable[..., Any]:
                 await func(*args, **kwargs)
             except RenaultException as exc:
                 raise click.ClickException(str(exc)) from exc
+            except aiohttp.ClientError as exc:
+                raise click.ClickException(
+                    f"Connection to Renault servers failed: {exc!r}"
+                ) from exc
             finally:
                 closed_event = create_aiohttp_closed_event(websession)
                 await websession.close()
