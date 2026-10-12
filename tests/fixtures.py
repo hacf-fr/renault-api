@@ -171,6 +171,15 @@ def inject_gigya_get(
     return url
 
 
+def get_gigya_requests(mocked_responses: aiointercept, urlpath: str) -> list[Any]:
+    """Return the recorded requests sent to a Gigya endpoint, in order."""
+    return [
+        request
+        for (_, url), request in mocked_responses.ordered_requests
+        if url.path == f"/{urlpath}"
+    ]
+
+
 def inject_gigya_all(mocked_responses: aiointercept) -> None:
     """Inject Gigya login/getAccountInfo/getJWT data."""
     inject_gigya_login(mocked_responses)
@@ -209,12 +218,14 @@ def inject_gigya_tfa_init(mocked_responses: aiointercept) -> str:
     )
 
 
-def inject_gigya_tfa_emails(mocked_responses: aiointercept) -> str:
+def inject_gigya_tfa_emails(
+    mocked_responses: aiointercept, filename: str = "tfa_get_emails.json"
+) -> str:
     """Inject Gigya TFA email list data."""
     return inject_gigya_get(
         mocked_responses,
         "accounts.tfa.email.getEmails",
-        "tfa_get_emails.json",
+        filename,
     )
 
 
@@ -243,6 +254,24 @@ def inject_gigya_tfa_finalize(mocked_responses: aiointercept) -> str:
         "accounts.tfa.finalizeTFA",
         "tfa_finalize_tfa.json",
     )
+
+
+def inject_gigya_tfa_all(mocked_responses: aiointercept) -> None:
+    """Inject a full email one-time-code two-factor-authentication challenge.
+
+    The initial `accounts.login` returns a 403101 (pending TFA); once the
+    challenge is completed, `RenaultSession.complete_two_factor_auth` calls
+    `login` again, so a second (successful) `accounts.login` response is
+    queued up behind the first.
+    """
+    inject_gigya_login_403101(mocked_responses)
+    inject_gigya_tfa_bootstrap(mocked_responses)
+    inject_gigya_tfa_init(mocked_responses)
+    inject_gigya_tfa_emails(mocked_responses)
+    inject_gigya_tfa_send_email_code(mocked_responses)
+    inject_gigya_tfa_complete_email_verification(mocked_responses)
+    inject_gigya_tfa_finalize(mocked_responses)
+    inject_gigya_login(mocked_responses)
 
 
 def inject_data(

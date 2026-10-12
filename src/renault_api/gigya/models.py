@@ -123,6 +123,7 @@ class GigyaTfaEmail(BaseModel):
     """A single email address registered for TFA verification."""
 
     id: str | None
+    obfuscated: str | None
 
 
 @dataclass

@@ -7,7 +7,6 @@ from typing import cast
 
 import aiohttp
 from marshmallow.schema import Schema
-from yarl import URL
 
 from . import models
 from . import schemas
@@ -17,6 +16,12 @@ GIGYA_JWT = "gigya_jwt"
 GIGYA_LOGIN_TOKEN = "gigya_login_token"  # nosec
 GIGYA_PERSON_ID = "gigya_person_id"
 GIGYA_KEYS = [GIGYA_JWT, GIGYA_LOGIN_TOKEN, GIGYA_PERSON_ID]
+
+# Device identifiers, set as cookies by accounts.webSdkBootstrap. They identify
+# the device that Gigya remembers after two-factor authentication.
+GIGYA_GMID = "gigya_gmid"
+GIGYA_UCID = "gigya_ucid"
+GIGYA_DEVICE_ID_KEYS = {GIGYA_GMID: "gmid", GIGYA_UCID: "ucid"}
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -29,10 +34,11 @@ async def request(
     schema: Schema,
     data: dict[str, Any] | None = None,
     params: dict[str, Any] | None = None,
+    cookies: dict[str, str] | None = None,
 ) -> models.GigyaResponse:
     """Send request to Gigya."""
     async with websession.request(
-        method, url, data=data, params=params
+        method, url, data=data, params=params, cookies=cookies
     ) as http_response:
         response_text = await http_response.text()
         # Don't log on Gigya, to avoid unnecessary exposure.
@@ -52,10 +58,16 @@ async def login(
     websession: aiohttp.ClientSession,
     root_url: str,
     api_key: str,
+    *,
     login_id: str,
     password: str,
+    device_ids: dict[str, str] | None = None,
 ) -> models.GigyaLoginResponse:
-    """Send POST to /accounts.login."""
+    """Send POST to /accounts.login.
+
+    `device_ids` (see `get_device_ids`) identify a device remembered after
+    two-factor authentication.
+    """
     return cast(
         models.GigyaLoginResponse,
         await request(
@@ -68,6 +80,7 @@ async def login(
                 "password": password,
             },
             schema=schemas.GigyaLoginResponseSchema,
+            cookies=device_ids,
         ),
     )
 
@@ -119,16 +132,17 @@ async def get_jwt(
     )
 
 
-async def _get_tfa_bootstrap_cookies(
+async def get_device_ids(
     websession: aiohttp.ClientSession,
     root_url: str,
-    *,
     api_key: str,
 ) -> dict[str, str]:
-    """Send GET to /accounts.webSdkBootstrap and return the resulting cookies.
+    """Send GET to /accounts.webSdkBootstrap and return the device identifiers.
 
-    The two-factor-authentication endpoints below require the `ucid`/`gmid`
-    cookies set by this call to also be sent back as query parameters.
+    They are returned as the `gmid`/`ucid` cookies of the response, and must
+    be passed (as `device_ids`) to the two-factor-authentication calls below,
+    and to `login` once the challenge is completed. They are read from the
+    response rather than from the session cookie jar, which may be shared.
     """
     async with websession.request(
         "GET",
@@ -136,20 +150,21 @@ async def _get_tfa_bootstrap_cookies(
         params={"APIKey": api_key},
     ) as http_response:
         http_response.raise_for_status()
+        cookies = http_response.cookies
 
-    jar_cookies = websession.cookie_jar.filter_cookies(URL(root_url))
     return {
-        name: jar_cookies[name].value
-        for name in ("ucid", "gmid")
-        if name in jar_cookies
+        name: cookies[name].value
+        for name in GIGYA_DEVICE_ID_KEYS.values()
+        if name in cookies
     }
 
 
 async def init_tfa(
     websession: aiohttp.ClientSession,
     root_url: str,
-    *,
     api_key: str,
+    *,
+    device_ids: dict[str, str],
     reg_token: str,
 ) -> models.GigyaTfaInitResponse:
     """Send GET to /accounts.tfa.initTFA to start an email one-time-code challenge.
@@ -157,7 +172,6 @@ async def init_tfa(
     `reg_token` comes from `PendingTwoFactorAuthenticationException.reg_token`,
     raised by `login` when the account requires two-factor authentication.
     """
-    cookies = await _get_tfa_bootstrap_cookies(websession, root_url, api_key=api_key)
     return cast(
         models.GigyaTfaInitResponse,
         await request(
@@ -169,9 +183,10 @@ async def init_tfa(
                 "regToken": reg_token,
                 "provider": "gigyaEmail",
                 "mode": "verify",
-                **cookies,
+                **device_ids,
             },
             schema=schemas.GigyaTfaInitResponseSchema,
+            cookies=device_ids,
         ),
     )
 
@@ -179,8 +194,9 @@ async def init_tfa(
 async def get_tfa_emails(
     websession: aiohttp.ClientSession,
     root_url: str,
-    *,
     api_key: str,
+    *,
+    device_ids: dict[str, str],
     gigya_assertion: str,
 ) -> models.GigyaTfaEmailListResponse:
     """Send GET to /accounts.tfa.email.getEmails to list the emails eligible for TFA."""
@@ -192,6 +208,7 @@ async def get_tfa_emails(
             f"{root_url}/accounts.tfa.email.getEmails",
             params={"APIKey": api_key, "gigyaAssertion": gigya_assertion},
             schema=schemas.GigyaTfaEmailListResponseSchema,
+            cookies=device_ids,
         ),
     )
 
@@ -199,10 +216,12 @@ async def get_tfa_emails(
 async def send_tfa_email_code(
     websession: aiohttp.ClientSession,
     root_url: str,
-    *,
     api_key: str,
+    *,
+    device_ids: dict[str, str],
     gigya_assertion: str,
     email_id: str,
+    lang: str | None = None,
 ) -> models.GigyaTfaSendEmailCodeResponse:
     """Send GET to /accounts.tfa.email.sendVerificationCode to email the OTP code."""
     return cast(
@@ -215,8 +234,10 @@ async def send_tfa_email_code(
                 "APIKey": api_key,
                 "gigyaAssertion": gigya_assertion,
                 "emailID": email_id,
+                **({"lang": lang} if lang else {}),
             },
             schema=schemas.GigyaTfaSendEmailCodeResponseSchema,
+            cookies=device_ids,
         ),
     )
 
@@ -224,8 +245,9 @@ async def send_tfa_email_code(
 async def complete_tfa_email_verification(
     websession: aiohttp.ClientSession,
     root_url: str,
-    *,
     api_key: str,
+    *,
+    device_ids: dict[str, str],
     gigya_assertion: str,
     phv_token: str,
     code: str,
@@ -244,6 +266,7 @@ async def complete_tfa_email_verification(
                 "code": code,
             },
             schema=schemas.GigyaTfaEmailCompleteVerificationResponseSchema,
+            cookies=device_ids,
         ),
     )
 
@@ -251,8 +274,9 @@ async def complete_tfa_email_verification(
 async def finalize_tfa(
     websession: aiohttp.ClientSession,
     root_url: str,
-    *,
     api_key: str,
+    *,
+    device_ids: dict[str, str],
     gigya_assertion: str,
     provider_assertion: str,
     reg_token: str,
@@ -278,4 +302,5 @@ async def finalize_tfa(
             "tempDevice": str(not remember_device).lower(),
         },
         schema=schemas.GigyaResponseSchema,
+        cookies=device_ids,
     )
