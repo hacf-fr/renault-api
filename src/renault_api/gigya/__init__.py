@@ -57,10 +57,10 @@ async def request(
 async def login(
     websession: aiohttp.ClientSession,
     root_url: str,
+    *,
     api_key: str,
     login_id: str,
     password: str,
-    *,
     device_ids: dict[str, str] | None = None,
 ) -> models.GigyaLoginResponse:
     """Send POST to /accounts.login.

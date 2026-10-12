@@ -28,9 +28,9 @@ async def test_login(
     response = await gigya.login(
         websession,
         TEST_GIGYA_URL,
-        TEST_GIGYA_APIKEY,
-        TEST_USERNAME,
-        TEST_PASSWORD,
+        api_key=TEST_GIGYA_APIKEY,
+        login_id=TEST_USERNAME,
+        password=TEST_PASSWORD,
     )
     assert response.get_session_cookie() == TEST_LOGIN_TOKEN
 
@@ -46,9 +46,9 @@ async def test_login_error(
         await gigya.login(
             websession,
             TEST_GIGYA_URL,
-            TEST_GIGYA_APIKEY,
-            TEST_USERNAME,
-            TEST_PASSWORD,
+            api_key=TEST_GIGYA_APIKEY,
+            login_id=TEST_USERNAME,
+            password=TEST_PASSWORD,
         )
 
 
@@ -94,9 +94,9 @@ async def test_login_with_device_ids(
     response = await gigya.login(
         websession,
         TEST_GIGYA_URL,
-        TEST_GIGYA_APIKEY,
-        TEST_USERNAME,
-        TEST_PASSWORD,
+        api_key=TEST_GIGYA_APIKEY,
+        login_id=TEST_USERNAME,
+        password=TEST_PASSWORD,
         device_ids=TEST_DEVICE_IDS,
     )
     assert response.get_session_cookie() == TEST_LOGIN_TOKEN

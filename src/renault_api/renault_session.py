@@ -88,9 +88,9 @@ class RenaultSession:
             response = await gigya.login(
                 self._websession,
                 await self._get_gigya_root_url(),
-                await self._get_gigya_api_key(),
-                login_id,
-                password,
+                api_key=await self._get_gigya_api_key(),
+                login_id=login_id,
+                password=password,
                 device_ids=self.device_ids or None,
             )
         except PendingTwoFactorAuthenticationException as exc:
