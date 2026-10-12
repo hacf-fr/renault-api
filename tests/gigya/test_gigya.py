@@ -90,7 +90,10 @@ async def test_init_tfa(
     fixtures.inject_gigya_tfa_init(mocked_responses)
 
     response = await gigya.init_tfa(
-        websession, TEST_GIGYA_URL, TEST_GIGYA_APIKEY, "sample-reg-token"
+        websession,
+        TEST_GIGYA_URL,
+        api_key=TEST_GIGYA_APIKEY,
+        reg_token="sample-reg-token",
     )
     assert response.get_gigya_assertion() == "sample-gigya-assertion"
 
@@ -104,7 +107,10 @@ async def test_init_tfa_without_bootstrap_cookies(
     fixtures.inject_gigya_tfa_init(mocked_responses)
 
     response = await gigya.init_tfa(
-        websession, TEST_GIGYA_URL, TEST_GIGYA_APIKEY, "sample-reg-token"
+        websession,
+        TEST_GIGYA_URL,
+        api_key=TEST_GIGYA_APIKEY,
+        reg_token="sample-reg-token",
     )
     assert response.get_gigya_assertion() == "sample-gigya-assertion"
 
@@ -117,7 +123,10 @@ async def test_get_tfa_emails(
     fixtures.inject_gigya_tfa_emails(mocked_responses)
 
     response = await gigya.get_tfa_emails(
-        websession, TEST_GIGYA_URL, TEST_GIGYA_APIKEY, "sample-gigya-assertion"
+        websession,
+        TEST_GIGYA_URL,
+        api_key=TEST_GIGYA_APIKEY,
+        gigya_assertion="sample-gigya-assertion",
     )
     assert response.get_email_id() == "sample-email-id"
 
@@ -132,9 +141,9 @@ async def test_send_tfa_email_code(
     response = await gigya.send_tfa_email_code(
         websession,
         TEST_GIGYA_URL,
-        TEST_GIGYA_APIKEY,
-        "sample-gigya-assertion",
-        "sample-email-id",
+        api_key=TEST_GIGYA_APIKEY,
+        gigya_assertion="sample-gigya-assertion",
+        email_id="sample-email-id",
     )
     assert response.get_phv_token() == "sample-phv-token"
 
@@ -149,10 +158,10 @@ async def test_complete_tfa_email_verification(
     response = await gigya.complete_tfa_email_verification(
         websession,
         TEST_GIGYA_URL,
-        TEST_GIGYA_APIKEY,
-        "sample-gigya-assertion",
-        "sample-phv-token",
-        "123456",
+        api_key=TEST_GIGYA_APIKEY,
+        gigya_assertion="sample-gigya-assertion",
+        phv_token="sample-phv-token",
+        code="123456",
     )
     assert response.get_provider_assertion() == "sample-provider-assertion"
 
@@ -167,9 +176,9 @@ async def test_finalize_tfa(
     await gigya.finalize_tfa(
         websession,
         TEST_GIGYA_URL,
-        TEST_GIGYA_APIKEY,
-        "sample-gigya-assertion",
-        "sample-provider-assertion",
-        "sample-reg-token",
+        api_key=TEST_GIGYA_APIKEY,
+        gigya_assertion="sample-gigya-assertion",
+        provider_assertion="sample-provider-assertion",
+        reg_token="sample-reg-token",
         remember_device=False,
     )

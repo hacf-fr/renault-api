@@ -122,6 +122,7 @@ async def get_jwt(
 async def _get_tfa_bootstrap_cookies(
     websession: aiohttp.ClientSession,
     root_url: str,
+    *,
     api_key: str,
 ) -> dict[str, str]:
     """Send GET to /accounts.webSdkBootstrap and return the resulting cookies.
@@ -147,6 +148,7 @@ async def _get_tfa_bootstrap_cookies(
 async def init_tfa(
     websession: aiohttp.ClientSession,
     root_url: str,
+    *,
     api_key: str,
     reg_token: str,
 ) -> models.GigyaTfaInitResponse:
@@ -155,7 +157,7 @@ async def init_tfa(
     `reg_token` comes from `PendingTwoFactorAuthenticationException.reg_token`,
     raised by `login` when the account requires two-factor authentication.
     """
-    cookies = await _get_tfa_bootstrap_cookies(websession, root_url, api_key)
+    cookies = await _get_tfa_bootstrap_cookies(websession, root_url, api_key=api_key)
     return cast(
         models.GigyaTfaInitResponse,
         await request(
@@ -178,6 +180,7 @@ async def init_tfa(
 async def get_tfa_emails(
     websession: aiohttp.ClientSession,
     root_url: str,
+    *,
     api_key: str,
     gigya_assertion: str,
 ) -> models.GigyaTfaEmailListResponse:
@@ -198,6 +201,7 @@ async def get_tfa_emails(
 async def send_tfa_email_code(
     websession: aiohttp.ClientSession,
     root_url: str,
+    *,
     api_key: str,
     gigya_assertion: str,
     email_id: str,
@@ -223,6 +227,7 @@ async def send_tfa_email_code(
 async def complete_tfa_email_verification(
     websession: aiohttp.ClientSession,
     root_url: str,
+    *,
     api_key: str,
     gigya_assertion: str,
     phv_token: str,
@@ -250,11 +255,11 @@ async def complete_tfa_email_verification(
 async def finalize_tfa(
     websession: aiohttp.ClientSession,
     root_url: str,
+    *,
     api_key: str,
     gigya_assertion: str,
     provider_assertion: str,
     reg_token: str,
-    *,
     remember_device: bool = True,
 ) -> None:
     """Send GET to /accounts.tfa.finalizeTFA to complete the TFA challenge.
