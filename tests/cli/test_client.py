@@ -7,6 +7,7 @@ from click.testing import CliRunner
 from syrupy.assertion import SnapshotAssertion
 
 from tests import fixtures
+from tests.const import TEST_GIGYA_URL
 from tests.const import TEST_LOCALE
 from tests.const import TEST_LOGIN_TOKEN
 from tests.const import TEST_PASSWORD
@@ -122,6 +123,22 @@ def test_login_two_factor_auth_no_email(
     )
     assert result.exit_code == 1
     assert "No email address is registered" in result.output
+
+
+def test_login_connection_error(
+    mocked_responses: aiointercept, cli_runner: CliRunner
+) -> None:
+    """It reports connection errors without a traceback."""
+    mocked_responses.post(f"{TEST_GIGYA_URL}/accounts.login", exception=True)
+
+    result = cli_runner.invoke(
+        __main__.main,
+        f"--locale {TEST_LOCALE} "
+        f"login --user {TEST_USERNAME} --password {TEST_PASSWORD}",
+    )
+    assert result.exit_code == 1
+    assert "Error: Connection to Renault servers failed: " in result.output
+    assert "Traceback" not in result.output
 
 
 def test_list_accounts_prompt(
