@@ -25,9 +25,9 @@ async def request(
     websession: aiohttp.ClientSession,
     method: str,
     url: str,
-    *,
+    data: dict[str, Any],
     schema: Schema,
-    data: dict[str, Any] | None = None,
+    *,
     params: dict[str, Any] | None = None,
 ) -> models.GigyaResponse:
     """Send request to Gigya."""
@@ -162,6 +162,7 @@ async def init_tfa(
             websession,
             "GET",
             f"{root_url}/accounts.tfa.initTFA",
+            data={},
             params={
                 "APIKey": api_key,
                 "regToken": reg_token,
@@ -187,6 +188,7 @@ async def get_tfa_emails(
             websession,
             "GET",
             f"{root_url}/accounts.tfa.email.getEmails",
+            data={},
             params={"APIKey": api_key, "gigyaAssertion": gigya_assertion},
             schema=schemas.GigyaTfaEmailListResponseSchema,
         ),
@@ -207,6 +209,7 @@ async def send_tfa_email_code(
             websession,
             "GET",
             f"{root_url}/accounts.tfa.email.sendVerificationCode",
+            data={},
             params={
                 "APIKey": api_key,
                 "gigyaAssertion": gigya_assertion,
@@ -232,6 +235,7 @@ async def complete_tfa_email_verification(
             websession,
             "GET",
             f"{root_url}/accounts.tfa.email.completeVerification",
+            data={},
             params={
                 "APIKey": api_key,
                 "gigyaAssertion": gigya_assertion,
@@ -265,6 +269,7 @@ async def finalize_tfa(
         websession,
         "GET",
         f"{root_url}/accounts.tfa.finalizeTFA",
+        data={},
         params={
             "APIKey": api_key,
             "gigyaAssertion": gigya_assertion,
