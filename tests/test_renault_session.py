@@ -5,9 +5,11 @@ from typing import cast
 import aiohttp
 import pytest
 from aiointercept import aiointercept
+from yarl import URL
 
 from tests import fixtures
 from tests.const import TEST_COUNTRY
+from tests.const import TEST_GIGYA_URL
 from tests.const import TEST_LOCALE
 from tests.const import TEST_LOCALE_DETAILS
 from tests.const import TEST_LOGIN_TOKEN
@@ -195,6 +197,168 @@ async def test_login_two_factor_auth_required(
     assert excinfo.value.reg_token == "sample-reg-token"
     assert session.login_token is None
     assert len(mocked_responses.requests) == 1
+
+
+TEST_DEVICE_IDS = {"gmid": "sample-gmid", "ucid": "sample-ucid"}
+
+
+@pytest.mark.asyncio
+async def test_two_factor_auth(
+    session: RenaultSession, mocked_responses: aiointercept
+) -> None:
+    """Test the full two-factor authentication flow, with a single email."""
+    fixtures.inject_gigya_tfa_all(mocked_responses)
+
+    with pytest.raises(PendingTwoFactorAuthenticationException):
+        await session.login(TEST_USERNAME, TEST_PASSWORD)
+    await session.request_two_factor_auth_code()
+    await session.complete_two_factor_auth("123456")
+
+    assert session.login_token == TEST_LOGIN_TOKEN
+    assert session.device_ids == TEST_DEVICE_IDS
+
+    first_login, second_login = fixtures.get_gigya_requests(
+        mocked_responses, "accounts.login"
+    )
+    assert not first_login.cookies
+    assert dict(second_login.cookies) == TEST_DEVICE_IDS
+    (send_code,) = fixtures.get_gigya_requests(
+        mocked_responses, "accounts.tfa.email.sendVerificationCode"
+    )
+    assert send_code.query["emailID"] == "sample-email-id"
+    assert "lang" not in send_code.query
+    (finalize,) = fixtures.get_gigya_requests(
+        mocked_responses, "accounts.tfa.finalizeTFA"
+    )
+    assert finalize.query["tempDevice"] == "false"
+
+    # The challenge is resolved
+    with pytest.raises(RenaultException, match="No two-factor authentication"):
+        await session.complete_two_factor_auth("123456")
+
+
+@pytest.mark.asyncio
+async def test_two_factor_auth_multiple_emails(
+    websession: aiohttp.ClientSession, mocked_responses: aiointercept
+) -> None:
+    """Test two-factor authentication with several emails, and a locale."""
+    session = RenaultSession(
+        websession=websession,
+        locale=TEST_LOCALE,
+        country=TEST_COUNTRY,
+        locale_details=TEST_LOCALE_DETAILS,
+    )
+    fixtures.inject_gigya_login_403101(mocked_responses)
+    fixtures.inject_gigya_tfa_bootstrap(mocked_responses)
+    fixtures.inject_gigya_tfa_init(mocked_responses)
+    fixtures.inject_gigya_tfa_emails(mocked_responses, "tfa_get_emails.multiple.json")
+    fixtures.inject_gigya_tfa_emails(mocked_responses, "tfa_get_emails.multiple.json")
+    fixtures.inject_gigya_tfa_send_email_code(mocked_responses)
+
+    with pytest.raises(PendingTwoFactorAuthenticationException):
+        await session.login(TEST_USERNAME, TEST_PASSWORD)
+
+    emails = await session.get_two_factor_auth_emails()
+    assert [(email.id, email.obfuscated) for email in emails] == [
+        ("sample-email-id", "e***@example.com"),
+        ("sample-email-id-2", "o***@example.com"),
+    ]
+    with pytest.raises(RenaultException, match="`email_id` is required"):
+        await session.request_two_factor_auth_code()
+
+    await session.request_two_factor_auth_code("sample-email-id-2")
+    (send_code,) = fixtures.get_gigya_requests(
+        mocked_responses, "accounts.tfa.email.sendVerificationCode"
+    )
+    assert send_code.query["emailID"] == "sample-email-id-2"
+    assert send_code.query["lang"] == "fr"
+    # The challenge is only started once
+    assert (
+        len(fixtures.get_gigya_requests(mocked_responses, "accounts.tfa.initTFA")) == 1
+    )
+
+
+@pytest.mark.asyncio
+async def test_two_factor_auth_no_email(
+    session: RenaultSession, mocked_responses: aiointercept
+) -> None:
+    """Test two-factor authentication without any registered email."""
+    fixtures.inject_gigya_login_403101(mocked_responses)
+    fixtures.inject_gigya_tfa_bootstrap(mocked_responses)
+    fixtures.inject_gigya_tfa_init(mocked_responses)
+    fixtures.inject_gigya_tfa_emails(mocked_responses, "tfa_get_emails.empty.json")
+
+    with pytest.raises(PendingTwoFactorAuthenticationException):
+        await session.login(TEST_USERNAME, TEST_PASSWORD)
+    with pytest.raises(RenaultException, match="No email address is registered"):
+        await session.request_two_factor_auth_code()
+
+
+@pytest.mark.asyncio
+async def test_two_factor_auth_not_pending(session: RenaultSession) -> None:
+    """Test two-factor authentication methods without a pending challenge."""
+    with pytest.raises(RenaultException, match="call `login` first"):
+        await session.get_two_factor_auth_emails()
+    with pytest.raises(RenaultException, match="call `login` first"):
+        await session.request_two_factor_auth_code("sample-email-id")
+    with pytest.raises(RenaultException, match="call `login` first"):
+        await session.complete_two_factor_auth("123456")
+
+
+@pytest.mark.asyncio
+async def test_complete_two_factor_auth_without_code(
+    session: RenaultSession, mocked_responses: aiointercept
+) -> None:
+    """Test completing two-factor authentication before requesting a code."""
+    fixtures.inject_gigya_login_403101(mocked_responses)
+
+    with pytest.raises(PendingTwoFactorAuthenticationException):
+        await session.login(TEST_USERNAME, TEST_PASSWORD)
+    with pytest.raises(RenaultException, match="call `request_two_factor_auth_code`"):
+        await session.complete_two_factor_auth("123456")
+
+
+@pytest.mark.asyncio
+async def test_device_ids(
+    session: RenaultSession, mocked_responses: aiointercept
+) -> None:
+    """Test restored device ids are sent on login, whatever the cookie jar holds."""
+    assert session.device_ids == {}
+    session.set_device_ids(TEST_DEVICE_IDS)
+    assert session.device_ids == TEST_DEVICE_IDS
+
+    # Another user of the same aiohttp session
+    session._websession.cookie_jar.update_cookies(
+        {"gmid": "other-gmid", "ucid": "other-ucid"}, URL(TEST_GIGYA_URL)
+    )
+    fixtures.inject_gigya_login(mocked_responses)
+    await session.login(TEST_USERNAME, TEST_PASSWORD)
+    (request,) = fixtures.get_gigya_requests(mocked_responses, "accounts.login")
+    assert dict(request.cookies) == TEST_DEVICE_IDS
+    # Login doesn't forget the device
+    assert session.device_ids == TEST_DEVICE_IDS
+
+    session.set_device_ids({})
+    assert session.device_ids == {}
+
+
+@pytest.mark.asyncio
+async def test_two_factor_auth_with_device_ids(
+    session: RenaultSession, mocked_responses: aiointercept
+) -> None:
+    """Test two-factor authentication reuses known device ids."""
+    session.set_device_ids(TEST_DEVICE_IDS)
+    fixtures.inject_gigya_login_403101(mocked_responses)
+    fixtures.inject_gigya_tfa_init(mocked_responses)
+    fixtures.inject_gigya_tfa_emails(mocked_responses)
+
+    with pytest.raises(PendingTwoFactorAuthenticationException):
+        await session.login(TEST_USERNAME, TEST_PASSWORD)
+    await session.get_two_factor_auth_emails()
+
+    assert not fixtures.get_gigya_requests(mocked_responses, "accounts.webSdkBootstrap")
+    (init,) = fixtures.get_gigya_requests(mocked_responses, "accounts.tfa.initTFA")
+    assert dict(init.cookies) == TEST_DEVICE_IDS
 
 
 @pytest.mark.asyncio
