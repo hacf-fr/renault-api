@@ -57,8 +57,8 @@ async def request(
 async def login(
     websession: aiohttp.ClientSession,
     root_url: str,
-    *,
     api_key: str,
+    *,
     login_id: str,
     password: str,
     device_ids: dict[str, str] | None = None,
@@ -135,7 +135,6 @@ async def get_jwt(
 async def get_device_ids(
     websession: aiohttp.ClientSession,
     root_url: str,
-    *,
     api_key: str,
 ) -> dict[str, str]:
     """Send GET to /accounts.webSdkBootstrap and return the device identifiers.
@@ -163,8 +162,8 @@ async def get_device_ids(
 async def init_tfa(
     websession: aiohttp.ClientSession,
     root_url: str,
-    *,
     api_key: str,
+    *,
     device_ids: dict[str, str],
     reg_token: str,
 ) -> models.GigyaTfaInitResponse:
@@ -195,8 +194,8 @@ async def init_tfa(
 async def get_tfa_emails(
     websession: aiohttp.ClientSession,
     root_url: str,
-    *,
     api_key: str,
+    *,
     device_ids: dict[str, str],
     gigya_assertion: str,
 ) -> models.GigyaTfaEmailListResponse:
@@ -217,8 +216,8 @@ async def get_tfa_emails(
 async def send_tfa_email_code(
     websession: aiohttp.ClientSession,
     root_url: str,
-    *,
     api_key: str,
+    *,
     device_ids: dict[str, str],
     gigya_assertion: str,
     email_id: str,
@@ -246,8 +245,8 @@ async def send_tfa_email_code(
 async def complete_tfa_email_verification(
     websession: aiohttp.ClientSession,
     root_url: str,
-    *,
     api_key: str,
+    *,
     device_ids: dict[str, str],
     gigya_assertion: str,
     phv_token: str,
@@ -275,8 +274,8 @@ async def complete_tfa_email_verification(
 async def finalize_tfa(
     websession: aiohttp.ClientSession,
     root_url: str,
-    *,
     api_key: str,
+    *,
     device_ids: dict[str, str],
     gigya_assertion: str,
     provider_assertion: str,

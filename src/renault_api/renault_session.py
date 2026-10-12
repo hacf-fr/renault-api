@@ -88,7 +88,7 @@ class RenaultSession:
             response = await gigya.login(
                 self._websession,
                 await self._get_gigya_root_url(),
-                api_key=await self._get_gigya_api_key(),
+                await self._get_gigya_api_key(),
                 login_id=login_id,
                 password=password,
                 device_ids=self.device_ids or None,
@@ -111,7 +111,7 @@ class RenaultSession:
         response = await gigya.get_tfa_emails(
             self._websession,
             await self._get_gigya_root_url(),
-            api_key=await self._get_gigya_api_key(),
+            await self._get_gigya_api_key(),
             device_ids=await self._get_device_ids(),
             gigya_assertion=await self._get_tfa_assertion(pending_tfa),
         )
@@ -144,7 +144,7 @@ class RenaultSession:
         response = await gigya.send_tfa_email_code(
             self._websession,
             await self._get_gigya_root_url(),
-            api_key=await self._get_gigya_api_key(),
+            await self._get_gigya_api_key(),
             device_ids=await self._get_device_ids(),
             gigya_assertion=await self._get_tfa_assertion(pending_tfa),
             email_id=email_id,
@@ -175,7 +175,7 @@ class RenaultSession:
         response = await gigya.complete_tfa_email_verification(
             self._websession,
             root_url,
-            api_key=api_key,
+            api_key,
             device_ids=device_ids,
             gigya_assertion=pending_tfa.gigya_assertion,
             phv_token=pending_tfa.phv_token,
@@ -184,7 +184,7 @@ class RenaultSession:
         await gigya.finalize_tfa(
             self._websession,
             root_url,
-            api_key=api_key,
+            api_key,
             device_ids=device_ids,
             gigya_assertion=pending_tfa.gigya_assertion,
             provider_assertion=response.get_provider_assertion(),
@@ -207,7 +207,7 @@ class RenaultSession:
             response = await gigya.init_tfa(
                 self._websession,
                 await self._get_gigya_root_url(),
-                api_key=await self._get_gigya_api_key(),
+                await self._get_gigya_api_key(),
                 device_ids=await self._get_device_ids(),
                 reg_token=pending_tfa.reg_token,
             )
@@ -220,7 +220,7 @@ class RenaultSession:
             device_ids = await gigya.get_device_ids(
                 self._websession,
                 await self._get_gigya_root_url(),
-                api_key=await self._get_gigya_api_key(),
+                await self._get_gigya_api_key(),
             )
             self.set_device_ids(device_ids)
         return device_ids

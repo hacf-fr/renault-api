@@ -28,7 +28,7 @@ async def test_login(
     response = await gigya.login(
         websession,
         TEST_GIGYA_URL,
-        api_key=TEST_GIGYA_APIKEY,
+        TEST_GIGYA_APIKEY,
         login_id=TEST_USERNAME,
         password=TEST_PASSWORD,
     )
@@ -46,7 +46,7 @@ async def test_login_error(
         await gigya.login(
             websession,
             TEST_GIGYA_URL,
-            api_key=TEST_GIGYA_APIKEY,
+            TEST_GIGYA_APIKEY,
             login_id=TEST_USERNAME,
             password=TEST_PASSWORD,
         )
@@ -94,7 +94,7 @@ async def test_login_with_device_ids(
     response = await gigya.login(
         websession,
         TEST_GIGYA_URL,
-        api_key=TEST_GIGYA_APIKEY,
+        TEST_GIGYA_APIKEY,
         login_id=TEST_USERNAME,
         password=TEST_PASSWORD,
         device_ids=TEST_DEVICE_IDS,
@@ -112,7 +112,7 @@ async def test_get_device_ids(
     fixtures.inject_gigya_tfa_bootstrap(mocked_responses)
 
     device_ids = await gigya.get_device_ids(
-        websession, TEST_GIGYA_URL, api_key=TEST_GIGYA_APIKEY
+        websession, TEST_GIGYA_URL, TEST_GIGYA_APIKEY
     )
     assert device_ids == {"gmid": "sample-gmid", "ucid": "sample-ucid"}
 
@@ -126,7 +126,7 @@ async def test_get_device_ids_ignores_cookie_jar(
     fixtures.inject_gigya_tfa_bootstrap_no_cookies(mocked_responses)
 
     device_ids = await gigya.get_device_ids(
-        websession, TEST_GIGYA_URL, api_key=TEST_GIGYA_APIKEY
+        websession, TEST_GIGYA_URL, TEST_GIGYA_APIKEY
     )
     assert device_ids == {}
 
@@ -141,7 +141,7 @@ async def test_init_tfa(
     response = await gigya.init_tfa(
         websession,
         TEST_GIGYA_URL,
-        api_key=TEST_GIGYA_APIKEY,
+        TEST_GIGYA_APIKEY,
         device_ids=TEST_DEVICE_IDS,
         reg_token="sample-reg-token",
     )
@@ -162,7 +162,7 @@ async def test_get_tfa_emails(
     response = await gigya.get_tfa_emails(
         websession,
         TEST_GIGYA_URL,
-        api_key=TEST_GIGYA_APIKEY,
+        TEST_GIGYA_APIKEY,
         device_ids=TEST_DEVICE_IDS,
         gigya_assertion="sample-gigya-assertion",
     )
@@ -186,7 +186,7 @@ async def test_send_tfa_email_code(
     response = await gigya.send_tfa_email_code(
         websession,
         TEST_GIGYA_URL,
-        api_key=TEST_GIGYA_APIKEY,
+        TEST_GIGYA_APIKEY,
         device_ids=TEST_DEVICE_IDS,
         gigya_assertion="sample-gigya-assertion",
         email_id="sample-email-id",
@@ -210,7 +210,7 @@ async def test_complete_tfa_email_verification(
     response = await gigya.complete_tfa_email_verification(
         websession,
         TEST_GIGYA_URL,
-        api_key=TEST_GIGYA_APIKEY,
+        TEST_GIGYA_APIKEY,
         device_ids=TEST_DEVICE_IDS,
         gigya_assertion="sample-gigya-assertion",
         phv_token="sample-phv-token",
@@ -233,7 +233,7 @@ async def test_finalize_tfa(
     await gigya.finalize_tfa(
         websession,
         TEST_GIGYA_URL,
-        api_key=TEST_GIGYA_APIKEY,
+        TEST_GIGYA_APIKEY,
         device_ids=TEST_DEVICE_IDS,
         gigya_assertion="sample-gigya-assertion",
         provider_assertion="sample-provider-assertion",
