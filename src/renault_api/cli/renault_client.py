@@ -17,6 +17,7 @@ from renault_api.credential import Credential
 from renault_api.credential_store import CredentialStore
 from renault_api.exceptions import RenaultException
 from renault_api.gigya import GIGYA_LOGIN_TOKEN
+from renault_api.gigya.exceptions import PendingTwoFactorAuthenticationException
 from renault_api.helpers import get_api_keys
 from renault_api.renault_client import RenaultClient
 from renault_api.renault_session import RenaultSession
@@ -97,13 +98,43 @@ async def _prompt_login(session: RenaultSession) -> None:
         user = click.prompt("User")
         password = click.prompt("Password", hide_input=True)
         try:
-            await session.login(user, password)
+            await _login(session, user, password)
         except RenaultException as exc:
             click.echo(f"Login failed: {exc}.", err=True)
         else:
             # Add blank new line
             click.echo("")
             return
+
+
+async def _login(session: RenaultSession, user: str, password: str) -> None:
+    """Login, prompting for a verification code if required."""
+    try:
+        await session.login(user, password)
+    except PendingTwoFactorAuthenticationException:
+        await _prompt_two_factor_auth(session)
+
+
+async def _prompt_two_factor_auth(session: RenaultSession) -> None:
+    """Prompt the user to complete two-factor authentication."""
+    click.echo("Two-factor authentication is required.")
+    emails = await session.get_two_factor_auth_emails()
+    email_id: str | None = None
+    if len(emails) == 1:
+        email_id = emails[0].id
+        click.echo(f"Sending a verification code to {emails[0].obfuscated}.")
+    elif emails:
+        for index, email in enumerate(emails, start=1):
+            click.echo(f"  {index}. {email.obfuscated}")
+        choice = click.prompt(
+            "Send the verification code to",
+            type=click.IntRange(1, len(emails)),
+            default=1,
+        )
+        email_id = emails[choice - 1].id
+    await session.request_two_factor_auth_code(email_id)
+    code = click.prompt("Verification code")
+    await session.complete_two_factor_auth(code)
 
 
 async def login(
@@ -114,7 +145,7 @@ async def login(
 ) -> None:
     """Attempt login."""
     session = await _create_renault_session(websession=websession, ctx_data=ctx_data)
-    await session.login(user, password)
+    await _login(session, user, password)
 
 
 async def display_accounts(

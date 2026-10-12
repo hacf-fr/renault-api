@@ -109,6 +109,31 @@ the password*, and restore it on the next session with ``session.set_login_token
    # later, in a new session:
    client.session.set_login_token(login_token)  # no password required
 
+Two-factor authentication
+-------------------------
+
+Some accounts require a one-time code, sent by email, to log in. In that case
+``session.login`` raises ``PendingTwoFactorAuthenticationException``, and the
+login is completed with the code:
+
+.. code:: python
+
+   from renault_api.gigya.exceptions import PendingTwoFactorAuthenticationException
+
+   try:
+       await client.session.login('email', 'password')
+   except PendingTwoFactorAuthenticationException:
+       # If several addresses are registered, let the user pick one from
+       # `await client.session.get_two_factor_auth_emails()` and pass its `id`.
+       await client.session.request_two_factor_auth_code()
+       code = input("Verification code: ")
+       await client.session.complete_two_factor_auth(code)
+
+Gigya then remembers the device for about 30 days. The device is identified by
+``session.device_ids``: store them alongside the login token, and restore them
+with ``session.set_device_ids`` on the next session, so that a later login with
+the password doesn't require another code.
+
 CLI Usage
 ---------
 
@@ -126,6 +151,7 @@ Once installed, the following command prompts for credentials and settings, disp
    $ renault-api --log status
 
 * Credentials will automatically be stored in the user home directory (~/.credentials/renault-api.json)
+* If the account requires two-factor authentication, the CLI will prompt for the verification code sent by email
 * Logs will automatically be generated in `logs` subfolder
 
 It is also possible to use raw http GET/POST commands, for example to get odometer and others data on a Windows machine:

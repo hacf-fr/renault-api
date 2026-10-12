@@ -36,3 +36,21 @@
   
   '''
 # ---
+# name: test_login_two_factor_auth
+  '''
+  Two-factor authentication is required.
+  Sending a verification code to e***@example.com.
+  Verification code: 123456
+  
+  '''
+# ---
+# name: test_login_two_factor_auth_multiple_emails
+  '''
+  Two-factor authentication is required.
+    1. e***@example.com
+    2. o***@example.com
+  Send the verification code to [1]: 2
+  Verification code: 123456
+  
+  '''
+# ---
