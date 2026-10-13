@@ -157,6 +157,10 @@ class RenaultSession:
     ) -> None:
         """Submit the emailed one-time code and finish logging in.
 
+        Raises `InvalidVerificationCodeException` if the code is wrong. The
+        challenge stays pending, so this can be called again with the right
+        code, without requesting a new one.
+
         When `remember_device` is True (the default), Gigya should not ask
         for another code for this device for about 30 days. The device is
         identified by `device_ids`, which are sent explicitly with each

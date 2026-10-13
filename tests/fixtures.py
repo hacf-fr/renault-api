@@ -238,12 +238,15 @@ def inject_gigya_tfa_send_email_code(mocked_responses: aiointercept) -> str:
     )
 
 
-def inject_gigya_tfa_complete_email_verification(mocked_responses: aiointercept) -> str:
+def inject_gigya_tfa_complete_email_verification(
+    mocked_responses: aiointercept,
+    filename: str = "tfa_complete_email_verification.json",
+) -> str:
     """Inject Gigya TFA completeVerification data."""
     return inject_gigya_get(
         mocked_responses,
         "accounts.tfa.email.completeVerification",
-        "tfa_complete_email_verification.json",
+        filename,
     )
 
 

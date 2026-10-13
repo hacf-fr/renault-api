@@ -1,0 +1,10 @@
+{
+  "callId": "callId",
+  "errorCode": 400006,
+  "errorDetails": "Wrong verification code",
+  "errorMessage": "Invalid parameter value",
+  "apiVersion": 2,
+  "statusCode": 400,
+  "statusReason": "Bad Request",
+  "time": "2026-10-13T12:00:00.000Z"
+}

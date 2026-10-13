@@ -7,6 +7,11 @@ from tests import fixtures
 from renault_api.gigya import exceptions
 from renault_api.gigya import models
 from renault_api.gigya import schemas
+from renault_api.gigya.enums import GigyaErrorCode
+
+WRONG_CODE_FIXTURE = (
+    f"{fixtures.GIGYA_FIXTURE_PATH}/error/tfa_complete_email_verification.400006.json"
+)
 
 
 @pytest.mark.parametrize(
@@ -55,6 +60,33 @@ def test_login_403042_response() -> None:
         response.raise_for_error_code()
     assert excinfo.value.error_code == 403042
     assert excinfo.value.error_details == "invalid loginID or password"
+
+
+def test_tfa_complete_email_verification_400006_response() -> None:
+    """Test completeVerification.400006 (wrong verification code) response."""
+    response = fixtures.get_file_content_as_schema(
+        WRONG_CODE_FIXTURE, schemas.GigyaTfaEmailCompleteVerificationResponseSchema
+    )
+    with pytest.raises(exceptions.InvalidVerificationCodeException) as excinfo:
+        response.raise_for_error_code()
+    assert excinfo.value.error_code == GigyaErrorCode.INVALID_VERIFICATION_CODE
+    assert excinfo.value.error_details == "Wrong verification code"
+
+
+def test_400006_from_other_endpoint() -> None:
+    """Test 400006 from another endpoint is a generic error.
+
+    400006 is Gigya's generic "invalid parameter value" code: it only means a
+    wrong verification code when completing the email verification.
+    """
+    response: models.GigyaLoginResponse = fixtures.get_file_content_as_schema(
+        WRONG_CODE_FIXTURE,
+        schemas.GigyaLoginResponseSchema,
+    )
+    with pytest.raises(exceptions.GigyaResponseException) as excinfo:
+        response.raise_for_error_code()
+    assert type(excinfo.value) is exceptions.GigyaResponseException
+    assert excinfo.value.error_code == 400006
 
 
 def test_login_403101_response() -> None:

@@ -25,6 +25,16 @@ class InvalidCredentialsException(GigyaResponseException):
     pass
 
 
+class InvalidVerificationCodeException(GigyaResponseException):
+    """Wrong two-factor authentication code (Gigya errorCode 400006).
+
+    Only raised when completing the email verification: the same challenge
+    can be retried with the right code.
+    """
+
+    pass
+
+
 class PendingTwoFactorAuthenticationException(GigyaResponseException):
     """Account requires two-factor authentication (Gigya errorCode 403101).
 
