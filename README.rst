@@ -57,7 +57,7 @@ This package has been developed to be used with Home-Assistant, but it can be us
 Requirements
 ------------
 
-* Python (>= 3.10)
+* Python (>= 3.11)
 
 API Usage
 ---------

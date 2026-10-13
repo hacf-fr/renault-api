@@ -1,7 +1,7 @@
 """Client for Renault API."""
 
+from datetime import UTC
 from datetime import datetime
-from datetime import timezone
 from typing import Any
 from typing import cast
 
@@ -432,7 +432,7 @@ class RenaultVehicle:
                     "`when` should be an instance of datetime.datetime, "
                     f"not {when.__class__}"
                 )
-            start_date_time = when.astimezone(timezone.utc).strftime(PERIOD_TZ_FORMAT)
+            start_date_time = when.astimezone(UTC).strftime(PERIOD_TZ_FORMAT)
             json["data"]["attributes"]["startDateTime"] = start_date_time
 
         response = await self._set_vehicle_data("actions/hvac-start", json)
@@ -591,9 +591,7 @@ class RenaultVehicle:
                 }
             }
             if when:
-                start_date_time = when.astimezone(timezone.utc).strftime(
-                    PERIOD_TZ_FORMAT
-                )
+                start_date_time = when.astimezone(UTC).strftime(PERIOD_TZ_FORMAT)
                 json["data"]["attributes"]["startDateTime"] = start_date_time
         else:
             json = {

@@ -77,7 +77,7 @@ or `open it in a new Dev Container`_ directly.
 .. _Dev Container: https://code.visualstudio.com/docs/devcontainers/containers
 .. _open it in a new Dev Container: https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/hacf-fr/renault-api
 
-For a manual setup, you need Python 3.10+, uv_ and `Node.js`_
+For a manual setup, you need Python 3.11+, uv_ and `Node.js`_
 (the version in ``.nvmrc``, used to run Prettier).
 
 Install the package with development requirements:
