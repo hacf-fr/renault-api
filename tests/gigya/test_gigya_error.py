@@ -1,9 +1,5 @@
 """Tests for Gigya errors."""
 
-import copy
-import pickle
-from collections.abc import Callable
-
 import pytest
 
 from tests import fixtures
@@ -119,20 +115,3 @@ def test_pending_two_factor_authentication_exception_output() -> None:
     assert str(exception) == "(403101, 'Pending Two-Factor Authentication')"
     assert "sample-reg-token" not in repr(exception)
     assert exception.reg_token == "sample-reg-token"
-
-
-@pytest.mark.parametrize(
-    "duplicate",
-    [copy.copy, lambda exception: pickle.loads(pickle.dumps(exception))],  # noqa: S301
-)
-def test_pending_two_factor_authentication_exception_copy(
-    duplicate: Callable[[Exception], Exception],
-) -> None:
-    """Test the reg token survives copying and pickling."""
-    exception = exceptions.PendingTwoFactorAuthenticationException(
-        403101, "Pending Two-Factor Authentication", "sample-reg-token"
-    )
-    duplicated = duplicate(exception)
-    assert isinstance(duplicated, exceptions.PendingTwoFactorAuthenticationException)
-    assert duplicated.args == exception.args
-    assert duplicated.reg_token == "sample-reg-token"

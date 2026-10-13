@@ -1,7 +1,5 @@
 """Gigya exceptions."""
 
-from typing import Any
-
 from renault_api.exceptions import RenaultException
 
 
@@ -43,7 +41,3 @@ class PendingTwoFactorAuthenticationException(GigyaResponseException):
         """
         super().__init__(error_code, error_details)
         self.reg_token = reg_token
-
-    def __reduce__(self) -> tuple[Any, ...]:
-        """Keep `reg_token` when the exception is copied or pickled."""
-        return (type(self), (self.error_code, self.error_details, self.reg_token))
