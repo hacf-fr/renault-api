@@ -1,8 +1,8 @@
 """Test cases for the Renault client API keys."""
 
 import os
+from datetime import UTC
 from datetime import datetime
-from datetime import timezone
 from typing import Any
 from typing import cast
 
@@ -343,9 +343,7 @@ async def test_set_ac_start(
     """Test set_ac_start."""
     fixtures.inject_get_vehicle_details(mocked_responses, "zoe_40.1.json")
     url = fixtures.inject_set_hvac_start(mocked_responses, "start")
-    assert await vehicle.set_ac_start(
-        21, datetime(2020, 11, 24, 6, 30, tzinfo=timezone.utc)
-    )
+    assert await vehicle.set_ac_start(21, datetime(2020, 11, 24, 6, 30, tzinfo=UTC))
 
     request = mocked_responses.requests[("POST", URL(url))][0]
     assert request.kwargs["json"] == snapshot
@@ -480,7 +478,7 @@ async def test_set_charge_schedules_update(
         ),
         (
             "megane_e-tech.2.json",
-            {"when": datetime(2026, 3, 6, 23, 45, tzinfo=timezone.utc)},
+            {"when": datetime(2026, 3, 6, 23, 45, tzinfo=UTC)},
             f"{KCM_ADAPTER_PATH}/charge/start?{DEFAULT_QUERY_STRING}",
             "vehicle_kcm_action/charging-start.delayed.json",
         ),

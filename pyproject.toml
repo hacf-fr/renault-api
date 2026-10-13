@@ -5,11 +5,10 @@ description = "Renault API"
 authors = [{ name = "epenet" }]
 license = "MIT"
 license-files = ["LICENSE.rst"]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 readme = "README.rst"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -88,11 +87,11 @@ subtract_omit = "*/__main__.py"
 fail_under = 89
 
 [tool.ty.environment]
-python-version = "3.10"
+python-version = "3.11"
 
 [tool.ruff]
 line-length = 88
-target-version = "py310"
+target-version = "py311"
 
 [tool.ruff.lint]
 ignore = [
