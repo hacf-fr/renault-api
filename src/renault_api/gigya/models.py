@@ -21,7 +21,7 @@ class GigyaResponse(BaseModel):
     """Gigya response."""
 
     # Errors specific to an endpoint, checked before COMMON_ERRRORS
-    SPECIFIC_ERRORS: ClassVar[list[dict[str, Any]]] = []
+    _SPECIFIC_ERRORS: ClassVar[list[dict[str, Any]]] = []
 
     errorCode: int
     errorDetails: str | None
@@ -37,7 +37,7 @@ class GigyaResponse(BaseModel):
                 raise exceptions.PendingTwoFactorAuthenticationException(
                     self.errorCode, self.errorDetails, self.regToken
                 )
-            for known_error in (*self.SPECIFIC_ERRORS, *COMMON_ERRRORS):
+            for known_error in (*self._SPECIFIC_ERRORS, *COMMON_ERRRORS):
                 if self.errorCode == known_error["errorCode"]:
                     error_type = known_error["error_type"]
                     raise error_type(self.errorCode, self.errorDetails)
@@ -164,7 +164,7 @@ class GigyaTfaSendEmailCodeResponse(GigyaResponse):
 class GigyaTfaEmailCompleteVerificationResponse(GigyaResponse):
     """Gigya response to GET on /accounts.tfa.email.completeVerification."""
 
-    SPECIFIC_ERRORS: ClassVar[list[dict[str, Any]]] = [
+    _SPECIFIC_ERRORS: ClassVar[list[dict[str, Any]]] = [
         {
             "errorCode": GigyaErrorCode.INVALID_PARAMETER_VALUE,
             "error_type": exceptions.InvalidVerificationCodeException,
