@@ -69,7 +69,7 @@ def test_tfa_complete_email_verification_400006_response() -> None:
     )
     with pytest.raises(exceptions.InvalidVerificationCodeException) as excinfo:
         response.raise_for_error_code()
-    assert excinfo.value.error_code == GigyaErrorCode.INVALID_VERIFICATION_CODE
+    assert excinfo.value.error_code == GigyaErrorCode.INVALID_PARAMETER_VALUE
     assert excinfo.value.error_details == "Wrong verification code"
 
 

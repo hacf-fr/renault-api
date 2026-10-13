@@ -166,7 +166,7 @@ class GigyaTfaEmailCompleteVerificationResponse(GigyaResponse):
 
     SPECIFIC_ERRORS: ClassVar[list[dict[str, Any]]] = [
         {
-            "errorCode": GigyaErrorCode.INVALID_VERIFICATION_CODE,
+            "errorCode": GigyaErrorCode.INVALID_PARAMETER_VALUE,
             "error_type": exceptions.InvalidVerificationCodeException,
         }
     ]
