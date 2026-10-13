@@ -84,3 +84,34 @@ def test_403101_without_reg_token() -> None:
     assert not isinstance(
         excinfo.value, exceptions.PendingTwoFactorAuthenticationException
     )
+
+
+@pytest.mark.parametrize(
+    "exception",
+    [
+        exceptions.GigyaResponseException(400006, "Wrong verification code"),
+        exceptions.GigyaResponseException(
+            error_code=400006, error_details="Wrong verification code"
+        ),
+        exceptions.InvalidCredentialsException(400006, "Wrong verification code"),
+    ],
+)
+def test_response_exception_output(
+    exception: exceptions.GigyaResponseException,
+) -> None:
+    """Test the error code and details are shown, however it is created."""
+    assert exception.args == (400006, "Wrong verification code")
+    assert str(exception) == "(400006, 'Wrong verification code')"
+    assert exception.error_code == 400006
+    assert exception.error_details == "Wrong verification code"
+
+
+def test_pending_two_factor_authentication_exception_output() -> None:
+    """Test the reg token is kept out of the exception output."""
+    exception = exceptions.PendingTwoFactorAuthenticationException(
+        403101, "Pending Two-Factor Authentication", "sample-reg-token"
+    )
+    assert exception.args == (403101, "Pending Two-Factor Authentication")
+    assert str(exception) == "(403101, 'Pending Two-Factor Authentication')"
+    assert "sample-reg-token" not in repr(exception)
+    assert exception.reg_token == "sample-reg-token"
