@@ -78,6 +78,32 @@ def test_login_two_factor_auth(
     assert credential_store.get_value(GIGYA_UCID) == "sample-ucid"
 
 
+def test_login_two_factor_auth_wrong_code(
+    mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
+) -> None:
+    """It prompts for the verification code again if it is wrong."""
+    fixtures.inject_gigya_login_403101(mocked_responses)
+    fixtures.inject_gigya_tfa_bootstrap(mocked_responses)
+    fixtures.inject_gigya_tfa_init(mocked_responses)
+    fixtures.inject_gigya_tfa_emails(mocked_responses)
+    fixtures.inject_gigya_tfa_send_email_code(mocked_responses)
+    fixtures.inject_gigya_tfa_complete_email_verification(
+        mocked_responses, "error/tfa_complete_email_verification.400006.json"
+    )
+    fixtures.inject_gigya_tfa_complete_email_verification(mocked_responses)
+    fixtures.inject_gigya_tfa_finalize(mocked_responses)
+    fixtures.inject_gigya_login(mocked_responses)
+
+    result = cli_runner.invoke(
+        __main__.main,
+        f"--locale {TEST_LOCALE} "
+        f"login --user {TEST_USERNAME} --password {TEST_PASSWORD}",
+        input="000000\n123456\n",
+    )
+    assert result.exit_code == 0, result.exception
+    assert result.output == snapshot
+
+
 def test_login_two_factor_auth_multiple_emails(
     mocked_responses: aiointercept, cli_runner: CliRunner, snapshot: SnapshotAssertion
 ) -> None:

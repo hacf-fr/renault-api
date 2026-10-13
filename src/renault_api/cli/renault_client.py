@@ -17,6 +17,7 @@ from renault_api.credential import Credential
 from renault_api.credential_store import CredentialStore
 from renault_api.exceptions import RenaultException
 from renault_api.gigya import GIGYA_LOGIN_TOKEN
+from renault_api.gigya.exceptions import InvalidVerificationCodeException
 from renault_api.gigya.exceptions import PendingTwoFactorAuthenticationException
 from renault_api.helpers import get_api_keys
 from renault_api.renault_client import RenaultClient
@@ -133,8 +134,14 @@ async def _prompt_two_factor_auth(session: RenaultSession) -> None:
         )
         email_id = emails[choice - 1].id
     await session.request_two_factor_auth_code(email_id)
-    code = click.prompt("Verification code")
-    await session.complete_two_factor_auth(code)
+    while True:
+        code = click.prompt("Verification code")
+        try:
+            await session.complete_two_factor_auth(code)
+        except InvalidVerificationCodeException:
+            click.echo("Wrong verification code, please try again.", err=True)
+        else:
+            return
 
 
 async def login(

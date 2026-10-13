@@ -24,6 +24,7 @@ from renault_api.exceptions import RenaultException
 from renault_api.gigya import GIGYA_JWT
 from renault_api.gigya import GIGYA_LOGIN_TOKEN
 from renault_api.gigya.enums import GigyaErrorCode
+from renault_api.gigya.exceptions import InvalidVerificationCodeException
 from renault_api.gigya.exceptions import PendingTwoFactorAuthenticationException
 from renault_api.renault_session import RenaultSession
 
@@ -235,6 +236,52 @@ async def test_two_factor_auth(
     # The challenge is resolved
     with pytest.raises(RenaultException, match="No two-factor authentication"):
         await session.complete_two_factor_auth("123456")
+
+
+@pytest.mark.asyncio
+async def test_two_factor_auth_wrong_code(
+    session: RenaultSession, mocked_responses: aiointercept
+) -> None:
+    """Test a wrong code can be retried, without requesting a new code."""
+    fixtures.inject_gigya_login_403101(mocked_responses)
+    fixtures.inject_gigya_tfa_bootstrap(mocked_responses)
+    fixtures.inject_gigya_tfa_init(mocked_responses)
+    fixtures.inject_gigya_tfa_emails(mocked_responses)
+    fixtures.inject_gigya_tfa_send_email_code(mocked_responses)
+    fixtures.inject_gigya_tfa_complete_email_verification(
+        mocked_responses, "error/tfa_complete_email_verification.400006.json"
+    )
+    fixtures.inject_gigya_tfa_complete_email_verification(mocked_responses)
+    fixtures.inject_gigya_tfa_finalize(mocked_responses)
+    fixtures.inject_gigya_login(mocked_responses)
+
+    with pytest.raises(PendingTwoFactorAuthenticationException):
+        await session.login(TEST_USERNAME, TEST_PASSWORD)
+    await session.request_two_factor_auth_code()
+
+    with pytest.raises(InvalidVerificationCodeException):
+        await session.complete_two_factor_auth("000000")
+    assert session.login_token is None
+    assert session._pending_tfa is not None
+
+    await session.complete_two_factor_auth("123456")
+    assert session.login_token == TEST_LOGIN_TOKEN
+    assert session._pending_tfa is None
+
+    first, second = fixtures.get_gigya_requests(
+        mocked_responses, "accounts.tfa.email.completeVerification"
+    )
+    assert first.query["code"] == "000000"
+    assert second.query["code"] == "123456"
+    assert second.query["phvToken"] == first.query["phvToken"]
+    assert (
+        len(
+            fixtures.get_gigya_requests(
+                mocked_responses, "accounts.tfa.email.sendVerificationCode"
+            )
+        )
+        == 1
+    )
 
 
 @pytest.mark.asyncio

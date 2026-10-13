@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass
 from typing import Any
+from typing import ClassVar
 
 from . import exceptions
 from .enums import GigyaErrorCode
@@ -19,6 +20,9 @@ COMMON_ERRRORS: list[dict[str, Any]] = [
 class GigyaResponse(BaseModel):
     """Gigya response."""
 
+    # Errors specific to an endpoint, checked before COMMON_ERRRORS
+    _SPECIFIC_ERRORS: ClassVar[list[dict[str, Any]]] = []
+
     errorCode: int
     errorDetails: str | None
     regToken: str | None
@@ -33,9 +37,9 @@ class GigyaResponse(BaseModel):
                 raise exceptions.PendingTwoFactorAuthenticationException(
                     self.errorCode, self.errorDetails, self.regToken
                 )
-            for common_error in COMMON_ERRRORS:
-                if self.errorCode == common_error["errorCode"]:
-                    error_type = common_error["error_type"]
+            for known_error in (*self._SPECIFIC_ERRORS, *COMMON_ERRRORS):
+                if self.errorCode == known_error["errorCode"]:
+                    error_type = known_error["error_type"]
                     raise error_type(self.errorCode, self.errorDetails)
             raise exceptions.GigyaResponseException(self.errorCode, self.errorDetails)
 
@@ -159,6 +163,13 @@ class GigyaTfaSendEmailCodeResponse(GigyaResponse):
 @dataclass
 class GigyaTfaEmailCompleteVerificationResponse(GigyaResponse):
     """Gigya response to GET on /accounts.tfa.email.completeVerification."""
+
+    _SPECIFIC_ERRORS: ClassVar[list[dict[str, Any]]] = [
+        {
+            "errorCode": GigyaErrorCode.INVALID_PARAMETER_VALUE,
+            "error_type": exceptions.InvalidVerificationCodeException,
+        }
+    ]
 
     providerAssertion: str | None
 

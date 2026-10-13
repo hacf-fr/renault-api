@@ -14,6 +14,7 @@ from tests.const import TEST_PERSON_ID
 from tests.const import TEST_USERNAME
 
 from renault_api import gigya
+from renault_api.gigya.exceptions import InvalidVerificationCodeException
 
 TEST_DEVICE_IDS = {"gmid": "sample-gmid", "ucid": "sample-ucid"}
 
@@ -221,6 +222,27 @@ async def test_complete_tfa_email_verification(
         mocked_responses, "accounts.tfa.email.completeVerification"
     )
     assert dict(request.cookies) == TEST_DEVICE_IDS
+
+
+@pytest.mark.asyncio
+async def test_complete_tfa_email_verification_wrong_code(
+    websession: aiohttp.ClientSession, mocked_responses: aiointercept
+) -> None:
+    """Test completeVerification with a wrong verification code."""
+    fixtures.inject_gigya_tfa_complete_email_verification(
+        mocked_responses, "error/tfa_complete_email_verification.400006.json"
+    )
+
+    with pytest.raises(InvalidVerificationCodeException):
+        await gigya.complete_tfa_email_verification(
+            websession,
+            TEST_GIGYA_URL,
+            TEST_GIGYA_APIKEY,
+            device_ids=TEST_DEVICE_IDS,
+            gigya_assertion="sample-gigya-assertion",
+            phv_token="sample-phv-token",
+            code="000000",
+        )
 
 
 @pytest.mark.asyncio
