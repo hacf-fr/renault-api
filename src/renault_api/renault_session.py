@@ -159,8 +159,9 @@ class RenaultSession:
 
         When `remember_device` is True (the default), Gigya should not ask
         for another code for this device for about 30 days. The device is
-        identified by cookies, so the aiohttp session must keep its cookie
-        jar between `login` and this call.
+        identified by `device_ids`, which are sent explicitly with each
+        request (so the aiohttp session may be shared): persist them with
+        `device_ids`, and restore them with `set_device_ids`.
         """
         pending_tfa = self._get_pending_tfa()
         if not pending_tfa.gigya_assertion or not pending_tfa.phv_token:
