@@ -433,6 +433,38 @@ def test_lock_status_unlocked() -> None:
     assert vehicle_data.lastUpdateTime == "2022-02-02T13:51:13Z"
 
 
+def test_lock_status_status_door() -> None:
+    """Test lock-status for lock-status.3.json."""
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/vehicle_data/lock-status.3.json",
+        schemas.KamereonVehicleDataResponseSchema,
+    )
+    response.raise_for_error_code()
+    assert response.data is not None
+    assert response.data.raw_data["attributes"] == {
+        "lockStatus": "locked",
+        "statusDoorDriver": "closed",
+        "statusDoorPassenger": "closed",
+        "statusDoorRearLeft": "closed",
+        "statusDoorRearRight": "closed",
+        "statusDoorTailGate": "closed",
+        "lastUpdateTime": "2026-10-20T18:32:24Z",
+    }
+
+    vehicle_data = cast(
+        models.KamereonVehicleLockStatusData,
+        response.get_attributes(schemas.KamereonVehicleLockStatusDataSchema),
+    )
+
+    assert vehicle_data.lockStatus == "locked"
+    assert vehicle_data.doorStatusRearLeft == "closed"
+    assert vehicle_data.doorStatusRearRight == "closed"
+    assert vehicle_data.doorStatusDriver == "closed"
+    assert vehicle_data.doorStatusPassenger == "closed"
+    assert vehicle_data.hatchStatus == "closed"
+    assert vehicle_data.lastUpdateTime == "2026-10-20T18:32:24Z"
+
+
 def test_res_state_stopped() -> None:
     """Test res-state for res-state.1.json."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(

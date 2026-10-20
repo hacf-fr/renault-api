@@ -1160,6 +1160,16 @@ class KamereonVehicleCockpitData(KamereonVehicleDataAttributes):
     totalMileage: float | None
 
 
+# Some vehicles (eg. XJB2SU, XHN1SU) report the door statuses as statusDoor*
+_LOCK_STATUS_ALIASES = {
+    "doorStatusRearLeft": "statusDoorRearLeft",
+    "doorStatusRearRight": "statusDoorRearRight",
+    "doorStatusDriver": "statusDoorDriver",
+    "doorStatusPassenger": "statusDoorPassenger",
+    "hatchStatus": "statusDoorTailGate",
+}
+
+
 @dataclass
 class KamereonVehicleLockStatusData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data lock-status attributes."""
@@ -1171,6 +1181,12 @@ class KamereonVehicleLockStatusData(KamereonVehicleDataAttributes):
     doorStatusPassenger: str | None
     hatchStatus: str | None
     lastUpdateTime: str | None
+
+    def __post_init__(self) -> None:
+        """Fall back to the statusDoor* attributes used by newer vehicles."""
+        for field, alias in _LOCK_STATUS_ALIASES.items():
+            if getattr(self, field) is None:
+                setattr(self, field, self.raw_data.get(alias))
 
 
 @dataclass
