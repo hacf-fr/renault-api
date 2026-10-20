@@ -217,7 +217,10 @@
       endpoint='/kca/car-adapter/v1/cars/{vin}/location',
       mode='default',
     ),
-    'lock-status': None,
+    'lock-status': EndpointDefinition(
+      endpoint='/kca/car-adapter/v1/cars/{vin}/lock-status',
+      mode='default',
+    ),
     'pressure': None,
     'res-state': None,
     'soc-levels': None,

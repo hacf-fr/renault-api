@@ -100,12 +100,14 @@
 # ---
 # name: test_vehicle_status[tests/fixtures/kamereon/vehicles/austral_XHN1SU.1.json]
   '''
-  ----------------  -------------------
-  Total mileage     49114.27 km
-  GPS Latitude      48.1234567
-  GPS Longitude     11.1234567
-  GPS last updated  2020-02-18 17:58:38
-  ----------------  -------------------
+  -----------------  -------------------
+  Total mileage      49114.27 km
+  GPS Latitude       48.1234567
+  GPS Longitude      11.1234567
+  GPS last updated   2020-02-18 17:58:38
+  Lock status        locked
+  Lock last updated  2022-02-02 14:51:13
+  -----------------  -------------------
   
   '''
 # ---
