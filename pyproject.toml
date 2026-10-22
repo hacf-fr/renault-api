@@ -43,7 +43,7 @@ dev = [
     "aiointercept==1.0.0",
     "codespell==2.4.3",
     "covdefaults==2.3.0",
-    "coverage[toml]==7.16.2",
+    "coverage[toml]==7.17.0",
     "pre-commit-hooks==6.0.0",
     "prek==0.5.7",
     "pytest==9.1.1",
