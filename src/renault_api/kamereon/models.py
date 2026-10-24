@@ -552,11 +552,11 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "charge-mode": None,  # Reason: "err.func.wired.forbidden"
         "charging-settings": None,  # Reason: "err.func.wired.forbidden"
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
-        "hvac-status": None,
+        "hvac-status": None,  # Reason: "err.func.wired.notFound"
         "location": _DEFAULT_ENDPOINTS["location"],
-        "lock-status": None,
+        "lock-status": _DEFAULT_ENDPOINTS["lock-status"],  # confirmed
         "pressure": None,  # Reason: 404
-        "res-state": None,
+        "res-state": None,  # Reason: "err.func.wired.notFound"
         "soc-levels": None,  # Reason: "err.func.wired.forbidden"
     },
     "XJA1VP": {  # CLIO V
