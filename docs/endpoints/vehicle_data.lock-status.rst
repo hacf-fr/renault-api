@@ -12,3 +12,6 @@ Sample return:
 
    .. literalinclude:: /../tests/fixtures/kamereon/vehicle_data/lock-status.2.json
       :language: JSON
+
+   .. literalinclude:: /../tests/fixtures/kamereon/vehicle_data/lock-status.3.json
+      :language: JSON
