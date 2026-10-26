@@ -1,0 +1,16 @@
+{
+  "type": "FUNCTIONAL",
+  "messages": [
+    {
+      "code": "err.func.wired.low.battery.level",
+      "message": "Insufficient Battery Level, the minimum required is 30%"
+    }
+  ],
+  "errors": [
+    {
+      "errorCode": "err.func.wired.low.battery.level",
+      "errorMessage": "Insufficient Battery Level, the minimum required is 30%"
+    }
+  ],
+  "error_reference": "FUNCTIONAL"
+}
