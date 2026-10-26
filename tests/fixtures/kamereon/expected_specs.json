@@ -153,6 +153,20 @@
     "supports-location": true,
     "charge-uses-kcm": true
   },
+  "spring.2.json": {
+    "get_brand_label": "DACIA",
+    "get_energy_code": "ELEC",
+    "get_model_code": "XBG2VE",
+    "get_model_label": "SPRING",
+    "get_picture_small": "https://3dv.renault.com/ImageFromBookmark?configuration=BBG%2FE3%2FDG%2FCA01%2FRET02%2FRTOL15%2FDRAP06%2FSGAR02%2FTEKQE%2FDECA01%2FRETP03%2FLVAREL%2FBRA05%2FRA484%2FRDIF12%2FENPH01%2FSAN613%2FM2024%2FRCALL%2FITPK0%2FDDAWA%2FSPAUPA%2FRRCAM&databaseId=c4d69864-ca6c-4372-9267-8ce4a21dce04&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_SMALL_V2",
+    "get_picture_large": "https://3dv.renault.com/ImageFromBookmark?configuration=BBG%2FE3%2FDG%2FCA01%2FRET02%2FRTOL15%2FDRAP06%2FSGAR02%2FTEKQE%2FDECA01%2FRETP03%2FLVAREL%2FBRA05%2FRA484%2FRDIF12%2FENPH01%2FSAN613%2FM2024%2FRCALL%2FITPK0%2FDDAWA%2FSPAUPA%2FRRCAM&databaseId=c4d69864-ca6c-4372-9267-8ce4a21dce04&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_LARGE",
+    "reports_charging_power_in_watts": false,
+    "uses_electricity": true,
+    "uses_fuel": false,
+    "supports-hvac-status": true,
+    "supports-location": true,
+    "charge-uses-kcm": false
+  },
   "megane_e-tech.1.json": {
     "get_brand_label": "RENAULT",
     "get_energy_code": "ELECX",
