@@ -82,3 +82,9 @@ class ForbiddenException(KamereonResponseException):
     """The access is forbidden."""
 
     pass
+
+
+class InsufficientBatteryLevelException(KamereonResponseException):
+    """The battery level is too low to perform this action."""
+
+    pass

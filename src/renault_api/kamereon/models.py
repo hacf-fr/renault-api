@@ -63,6 +63,10 @@ COMMON_ERRRORS: list[dict[str, Any]] = [
         "errorCode": "409001",
         "error_type": exceptions.ChargeModeInProgressException,
     },
+    {
+        "errorCode": "err.func.wired.low.battery.level",
+        "error_type": exceptions.InsufficientBatteryLevelException,
+    },
 ]
 
 VEHICLE_SPECIFICATIONS: dict[str, dict[str, Any]] = {
