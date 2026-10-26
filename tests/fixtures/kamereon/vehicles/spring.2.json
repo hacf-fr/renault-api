@@ -1,0 +1,231 @@
+{
+  "accountId": "account-id-spring-xbg2ve",
+  "country": "DE",
+  "vehicleLinks": [
+    {
+      "brand": "DACIA",
+      "vin": "VF1AAAAA555777999",
+      "status": "ACTIVE",
+      "linkType": "USER",
+      "garageBrand": "dacia",
+      "startDate": "2024-10-07",
+      "createdDate": "2024-10-07T09:00:00.000000Z",
+      "lastModifiedDate": "2024-10-07T09:00:00.000000Z",
+      "cancellationReason": {},
+      "connectedDriver": {
+        "role": "MAIN_DRIVER",
+        "createdDate": "2024-10-01T09:00:00.000000Z",
+        "lastModifiedDate": "2024-10-01T09:00:00.000000Z",
+        "createdBy": "MyRenault Backend",
+        "lastModifiedBy": "MyRenault Backend"
+      },
+      "vehicleDetails": {
+        "vin": "VF1AAAAA555777999",
+        "engineType": "4DB",
+        "engineRatio": "403",
+        "modelSCR": "S1E",
+        "passToSalesDate": "2024-09-05",
+        "deliveryCountry": {
+          "code": "DE",
+          "label": "GERMANY"
+        },
+        "family": {
+          "code": "XBG",
+          "label": "KWID EV",
+          "group": "007"
+        },
+        "tcu": {
+          "code": "AIVCT",
+          "label": "WITH AIVC CONNECTION UNIT",
+          "group": "E70"
+        },
+        "navigationAssistanceLevel": {},
+        "battery": {
+          "code": "BTDAN",
+          "label": "BTDAN BATTERY",
+          "group": "968"
+        },
+        "radioType": {
+          "code": "RA484",
+          "label": "IVI2 ACC CLASS 2HP DAB",
+          "group": "425"
+        },
+        "registrationCountry": {
+          "code": "DE"
+        },
+        "brand": {
+          "label": "DACIA"
+        },
+        "model": {
+          "code": "XBG2VE",
+          "label": "SPRING",
+          "group": "971"
+        },
+        "gearbox": {
+          "code": "BVEL",
+          "label": "ELEC.VAR.GEARBOX",
+          "group": "427"
+        },
+        "version": {
+          "code": "E3 M2 B4E1R"
+        },
+        "energy": {
+          "code": "ELEC",
+          "label": "ELECTRICITY",
+          "group": "019"
+        },
+        "bodyType": {
+          "code": "BBG",
+          "label": "HATCHBACK FOR XBG",
+          "group": "008"
+        },
+        "steeringSide": {
+          "code": "DG",
+          "label": "LEFT-HAND DRIVE",
+          "group": "027"
+        },
+        "additionalEngineType": {
+          "code": "SSTYAD",
+          "label": "WITHOUT ADDITIONAL ENGINE TYPE",
+          "group": "948"
+        },
+        "hybridation": {
+          "code": "SSHYB",
+          "label": "NO HYBRIDISATION LEVEL",
+          "group": "956"
+        },
+        "registrationNumber": "REG-NUMBER",
+        "vcd": "STANDA/XBG/BBG/E3/M2/ELEC/DG/TEMP/TR4X2/DA/AFURGE/ACCLM/ABS/CA01/LAC/VT/FARBR/ELA/CPE/RET02/2RVLG/RTOL15/CEAVRH/ADAC/AIRBA2/SERIE/DRA/DRAP06/HARM01/ATAR02/SGAV02/SGAR02/TEKQE/BANAL/KM/TPRM3/AVREPL/DECA01/ABLAVI/ESPHSA/ALAEVM/M3CA0/SOPC2C/SKTGRV/COPOR/TRSEV1/RETP03/LVAVEL/LVAREL/KTGREP/DEU01/BRA05/HSTPL/SBR05/RA484/BVEL/ASOC0/RDIF12/ISOFIX/ENPH01/HRGM01/NOATD/CHARAP/TL09A/SPRODI/SAN613/AIRBDE/ELC1/NOLSV/SSLVIT/M2024/PHAS2/SAN913/V2L00/SSTYAD/SSHYB/26K8B/BTDAN/VEC009/XBG2VE/NB024/4DB/LKA00/SKTPOU/SKTPGR/NOVTS/FDIU1/SSMAP/RCALL/FACBA1/ECOMOD/M2CA0/AIVCT/NOGSI/ITPK0/DDAWA/SMIS2/C1AH2/SPAUPA/1234Y/AEB04/ADISC/RRCAM/PRAIS/EGSRB",
+        "manufacturingDate": "2024-09-01",
+        "assets": [
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "mybrand_2",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=BBG%2FE3%2FDG%2FCA01%2FRET02%2FRTOL15%2FDRAP06%2FSGAR02%2FTEKQE%2FDECA01%2FRETP03%2FLVAREL%2FBRA05%2FRA484%2FRDIF12%2FENPH01%2FSAN613%2FM2024%2FRCALL%2FITPK0%2FDDAWA%2FSPAUPA%2FRRCAM&databaseId=c4d69864-ca6c-4372-9267-8ce4a21dce04&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=BBG%2FE3%2FDG%2FCA01%2FRET02%2FRTOL15%2FDRAP06%2FSGAR02%2FTEKQE%2FDECA01%2FRETP03%2FLVAREL%2FBRA05%2FRA484%2FRDIF12%2FENPH01%2FSAN613%2FM2024%2FRCALL%2FITPK0%2FDDAWA%2FSPAUPA%2FRRCAM&databaseId=c4d69864-ca6c-4372-9267-8ce4a21dce04&bookmarkSet=RSITE&bookmark=EXT_34_DESSUS&profile=HELIOS_OWNERSERVICES_LARGE"
+              }
+            ],
+            "viewPointInLowerCase": "mybrand_2"
+          },
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "mybrand_5",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=BBG%2FE3%2FDG%2FCA01%2FRET02%2FRTOL15%2FDRAP06%2FSGAR02%2FTEKQE%2FDECA01%2FRETP03%2FLVAREL%2FBRA05%2FRA484%2FRDIF12%2FENPH01%2FSAN613%2FM2024%2FRCALL%2FITPK0%2FDDAWA%2FSPAUPA%2FRRCAM&databaseId=c4d69864-ca6c-4372-9267-8ce4a21dce04&bookmarkSet=RSITE&bookmark=EXT_34_AV&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=BBG%2FE3%2FDG%2FCA01%2FRET02%2FRTOL15%2FDRAP06%2FSGAR02%2FTEKQE%2FDECA01%2FRETP03%2FLVAREL%2FBRA05%2FRA484%2FRDIF12%2FENPH01%2FSAN613%2FM2024%2FRCALL%2FITPK0%2FDDAWA%2FSPAUPA%2FRRCAM&databaseId=c4d69864-ca6c-4372-9267-8ce4a21dce04&bookmarkSet=RSITE&bookmark=EXT_34_AV&profile=HELIOS_OWNERSERVICES_LARGE"
+              }
+            ],
+            "viewPointInLowerCase": "mybrand_5"
+          },
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "myb_car_selector",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=BBG%2FE3%2FDG%2FCA01%2FRET02%2FRTOL15%2FDRAP06%2FSGAR02%2FTEKQE%2FDECA01%2FRETP03%2FLVAREL%2FBRA05%2FRA484%2FRDIF12%2FENPH01%2FSAN613%2FM2024%2FRCALL%2FITPK0%2FDDAWA%2FSPAUPA%2FRRCAM&databaseId=c4d69864-ca6c-4372-9267-8ce4a21dce04&bookmarkSet=RSITE&bookmark=EXT_34_AV&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=BBG%2FE3%2FDG%2FCA01%2FRET02%2FRTOL15%2FDRAP06%2FSGAR02%2FTEKQE%2FDECA01%2FRETP03%2FLVAREL%2FBRA05%2FRA484%2FRDIF12%2FENPH01%2FSAN613%2FM2024%2FRCALL%2FITPK0%2FDDAWA%2FSPAUPA%2FRRCAM&databaseId=c4d69864-ca6c-4372-9267-8ce4a21dce04&bookmarkSet=RSITE&bookmark=EXT_34_AV&profile=HELIOS_OWNERSERVICES_LARGE"
+              }
+            ],
+            "viewPointInLowerCase": "myb_car_selector"
+          },
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "myb_car_page_dashboard",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=BBG%2FE3%2FDG%2FCA01%2FRET02%2FRTOL15%2FDRAP06%2FSGAR02%2FTEKQE%2FDECA01%2FRETP03%2FLVAREL%2FBRA05%2FRA484%2FRDIF12%2FENPH01%2FSAN613%2FM2024%2FRCALL%2FITPK0%2FDDAWA%2FSPAUPA%2FRRCAM&databaseId=c4d69864-ca6c-4372-9267-8ce4a21dce04&bookmarkSet=CARPICKER&bookmark=EXT_LEFT_SIDE&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=BBG%2FE3%2FDG%2FCA01%2FRET02%2FRTOL15%2FDRAP06%2FSGAR02%2FTEKQE%2FDECA01%2FRETP03%2FLVAREL%2FBRA05%2FRA484%2FRDIF12%2FENPH01%2FSAN613%2FM2024%2FRCALL%2FITPK0%2FDDAWA%2FSPAUPA%2FRRCAM&databaseId=c4d69864-ca6c-4372-9267-8ce4a21dce04&bookmarkSet=CARPICKER&bookmark=EXT_LEFT_SIDE&profile=HELIOS_OWNERSERVICES_LARGE"
+              }
+            ],
+            "viewPointInLowerCase": "myb_car_page_dashboard"
+          },
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "myb_program_settings_page",
+            "renditions": [],
+            "viewPointInLowerCase": "myb_program_settings_page"
+          },
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "myb_plug_and_charge_activation",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=BBG%2FE3%2FDG%2FCA01%2FRET02%2FRTOL15%2FDRAP06%2FSGAR02%2FTEKQE%2FDECA01%2FRETP03%2FLVAREL%2FBRA05%2FRA484%2FRDIF12%2FENPH01%2FSAN613%2FM2024%2FRCALL%2FITPK0%2FDDAWA%2FSPAUPA%2FRRCAM&databaseId=c4d69864-ca6c-4372-9267-8ce4a21dce04&bookmarkSet=CARPICKER&bookmark=EXT_RIGHT_SIDE&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=BBG%2FE3%2FDG%2FCA01%2FRET02%2FRTOL15%2FDRAP06%2FSGAR02%2FTEKQE%2FDECA01%2FRETP03%2FLVAREL%2FBRA05%2FRA484%2FRDIF12%2FENPH01%2FSAN613%2FM2024%2FRCALL%2FITPK0%2FDDAWA%2FSPAUPA%2FRRCAM&databaseId=c4d69864-ca6c-4372-9267-8ce4a21dce04&bookmarkSet=CARPICKER&bookmark=EXT_RIGHT_SIDE&profile=HELIOS_OWNERSERVICES_LARGE"
+              }
+            ],
+            "viewPointInLowerCase": "myb_plug_and_charge_activation"
+          },
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "myb_plug_and_charge_my_car",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=BBG%2FE3%2FDG%2FCA01%2FRET02%2FRTOL15%2FDRAP06%2FSGAR02%2FTEKQE%2FDECA01%2FRETP03%2FLVAREL%2FBRA05%2FRA484%2FRDIF12%2FENPH01%2FSAN613%2FM2024%2FRCALL%2FITPK0%2FDDAWA%2FSPAUPA%2FRRCAM&databaseId=c4d69864-ca6c-4372-9267-8ce4a21dce04&bookmarkSet=CARPICKER&bookmark=EXT_LEFT_SIDE&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=BBG%2FE3%2FDG%2FCA01%2FRET02%2FRTOL15%2FDRAP06%2FSGAR02%2FTEKQE%2FDECA01%2FRETP03%2FLVAREL%2FBRA05%2FRA484%2FRDIF12%2FENPH01%2FSAN613%2FM2024%2FRCALL%2FITPK0%2FDDAWA%2FSPAUPA%2FRRCAM&databaseId=c4d69864-ca6c-4372-9267-8ce4a21dce04&bookmarkSet=CARPICKER&bookmark=EXT_LEFT_SIDE&profile=HELIOS_OWNERSERVICES_LARGE"
+              }
+            ],
+            "viewPointInLowerCase": "myb_plug_and_charge_my_car"
+          },
+          {
+            "assetType": "PICTURE",
+            "viewpoint": "myb_top_view",
+            "renditions": [
+              {
+                "resolutionType": "ONE_MYRENAULT_SMALL",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=BBG%2FE3%2FDG%2FCA01%2FRET02%2FRTOL15%2FDRAP06%2FSGAR02%2FTEKQE%2FDECA01%2FRETP03%2FLVAREL%2FBRA05%2FRA484%2FRDIF12%2FENPH01%2FSAN613%2FM2024%2FRCALL%2FITPK0%2FDDAWA%2FSPAUPA%2FRRCAM&databaseId=c4d69864-ca6c-4372-9267-8ce4a21dce04&bookmarkSet=CARPICKER&bookmark=EXT_LEFT_TOP&profile=HELIOS_OWNERSERVICES_SMALL_V2"
+              },
+              {
+                "resolutionType": "ONE_MYRENAULT_LARGE",
+                "url": "https://3dv.renault.com/ImageFromBookmark?configuration=BBG%2FE3%2FDG%2FCA01%2FRET02%2FRTOL15%2FDRAP06%2FSGAR02%2FTEKQE%2FDECA01%2FRETP03%2FLVAREL%2FBRA05%2FRA484%2FRDIF12%2FENPH01%2FSAN613%2FM2024%2FRCALL%2FITPK0%2FDDAWA%2FSPAUPA%2FRRCAM&databaseId=c4d69864-ca6c-4372-9267-8ce4a21dce04&bookmarkSet=CARPICKER&bookmark=EXT_LEFT_TOP&profile=HELIOS_OWNERSERVICES_LARGE"
+              }
+            ],
+            "viewPointInLowerCase": "myb_top_view"
+          }
+        ],
+        "yearsOfMaintenance": 12,
+        "connectivityTechnology": "NONE",
+        "easyConnectStore": true,
+        "electrical": true,
+        "deliveryDate": "2024-10-01",
+        "retrievedFromDhs": false,
+        "engineEnergyType": "ELEC",
+        "radioCode": "1234",
+        "premiumSubscribed": false,
+        "batteryType": "NMC",
+        "geographicalDeliveryArea": {
+          "code": "ENPH01",
+          "label": "PRODUCT ENVELOPE H01 EUROPE",
+          "group": "513"
+        }
+      }
+    }
+  ]
+}
