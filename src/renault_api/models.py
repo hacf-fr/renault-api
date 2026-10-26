@@ -16,7 +16,7 @@ class BaseModel:
 class BaseSchema(marshmallow.Schema):
     """Base schema for Gigya and Kamereon models to exclude unknown fields."""
 
-    class Meta:
+    class Meta:  # ty: ignore[invalid-attribute-override]  # astral-sh/ty#4711
         """Force unknown fields to 'exclude'."""
 
         unknown = marshmallow.EXCLUDE
