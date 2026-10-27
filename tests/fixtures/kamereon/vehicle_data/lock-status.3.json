@@ -1,0 +1,14 @@
+{
+  "data": {
+    "id": "VF1AAAAA555777999",
+    "attributes": {
+      "lockStatus": "locked",
+      "statusDoorDriver": "closed",
+      "statusDoorPassenger": "closed",
+      "statusDoorRearLeft": "closed",
+      "statusDoorRearRight": "closed",
+      "statusDoorTailGate": "closed",
+      "lastUpdateTime": "2026-10-20T18:32:24Z"
+    }
+  }
+}
