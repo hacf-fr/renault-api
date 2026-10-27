@@ -311,30 +311,31 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "actions/charge-set-mode": _DEFAULT_ENDPOINTS["actions/charge-set-mode"],
         "actions/charge-set-schedule": _DEFAULT_ENDPOINTS["actions/charge-set-schedule"],
         "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start"],
-        "actions/charge-stop": None,  # not supported
-        "actions/horn-start": None,  # not supported
+        "actions/charge-stop": None,  # Not supported - use charger to stop
+        "actions/horn-start": None,  # Reason: err.func.wired.forbidden
         "actions/hvac-set-schedule": _DEFAULT_ENDPOINTS["actions/hvac-set-schedule"],
         "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
-        "actions/hvac-stop": None,  # not supported
-        "actions/lights-start": None,  # not supported
+        "actions/hvac-stop": None,  # Not supported
+        "actions/lights-start": None,  # Reason: err.func.wired.forbidden
         "actions/refresh-location": _DEFAULT_ENDPOINTS["actions/refresh-location"],
-        "alerts": None,  # not supported
+        "alerts": None,  # Reason: "err.func.wired.not-found"
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
-        "charge-mode": None,  # not supported
+        "charge-history": None,  # Reason: "err.func.wired.not-found"
+        "charge-mode": None,  # Reason: "err.func.vcps.ev.charge-mode.error"
+        "charge-schedule": None,  # Reason: "err.func.vcps.ev.charge-schedule.error"
         "charges": _DEFAULT_ENDPOINTS["charges"],
-        "charge-schedule": None,  # not supported
         "charging-settings": _DEFAULT_ENDPOINTS["charging-settings"],
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
-        "hvac-history": None,  # not supported
-        "hvac-sessions": None,  # not supported
+        "hvac-history": None,  # Reason: "err.func.wired.not-found"
+        "hvac-sessions": None,  # Reason: "err.func.wired.not-found"
         "hvac-settings": _DEFAULT_ENDPOINTS["hvac-settings"],
         "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
         "location": _DEFAULT_ENDPOINTS["location"],
-        "lock-status": None,  # not supported
-        "notification-settings": None,  # not supported
-        "pressure": None,  # not supported
-        "res-state": None,  # not supported
-        "soc-levels": None,  # not supported
+        "lock-status": None,  # Reason: "err.func.wired.notFound"
+        "notification-settings": None,  # Reason: "err.func.vcps.users-helper.get-notification-settings.error"
+        "pressure": None,  # Reason: "err.func.wired.notFound"
+        "res-state": None,  # Reason: "err.func.wired.notFound"
+        "soc-levels": None,  # Reason: "err.func.wired.forbidden"
     },
     "X101VE": {  # ZOE phase 1
         "actions/charge-set-schedule": _DEFAULT_ENDPOINTS[
