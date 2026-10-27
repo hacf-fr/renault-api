@@ -309,7 +309,9 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
     },
     "X071VE": {  # TWINGO III
         "actions/charge-set-mode": _DEFAULT_ENDPOINTS["actions/charge-set-mode"],
-        "actions/charge-set-schedule": _DEFAULT_ENDPOINTS["actions/charge-set-schedule"],
+        "actions/charge-set-schedule": _DEFAULT_ENDPOINTS[
+            "actions/charge-set-schedule"
+        ],
         "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start"],
         "actions/charge-stop": None,  # Not supported - use charger to stop
         "actions/horn-start": None,  # Reason: err.func.wired.forbidden
