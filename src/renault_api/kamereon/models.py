@@ -63,6 +63,10 @@ COMMON_ERRRORS: list[dict[str, Any]] = [
         "errorCode": "409001",
         "error_type": exceptions.ChargeModeInProgressException,
     },
+    {
+        "errorCode": "err.func.wired.low.battery.level",
+        "error_type": exceptions.InsufficientBatteryLevelException,
+    },
 ]
 
 VEHICLE_SPECIFICATIONS: dict[str, dict[str, Any]] = {
@@ -405,6 +409,34 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "res-state": None,  # Reason: "err.func.wired.notFound"
         "soc-levels": None,  # Reason: "err.func.wired.forbidden"
     },
+    "XBG2VE": {  # DACIA SPRING MY25
+        "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start-via-settings"],
+        "actions/charge-stop": None,  # Reason: "err.func.wired.forbidden" (kcm pause-resume) / "err.func.wired.invalid-body-format" (default)  # noqa: E501
+        "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
+        "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
+        # hvac-stop: "cancel" is accepted (200) but has no effect, "stop" works
+        "actions/hvac-stop": _KCA_ALTERNATIVE_ENDPOINTS["actions/hvac-stop"],
+        "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
+        "actions/refresh-location": _DEFAULT_ENDPOINTS["actions/refresh-location"],
+        "alerts": None,  # Reason: "err.func.wired.not-found"
+        "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
+        "charge-history": None,  # Reason: "err.func.wired.not-found"
+        "charge-mode": None,  # Reason: "err.func.wired.forbidden"
+        "charge-schedule": _KCM_ENDPOINTS["charge-schedule-via-settings"],
+        "charges": _DEFAULT_ENDPOINTS["charges"],
+        "charging-settings": None,  # Reason: "err.func.wired.forbidden"
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
+        "hvac-history": None,  # Reason: "err.func.wired.not-found"
+        "hvac-sessions": None,  # Reason: "err.func.wired.not-found"
+        "hvac-settings": _DEFAULT_ENDPOINTS["hvac-settings"],
+        "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
+        "location": _DEFAULT_ENDPOINTS["location"],
+        "lock-status": None,  # Reason: "There is no data for this vin and uid" (404)
+        "notification-settings": None,  # Reason: "The vehicle does not have a GDC gateway" (400001)  # noqa: E501
+        "pressure": None,  # Reason: "There is no data for this vin and uid" (404)
+        "res-state": None,  # Reason: "There is no data for this vin and uid" (404)
+        "soc-levels": _DEFAULT_ENDPOINTS["soc-levels"],
+    },
     "XCB1SE": {  # SCENIC E-TECH
         "actions/charge-start": _KCM_ENDPOINTS["actions/charge-start-via-settings"],
         "actions/charge-stop": None,  # Reason: "err.func.wired.forbidden" (kcm pause-resume) / "err.func.wired.invalid-body-format" (default)  # noqa: E501
@@ -567,11 +599,11 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "charge-mode": None,  # Reason: "err.func.wired.forbidden"
         "charging-settings": None,  # Reason: "err.func.wired.forbidden"
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],  # confirmed
-        "hvac-status": None,
+        "hvac-status": None,  # Reason: "err.func.wired.notFound"
         "location": _DEFAULT_ENDPOINTS["location"],
-        "lock-status": None,
+        "lock-status": _DEFAULT_ENDPOINTS["lock-status"],  # confirmed
         "pressure": None,  # Reason: 404
-        "res-state": None,
+        "res-state": None,  # Reason: "err.func.wired.notFound"
         "soc-levels": None,  # Reason: "err.func.wired.forbidden"
     },
     "XJA1VP": {  # CLIO V
@@ -1175,6 +1207,16 @@ class KamereonVehicleCockpitData(KamereonVehicleDataAttributes):
     totalMileage: float | None
 
 
+# Some vehicles (eg. XJB2SU, XHN1SU) report the door statuses as statusDoor*
+_LOCK_STATUS_ALIASES = {
+    "doorStatusRearLeft": "statusDoorRearLeft",
+    "doorStatusRearRight": "statusDoorRearRight",
+    "doorStatusDriver": "statusDoorDriver",
+    "doorStatusPassenger": "statusDoorPassenger",
+    "hatchStatus": "statusDoorTailGate",
+}
+
+
 @dataclass
 class KamereonVehicleLockStatusData(KamereonVehicleDataAttributes):
     """Kamereon vehicle data lock-status attributes."""
@@ -1186,6 +1228,12 @@ class KamereonVehicleLockStatusData(KamereonVehicleDataAttributes):
     doorStatusPassenger: str | None
     hatchStatus: str | None
     lastUpdateTime: str | None
+
+    def __post_init__(self) -> None:
+        """Fall back to the statusDoor* attributes used by newer vehicles."""
+        for field, alias in _LOCK_STATUS_ALIASES.items():
+            if getattr(self, field) is None:
+                setattr(self, field, self.raw_data.get(alias))
 
 
 @dataclass

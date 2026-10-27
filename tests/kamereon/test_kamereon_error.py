@@ -114,6 +114,21 @@ def test_vehicle_charge_mode_inprogress() -> None:
     assert excinfo.value.error_details == "A remote CHARGE_MODE is already in progress"
 
 
+def test_vehicle_error_low_battery_level() -> None:
+    """Test vehicle low battery level response."""
+    response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
+        f"{fixtures.KAMEREON_FIXTURE_PATH}/error/low_battery_level.json",
+        schemas.KamereonVehicleDataResponseSchema,
+    )
+    with pytest.raises(exceptions.InsufficientBatteryLevelException) as excinfo:
+        response.raise_for_error_code()
+    assert excinfo.value.error_code == "err.func.wired.low.battery.level"
+    assert (
+        excinfo.value.error_details
+        == "Insufficient Battery Level, the minimum required is 30%"
+    )
+
+
 def test_vehicle_error_privacy_on() -> None:
     """Test vehicle privacy on response."""
     response: models.KamereonVehicleDataResponse = fixtures.get_file_content_as_schema(
