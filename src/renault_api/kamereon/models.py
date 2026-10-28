@@ -782,6 +782,17 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
 
 _ALREADY_WARNED_VEHICLE: set[str] = set()
 _ALREADY_WARNED_VEHICLE_ENDPOINT: set[str] = set()
+_ALREADY_WARNED_ENUM_VALUE: set[str] = set()
+
+
+def _log_unknown_enum_value(enum_name: str, value: Any) -> None:
+    """Log an unknown enum value, as a warning only the first time."""
+    key = f"{enum_name}:{value}"
+    if key not in _ALREADY_WARNED_ENUM_VALUE:
+        _ALREADY_WARNED_ENUM_VALUE.add(key)
+        _LOGGER.warning("Unable to convert `%s` to %s.", value, enum_name)
+    else:
+        _LOGGER.debug("Unable to convert `%s` to %s.", value, enum_name)
 
 
 def get_model_endpoints(
@@ -1129,7 +1140,7 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
                 else None
             )
         except ValueError:
-            _LOGGER.warning("Unable to convert `%s` to PlugState.", self.plugStatus)
+            _log_unknown_enum_value("PlugState", self.plugStatus)
             return None
 
     def get_charging_status(self) -> enums.ChargeState | None:
@@ -1141,9 +1152,7 @@ class KamereonVehicleBatteryStatusData(KamereonVehicleDataAttributes):
                 else None
             )
         except ValueError:
-            _LOGGER.warning(
-                "Unable to convert `%s` to ChargeState.", self.chargingStatus
-            )
+            _log_unknown_enum_value("ChargeState", self.chargingStatus)
             return None
 
 
