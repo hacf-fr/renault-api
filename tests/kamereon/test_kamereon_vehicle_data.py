@@ -1,5 +1,6 @@
 """Tests for Kamereon models."""
 
+import logging
 from typing import cast
 
 import pytest
@@ -120,6 +121,31 @@ def test_battery_status(sub_code: str, snapshot: SnapshotAssertion) -> None:
     )
 
     assert vehicle_data == snapshot
+
+
+def test_battery_status_unknown_values(
+    caplog: pytest.LogCaptureFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Test unknown plug and charging status are only warned once."""
+    monkeypatch.setattr(models, "_ALREADY_WARNED_ENUM_VALUE", set())
+    caplog.set_level(logging.DEBUG, logger="renault_api.kamereon.models")
+    vehicle_data = cast(
+        models.KamereonVehicleBatteryStatusData,
+        schemas.KamereonVehicleBatteryStatusDataSchema.load(
+            {"plugStatus": 3, "chargingStatus": 0.5}
+        ),
+    )
+
+    for _ in range(2):
+        assert vehicle_data.get_plug_status() is None
+        assert vehicle_data.get_charging_status() is None
+
+    assert [(r.levelname, r.getMessage()) for r in caplog.records] == [
+        ("WARNING", "Unable to convert `3` to PlugState."),
+        ("WARNING", "Unable to convert `0.5` to ChargeState."),
+        ("DEBUG", "Unable to convert `3` to PlugState."),
+        ("DEBUG", "Unable to convert `0.5` to ChargeState."),
+    ]
 
 
 def test_tyre_pressure() -> None:
