@@ -1034,6 +1034,35 @@
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/twingo_ze.1.json]
   dict({
+    'actions/charge-set-mode': EndpointDefinition(
+      endpoint='/kca/car-adapter/v1/cars/{vin}/actions/charge-mode',
+      mode='default',
+    ),
+    'actions/charge-set-schedule': EndpointDefinition(
+      endpoint='/kca/car-adapter/v2/cars/{vin}/actions/charge-schedule',
+      mode='default',
+    ),
+    'actions/charge-start': EndpointDefinition(
+      endpoint='/kcm/v1/vehicles/{vin}/charge/start',
+      mode='kcm',
+    ),
+    'actions/charge-stop': None,
+    'actions/horn-start': None,
+    'actions/hvac-set-schedule': EndpointDefinition(
+      endpoint='/kca/car-adapter/v2/cars/{vin}/actions/hvac-schedule',
+      mode='default',
+    ),
+    'actions/hvac-start': EndpointDefinition(
+      endpoint='/kca/car-adapter/v1/cars/{vin}/actions/hvac-start',
+      mode='default',
+    ),
+    'actions/hvac-stop': None,
+    'actions/lights-start': None,
+    'actions/refresh-location': EndpointDefinition(
+      endpoint='/kca/car-adapter/v1/cars/{vin}/actions/refresh-location',
+      mode='default',
+    ),
+    'alerts': None,
     'battery-status': EndpointDefinition(
       endpoint='/kca/car-adapter/v2/cars/{vin}/battery-status',
       mode='default',
@@ -1041,6 +1070,10 @@
     'charge-history': None,
     'charge-mode': None,
     'charge-schedule': None,
+    'charges': EndpointDefinition(
+      endpoint='/kca/car-adapter/v1/cars/{vin}/charges',
+      mode='default',
+    ),
     'charging-settings': EndpointDefinition(
       endpoint='/kca/car-adapter/v1/cars/{vin}/charging-settings',
       mode='default',
@@ -1067,6 +1100,7 @@
     'notification-settings': None,
     'pressure': None,
     'res-state': None,
+    'soc-levels': None,
   })
 # ---
 # name: test_get_endpoints[tests/fixtures/kamereon/vehicles/zoe_40.1.json]
