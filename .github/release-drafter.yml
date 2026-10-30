@@ -7,6 +7,8 @@ categories:
     label: "removal"
   - title: ":bug: Fixes"
     label: "bug"
+  - title: ":red_car: Vehicle Support"
+    label: "vehicle-support"
   - title: ":racehorse: Performance"
     label: "performance"
   - title: ":books: Documentation"
