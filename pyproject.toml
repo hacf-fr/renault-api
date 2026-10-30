@@ -13,6 +13,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
 ]
 dependencies = [
     # Warning: as of 2024-04-23, aiohttp is pinned to 3.9.5 on HA-core
