@@ -316,9 +316,7 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-history": None,  # Reason: err.func.wired.not-found
         "charge-mode": None,  # Reason: err.func.wired.forbidden
-        "charge-schedule": _KCM_ENDPOINTS[
-            "charge-schedule-via-settings"
-        ],  # legacy kca path forbidden; served via kcm ev/settings  # noqa: E501
+        "charge-schedule": _KCM_ENDPOINTS["charge-schedule-via-settings"],
         "charging-settings": None,  # Reason: err.func.wired.forbidden
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
         "hvac-history": None,  # Reason: err.func.wired.not-found
