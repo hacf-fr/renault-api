@@ -37,7 +37,7 @@
       "version": "24"
     }
   },
-  "image": "mcr.microsoft.com/devcontainers/python:3.14",
+  "image": "mcr.microsoft.com/devcontainers/python:3.15",
   "name": "Renault API",
   "onCreateCommand": "pipx install uv",
   "updateContentCommand": "uv sync --all-extras && npm ci && uv run prek install"
