@@ -14,9 +14,6 @@
 - name: build
   description: Build System and Dependencies
   color: bfdadc
-- name: car-documentation
-  description: New or updated vehicle model documentation
-  color: fbca04
 - name: ci
   description: Continuous Integration
   color: 4a97d6
@@ -77,6 +74,9 @@
 - name: testing
   description: Testing
   color: b1fc6f
+- name: vehicle-support
+  description: New or updated vehicle model support
+  color: fbca04
 - name: wontfix
   description: This will not be worked on
   color: ffffff
