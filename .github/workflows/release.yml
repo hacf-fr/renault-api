@@ -33,7 +33,7 @@ jobs:
       - name: Set up uv and Python
         uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
-          version: "0.13.6"
+          version: "0.13.7"
           python-version: ${{ env.DEFAULT_PYTHON }}
           # No cache on release builds, to avoid cache poisoning
           enable-cache: false
