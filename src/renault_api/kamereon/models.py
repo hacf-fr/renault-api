@@ -553,12 +553,12 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
         "hvac-history": None,  # err.func.wired.not-found
         "hvac-sessions": None,  # err.func.wired.not-found
-        "hvac-settings": None,  # err.func.wired.not-found
+        "hvac-settings": _DEFAULT_ENDPOINTS["hvac-settings"],
         "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
         "location": _DEFAULT_ENDPOINTS["location"],
         "lock-status": None,  # err.func.wired.notFound
         "notification-settings": None,  # err.func.vcps.users-helper...
-        "pressure": None,  # err.func.wired.notFound
+        "pressure": _DEFAULT_ENDPOINTS["pressure"],
         "res-state": None,  # err.func.wired.notFound
     },
     "XHN1CP": {  # Rafale
