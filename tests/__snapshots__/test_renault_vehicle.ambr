@@ -66,6 +66,57 @@
     }),
   })
 # ---
+# name: test_get_charge_schedule_kcm[megane.multi.active]
+  dict({
+    'chargeDuration': 300,
+    'chargeModeRq': 'SCHEDULED',
+    'chargeTimeStart': '01:55',
+    'delegatedActivated': False,
+    'lastSettingsUpdateTimestamp': '2025-12-30T17:03:18.644879Z',
+    'preconditioningHeatedLeftSeat': False,
+    'preconditioningHeatedRightSeat': False,
+    'preconditioningHeatedStrgWheel': True,
+    'preconditioningTemperature': 19,
+    'programs': list([
+      dict({
+        'programActivationFriday': True,
+        'programActivationMonday': True,
+        'programActivationSaturday': False,
+        'programActivationStatus': True,
+        'programActivationSunday': False,
+        'programActivationThursday': False,
+        'programActivationTuesday': True,
+        'programActivationWednesday': False,
+        'programDepartureTime': '07:30',
+        'programType': 'CHARGE',
+      }),
+      dict({
+        'programActivationFriday': False,
+        'programActivationMonday': False,
+        'programActivationSaturday': False,
+        'programActivationStatus': True,
+        'programActivationSunday': False,
+        'programActivationThursday': True,
+        'programActivationTuesday': False,
+        'programActivationWednesday': False,
+        'programDepartureTime': '08:30',
+        'programType': 'PRECONDITIONING',
+      }),
+      dict({
+        'programActivationFriday': False,
+        'programActivationMonday': False,
+        'programActivationSaturday': True,
+        'programActivationStatus': True,
+        'programActivationSunday': False,
+        'programActivationThursday': False,
+        'programActivationTuesday': False,
+        'programActivationWednesday': True,
+        'programDepartureTime': '10:50',
+        'programType': 'CHARGE_AND_PRECONDITIONING',
+      }),
+    ]),
+  })
+# ---
 # name: test_get_charge_schedule_kcm[single.active]
   dict({
     'chargeDuration': 9000,
@@ -653,7 +704,10 @@
     ),
     'charge-history': None,
     'charge-mode': None,
-    'charge-schedule': None,
+    'charge-schedule': EndpointDefinition(
+      endpoint='/kcm/v1/vehicles/{vin}/ev/settings',
+      mode='kcm-settings',
+    ),
     'charging-settings': EndpointDefinition(
       endpoint='/kca/car-adapter/v1/cars/{vin}/charging-settings',
       mode='default',
@@ -719,7 +773,10 @@
     ),
     'charge-history': None,
     'charge-mode': None,
-    'charge-schedule': None,
+    'charge-schedule': EndpointDefinition(
+      endpoint='/kcm/v1/vehicles/{vin}/ev/settings',
+      mode='kcm-settings',
+    ),
     'charging-settings': EndpointDefinition(
       endpoint='/kca/car-adapter/v1/cars/{vin}/charging-settings',
       mode='default',
