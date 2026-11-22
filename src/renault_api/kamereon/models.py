@@ -561,6 +561,36 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "pressure": None,  # err.func.wired.notFound
         "res-state": None,  # err.func.wired.notFound
     },
+    "XFK1EV": {  # RENAULT KANGOO 3
+        "actions/charge-set-mode": None,  # err.func.vcps.ev.charge-mode.error
+        "actions/charge-set-schedule": None,  # err.func.vcps.ev.charge-schedule.error
+        "actions/charge-start": _DEFAULT_ENDPOINTS["actions/charge-start"],
+        "actions/charge-stop": None,  # Not supported
+        "actions/horn-start": None,  # err.func.access.denied.for.this.resource
+        "actions/hvac-set-schedule": _DEFAULT_ENDPOINTS["actions/hvac-set-schedule"],
+        "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
+        "actions/hvac-stop": None,  # Not supported
+        "actions/lights-start": None,  # err.func.access.denied.for.this.resource
+        "actions/refresh-location": _DEFAULT_ENDPOINTS["actions/refresh-location"],
+        "alerts": None,  # Reason: "err.func.wired.not-found"
+        "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
+        "charge-history": None,  # Reason: "err.func.wired.not-found"
+        "charge-mode": None,  # Reason: "err.func.vcps.ev.charge-mode.error"
+        "charge-schedule": None,  # Reason: "err.func.vcps.ev.charge-schedule.error"
+        "charges": _DEFAULT_ENDPOINTS["charges"],
+        "charging-settings": _DEFAULT_ENDPOINTS["charging-settings"],
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
+        "hvac-history": None,  # Reason: "err.func.wired.not-found"
+        "hvac-sessions": None,  # Reason: "err.func.wired.not-found"
+        "hvac-settings": _DEFAULT_ENDPOINTS["hvac-settings"],
+        "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
+        "location": _DEFAULT_ENDPOINTS["location"],
+        "lock-status": None,  # Reason: "err.func.wired.notFound"
+        "notification-settings": None,  # Reason: "err.func.vcps.users-helper.get-notification-settings.error"  # noqa: E501
+        "pressure": _DEFAULT_ENDPOINTS["pressure"],
+        "res-state": None,  # Reason: "err.func.wired.notFound"
+        "soc-levels": None,  # Reason: "err.func.wired.forbidden"
+    },
     "XHN1CP": {  # Rafale
         "actions/charge-start": None,  # err.func.wired.forbidden
         "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
