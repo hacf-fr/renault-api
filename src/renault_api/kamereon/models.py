@@ -797,6 +797,39 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "pressure": None,  # Reason: "err.func.wired.notFound"
         "res-state": None,  # Reason: "err.func.wired.notFound"
     },
+    "Z1D1CE": {  # Alpine A390
+        "actions/charge-set-mode": None,  # charge-mode GET forbidden
+        "actions/charge-set-schedule": None,  # kca charge-schedule GET forbidden
+        "actions/charge-start": _KCM_ENDPOINTS[
+            "actions/charge-start-via-settings"
+        ],  # not tested, same as A5E1AE
+        "actions/charge-stop": None,  # not tested, not supported on A5E1AE
+        "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],  # not tested
+        "actions/hvac-set-schedule": None,  # not tested, not exposed on A5E1AE
+        "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],  # confirmed
+        # "cancel" is accepted (returns an id) but ignored by the car; "stop" works
+        "actions/hvac-stop": _KCA_ALTERNATIVE_ENDPOINTS["actions/hvac-stop"],
+        "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],  # confirmed
+        "actions/refresh-location": _DEFAULT_ENDPOINTS["actions/refresh-location"],
+        "alerts": None,  # Reason: err.func.wired.not-found
+        "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
+        "charge-history": None,  # Reason: err.func.wired.not-found
+        "charge-mode": None,  # Reason: err.func.wired.forbidden
+        "charge-schedule": _KCM_ENDPOINTS["charge-schedule-via-settings"],
+        "charges": _DEFAULT_ENDPOINTS["charges"],
+        "charging-settings": None,  # Reason: err.func.wired.forbidden
+        "cockpit": _DEFAULT_ENDPOINTS["cockpit"],
+        "hvac-history": None,  # Reason: err.func.wired.not-found
+        "hvac-sessions": None,  # Reason: err.func.wired.not-found
+        "hvac-settings": None,  # Reason: errorCode 502000 (technical)
+        "hvac-status": _DEFAULT_ENDPOINTS["hvac-status"],
+        "location": _DEFAULT_ENDPOINTS["location"],
+        "lock-status": None,  # Reason: err.func.wired.notFound
+        "notification-settings": None,  # Reason: vehicle has no GDC gateway
+        "pressure": None,  # Reason: err.func.wired.notFound
+        "res-state": None,  # Reason: err.func.wired.notFound
+        "soc-levels": _DEFAULT_ENDPOINTS["soc-levels"],
+    },
 }
 
 _ALREADY_WARNED_VEHICLE: set[str] = set()
