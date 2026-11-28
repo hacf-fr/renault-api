@@ -461,6 +461,8 @@ _VEHICLE_ENDPOINTS: dict[str, dict[str, EndpointDefinition | None]] = {
         "actions/charge-stop": None,  # Reason: "err.func.wired.forbidden" (kcm pause-resume) / "err.func.wired.invalid-body-format" (default)  # noqa: E501
         "actions/horn-start": _DEFAULT_ENDPOINTS["actions/horn-start"],
         "actions/hvac-start": _DEFAULT_ENDPOINTS["actions/hvac-start"],
+        # hvac-stop: "cancel" is accepted (200) but has no effect, "stop" works
+        "actions/hvac-stop": _KCA_ALTERNATIVE_ENDPOINTS["actions/hvac-stop"],
         "actions/lights-start": _DEFAULT_ENDPOINTS["actions/lights-start"],
         "battery-status": _DEFAULT_ENDPOINTS["battery-status"],
         "charge-mode": None,
